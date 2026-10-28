@@ -1,0 +1,133 @@
+{
+  "task": "COS-017",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "pseudonym",
+      "returncode": 0,
+      "output": "\n=== DATA.PATIENT ResearchPatient ===\n Stable pseudonymous internal patient key; mapping to protected source patient key. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  --> RELATES_TO DATA.DIAGNOSIS CancerDiagnosis\n  --> RELATES_TO DATA.VISIT ClinicalVisit\n  --> RELATES_TO DATA.STUDY ImagingStudy\n  --> RELATES_TO DATA.BRANCH SimulationBranch\n  --> RELATES_TO DATA.TREAT TreatmentEvent\n  --> RELATES_TO DATA.OUTCOME OutcomeObservation\n  <-- HAS_STEP WF.REAL Real imaging vertical slice\n  <-- WORKFLOW_PRECEDES DATA.SOURCE Dataset and licensing registry\n  --> WORKFLOW_PRECEDES IMG.INGEST DICOM and NIfTI ingestion\n  <-- CONSTRAINS GOV.PRIV Privacy and access\n\n=== UX.CASE Research case browser ===\n Pseudonymous case listing, source metadata, completeness and access. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n\n=== GOV.PRIV Privacy and access ===\n Pseudonyms, deidentification checks, role-aware access, approved external data processing only. \nSources: SAF,PRD\n  <-- ENFORCES D.GOV Safety and provenance\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  <-- WORKFLOW_PRECEDES GOV.PROV Five provenance classes\n  --> WORKFLOW_PRECEDES INF.DEPLOY Deployment\n  --> CONSTRAINS DATA.PATIENT ResearchPatient\n  --> CONSTRAINS INF.OBJECT Imaging/object storage\n  --> CONSTRAINS AI.NLP Clinical note extraction\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "pseudonym",
+      "returncode": 0,
+      "output": "\nDAT.01 — Source patient/study identity\nDesign: Preserve pseudonymous patient→study→series→acquisition linkage; distinct DCE phase vs repeat visit\nAcceptance: Patient/study/series manifest round-trip; no patient mixing\n  READ A16 DICOM Standard — Image spatial geometry, DICOM SEG and referenced source images; locate exact part/modules for version — https://www.dicomstandard.org/current\n  READ A03 MIT HST.582J — Lecture 17 — Medical image modalities; Lectures 9,12 image processing — https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/\n  REPO R07 IDC Index — reproducible dataset collection and download — https://github.com/ImagingDataCommons/idc-index\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "pseudonym",
+      "returncode": 0,
+      "output": "\n== DAT.01 Source patient/study identity ==\nIntent: Preserve pseudonymous patient→study→series→acquisition linkage; distinct DCE phase vs repeat visit \nTest: Patient/study/series manifest round-trip; no patient mixing\n BOOK/LECTURE A16 DICOM Standard | Image spatial geometry, DICOM SEG and referenced source images; locate exact part/modules for version | https://www.dicomstandard.org/current | standard verified; section number pending\n BOOK/LECTURE A03 MIT HST.582J | Lecture 17 — Medical image modalities; Lectures 9,12 image processing | https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/ | verified section\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R07 IDC Index | https://github.com/ImagingDataCommons/idc-index \n  Inspect: Inspect IDCClient metadata hierarchy, SQL querying, download manifests \n  Reuse: Adopt maintained package to download authorized selected studies \n  Avoid: Do not bulk-download entire datasets or assume every cohort is in IDC \n  Verify: Download one approved series, SHA-256 and patient/study linkage\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "DATA.PATIENT",
+    "GOV.PRIV",
+    "UX.CASE"
+  ],
+  "academic_behavior_ids": [
+    "DAT.01"
+  ],
+  "edges": [
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.DIAGNOSIS"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.STUDY"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.BRANCH"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.TREAT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.OUTCOME"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.CASE"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "DATA.SOURCE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "CONSTRAINS",
+      "to_id": "INF.OBJECT"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.NLP"
+    }
+  ],
+  "mapped_source_ids": [
+    "A03",
+    "A16",
+    "P05",
+    "R07"
+  ],
+  "source_sections_inspected": "SPEC-003 sections 4/7/8, SPEC-008 section 5/18, SPEC-010 SAFE-18/21, audit C05/D03"
+}

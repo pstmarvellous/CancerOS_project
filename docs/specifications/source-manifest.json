@@ -1,0 +1,181 @@
+{
+  "schema_version": "1",
+  "audited_input_count": 12,
+  "audit": "COS-AUD-001",
+  "documents": [
+    {
+      "document_id": "COS-SPEC-006",
+      "path": "docs/AI & Multimodal Intelligence Specification.pdf",
+      "version": "1.0",
+      "date": "2026-10-22",
+      "sha256": "4fb67eabdc42ed56fa5dc790068154b8e5b2900a09964c73bf74f728520a6f8d",
+      "pages": 36,
+      "role": "source_specification",
+      "available": true,
+      "approval_status": "not_evidenced",
+      "identity_evidence": "PDF opening section"
+    },
+    {
+      "document_id": "COS-SPEC-010",
+      "path": "docs/CancerOS_AI_Safety_Privacy_Integrity.pdf",
+      "version": "1.0",
+      "date": "2026-10-22",
+      "sha256": "2c950116edfbc98928a42d2a15e572067c65862e20a419e45f9cd1504c88ea9d",
+      "pages": 5,
+      "role": "source_specification",
+      "available": true,
+      "approval_status": "not_evidenced",
+      "identity_evidence": "PDF opening section"
+    },
+    {
+      "document_id": "COS-AUD-001",
+      "path": "docs/CancerOS_Consolidated_Predevelopment_Audit.pdf",
+      "version": "1.0",
+      "date": "2026-10-23",
+      "sha256": "55b41e22919add40a0c172b2a4a9438e28c2ad473e1087488bd7e99f11f5b744",
+      "pages": 4,
+      "role": "reconciliation_overlay",
+      "available": true,
+      "approval_status": "not_evidenced",
+      "identity_evidence": "PDF opening section"
+    },
+    {
+      "document_id": "COS-SPEC-008",
+      "path": "docs/CancerOS_Database_API_Contracts.pdf",
+      "version": "1.0",
+      "date": "2026-10-22",
+      "sha256": "50c034a8d0803fa64e16b16ce2ad28575bc324b57e115f7d46067e9e98c5c3df",
+      "pages": 17,
+      "role": "source_specification",
+      "available": true,
+      "approval_status": "not_evidenced",
+      "identity_evidence": "PDF opening section"
+    },
+    {
+      "document_id": "COS-SPEC-012",
+      "path": "docs/CancerOS_Implementation_Roadmap_Finalist_Demo.pdf",
+      "version": "1.0",
+      "date": "2026-10-22",
+      "sha256": "ccbed7b9817ea46b7afe50c802588d5c9988f37849550fc9353f4e2e275846a2",
+      "pages": 7,
+      "role": "source_specification",
+      "available": true,
+      "approval_status": "not_evidenced",
+      "identity_evidence": "PDF opening section"
+    },
+    {
+      "document_id": "COS-RA-001",
+      "path": "docs/CancerOS_Literature_Review_Implementation_Addendum.pdf",
+      "version": null,
+      "date": "2026-10-23",
+      "sha256": "b4b5a14b238452724585787339f7040f48f83d714ed375a45eca8ead7783e77b",
+      "pages": 7,
+      "role": "advisory",
+      "available": true,
+      "approval_status": "not_evidenced",
+      "identity_evidence": "PDF opening section",
+      "version_note": "No explicit version established from inspected opening; advisory dated2026-10-23"
+    },
+    {
+      "document_id": "COS-SPEC-007",
+      "path": "docs/CancerOS_System_Architecture_Blueprint.pdf",
+      "version": "1.0",
+      "date": "2026-10-22",
+      "sha256": "df74c4d67609113717c833cc3d6fe941eed1f679a6c0af9ce77f5a45c506268f",
+      "pages": 21,
+      "role": "source_specification",
+      "available": true,
+      "approval_status": "not_evidenced",
+      "identity_evidence": "PDF opening section"
+    },
+    {
+      "document_id": "COS-SPEC-011",
+      "path": "docs/CancerOS_Testing_Scientific_Evaluation_Plan.pdf",
+      "version": "1.0",
+      "date": "2026-10-22",
+      "sha256": "a6ef4c45700b35b30991b30a13ddf9101db280ac1ce12d8e2bf4dc4398090d77",
+      "pages": 7,
+      "role": "source_specification",
+      "available": true,
+      "approval_status": "not_evidenced",
+      "identity_evidence": "PDF opening section"
+    },
+    {
+      "document_id": "COS-SPEC-009",
+      "path": "docs/CancerOS_UI_UX_Demonstration_Specification.pdf",
+      "version": "1.0",
+      "date": "2026-10-22",
+      "sha256": "c23b707995c028e55cb74b401ec6e63d2429476970362e45fb463d38cd818e9f",
+      "pages": 17,
+      "role": "source_specification",
+      "available": true,
+      "approval_status": "not_evidenced",
+      "identity_evidence": "PDF opening section"
+    },
+    {
+      "document_id": "COS-SPEC-003",
+      "path": "docs/image_dataset_specification.pdf",
+      "version": "1.0",
+      "date": "2026-10-22",
+      "sha256": "470d24e41d5879159e617da57a6be8868edf2139bf06ffa7bd03a5d58e674738",
+      "pages": 26,
+      "role": "source_specification",
+      "available": true,
+      "approval_status": "not_evidenced",
+      "identity_evidence": "PDF opening section"
+    },
+    {
+      "document_id": "COS-SPEC-005",
+      "path": "docs/Medical Imaging & Digital Twin Specification.pdf",
+      "version": "1.0",
+      "date": "2026-10-22",
+      "sha256": "c73c67faa6f747bb2629730251c8ac87a5a7c4ad436c7450609b5bf397660502",
+      "pages": 28,
+      "role": "source_specification",
+      "available": true,
+      "approval_status": "not_evidenced",
+      "identity_evidence": "PDF opening section"
+    },
+    {
+      "document_id": "COS-PRD-001",
+      "path": "docs/Project_requirements specification.pdf",
+      "version": "1.0",
+      "date": "2026-10-22",
+      "sha256": "6f0a1a8460f9cc6ec0aed21db4c4a49fd065ae668bc824847d8f8dbdccd3cbc6",
+      "pages": 38,
+      "role": "source_specification",
+      "available": true,
+      "approval_status": "not_evidenced",
+      "identity_evidence": "PDF opening section"
+    },
+    {
+      "document_id": "COS-SPEC-004",
+      "path": "docs/Synthentic_logitudinal_data_specification.pdf",
+      "version": "1.0",
+      "date": "2026-10-22",
+      "sha256": "03d5a4fc89e311ff2430e799833ccffa011929e32ebb07a95d82ebf78ef92762",
+      "pages": 36,
+      "role": "source_specification",
+      "available": true,
+      "approval_status": "not_evidenced",
+      "identity_evidence": "PDF opening section"
+    },
+    {
+      "document_id": "SUPPLEMENTAL-SCHEDULE",
+      "path": "docs/work_shedule.pdf",
+      "version": null,
+      "date": null,
+      "sha256": "c5cd3b87da28e715f0ad20818d3647c41fbf6d65bb306e57c6c5ab64f0cd0345",
+      "pages": 14,
+      "role": "supplemental",
+      "available": true,
+      "approval_status": "not_evidenced",
+      "identity_evidence": "No stable document ID found in opening; inventory/schedule supplement"
+    }
+  ],
+  "notes": [
+    "No SPEC-002 inferred",
+    "Local filenames differ from audit (1).pdf references; absent-copy byte identity not asserted",
+    "Original source files unchanged"
+  ]
+}

@@ -1,0 +1,308 @@
+{
+  "$defs": {
+    "Availability": {
+      "enum": [
+        "available",
+        "unavailable",
+        "pending",
+        "invalid",
+        "rejected"
+      ],
+      "title": "Availability",
+      "type": "string"
+    },
+    "Context": {
+      "enum": [
+        "OBSERVED",
+        "SYNTHETIC"
+      ],
+      "title": "Context",
+      "type": "string"
+    },
+    "DateTimeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "const": "date",
+          "title": "Basis",
+          "type": "string"
+        },
+        "time_domain": {
+          "enum": [
+            "source_calendar",
+            "source_shifted",
+            "simulation"
+          ],
+          "title": "Time Domain",
+          "type": "string"
+        },
+        "value": {
+          "format": "date",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "basis",
+        "value",
+        "time_domain"
+      ],
+      "title": "DateTimeReference",
+      "type": "object"
+    },
+    "Provenance": {
+      "enum": [
+        "REAL_OBSERVED",
+        "REAL_DERIVED",
+        "SYNTHETIC_GENERATED",
+        "INTERPOLATED",
+        "MODEL_PREDICTED"
+      ],
+      "title": "Provenance",
+      "type": "string"
+    },
+    "Publication": {
+      "enum": [
+        "draft",
+        "validating",
+        "ready",
+        "published",
+        "rejected",
+        "withdrawn"
+      ],
+      "title": "Publication",
+      "type": "string"
+    },
+    "Quality": {
+      "enum": [
+        "pending",
+        "pass",
+        "warning",
+        "fail",
+        "not_applicable"
+      ],
+      "title": "Quality",
+      "type": "string"
+    },
+    "Quantity": {
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "maxLength": 32,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9/%._\\[\\]-]+$",
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^-?(0|[1-9]\\d*)(\\.\\d{1,9})?$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "title": "Quantity",
+      "type": "object"
+    },
+    "RelativeTime": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor_state_id": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Anchor State Id"
+        },
+        "basis": {
+          "const": "relative_day",
+          "title": "Basis",
+          "type": "string"
+        },
+        "time_domain": {
+          "enum": [
+            "source_relative",
+            "simulation"
+          ],
+          "title": "Time Domain",
+          "type": "string"
+        },
+        "timeline_origin_id": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Timeline Origin Id"
+        },
+        "value": {
+          "pattern": "^-?(0|[1-9]\\d*)(\\.\\d{1,9})?$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "basis",
+        "value",
+        "time_domain"
+      ],
+      "title": "RelativeTime",
+      "type": "object"
+    },
+    "TimestampTime": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "const": "timestamp",
+          "title": "Basis",
+          "type": "string"
+        },
+        "time_domain": {
+          "enum": [
+            "source_calendar",
+            "source_shifted",
+            "simulation"
+          ],
+          "title": "Time Domain",
+          "type": "string"
+        },
+        "value": {
+          "format": "date-time",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "basis",
+        "value",
+        "time_domain"
+      ],
+      "title": "TimestampTime",
+      "type": "object"
+    },
+    "UnknownTime": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "const": "unknown",
+          "title": "Basis",
+          "type": "string"
+        },
+        "missing_reason": {
+          "enum": [
+            "unknown",
+            "not_recorded",
+            "not_collected",
+            "not_applicable",
+            "below_detection",
+            "withheld"
+          ],
+          "title": "Missing Reason",
+          "type": "string"
+        },
+        "time_domain": {
+          "enum": [
+            "source_calendar",
+            "source_shifted",
+            "source_relative",
+            "simulation"
+          ],
+          "title": "Time Domain",
+          "type": "string"
+        }
+      },
+      "required": [
+        "basis",
+        "missing_reason",
+        "time_domain"
+      ],
+      "title": "UnknownTime",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "availability": {
+      "$ref": "#/$defs/Availability",
+      "default": "unavailable"
+    },
+    "context": {
+      "$ref": "#/$defs/Context"
+    },
+    "origin": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "publication": {
+      "$ref": "#/$defs/Publication",
+      "default": "draft"
+    },
+    "quality": {
+      "$ref": "#/$defs/Quality",
+      "default": "pending"
+    },
+    "quantity": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Quantity"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "schema_version": {
+      "const": "foundation/1",
+      "default": "foundation/1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "time": {
+      "discriminator": {
+        "mapping": {
+          "date": "#/$defs/DateTimeReference",
+          "relative_day": "#/$defs/RelativeTime",
+          "timestamp": "#/$defs/TimestampTime",
+          "unknown": "#/$defs/UnknownTime"
+        },
+        "propertyName": "basis"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/TimestampTime"
+        },
+        {
+          "$ref": "#/$defs/DateTimeReference"
+        },
+        {
+          "$ref": "#/$defs/RelativeTime"
+        },
+        {
+          "$ref": "#/$defs/UnknownTime"
+        }
+      ],
+      "title": "Time"
+    }
+  },
+  "required": [
+    "origin",
+    "context",
+    "time"
+  ],
+  "title": "FoundationEnvelope",
+  "type": "object"
+}

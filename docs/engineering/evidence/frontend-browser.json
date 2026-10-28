@@ -1,0 +1,17 @@
+{
+  "result": "passed",
+  "runner": "Playwright MCP actual browser",
+  "viewports": [
+    "1280x900",
+    "390x844"
+  ],
+  "heading": true,
+  "keyboard_focus": true,
+  "narrow_layout_no_overflow": true,
+  "api_connection": "reachable",
+  "screenshots": [
+    "frontend-desktop.png",
+    "frontend-mobile.png"
+  ],
+  "scope": "Foundation shell; no patient workflow or medical validity"
+}

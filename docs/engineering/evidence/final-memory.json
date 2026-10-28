@@ -1,0 +1,24 @@
+{
+  "result": "passed",
+  "scope": "Point-in-time tracked process families, not peak or scientific workload",
+  "host_ram_gib": 5.92,
+  "families": {
+    "storage": {
+      "root_and_children_rss_mib": 224.82,
+      "processes": 2
+    },
+    "queue": {
+      "root_and_children_rss_mib": 22.7,
+      "processes": 2
+    },
+    "api": {
+      "root_and_children_rss_mib": 122.45,
+      "processes": 3
+    },
+    "web": {
+      "root_and_children_rss_mib": 83.26,
+      "processes": 2
+    }
+  },
+  "postgresql_note": "Separate native cluster processes not included in tracked launcher totals"
+}

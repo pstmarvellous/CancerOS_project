@@ -1,0 +1,1 @@
+PASS 19 governance Markdown files/links, readable JSON, 25 SAFE controls and 18 audit findings; no clinical/runtime verification implied

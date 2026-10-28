@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["task_id", "requirement_ids", "test_id", "command", "environment", "input_hash", "result", "artifact", "scope", "failures"],
+  "properties": {
+    "task_id": {"type": "string"},
+    "requirement_ids": {"type": "array", "items": {"type": "string"}},
+    "test_id": {"type": "string"},
+    "command": {"type": "string"},
+    "environment": {"type": "object"},
+    "input_hash": {"type": ["string", "null"]},
+    "result": {"enum": ["passed", "failed", "not_run", "blocked", "future_phase"]},
+    "artifact": {"type": ["string", "null"]},
+    "scope": {"type": "string"},
+    "failures": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

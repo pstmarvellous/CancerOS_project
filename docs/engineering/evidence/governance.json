@@ -1,0 +1,74 @@
+{
+  "recorded_at": "2026-10-28T19:22:34.899756+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "python": "3.12.14",
+  "scope": "governance engineering verification only; no real-data or qualified review claim",
+  "input_hash": "9b49c00add29ffed2d6fe340e03cdf55d41308524d3576c0ff4ec2bf06b75393",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "scripts/check_foundation_docs.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS 108 governance Markdown files/links, readable JSON, 25 SAFE controls and 18 audit findings; no clinical/runtime verification implied\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "scripts/check_governance.py",
+        "--self-test"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS source hashes, 865 trace rows, CSV synchronization, ledger if present; negative fixtures=True\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "scripts/check_reference_maps.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS 40 matched reference behavior IDs and all local source/repository/paper references\nPASS original map lookup: docs/Agent_knowledge_map/Knowlage_map_1/query_map.py\nPASS original map lookup: docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py\nPASS original map lookup: docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py\nPASS readable original maps/registry/index; external URLs and source contents not verified by this check\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "scripts/check_structure.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS module structure and private source ignore; runtime imports verified separately after installation\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "scripts/check_boundaries.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS current import/contract/frontend boundaries; future domain boundaries need additional behavior tests\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "scripts/check_hygiene.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS 492 Git-visible file paths, private-source ignores and known local secret scan; source/asset license review remains a release gate\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "scripts/check_evidence.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS evidence schema/example and recorded check exit codes; future/skipped science is not passed\n",
+      "stderr": ""
+    }
+  ],
+  "result": "passed"
+}

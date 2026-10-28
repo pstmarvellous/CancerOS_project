@@ -1,0 +1,620 @@
+{
+  "task": "COS-011",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "provenance",
+      "returncode": 0,
+      "output": "\n=== ROOT CancerOS breast cancer digital twin ===\n Research-only, time-indexed, provenance-aware breast cancer imaging, simulation and interpretation prototype. NOT validated clinical decision support. \nSources: PRD\n  --> HAS_DOMAIN D.DATA Clinical research data\n  --> HAS_DOMAIN D.IMG Medical imaging\n  --> HAS_DOMAIN D.TWIN Digital twin\n  --> HAS_DOMAIN D.SIM Synthetic longitudinal engine\n  --> HAS_DOMAIN D.AI Multimodal intelligence\n  --> HAS_DOMAIN D.UX Researcher experience\n  --> HAS_DOMAIN D.EVAL Scientific evaluation\n  --> HAS_DOMAIN D.INFRA Platform infrastructure\n  --> HAS_DOMAIN D.GOV Safety and provenance\n  --> EXCLUDES X.WHOLE Whole-body digital twin\n  --> EXCLUDES X.MULTI Multiple cancers\n  --> EXCLUDES X.CARE Clinical diagnosis/prescription\n  --> EXCLUDES X.SURV Validated prognosis/survival prediction\n  --> EXCLUDES X.GENOME Whole-genome/cell-scale simulation\n  --> EXCLUDES X.HOSP Production EHR/hospital integrations\n  --> EXCLUDES X.DRUG Drug discovery or causal therapy optimization\n  --> EXCLUDES X.PHOTOMRI Synthetic follow-up scans represented as authentic MRI\n  --> REFERENCES REF.MAMA MAMA-MIA\n  --> REFERENCES REF.NNUNET nnU-Net\n  --> REFERENCES REF.SLICER 3D Slicer\n  --> REFERENCES REF.OHIF OHIF/Cornerstone3D\n  --> REFERENCES REF.MONAI MONAI\n  --> REFERENCES REF.IDC IDC Index\n  --> REFERENCES REF.DCMQI dcmqi\n  --> REFERENCES REF.LIT Textbook and clinical standards\n  --> HAS_WORKFLOW WF.REAL Real imaging vertical slice\n  --> HAS_WORKFLOW WF.SIM Synthetic scenario vertical slice\n  --> HAS_WORKFLOW WF.NEW Add observation\n  --> HAS_WORKFLOW WF.AI Evidence linked interpretation\n  --> HAS_WORKFLOW WF.REALVAL Actual longitudinal evaluation\n  --> HAS_WORKFLOW WF.RELEASE Demo readiness\n\n=== D.GOV Safety and provenance ===\n Licensing, patient de-identification, traceable origin, abstention and research-only boundary. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> ENFORCES GOV.REAL Immutable source truth\n  --> ENFORCES GOV.PROV Five provenance classes\n  --> ENFORCES GOV.PRIV Privacy and access\n  --> ENFORCES GOV.LIC License separation\n  --> ENFORCES GOV.NOCLIN No autonomous care\n  --> ENFORCES GOV.RECIST Formal response boundary\n  --> ENFORCES GOV.CTCAE Adverse-event grading boundary\n  --> ENFORCES GOV.ABSTAIN Disclose unknowns\n\n=== DATA.SEG SegmentationArtifact ===\n Mask whose semantics, source image, class, quality and provenance are known. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- RELATES_TO DATA.STUDY ImagingStudy\n  --> RELATES_TO DATA.LESION Lesion\n  --> RELATES_TO DATA.MEASURE TumorMeasurement\n\n=== DATA.VITAL VitalSign ===\n Date, physiologic value, unit and provenance. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- RELATES_TO DATA.VISIT ClinicalVisit\n\n=== DATA.PROV ProvenanceRecord ===\n Real observed, real derived, synthetic generated, interpolated or model predicted with parent, version and hash. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n\n=== TWIN.STATE Time-indexed state ===\n State binds patient, timestamp, geometry, clinical observations, treatment events, quality, missingness and provenance. \nSources: PRD,IMG,SIM\n  <-- IMPLEMENTS D.TWIN Digital twin\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n\n=== SIM.VALID Simulation validation ===\n Reject structural, temporal, unit, cross-modal, geometry, provenance and unsafe interpretation failures. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES IMG.SYNMESH Synthetic lesion geometry\n  --> WORKFLOW_PRECEDES TWIN.BRANCH Scenario branch isolation\n  <-- CONSTRAINS GOV.CTCAE Adverse-event grading boundary\n  <-- VERIFIES EVAL.SIM Simulation integrity evaluation\n\n=== AI.FUSE Late multimodal fusion ===\n Combine imaging, labs, vitals, symptoms, notes, treatment and missingness with provenance, conflict status. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- PRECEDES AI.NLP Clinical note extraction\n  <-- PRECEDES AI.FEAT Deterministic multimodal features\n  --> PRECEDES AI.LLM Grounded explanation\n  <-- HAS_STEP WF.AI Evidence linked interpretation\n  <-- WORKFLOW_PRECEDES AI.FEAT Deterministic multimodal features\n  --> WORKFLOW_PRECEDES AI.RETR Evidence retrieval\n\n=== AI.LLM Grounded explanation ===\n Structured interpretation referencing exact measurements, provenance, evidence, uncertainty and limits. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- PRECEDES AI.FUSE Late multimodal fusion\n  <-- PRECEDES AI.RETR Evidence retrieval\n  --> PRECEDES AI.GUARD Output safety validation\n  <-- HAS_STEP WF.AI Evidence linked interpretation\n  <-- WORKFLOW_PRECEDES AI.RETR Evidence retrieval\n  --> WORKFLOW_PRECEDES AI.GUARD Output safety validation\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n  <-- CONSTRAINS GOV.RECIST Formal response boundary\n\n=== UX.TIMELINE Observation/date selector ===\n Synchronize 3D, clinical charts, date, treatment markers and state provenance. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES TWIN.BRANCH Scenario branch isolation\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n\n=== GOV.PROV Five provenance classes ===\n REAL_OBSERVED, REAL_DERIVED, SYNTHETIC_GENERATED, INTERPOLATED, MODEL_PREDICTED. \nSources: SAF,PRD\n  <-- ENFORCES D.GOV Safety and provenance\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  <-- WORKFLOW_PRECEDES EVAL.AI NLP/LLM grounding evaluation\n  --> WORKFLOW_PRECEDES GOV.PRIV Privacy and access\n  --> CONSTRAINS DATA.PROV ProvenanceRecord\n  --> CONSTRAINS TWIN.STATE Time-indexed state\n  --> CONSTRAINS TWIN.BRANCH Scenario branch isolation\n  --> CONSTRAINS AI.LLM Grounded explanation\n  --> CONSTRAINS UX.TIMELINE Observation/date selector\n  --> CONSTRAINS IMG.SYNMESH Synthetic lesion geometry\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "provenance",
+      "returncode": 0,
+      "output": "\nDAT.02 — Licensing and provenance\nDesign: Separate source licensing, original/derived/synthetic origin and immutable lineage\nAcceptance: Provenance complete; unauthorized sources quarantined\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R07 IDC Index — reproducible dataset collection and download — https://github.com/ImagingDataCommons/idc-index\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n\nTWIN.02 — Timeline synchronization\nDesign: Selecting visit synchronizes imagery, tumor metrics, labs, treatments and provenance\nAcceptance: E2E multi-date state consistency\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R04 OHIF Viewer — DICOM viewer, longitudinal measurement tracking — https://github.com/OHIF/Viewers\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n\nAI.04 — Multimodal fusion\nDesign: Combine observed imaging, labs, notes, symptoms and treatments with conflict/provenance markers\nAcceptance: Cross-source conflicts surfaced\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  PAPER P03 TRIPOD-LLM reporting guideline —  — https://www.nature.com/articles/s41591-024-03425-5\n\nAI.06 — Interpretation output guard\nDesign: Evidence-constrained summaries, validation, provenance and no individualized prescriptions\nAcceptance: Unsupported numeric and medical claims rejected\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  READ A12 NCI Breast Cancer Treatment PDQ — Stage-specific treatment, receptor status and neoadjuvant therapy sections — https://www.cancer.gov/types/breast/hp/breast-treatment-pdq\n  PAPER P03 TRIPOD-LLM reporting guideline —  — https://www.nature.com/articles/s41591-024-03425-5\n\nUX.01 — Provenance-labeled scenario comparison\nDesign: Real observed / real derived / synthetic / interpolation / forecast never conflated\nAcceptance: Visible labels in screenshots and E2E tests\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  READ A15 FDA Computational Model Credibility Guidance — Context of use; model verification, validation and credibility assessment — https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions\n  REPO R04 OHIF Viewer — DICOM viewer, longitudinal measurement tracking — https://github.com/OHIF/Viewers\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "provenance",
+      "returncode": 0,
+      "output": "\n== DAT.02 Licensing and provenance ==\nIntent: Separate source licensing, original/derived/synthetic origin and immutable lineage \nTest: Provenance complete; unauthorized sources quarantined\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R07 IDC Index | https://github.com/ImagingDataCommons/idc-index \n  Inspect: Inspect IDCClient metadata hierarchy, SQL querying, download manifests \n  Reuse: Adopt maintained package to download authorized selected studies \n  Avoid: Do not bulk-download entire datasets or assume every cohort is in IDC \n  Verify: Download one approved series, SHA-256 and patient/study linkage\n\n== TWIN.02 Timeline synchronization ==\nIntent: Selecting visit synchronizes imagery, tumor metrics, labs, treatments and provenance \nTest: E2E multi-date state consistency\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R04 OHIF Viewer | https://github.com/OHIF/Viewers \n  Inspect: Inspect modes/longitudinal, extensions/measurement-tracking, extensions/cornerstone, platform/core \n  Reuse: Prototype OHIF integration versus Cornerstone3D standalone \n  Avoid: Do not assume original longitudinal mode understands synthetic branching \n  Verify: Browser MRI overlay, state switch, correct patient/time, performance\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n\n== AI.04 Multimodal fusion ==\nIntent: Combine observed imaging, labs, notes, symptoms and treatments with conflict/provenance markers \nTest: Cross-source conflicts surfaced\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n PAPER P03 TRIPOD-LLM reporting guideline | https://www.nature.com/articles/s41591-024-03425-5\n REPOSITORY R15 MONAI Deploy App SDK | https://github.com/Project-MONAI/monai-deploy-app-sdk \n  Inspect: Inspect examples/apps and operator contracts \n  Reuse: Study preprocessing/inference/postprocessing pipeline pattern \n  Avoid: Do not require heavyweight SDK on local laptop \n  Verify: CPU sample chain smoke test\n\n== AI.06 Interpretation output guard ==\nIntent: Evidence-constrained summaries, validation, provenance and no individualized prescriptions \nTest: Unsupported numeric and medical claims rejected\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n BOOK/LECTURE A12 NCI Breast Cancer Treatment PDQ | Stage-specific treatment, receptor status and neoadjuvant therapy sections | https://www.cancer.gov/types/breast/hp/breast-treatment-pdq | verified document; topic-specific revision required\n PAPER P03 TRIPOD-LLM reporting guideline | https://www.nature.com/articles/s41591-024-03425-5\n REPOSITORY R15 MONAI Deploy App SDK | https://github.com/Project-MONAI/monai-deploy-app-sdk \n  Inspect: Inspect examples/apps and operator contracts \n  Reuse: Study preprocessing/inference/postprocessing pipeline pattern \n  Avoid: Do not require heavyweight SDK on local laptop \n  Verify: CPU sample chain smoke test\n\n== UX.01 Provenance-labeled scenario comparison ==\nIntent: Real observed / real derived / synthetic / interpolation / forecast never conflated \nTest: Visible labels in screenshots and E2E tests\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n BOOK/LECTURE A15 FDA Computational Model Credibility Guidance | Context of use; model verification, validation and credibility assessment | https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions | applicability limited to intended guidance scope\n REPOSITORY R04 OHIF Viewer | https://github.com/OHIF/Viewers \n  Inspect: Inspect modes/longitudinal, extensions/measurement-tracking, extensions/cornerstone, platform/core \n  Reuse: Prototype OHIF integration versus Cornerstone3D standalone \n  Avoid: Do not assume original longitudinal mode understands synthetic branching \n  Verify: Browser MRI overlay, state switch, correct patient/time, performance\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "timeline",
+      "returncode": 0,
+      "output": "\n=== D.TWIN Digital twin ===\n Patient-specific observation states, meshes, timelines and branch isolation. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS TWIN.BASELINE Immutable real baseline\n  --> IMPLEMENTS TWIN.STATE Time-indexed state\n  --> IMPLEMENTS TWIN.HISTORY Append-only historical updates\n  --> IMPLEMENTS TWIN.BRANCH Scenario branch isolation\n  --> IMPLEMENTS TWIN.TIME Timeline alignment\n  --> IMPLEMENTS TWIN.COMPARE Change analysis\n  --> IMPLEMENTS TWIN.REAL Genuine longitudinal viewing\n\n=== D.UX Researcher experience ===\n Case browser, image views, 3D tumor, timeline, scenario and AI evidence panels. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS UX.CASE Research case browser\n  --> IMPLEMENTS UX.PROFILE Patient context\n  --> IMPLEMENTS UX.3D Interactive lesion viewport\n  --> IMPLEMENTS UX.TIMELINE Observation/date selector\n  --> IMPLEMENTS UX.SCENARIO Scenario generation/exploration\n  --> IMPLEMENTS UX.CHART Clinical charts\n  --> IMPLEMENTS UX.INSIGHT AI insights with evidence\n  --> IMPLEMENTS UX.IMPORT New observation workflow\n  --> IMPLEMENTS UX.EVAL Evaluation/limitations view\n  --> IMPLEMENTS UX.FAIL Graceful empty/error states\n\n=== TWIN.TIME Timeline alignment ===\n Different scan, lab, symptoms and intervention dates are retained even in a selected visit summary. \nSources: PRD,IMG,SIM\n  <-- IMPLEMENTS D.TWIN Digital twin\n\n=== UX.TIMELINE Observation/date selector ===\n Synchronize 3D, clinical charts, date, treatment markers and state provenance. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES TWIN.BRANCH Scenario branch isolation\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n\n=== EVAL.E2E End-to-end demo ===\n One MRI → mask → measurable mesh → five synthetic scenarios → timeline → AI interpretation. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  --> WORKFLOW_PRECEDES EVAL.AI NLP/LLM grounding evaluation\n  --> VERIFIES WF.REAL Real imaging vertical slice\n  --> VERIFIES WF.SIM Synthetic scenario vertical slice\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "timeline",
+      "returncode": 0,
+      "output": "\nTWIN.02 — Timeline synchronization\nDesign: Selecting visit synchronizes imagery, tumor metrics, labs, treatments and provenance\nAcceptance: E2E multi-date state consistency\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R04 OHIF Viewer — DICOM viewer, longitudinal measurement tracking — https://github.com/OHIF/Viewers\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "timeline",
+      "returncode": 0,
+      "output": "\n== TWIN.02 Timeline synchronization ==\nIntent: Selecting visit synchronizes imagery, tumor metrics, labs, treatments and provenance \nTest: E2E multi-date state consistency\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R04 OHIF Viewer | https://github.com/OHIF/Viewers \n  Inspect: Inspect modes/longitudinal, extensions/measurement-tracking, extensions/cornerstone, platform/core \n  Reuse: Prototype OHIF integration versus Cornerstone3D standalone \n  Avoid: Do not assume original longitudinal mode understands synthetic branching \n  Verify: Browser MRI overlay, state switch, correct patient/time, performance\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "viewer",
+      "returncode": 0,
+      "output": "\n=== IMG.VIEW Web MRI viewer ===\n OHIF/Cornerstone3D integration or tested alternative for authentic MRI and overlays. \nSources: IMG,REF\n  <-- IMPLEMENTS D.IMG Medical imaging\n  <-- PRECEDES IMG.MESH Mask-to-mesh conversion\n\n=== REF.OHIF OHIF/Cornerstone3D ===\n Investigate reusable browser DICOM viewer and longitudinal mode. \nSources: REF\n  <-- REFERENCES ROOT CancerOS breast cancer digital twin\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "viewer",
+      "returncode": 0,
+      "output": "\nIMG.04 — Physical-coordinate transformations\nDesign: Preserve voxel→patient LPS/RAS→viewer transforms; verify inverses\nAcceptance: Known geometry test phantom; round trip\n  READ A05 ITK Software Guide — Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition — https://itk.org/ITKSoftwareGuide/html/\n  READ A16 DICOM Standard — Image spatial geometry, DICOM SEG and referenced source images; locate exact part/modules for version — https://www.dicomstandard.org/current\n  READ A17 MIT Computer Graphics OpenCourseWare — Transforms and 3D geometry; select exact lecture in course notes — https://ocw.mit.edu/courses/6-837-computer-graphics-fall-2012/pages/lecture-notes/\n  REPO R03 3D Slicer — reference geometry/segmentation/measurement — https://github.com/Slicer/Slicer\n  REPO R06 SimpleITK — physical-space image processing, registration — https://github.com/SimpleITK/SimpleITK\n  PAPER P04 IBSI image biomarker standardisation —  — https://theibsi.github.io/documentation/\n\nIMG.12 — 2D/3D medical browser viewer\nDesign: Display actual scans and segmentations in correct orientation and coordinates\nAcceptance: Image/mask overlay matches 3D surface\n  READ A17 MIT Computer Graphics OpenCourseWare — Transforms and 3D geometry; select exact lecture in course notes — https://ocw.mit.edu/courses/6-837-computer-graphics-fall-2012/pages/lecture-notes/\n  READ A16 DICOM Standard — Image spatial geometry, DICOM SEG and referenced source images; locate exact part/modules for version — https://www.dicomstandard.org/current\n  REPO R04 OHIF Viewer — DICOM viewer, longitudinal measurement tracking — https://github.com/OHIF/Viewers\n  REPO R03 3D Slicer — reference geometry/segmentation/measurement — https://github.com/Slicer/Slicer\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "viewer",
+      "returncode": 0,
+      "output": "\n== IMG.04 Physical-coordinate transformations ==\nIntent: Preserve voxel→patient LPS/RAS→viewer transforms; verify inverses \nTest: Known geometry test phantom; round trip\n BOOK/LECTURE A05 ITK Software Guide | Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition | https://itk.org/ITKSoftwareGuide/html/ | verified topical volume; exact chapter pending\n BOOK/LECTURE A16 DICOM Standard | Image spatial geometry, DICOM SEG and referenced source images; locate exact part/modules for version | https://www.dicomstandard.org/current | standard verified; section number pending\n BOOK/LECTURE A17 MIT Computer Graphics OpenCourseWare | Transforms and 3D geometry; select exact lecture in course notes | https://ocw.mit.edu/courses/6-837-computer-graphics-fall-2012/pages/lecture-notes/ | exact lecture pending\n PAPER P04 IBSI image biomarker standardisation | https://theibsi.github.io/documentation/\n REPOSITORY R03 3D Slicer | https://github.com/Slicer/Slicer \n  Inspect: Inspect MRML, Segmentations, Segment Editor, transformations, model/segment statistics \n  Reuse: Use as independent geometry reference; leverage VTK/SimpleITK libraries \n  Avoid: Do not transplant desktop application to web \n  Verify: Compare exported mesh dimensions and mask-derived volume\n REPOSITORY R06 SimpleITK | https://github.com/SimpleITK/SimpleITK \n  Inspect: Inspect ImageRegistrationMethod, Resample, direction/origin/spacing and examples \n  Reuse: Adopt supported registration/resampling and save transforms \n  Avoid: Do not assume registration always valid or comparability equal overlay \n  Verify: Known rigid transform, LPS/RAS roundtrip, failure QC\n REPOSITORY R13 Cornerstone3D | https://github.com/cornerstonejs/cornerstone3D \n  Inspect: Inspect packages/tools, viewport, segmentation loaders and examples \n  Reuse: Evaluate direct library integration rather than all of OHIF \n  Avoid: Do not recode entire DICOM viewport layer \n  Verify: Render known DICOM and overlay matched segmentation\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n\n== IMG.12 2D/3D medical browser viewer ==\nIntent: Display actual scans and segmentations in correct orientation and coordinates \nTest: Image/mask overlay matches 3D surface\n BOOK/LECTURE A17 MIT Computer Graphics OpenCourseWare | Transforms and 3D geometry; select exact lecture in course notes | https://ocw.mit.edu/courses/6-837-computer-graphics-fall-2012/pages/lecture-notes/ | exact lecture pending\n BOOK/LECTURE A16 DICOM Standard | Image spatial geometry, DICOM SEG and referenced source images; locate exact part/modules for version | https://www.dicomstandard.org/current | standard verified; section number pending\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R04 OHIF Viewer | https://github.com/OHIF/Viewers \n  Inspect: Inspect modes/longitudinal, extensions/measurement-tracking, extensions/cornerstone, platform/core \n  Reuse: Prototype OHIF integration versus Cornerstone3D standalone \n  Avoid: Do not assume original longitudinal mode understands synthetic branching \n  Verify: Browser MRI overlay, state switch, correct patient/time, performance\n REPOSITORY R03 3D Slicer | https://github.com/Slicer/Slicer \n  Inspect: Inspect MRML, Segmentations, Segment Editor, transformations, model/segment statistics \n  Reuse: Use as independent geometry reference; leverage VTK/SimpleITK libraries \n  Avoid: Do not transplant desktop application to web \n  Verify: Compare exported mesh dimensions and mask-derived volume\n REPOSITORY R13 Cornerstone3D | https://github.com/cornerstonejs/cornerstone3D \n  Inspect: Inspect packages/tools, viewport, segmentation loaders and examples \n  Reuse: Evaluate direct library integration rather than all of OHIF \n  Avoid: Do not recode entire DICOM viewport layer \n  Verify: Render known DICOM and overlay matched segmentation\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "AI.FUSE",
+    "AI.LLM",
+    "D.GOV",
+    "D.TWIN",
+    "D.UX",
+    "DATA.PROV",
+    "DATA.SEG",
+    "DATA.VITAL",
+    "EVAL.E2E",
+    "GOV.PROV",
+    "IMG.VIEW",
+    "REF.OHIF",
+    "ROOT",
+    "SIM.VALID",
+    "TWIN.STATE",
+    "TWIN.TIME",
+    "UX.TIMELINE"
+  ],
+  "academic_behavior_ids": [
+    "DAT.02",
+    "IMG.04",
+    "IMG.12",
+    "TWIN.02",
+    "AI.04",
+    "AI.06",
+    "UX.01"
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.DATA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.IMG"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.TWIN"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.SIM"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.AI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.UX"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.EVAL"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.INFRA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.GOV"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SEG"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.VITAL"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.PROV"
+    },
+    {
+      "from_id": "DATA.STUDY",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.SEG"
+    },
+    {
+      "from_id": "DATA.SEG",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.LESION"
+    },
+    {
+      "from_id": "DATA.SEG",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.MEASURE"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.VITAL"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.VIEW"
+    },
+    {
+      "from_id": "IMG.MESH",
+      "relation": "PRECEDES",
+      "to_id": "IMG.VIEW"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.BASELINE"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.TIME"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.COMPARE"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.REAL"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.NLP",
+      "relation": "PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.RETR",
+      "relation": "PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.LLM",
+      "relation": "PRECEDES",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.CASE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.PROFILE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.SCENARIO"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.CHART"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.IMPORT"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.EVAL"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.FAIL"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.REAL"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.LIC"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.NOCLIN"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.RECIST"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.CTCAE"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.ABSTAIN"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.WHOLE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.MULTI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.CARE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.SURV"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.GENOME"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.HOSP"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.DRUG"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.PHOTOMRI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.MAMA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.NNUNET"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.SLICER"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.OHIF"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.MONAI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.IDC"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.DCMQI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.LIT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.SIM"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "IMG.SYNMESH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "SIM.VALID",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "TWIN.BRANCH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.NEW"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.AI"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.RETR"
+    },
+    {
+      "from_id": "AI.RETR",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.LLM",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REALVAL"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.RELEASE"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "EVAL.AI",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.PROV"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "GOV.RECIST",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "GOV.CTCAE",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "EVAL.SIM",
+      "relation": "VERIFIES",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.SIM"
+    }
+  ],
+  "mapped_source_ids": [
+    "A05",
+    "A11",
+    "A12",
+    "A14",
+    "A15",
+    "A16",
+    "A17",
+    "P03",
+    "P04",
+    "P05",
+    "R03",
+    "R04",
+    "R06",
+    "R07"
+  ],
+  "source_sections_inspected": "SPEC-009 sections5-6/15-18; SPEC-008 sections11/13; ADR-001; official Next.js installation docs"
+}

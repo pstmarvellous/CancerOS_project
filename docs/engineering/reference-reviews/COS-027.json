@@ -1,0 +1,432 @@
+{
+  "task": "COS-027",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "preprocessing",
+      "returncode": 0,
+      "output": "\n=== D.IMG Medical imaging ===\n MRI loading, preprocessing, masks, measurements, geometric representations and spatial quality. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS IMG.INGEST DICOM and NIfTI ingestion\n  --> IMPLEMENTS IMG.PRE MRI preprocessing\n  --> IMPLEMENTS IMG.MASK Mask classification and import\n  --> IMPLEMENTS IMG.MODEL Optional automated segmentation\n  --> IMPLEMENTS IMG.VOL Quantitative measurement\n  --> IMPLEMENTS IMG.REG Longitudinal registration\n  --> IMPLEMENTS IMG.TRACK Cross-visit lesion identity\n  --> IMPLEMENTS IMG.MESH Mask-to-mesh conversion\n  --> IMPLEMENTS IMG.SYNMESH Synthetic lesion geometry\n  --> IMPLEMENTS IMG.VIEW Web MRI viewer\n\n=== IMG.PRE MRI preprocessing ===\n Resampling, orientation standardization, intensity normalization, crop and transforms are versioned. \nSources: IMG,REF\n  <-- IMPLEMENTS D.IMG Medical imaging\n  <-- PRECEDES IMG.INGEST DICOM and NIfTI ingestion\n  --> PRECEDES IMG.MASK Mask classification and import\n  <-- HAS_STEP WF.REAL Real imaging vertical slice\n  <-- WORKFLOW_PRECEDES IMG.INGEST DICOM and NIfTI ingestion\n  --> WORKFLOW_PRECEDES IMG.MASK Mask classification and import\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "preprocessing",
+      "returncode": 0,
+      "output": "\nIMG.03 — Intensity preprocessing\nDesign: Apply documented modality/model-specific clipping/normalization without changing physical metadata\nAcceptance: Deterministic intensity transforms and mask alignment\n  READ A03 MIT HST.582J — Lecture 17 — Medical image modalities; Lectures 9,12 image processing — https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/\n  READ A05 ITK Software Guide — Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition — https://itk.org/ITKSoftwareGuide/html/\n  READ A06 Guide to Medical Image Analysis — Klaus D. Toennies — Segmentation, registration, shape analysis, validation; inspect edition table of contents for exact chapter — https://link.springer.com/book/10.1007/978-1-4471-7320-5\n  REPO R05 MONAI — image transforms and evaluation — https://github.com/Project-MONAI/MONAI\n  REPO R01 MAMA-MIA — breast MRI expert masks / nnU-Net inference — https://github.com/LidiaGarrucho/MAMA-MIA\n  PAPER P02 nnU-Net: self-configuring medical segmentation —  — https://www.nature.com/articles/s41592-020-01008-z\n\nIMG.06 — Segmentation inference\nDesign: Use evaluated model and matched preprocessing; reference-mask fallback\nAcceptance: Held-out Dice/HD95 and empty mask rate\n  READ A01 MIT HST.582J — Lecture 14 — Introduction to medical image segmentation — https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/\n  READ A06 Guide to Medical Image Analysis — Klaus D. Toennies — Segmentation, registration, shape analysis, validation; inspect edition table of contents for exact chapter — https://link.springer.com/book/10.1007/978-1-4471-7320-5\n  REPO R01 MAMA-MIA — breast MRI expert masks / nnU-Net inference — https://github.com/LidiaGarrucho/MAMA-MIA\n  REPO R02 nnU-Net v2 — segmentation model preprocessing/inference — https://github.com/MIC-DKFZ/nnUNet\n  REPO R05 MONAI — image transforms and evaluation — https://github.com/Project-MONAI/MONAI\n  PAPER P01 MAMA-MIA multicenter DCE MRI tumor segmentation research —  — https://github.com/LidiaGarrucho/MAMA-MIA\n  PAPER P02 nnU-Net: self-configuring medical segmentation —  — https://www.nature.com/articles/s41592-020-01008-z\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "preprocessing",
+      "returncode": 0,
+      "output": "\n== IMG.03 Intensity preprocessing ==\nIntent: Apply documented modality/model-specific clipping/normalization without changing physical metadata \nTest: Deterministic intensity transforms and mask alignment\n BOOK/LECTURE A03 MIT HST.582J | Lecture 17 — Medical image modalities; Lectures 9,12 image processing | https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/ | verified section\n BOOK/LECTURE A05 ITK Software Guide | Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition | https://itk.org/ITKSoftwareGuide/html/ | verified topical volume; exact chapter pending\n BOOK/LECTURE A06 Guide to Medical Image Analysis — Klaus D. Toennies | Segmentation, registration, shape analysis, validation; inspect edition table of contents for exact chapter | https://link.springer.com/book/10.1007/978-1-4471-7320-5 | topic verified; precise chapter pending\n PAPER P02 nnU-Net: self-configuring medical segmentation | https://www.nature.com/articles/s41592-020-01008-z\n REPOSITORY R05 MONAI | https://github.com/Project-MONAI/MONAI \n  Inspect: Inspect transforms, MetaTensor/affine behavior, data readers, metrics and tutorials \n  Reuse: Adopt supported transformations and segmentation metrics \n  Avoid: Do not use unrelated organ models as breast segmentation \n  Verify: Image-mask transforms, invertibility, geometry unit tests\n REPOSITORY R01 MAMA-MIA | https://github.com/LidiaGarrucho/MAMA-MIA \n  Inspect: Read README, nnUNet subtree, download and checkpoint instructions; identify channels, transforms and mask meaning \n  Reuse: Use compatible vetted model inference or verified reference masks \n  Avoid: Do not assume checkpoint availability, licensing or external validity \n  Verify: Run one approved image, compare mask/physical measurements, record resource usage\n REPOSITORY R13 Cornerstone3D | https://github.com/cornerstonejs/cornerstone3D \n  Inspect: Inspect packages/tools, viewport, segmentation loaders and examples \n  Reuse: Evaluate direct library integration rather than all of OHIF \n  Avoid: Do not recode entire DICOM viewport layer \n  Verify: Render known DICOM and overlay matched segmentation\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n\n== IMG.06 Segmentation inference ==\nIntent: Use evaluated model and matched preprocessing; reference-mask fallback \nTest: Held-out Dice/HD95 and empty mask rate\n BOOK/LECTURE A01 MIT HST.582J | Lecture 14 — Introduction to medical image segmentation | https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/ | verified section\n BOOK/LECTURE A06 Guide to Medical Image Analysis — Klaus D. Toennies | Segmentation, registration, shape analysis, validation; inspect edition table of contents for exact chapter | https://link.springer.com/book/10.1007/978-1-4471-7320-5 | topic verified; precise chapter pending\n PAPER P01 MAMA-MIA multicenter DCE MRI tumor segmentation research | https://github.com/LidiaGarrucho/MAMA-MIA\n PAPER P02 nnU-Net: self-configuring medical segmentation | https://www.nature.com/articles/s41592-020-01008-z\n REPOSITORY R01 MAMA-MIA | https://github.com/LidiaGarrucho/MAMA-MIA \n  Inspect: Read README, nnUNet subtree, download and checkpoint instructions; identify channels, transforms and mask meaning \n  Reuse: Use compatible vetted model inference or verified reference masks \n  Avoid: Do not assume checkpoint availability, licensing or external validity \n  Verify: Run one approved image, compare mask/physical measurements, record resource usage\n REPOSITORY R02 nnU-Net v2 | https://github.com/MIC-DKFZ/nnUNet \n  Inspect: Read dataset format, nnUNetv2_predict workflow, inference pre/postprocessing and tests \n  Reuse: Adopt supported nnU-Net v2 inference API in isolated worker \n  Avoid: Do not copy training engine or mix incompatible checkpoints \n  Verify: Bad-channel, missing-weight, source-affine and prediction tests\n REPOSITORY R05 MONAI | https://github.com/Project-MONAI/MONAI \n  Inspect: Inspect transforms, MetaTensor/affine behavior, data readers, metrics and tutorials \n  Reuse: Adopt supported transformations and segmentation metrics \n  Avoid: Do not use unrelated organ models as breast segmentation \n  Verify: Image-mask transforms, invertibility, geometry unit tests\n REPOSITORY R13 Cornerstone3D | https://github.com/cornerstonejs/cornerstone3D \n  Inspect: Inspect packages/tools, viewport, segmentation loaders and examples \n  Reuse: Evaluate direct library integration rather than all of OHIF \n  Avoid: Do not recode entire DICOM viewport layer \n  Verify: Render known DICOM and overlay matched segmentation\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "sequence",
+      "returncode": 0,
+      "output": "\n=== IMG.INGEST DICOM and NIfTI ingestion ===\n Validate study, series, sequence, privacy, slice sorting, pixel geometry and checksums. \nSources: IMG,REF\n  <-- IMPLEMENTS D.IMG Medical imaging\n  --> PRECEDES IMG.PRE MRI preprocessing\n  <-- HAS_STEP WF.REAL Real imaging vertical slice\n  <-- WORKFLOW_PRECEDES DATA.PATIENT ResearchPatient\n  --> WORKFLOW_PRECEDES IMG.PRE MRI preprocessing\n  <-- HAS_STEP WF.REALVAL Actual longitudinal evaluation\n  --> WORKFLOW_PRECEDES IMG.REG Longitudinal registration\n\n=== WF.REAL Real imaging vertical slice ===\n Ordered sequence; inspect dependent nodes before implementation. \nSources: PRD,ROAD\n  <-- HAS_WORKFLOW ROOT CancerOS breast cancer digital twin\n  --> HAS_STEP DATA.SOURCE Dataset and licensing registry\n  --> HAS_STEP DATA.PATIENT ResearchPatient\n  --> HAS_STEP IMG.INGEST DICOM and NIfTI ingestion\n  --> HAS_STEP IMG.PRE MRI preprocessing\n  --> HAS_STEP IMG.MASK Mask classification and import\n  --> HAS_STEP IMG.VOL Quantitative measurement\n  --> HAS_STEP IMG.MESH Mask-to-mesh conversion\n  --> HAS_STEP UX.3D Interactive lesion viewport\n  --> HAS_STEP EVAL.PHANTOM Geometry phantom tests\n  <-- VERIFIES EVAL.E2E End-to-end demo\n\n=== WF.SIM Synthetic scenario vertical slice ===\n Ordered sequence; inspect dependent nodes before implementation. \nSources: PRD,ROAD\n  <-- HAS_WORKFLOW ROOT CancerOS breast cancer digital twin\n  --> HAS_STEP TWIN.BASELINE Immutable real baseline\n  --> HAS_STEP SIM.ELIG Treatment and scenario eligibility\n  --> HAS_STEP SIM.LATENT Latent evolution state\n  --> HAS_STEP SIM.OBS Observation simulation\n  --> HAS_STEP IMG.SYNMESH Synthetic lesion geometry\n  --> HAS_STEP SIM.VALID Simulation validation\n  --> HAS_STEP TWIN.BRANCH Scenario branch isolation\n  --> HAS_STEP UX.TIMELINE Observation/date selector\n  <-- VERIFIES EVAL.E2E End-to-end demo\n\n=== WF.NEW Add observation ===\n Ordered sequence; inspect dependent nodes before implementation. \nSources: PRD,ROAD\n  <-- HAS_WORKFLOW ROOT CancerOS breast cancer digital twin\n  --> HAS_STEP UX.IMPORT New observation workflow\n  --> HAS_STEP DATA.VISIT ClinicalVisit\n  --> HAS_STEP TWIN.HISTORY Append-only historical updates\n  --> HAS_STEP TWIN.COMPARE Change analysis\n  --> HAS_STEP AI.FEAT Deterministic multimodal features\n  --> HAS_STEP UX.INSIGHT AI insights with evidence\n\n=== WF.AI Evidence linked interpretation ===\n Ordered sequence; inspect dependent nodes before implementation. \nSources: PRD,ROAD\n  <-- HAS_WORKFLOW ROOT CancerOS breast cancer digital twin\n  --> HAS_STEP AI.NLP Clinical note extraction\n  --> HAS_STEP AI.FEAT Deterministic multimodal features\n  --> HAS_STEP AI.FUSE Late multimodal fusion\n  --> HAS_STEP AI.RETR Evidence retrieval\n  --> HAS_STEP AI.LLM Grounded explanation\n  --> HAS_STEP AI.GUARD Output safety validation\n  --> HAS_STEP UX.INSIGHT AI insights with evidence\n\n=== WF.REALVAL Actual longitudinal evaluation ===\n Ordered sequence; inspect dependent nodes before implementation. \nSources: PRD,ROAD\n  <-- HAS_WORKFLOW ROOT CancerOS breast cancer digital twin\n  --> HAS_STEP IMG.INGEST DICOM and NIfTI ingestion\n  --> HAS_STEP IMG.REG Longitudinal registration\n  --> HAS_STEP IMG.TRACK Cross-visit lesion identity\n  --> HAS_STEP TWIN.REAL Genuine longitudinal viewing\n  --> HAS_STEP EVAL.REAL Authentic longitudinal case evaluation\n  --> HAS_STEP EVAL.REPORT Scientific limitations report\n\n=== WF.RELEASE Demo readiness ===\n Ordered sequence; inspect dependent nodes before implementation. \nSources: PRD,ROAD\n  <-- HAS_WORKFLOW ROOT CancerOS breast cancer digital twin\n  --> HAS_STEP EVAL.E2E End-to-end demo\n  --> HAS_STEP EVAL.AI NLP/LLM grounding evaluation\n  --> HAS_STEP GOV.PROV Five provenance classes\n  --> HAS_STEP GOV.PRIV Privacy and access\n  --> HAS_STEP INF.DEPLOY Deployment\n  --> HAS_STEP EVAL.REPORT Scientific limitations report\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "sequence",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "sequence",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "normalization",
+      "returncode": 0,
+      "output": "\n=== IMG.PRE MRI preprocessing ===\n Resampling, orientation standardization, intensity normalization, crop and transforms are versioned. \nSources: IMG,REF\n  <-- IMPLEMENTS D.IMG Medical imaging\n  <-- PRECEDES IMG.INGEST DICOM and NIfTI ingestion\n  --> PRECEDES IMG.MASK Mask classification and import\n  <-- HAS_STEP WF.REAL Real imaging vertical slice\n  <-- WORKFLOW_PRECEDES IMG.INGEST DICOM and NIfTI ingestion\n  --> WORKFLOW_PRECEDES IMG.MASK Mask classification and import\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "normalization",
+      "returncode": 0,
+      "output": "\nIMG.03 — Intensity preprocessing\nDesign: Apply documented modality/model-specific clipping/normalization without changing physical metadata\nAcceptance: Deterministic intensity transforms and mask alignment\n  READ A03 MIT HST.582J — Lecture 17 — Medical image modalities; Lectures 9,12 image processing — https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/\n  READ A05 ITK Software Guide — Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition — https://itk.org/ITKSoftwareGuide/html/\n  READ A06 Guide to Medical Image Analysis — Klaus D. Toennies — Segmentation, registration, shape analysis, validation; inspect edition table of contents for exact chapter — https://link.springer.com/book/10.1007/978-1-4471-7320-5\n  REPO R05 MONAI — image transforms and evaluation — https://github.com/Project-MONAI/MONAI\n  REPO R01 MAMA-MIA — breast MRI expert masks / nnU-Net inference — https://github.com/LidiaGarrucho/MAMA-MIA\n  PAPER P02 nnU-Net: self-configuring medical segmentation —  — https://www.nature.com/articles/s41592-020-01008-z\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "normalization",
+      "returncode": 0,
+      "output": "\n== IMG.03 Intensity preprocessing ==\nIntent: Apply documented modality/model-specific clipping/normalization without changing physical metadata \nTest: Deterministic intensity transforms and mask alignment\n BOOK/LECTURE A03 MIT HST.582J | Lecture 17 — Medical image modalities; Lectures 9,12 image processing | https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/ | verified section\n BOOK/LECTURE A05 ITK Software Guide | Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition | https://itk.org/ITKSoftwareGuide/html/ | verified topical volume; exact chapter pending\n BOOK/LECTURE A06 Guide to Medical Image Analysis — Klaus D. Toennies | Segmentation, registration, shape analysis, validation; inspect edition table of contents for exact chapter | https://link.springer.com/book/10.1007/978-1-4471-7320-5 | topic verified; precise chapter pending\n PAPER P02 nnU-Net: self-configuring medical segmentation | https://www.nature.com/articles/s41592-020-01008-z\n REPOSITORY R05 MONAI | https://github.com/Project-MONAI/MONAI \n  Inspect: Inspect transforms, MetaTensor/affine behavior, data readers, metrics and tutorials \n  Reuse: Adopt supported transformations and segmentation metrics \n  Avoid: Do not use unrelated organ models as breast segmentation \n  Verify: Image-mask transforms, invertibility, geometry unit tests\n REPOSITORY R01 MAMA-MIA | https://github.com/LidiaGarrucho/MAMA-MIA \n  Inspect: Read README, nnUNet subtree, download and checkpoint instructions; identify channels, transforms and mask meaning \n  Reuse: Use compatible vetted model inference or verified reference masks \n  Avoid: Do not assume checkpoint availability, licensing or external validity \n  Verify: Run one approved image, compare mask/physical measurements, record resource usage\n REPOSITORY R13 Cornerstone3D | https://github.com/cornerstonejs/cornerstone3D \n  Inspect: Inspect packages/tools, viewport, segmentation loaders and examples \n  Reuse: Evaluate direct library integration rather than all of OHIF \n  Avoid: Do not recode entire DICOM viewport layer \n  Verify: Render known DICOM and overlay matched segmentation\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "D.IMG",
+    "IMG.INGEST",
+    "IMG.PRE",
+    "WF.AI",
+    "WF.NEW",
+    "WF.REAL",
+    "WF.REALVAL",
+    "WF.RELEASE",
+    "WF.SIM"
+  ],
+  "academic_behavior_ids": [
+    "IMG.03",
+    "IMG.06"
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.IMG"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MODEL"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.VIEW"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "PRECEDES",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "IMG.PRE",
+      "relation": "PRECEDES",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.SOURCE"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "IMG.PRE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.SIM"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.BASELINE"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.ELIG"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.LATENT"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.NEW"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "UX.IMPORT"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.COMPARE"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FEAT"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.AI"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.NLP"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FEAT"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.RETR"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REALVAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.REAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.RELEASE"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.SIM"
+    }
+  ],
+  "mapped_source_ids": [
+    "A01",
+    "A03",
+    "A05",
+    "A06",
+    "P01",
+    "P02",
+    "R01",
+    "R02",
+    "R05"
+  ],
+  "source_sections_inspected": "SPEC-005 P-01-08 and optionalprocessing; SPEC-003 4.5/5; SPEC-011 sections4/5 leakage and geometry; audit D01/D05"
+}

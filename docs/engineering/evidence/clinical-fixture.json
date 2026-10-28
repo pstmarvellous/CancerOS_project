@@ -1,0 +1,31 @@
+{
+  "result": "passed",
+  "recorded_at": "2026-10-27T20:27:04.664479+00:00",
+  "scope": "Synthetic engineering fixture through real SQL/private S3 and authenticated in-process HTTP; no real patient validation",
+  "steps_passed": [
+    "Authenticated fixture registry, rights scope, encrypted mapping and relative origin",
+    "Private versioned source bytes, validate-first batch, atomic accept and retry",
+    "Correction appends revision N+1 while revision N and original value remain unchanged",
+    "Explicit retraction, immutable history and unpublished state",
+    "Capability-specific quality snapshot and frozen fixture patient grouping with leakage report",
+    "Authorized lineage view, inherited withdrawal block and stale quality evidence"
+  ],
+  "source_manifest": {
+    "schema": "clinical-source/1",
+    "first_sha256": "b9c62cbebfd6d25838b9e770598d8a5750bd359ad8b7c6521fcd428f87b6a406",
+    "corrected_sha256": "83a4036c6ce95b6935a114369d677ccc9367aa00c790e27fee4c76eb69f440e7",
+    "origin": "SYNTHETIC_ENGINEERING_FIXTURE"
+  },
+  "versions": {
+    "fastapi": "0.162.0",
+    "pydantic": "2.14.1",
+    "sqlalchemy": "2.1.6",
+    "cryptography": "50.0.2",
+    "boto3": "1.43.119"
+  },
+  "remaining_gates": [
+    "D01/D03 approved real source and privacy/linkage review",
+    "C06 scientific configuration review",
+    "Later imaging and state publication tasks"
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "task": "COS-019",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "ingestion",
+      "returncode": 0,
+      "output": "\n=== IMG.INGEST DICOM and NIfTI ingestion ===\n Validate study, series, sequence, privacy, slice sorting, pixel geometry and checksums. \nSources: IMG,REF\n  <-- IMPLEMENTS D.IMG Medical imaging\n  --> PRECEDES IMG.PRE MRI preprocessing\n  <-- HAS_STEP WF.REAL Real imaging vertical slice\n  <-- WORKFLOW_PRECEDES DATA.PATIENT ResearchPatient\n  --> WORKFLOW_PRECEDES IMG.PRE MRI preprocessing\n  <-- HAS_STEP WF.REALVAL Actual longitudinal evaluation\n  --> WORKFLOW_PRECEDES IMG.REG Longitudinal registration\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "ingestion",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "ingestion",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "revision",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "revision",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "revision",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "IMG.INGEST"
+  ],
+  "academic_behavior_ids": [],
+  "edges": [
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "PRECEDES",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.REG"
+    }
+  ],
+  "mapped_source_ids": [],
+  "source_sections_inspected": "SPEC-003 sections 7/9/11, SPEC-008 sections 6/13.1/15/16/18, SPEC-010 SAFE-04/05/12/18"
+}

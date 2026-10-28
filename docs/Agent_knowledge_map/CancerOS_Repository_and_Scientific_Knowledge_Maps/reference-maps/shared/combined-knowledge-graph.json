@@ -1,0 +1,1495 @@
+{
+  "schema_version": "3.0",
+  "node_count": 80,
+  "edge_count": 209,
+  "nodes": [
+    {
+      "id": "DAT.01",
+      "type": "behavior",
+      "name": "Source patient/study identity"
+    },
+    {
+      "id": "DAT.02",
+      "type": "behavior",
+      "name": "Licensing and provenance"
+    },
+    {
+      "id": "DAT.03",
+      "type": "behavior",
+      "name": "Data quality and missingness"
+    },
+    {
+      "id": "DAT.04",
+      "type": "behavior",
+      "name": "Patient-level split and duplicate detection"
+    },
+    {
+      "id": "IMG.01",
+      "type": "behavior",
+      "name": "DICOM/NIfTI volume construction"
+    },
+    {
+      "id": "IMG.02",
+      "type": "behavior",
+      "name": "MRI channel and DCE-phase management"
+    },
+    {
+      "id": "IMG.03",
+      "type": "behavior",
+      "name": "Intensity preprocessing"
+    },
+    {
+      "id": "IMG.04",
+      "type": "behavior",
+      "name": "Physical-coordinate transformations"
+    },
+    {
+      "id": "IMG.05",
+      "type": "behavior",
+      "name": "Reference mask semantic validation"
+    },
+    {
+      "id": "IMG.06",
+      "type": "behavior",
+      "name": "Segmentation inference"
+    },
+    {
+      "id": "IMG.07",
+      "type": "behavior",
+      "name": "Segmentation postprocessing"
+    },
+    {
+      "id": "IMG.08",
+      "type": "behavior",
+      "name": "Lesion volume and diameter"
+    },
+    {
+      "id": "IMG.09",
+      "type": "behavior",
+      "name": "3D surface reconstruction"
+    },
+    {
+      "id": "IMG.10",
+      "type": "behavior",
+      "name": "Longitudinal registration"
+    },
+    {
+      "id": "IMG.11",
+      "type": "behavior",
+      "name": "Lesion correspondence"
+    },
+    {
+      "id": "IMG.12",
+      "type": "behavior",
+      "name": "2D/3D medical browser viewer"
+    },
+    {
+      "id": "IMG.13",
+      "type": "behavior",
+      "name": "Synthetic shape generation"
+    },
+    {
+      "id": "TWIN.01",
+      "type": "behavior",
+      "name": "Observed and synthetic twin states"
+    },
+    {
+      "id": "TWIN.02",
+      "type": "behavior",
+      "name": "Timeline synchronization"
+    },
+    {
+      "id": "TWIN.03",
+      "type": "behavior",
+      "name": "New observation update"
+    },
+    {
+      "id": "SIM.01",
+      "type": "behavior",
+      "name": "Five trajectory scenario patterns"
+    },
+    {
+      "id": "SIM.02",
+      "type": "behavior",
+      "name": "Within/between patient heterogeneity"
+    },
+    {
+      "id": "SIM.03",
+      "type": "behavior",
+      "name": "Clinical treatment compatibility"
+    },
+    {
+      "id": "SIM.04",
+      "type": "behavior",
+      "name": "Discrete surgery and radiotherapy events"
+    },
+    {
+      "id": "SIM.05",
+      "type": "behavior",
+      "name": "Laboratory and symptom generation"
+    },
+    {
+      "id": "SIM.06",
+      "type": "behavior",
+      "name": "Toxicity/event grading"
+    },
+    {
+      "id": "SIM.07",
+      "type": "behavior",
+      "name": "Reproducibility and parameter versioning"
+    },
+    {
+      "id": "SIM.08",
+      "type": "behavior",
+      "name": "Simulation credibility tests"
+    },
+    {
+      "id": "SIM.09",
+      "type": "behavior",
+      "name": "Missing-data mechanisms"
+    },
+    {
+      "id": "AI.01",
+      "type": "behavior",
+      "name": "Clinical note extraction"
+    },
+    {
+      "id": "AI.02",
+      "type": "behavior",
+      "name": "Deterministic medical arithmetic"
+    },
+    {
+      "id": "AI.03",
+      "type": "behavior",
+      "name": "Evidence retrieval and citation checking"
+    },
+    {
+      "id": "AI.04",
+      "type": "behavior",
+      "name": "Multimodal fusion"
+    },
+    {
+      "id": "AI.05",
+      "type": "behavior",
+      "name": "Temporal forecasting eligibility"
+    },
+    {
+      "id": "AI.06",
+      "type": "behavior",
+      "name": "Interpretation output guard"
+    },
+    {
+      "id": "EVAL.01",
+      "type": "behavior",
+      "name": "Segmentation quality reporting"
+    },
+    {
+      "id": "EVAL.02",
+      "type": "behavior",
+      "name": "Statistical diagnostics of synthetic cohorts"
+    },
+    {
+      "id": "EVAL.03",
+      "type": "behavior",
+      "name": "Scientific model documentation"
+    },
+    {
+      "id": "UX.01",
+      "type": "behavior",
+      "name": "Provenance-labeled scenario comparison"
+    },
+    {
+      "id": "OPS.01",
+      "type": "behavior",
+      "name": "Reproducible image model deployment"
+    },
+    {
+      "id": "R01",
+      "type": "repository",
+      "name": "MAMA-MIA",
+      "url": "https://github.com/LidiaGarrucho/MAMA-MIA"
+    },
+    {
+      "id": "R02",
+      "type": "repository",
+      "name": "nnU-Net v2",
+      "url": "https://github.com/MIC-DKFZ/nnUNet"
+    },
+    {
+      "id": "R03",
+      "type": "repository",
+      "name": "3D Slicer",
+      "url": "https://github.com/Slicer/Slicer"
+    },
+    {
+      "id": "R04",
+      "type": "repository",
+      "name": "OHIF Viewer",
+      "url": "https://github.com/OHIF/Viewers"
+    },
+    {
+      "id": "R05",
+      "type": "repository",
+      "name": "MONAI",
+      "url": "https://github.com/Project-MONAI/MONAI"
+    },
+    {
+      "id": "R06",
+      "type": "repository",
+      "name": "SimpleITK",
+      "url": "https://github.com/SimpleITK/SimpleITK"
+    },
+    {
+      "id": "R07",
+      "type": "repository",
+      "name": "IDC Index",
+      "url": "https://github.com/ImagingDataCommons/idc-index"
+    },
+    {
+      "id": "R08",
+      "type": "repository",
+      "name": "dcmqi",
+      "url": "https://github.com/QIICR/dcmqi"
+    },
+    {
+      "id": "R09",
+      "type": "repository",
+      "name": "MONAI Label",
+      "url": "https://github.com/Project-MONAI/MONAILabel"
+    },
+    {
+      "id": "R10",
+      "type": "repository",
+      "name": "Stan",
+      "url": "https://github.com/stan-dev/stan"
+    },
+    {
+      "id": "R11",
+      "type": "repository",
+      "name": "SlicerRT",
+      "url": "https://github.com/SlicerRt/SlicerRT"
+    },
+    {
+      "id": "R12",
+      "type": "repository",
+      "name": "PyRadiomics",
+      "url": "https://github.com/AIM-Harvard/pyradiomics"
+    },
+    {
+      "id": "R13",
+      "type": "repository",
+      "name": "Cornerstone3D",
+      "url": "https://github.com/cornerstonejs/cornerstone3D"
+    },
+    {
+      "id": "R14",
+      "type": "repository",
+      "name": "VTK",
+      "url": "https://github.com/Kitware/VTK"
+    },
+    {
+      "id": "R15",
+      "type": "repository",
+      "name": "MONAI Deploy App SDK",
+      "url": "https://github.com/Project-MONAI/monai-deploy-app-sdk"
+    },
+    {
+      "id": "R16",
+      "type": "repository",
+      "name": "BreastMRISegmentator",
+      "url": "https://github.com/grenda623/BreastMRISegmentator"
+    },
+    {
+      "id": "R17",
+      "type": "repository",
+      "name": "SlicerRadiomics",
+      "url": "https://github.com/AIM-Harvard/SlicerRadiomics"
+    },
+    {
+      "id": "A01",
+      "type": "academic",
+      "name": "MIT HST.582J",
+      "url": "https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/"
+    },
+    {
+      "id": "A02",
+      "type": "academic",
+      "name": "MIT HST.582J",
+      "url": "https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/"
+    },
+    {
+      "id": "A03",
+      "type": "academic",
+      "name": "MIT HST.582J",
+      "url": "https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/"
+    },
+    {
+      "id": "A04",
+      "type": "academic",
+      "name": "MIT HST.582J",
+      "url": "https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/labs/"
+    },
+    {
+      "id": "A05",
+      "type": "academic",
+      "name": "ITK Software Guide",
+      "url": "https://itk.org/ITKSoftwareGuide/html/"
+    },
+    {
+      "id": "A06",
+      "type": "academic",
+      "name": "Guide to Medical Image Analysis — Klaus D. Toennies",
+      "url": "https://link.springer.com/book/10.1007/978-1-4471-7320-5"
+    },
+    {
+      "id": "A07",
+      "type": "academic",
+      "name": "Insight into Images — Terry S. Yoo (ed.)",
+      "url": "https://www.routledge.com/Insight-into-Images/Yooah2/p/book/9781568812175"
+    },
+    {
+      "id": "A08",
+      "type": "academic",
+      "name": "IBSI Reference Manuals",
+      "url": "https://theibsi.github.io/documentation/"
+    },
+    {
+      "id": "A09",
+      "type": "academic",
+      "name": "Stan User’s Guide",
+      "url": "https://mc-stan.org/docs/stan-users-guide/ppcs.html"
+    },
+    {
+      "id": "A10",
+      "type": "academic",
+      "name": "Stan User’s Guide",
+      "url": "https://mc-stan.org/docs/stan-users-guide/"
+    },
+    {
+      "id": "A11",
+      "type": "academic",
+      "name": "Longitudinal Data Analysis — Wiley",
+      "url": "https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486"
+    },
+    {
+      "id": "A12",
+      "type": "academic",
+      "name": "NCI Breast Cancer Treatment PDQ",
+      "url": "https://www.cancer.gov/types/breast/hp/breast-treatment-pdq"
+    },
+    {
+      "id": "A13",
+      "type": "academic",
+      "name": "NCI CTCAE version 6.0",
+      "url": "https://dctd.cancer.gov/research/ctep-trials/for-sites/adverse-events/ctcae-v6.pdf"
+    },
+    {
+      "id": "A14",
+      "type": "academic",
+      "name": "TRIPOD-LLM",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/"
+    },
+    {
+      "id": "A15",
+      "type": "academic",
+      "name": "FDA Computational Model Credibility Guidance",
+      "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions"
+    },
+    {
+      "id": "A16",
+      "type": "academic",
+      "name": "DICOM Standard",
+      "url": "https://www.dicomstandard.org/current"
+    },
+    {
+      "id": "A17",
+      "type": "academic",
+      "name": "MIT Computer Graphics OpenCourseWare",
+      "url": "https://ocw.mit.edu/courses/6-837-computer-graphics-fall-2012/pages/lecture-notes/"
+    },
+    {
+      "id": "A18",
+      "type": "academic",
+      "name": "RECIST 1.1",
+      "url": "https://recist.eortc.org/recist-1-1/"
+    },
+    {
+      "id": "P01",
+      "type": "paper",
+      "name": "MAMA-MIA multicenter DCE MRI tumor segmentation research",
+      "url": "https://github.com/LidiaGarrucho/MAMA-MIA"
+    },
+    {
+      "id": "P02",
+      "type": "paper",
+      "name": "nnU-Net: self-configuring medical segmentation",
+      "url": "https://www.nature.com/articles/s41592-020-01008-z"
+    },
+    {
+      "id": "P03",
+      "type": "paper",
+      "name": "TRIPOD-LLM reporting guideline",
+      "url": "https://www.nature.com/articles/s41591-024-03425-5"
+    },
+    {
+      "id": "P04",
+      "type": "paper",
+      "name": "IBSI image biomarker standardisation",
+      "url": "https://theibsi.github.io/documentation/"
+    },
+    {
+      "id": "P05",
+      "type": "paper",
+      "name": "Breast MRI clinical trial image collections",
+      "url": "https://www.cancerimagingarchive.net/collection/ispy2/"
+    }
+  ],
+  "edges": [
+    {
+      "source": "DAT.01",
+      "target": "R07",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "DAT.01",
+      "target": "A16",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "DAT.01",
+      "target": "A03",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "DAT.01",
+      "target": "P05",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "DAT.02",
+      "target": "R07",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "DAT.02",
+      "target": "A14",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "DAT.02",
+      "target": "P05",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "DAT.03",
+      "target": "R07",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "DAT.03",
+      "target": "A11",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "DAT.03",
+      "target": "A14",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "DAT.03",
+      "target": "P05",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "DAT.04",
+      "target": "R07",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "DAT.04",
+      "target": "A11",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "DAT.04",
+      "target": "A14",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "DAT.04",
+      "target": "P05",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.01",
+      "target": "R06",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.01",
+      "target": "R07",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.01",
+      "target": "R13",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.01",
+      "target": "R14",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.01",
+      "target": "A05",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.01",
+      "target": "A16",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.01",
+      "target": "A03",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.01",
+      "target": "P05",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.02",
+      "target": "R01",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.02",
+      "target": "R05",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.02",
+      "target": "R13",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.02",
+      "target": "R14",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.02",
+      "target": "A03",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.02",
+      "target": "A16",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.02",
+      "target": "P01",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.03",
+      "target": "R05",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.03",
+      "target": "R01",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.03",
+      "target": "R13",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.03",
+      "target": "R14",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.03",
+      "target": "A03",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.03",
+      "target": "A05",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.03",
+      "target": "A06",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.03",
+      "target": "P02",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.04",
+      "target": "R03",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.04",
+      "target": "R06",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.04",
+      "target": "R13",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.04",
+      "target": "R14",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.04",
+      "target": "A05",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.04",
+      "target": "A16",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.04",
+      "target": "A17",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.04",
+      "target": "P04",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.05",
+      "target": "R01",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.05",
+      "target": "R03",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.05",
+      "target": "R13",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.05",
+      "target": "R14",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.05",
+      "target": "A01",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.05",
+      "target": "A06",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.05",
+      "target": "A08",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.05",
+      "target": "P01",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.06",
+      "target": "R01",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.06",
+      "target": "R02",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.06",
+      "target": "R05",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.06",
+      "target": "R13",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.06",
+      "target": "R14",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.06",
+      "target": "A01",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.06",
+      "target": "A06",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.06",
+      "target": "P01",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.06",
+      "target": "P02",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.07",
+      "target": "R05",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.07",
+      "target": "R03",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.07",
+      "target": "R13",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.07",
+      "target": "R14",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.07",
+      "target": "A01",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.07",
+      "target": "A05",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.07",
+      "target": "P02",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.08",
+      "target": "R03",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.08",
+      "target": "R11",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.08",
+      "target": "R13",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.08",
+      "target": "R14",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.08",
+      "target": "A05",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.08",
+      "target": "A08",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.08",
+      "target": "A18",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.08",
+      "target": "P04",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.09",
+      "target": "R03",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.09",
+      "target": "R13",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.09",
+      "target": "R14",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.09",
+      "target": "A07",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.09",
+      "target": "A17",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.09",
+      "target": "A05",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.09",
+      "target": "P04",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.10",
+      "target": "R03",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.10",
+      "target": "R06",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.10",
+      "target": "R13",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.10",
+      "target": "R14",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.10",
+      "target": "A02",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.10",
+      "target": "A04",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.10",
+      "target": "A05",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.10",
+      "target": "P05",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.11",
+      "target": "R04",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.11",
+      "target": "R03",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.11",
+      "target": "R13",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.11",
+      "target": "R14",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.11",
+      "target": "A02",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.11",
+      "target": "A06",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.11",
+      "target": "P05",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.12",
+      "target": "R04",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.12",
+      "target": "R03",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.12",
+      "target": "R13",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.12",
+      "target": "R14",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.12",
+      "target": "A17",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.12",
+      "target": "A16",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.12",
+      "target": "P05",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.13",
+      "target": "R03",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.13",
+      "target": "R13",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.13",
+      "target": "R14",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "IMG.13",
+      "target": "A07",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.13",
+      "target": "A08",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.13",
+      "target": "A17",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "IMG.13",
+      "target": "P04",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "TWIN.01",
+      "target": "R04",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "TWIN.01",
+      "target": "R14",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "TWIN.01",
+      "target": "A14",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "TWIN.01",
+      "target": "A15",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "TWIN.01",
+      "target": "P05",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "TWIN.02",
+      "target": "R04",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "TWIN.02",
+      "target": "R14",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "TWIN.02",
+      "target": "A11",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "TWIN.02",
+      "target": "A14",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "TWIN.02",
+      "target": "P05",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "TWIN.03",
+      "target": "R04",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "TWIN.03",
+      "target": "R14",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "TWIN.03",
+      "target": "A11",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "TWIN.03",
+      "target": "A14",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "TWIN.03",
+      "target": "P05",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.01",
+      "target": "R10",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "SIM.01",
+      "target": "A11",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.01",
+      "target": "A09",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.01",
+      "target": "A12",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.01",
+      "target": "P05",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.02",
+      "target": "R10",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "SIM.02",
+      "target": "A11",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.02",
+      "target": "A10",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.02",
+      "target": "A09",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.02",
+      "target": "P05",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.03",
+      "target": "R10",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "SIM.03",
+      "target": "A12",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.04",
+      "target": "R10",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "SIM.04",
+      "target": "A12",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.04",
+      "target": "A11",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.05",
+      "target": "R10",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "SIM.05",
+      "target": "A11",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.05",
+      "target": "A09",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.05",
+      "target": "A13",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.06",
+      "target": "R10",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "SIM.06",
+      "target": "A13",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.06",
+      "target": "A12",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.07",
+      "target": "R10",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "SIM.07",
+      "target": "A09",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.07",
+      "target": "A15",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.08",
+      "target": "R10",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "SIM.08",
+      "target": "A09",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.08",
+      "target": "A15",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.08",
+      "target": "P05",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.09",
+      "target": "R10",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "SIM.09",
+      "target": "A11",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "SIM.09",
+      "target": "A09",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "AI.01",
+      "target": "R15",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "AI.01",
+      "target": "A14",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "AI.01",
+      "target": "A12",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "AI.01",
+      "target": "P03",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "AI.02",
+      "target": "R03",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "AI.02",
+      "target": "R15",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "AI.02",
+      "target": "A08",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "AI.02",
+      "target": "A14",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "AI.02",
+      "target": "P03",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "AI.03",
+      "target": "R15",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "AI.03",
+      "target": "A12",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "AI.03",
+      "target": "A14",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "AI.03",
+      "target": "P03",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "AI.04",
+      "target": "R15",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "AI.04",
+      "target": "A14",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "AI.04",
+      "target": "A11",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "AI.04",
+      "target": "P03",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "AI.05",
+      "target": "R10",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "AI.05",
+      "target": "R15",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "AI.05",
+      "target": "A11",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "AI.05",
+      "target": "A09",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "AI.05",
+      "target": "A15",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "AI.05",
+      "target": "P05",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "AI.06",
+      "target": "R15",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "AI.06",
+      "target": "A14",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "AI.06",
+      "target": "A12",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "AI.06",
+      "target": "P03",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "EVAL.01",
+      "target": "R11",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "EVAL.01",
+      "target": "R05",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "EVAL.01",
+      "target": "A01",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "EVAL.01",
+      "target": "A08",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "EVAL.01",
+      "target": "P02",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "EVAL.02",
+      "target": "R10",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "EVAL.02",
+      "target": "A09",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "EVAL.02",
+      "target": "A10",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "EVAL.02",
+      "target": "A11",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "EVAL.03",
+      "target": "A15",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "EVAL.03",
+      "target": "A14",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "EVAL.03",
+      "target": "P03",
+      "relation": "EMPIRICAL_REFERENCE"
+    },
+    {
+      "source": "UX.01",
+      "target": "R04",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "UX.01",
+      "target": "A14",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "UX.01",
+      "target": "A15",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "OPS.01",
+      "target": "R02",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "OPS.01",
+      "target": "R05",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "OPS.01",
+      "target": "R01",
+      "relation": "IMPLEMENTATION_REFERENCE"
+    },
+    {
+      "source": "OPS.01",
+      "target": "A05",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "OPS.01",
+      "target": "A14",
+      "relation": "THEORETICAL_REFERENCE"
+    },
+    {
+      "source": "OPS.01",
+      "target": "P02",
+      "relation": "EMPIRICAL_REFERENCE"
+    }
+  ],
+  "evidence_disclaimer": "Graph links are research navigation, not independently validated claims of code suitability or clinical effects."
+}

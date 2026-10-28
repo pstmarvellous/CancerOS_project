@@ -1,0 +1,111 @@
+{
+  "task": "COS-016",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "licensing",
+      "returncode": 0,
+      "output": "\n=== D.GOV Safety and provenance ===\n Licensing, patient de-identification, traceable origin, abstention and research-only boundary. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> ENFORCES GOV.REAL Immutable source truth\n  --> ENFORCES GOV.PROV Five provenance classes\n  --> ENFORCES GOV.PRIV Privacy and access\n  --> ENFORCES GOV.LIC License separation\n  --> ENFORCES GOV.NOCLIN No autonomous care\n  --> ENFORCES GOV.RECIST Formal response boundary\n  --> ENFORCES GOV.CTCAE Adverse-event grading boundary\n  --> ENFORCES GOV.ABSTAIN Disclose unknowns\n\n=== DATA.SOURCE Dataset and licensing registry ===\n Source identifier, version, DOI, license, acquisition date, restriction, attribution, approval. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  --> RELATES_TO DATA.ARTIFACT Artifact\n  <-- HAS_STEP WF.REAL Real imaging vertical slice\n  --> WORKFLOW_PRECEDES DATA.PATIENT ResearchPatient\n  <-- CONSTRAINS GOV.LIC License separation\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "licensing",
+      "returncode": 0,
+      "output": "\nDAT.02 — Licensing and provenance\nDesign: Separate source licensing, original/derived/synthetic origin and immutable lineage\nAcceptance: Provenance complete; unauthorized sources quarantined\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R07 IDC Index — reproducible dataset collection and download — https://github.com/ImagingDataCommons/idc-index\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "licensing",
+      "returncode": 0,
+      "output": "\n== DAT.02 Licensing and provenance ==\nIntent: Separate source licensing, original/derived/synthetic origin and immutable lineage \nTest: Provenance complete; unauthorized sources quarantined\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R07 IDC Index | https://github.com/ImagingDataCommons/idc-index \n  Inspect: Inspect IDCClient metadata hierarchy, SQL querying, download manifests \n  Reuse: Adopt maintained package to download authorized selected studies \n  Avoid: Do not bulk-download entire datasets or assume every cohort is in IDC \n  Verify: Download one approved series, SHA-256 and patient/study linkage\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "D.GOV",
+    "DATA.SOURCE"
+  ],
+  "academic_behavior_ids": [
+    "DAT.02"
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.GOV"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SOURCE"
+    },
+    {
+      "from_id": "DATA.SOURCE",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.ARTIFACT"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.REAL"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.LIC"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.NOCLIN"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.RECIST"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.CTCAE"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.ABSTAIN"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.SOURCE"
+    },
+    {
+      "from_id": "DATA.SOURCE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "GOV.LIC",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.SOURCE"
+    }
+  ],
+  "mapped_source_ids": [
+    "A14",
+    "P05",
+    "R07"
+  ],
+  "source_sections_inspected": "SPEC-003 source registry/licensing, SPEC-008 sections 6/12/18, SPEC-010 SAFE-04/05/17-23, audit D01/D03"
+}

@@ -1,0 +1,1952 @@
+{
+  "schema_version": "2.0",
+  "scope": "Academic-first engineering decision navigation for CancerOS",
+  "nodes": [
+    {
+      "id": "A01",
+      "type": "academic_source",
+      "title": "MIT HST.582J",
+      "reading_locator": "Lecture 14 — Introduction to medical image segmentation",
+      "url": "https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/",
+      "kind": "lecture",
+      "locator_status": "verified section"
+    },
+    {
+      "id": "A02",
+      "type": "academic_source",
+      "title": "MIT HST.582J",
+      "reading_locator": "Lectures 15–16 — Image registration I and II",
+      "url": "https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/",
+      "kind": "lecture",
+      "locator_status": "verified section"
+    },
+    {
+      "id": "A03",
+      "type": "academic_source",
+      "title": "MIT HST.582J",
+      "reading_locator": "Lecture 17 — Medical image modalities; Lectures 9,12 image processing",
+      "url": "https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/",
+      "kind": "lecture",
+      "locator_status": "verified section"
+    },
+    {
+      "id": "A04",
+      "type": "academic_source",
+      "title": "MIT HST.582J",
+      "reading_locator": "Lab 3 — Post-processing brain MRI images; Lab 4 — Registration of medical images",
+      "url": "https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/labs/",
+      "kind": "lecture-lab",
+      "locator_status": "verified lab"
+    },
+    {
+      "id": "A05",
+      "type": "academic_source",
+      "title": "ITK Software Guide",
+      "reading_locator": "Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition",
+      "url": "https://itk.org/ITKSoftwareGuide/html/",
+      "kind": "technical-textbook",
+      "locator_status": "verified topical volume; exact chapter pending"
+    },
+    {
+      "id": "A06",
+      "type": "academic_source",
+      "title": "Guide to Medical Image Analysis — Klaus D. Toennies",
+      "reading_locator": "Segmentation, registration, shape analysis, validation; inspect edition table of contents for exact chapter",
+      "url": "https://link.springer.com/book/10.1007/978-1-4471-7320-5",
+      "kind": "textbook",
+      "locator_status": "topic verified; precise chapter pending"
+    },
+    {
+      "id": "A07",
+      "type": "academic_source",
+      "title": "Insight into Images — Terry S. Yoo (ed.)",
+      "reading_locator": "Isosurfaces, medical segmentation, deformable models, registration; inspect chapter headings in accessible edition",
+      "url": "https://www.routledge.com/Insight-into-Images/Yooah2/p/book/9781568812175",
+      "kind": "textbook",
+      "locator_status": "topic indicated; precise chapter pending"
+    },
+    {
+      "id": "A08",
+      "type": "academic_source",
+      "title": "IBSI Reference Manuals",
+      "reading_locator": "IBSI 1 reference manual — image preprocessing and biomarker feature definitions; select benchmark in documentation",
+      "url": "https://theibsi.github.io/documentation/",
+      "kind": "technical-standard",
+      "locator_status": "reference manual verified"
+    },
+    {
+      "id": "A09",
+      "type": "academic_source",
+      "title": "Stan User’s Guide",
+      "reading_locator": "Posterior and Prior Predictive Checks",
+      "url": "https://mc-stan.org/docs/stan-users-guide/ppcs.html",
+      "kind": "technical-textbook",
+      "locator_status": "verified section"
+    },
+    {
+      "id": "A10",
+      "type": "academic_source",
+      "title": "Stan User’s Guide",
+      "reading_locator": "Hierarchical models and mixed replication; navigate from current official guide",
+      "url": "https://mc-stan.org/docs/stan-users-guide/",
+      "kind": "technical-textbook",
+      "locator_status": "topical location; subsection pending"
+    },
+    {
+      "id": "A11",
+      "type": "academic_source",
+      "title": "Longitudinal Data Analysis — Wiley",
+      "reading_locator": "Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles",
+      "url": "https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486",
+      "kind": "textbook",
+      "locator_status": "precise chapter pending"
+    },
+    {
+      "id": "A12",
+      "type": "academic_source",
+      "title": "NCI Breast Cancer Treatment PDQ",
+      "reading_locator": "Stage-specific treatment, receptor status and neoadjuvant therapy sections",
+      "url": "https://www.cancer.gov/types/breast/hp/breast-treatment-pdq",
+      "kind": "clinical-reference",
+      "locator_status": "verified document; topic-specific revision required"
+    },
+    {
+      "id": "A13",
+      "type": "academic_source",
+      "title": "NCI CTCAE version 6.0",
+      "reading_locator": "Adverse-event definitions, laboratory abnormalities and grading criteria",
+      "url": "https://dctd.cancer.gov/research/ctep-trials/for-sites/adverse-events/ctcae-v6.pdf",
+      "kind": "clinical-standard",
+      "locator_status": "verified edition"
+    },
+    {
+      "id": "A14",
+      "type": "academic_source",
+      "title": "TRIPOD-LLM",
+      "reading_locator": "Model/data/evaluation reporting checklist; consult full checklist and elaboration",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/",
+      "kind": "reporting-guideline",
+      "locator_status": "verified publication"
+    },
+    {
+      "id": "A15",
+      "type": "academic_source",
+      "title": "FDA Computational Model Credibility Guidance",
+      "reading_locator": "Context of use; model verification, validation and credibility assessment",
+      "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions",
+      "kind": "guidance",
+      "locator_status": "applicability limited to intended guidance scope"
+    },
+    {
+      "id": "A16",
+      "type": "academic_source",
+      "title": "DICOM Standard",
+      "reading_locator": "Image spatial geometry, DICOM SEG and referenced source images; locate exact part/modules for version",
+      "url": "https://www.dicomstandard.org/current",
+      "kind": "technical-standard",
+      "locator_status": "standard verified; section number pending"
+    },
+    {
+      "id": "A17",
+      "type": "academic_source",
+      "title": "MIT Computer Graphics OpenCourseWare",
+      "reading_locator": "Transforms and 3D geometry; select exact lecture in course notes",
+      "url": "https://ocw.mit.edu/courses/6-837-computer-graphics-fall-2012/pages/lecture-notes/",
+      "kind": "lecture",
+      "locator_status": "exact lecture pending"
+    },
+    {
+      "id": "A18",
+      "type": "academic_source",
+      "title": "RECIST 1.1",
+      "reading_locator": "Definitions of tumor measurement and formal response categories",
+      "url": "https://recist.eortc.org/recist-1-1/",
+      "kind": "clinical-standard",
+      "locator_status": "verified topical reference"
+    },
+    {
+      "id": "R01",
+      "type": "repository",
+      "title": "MAMA-MIA",
+      "url": "https://github.com/LidiaGarrucho/MAMA-MIA",
+      "reference_role": "breast MRI expert masks / nnU-Net inference",
+      "investigate": "run compatible inference, verify mask semantics and license"
+    },
+    {
+      "id": "R02",
+      "type": "repository",
+      "title": "nnU-Net v2",
+      "url": "https://github.com/MIC-DKFZ/nnUNet",
+      "reference_role": "segmentation model preprocessing/inference",
+      "investigate": "use supported APIs and matching checkpoint"
+    },
+    {
+      "id": "R03",
+      "type": "repository",
+      "title": "3D Slicer",
+      "url": "https://github.com/Slicer/Slicer",
+      "reference_role": "reference geometry/segmentation/measurement",
+      "investigate": "compare known volume and coordinates"
+    },
+    {
+      "id": "R04",
+      "type": "repository",
+      "title": "OHIF Viewer",
+      "url": "https://github.com/OHIF/Viewers",
+      "reference_role": "DICOM viewer, longitudinal measurement tracking",
+      "investigate": "inspect modes/longitudinal and extension interfaces"
+    },
+    {
+      "id": "R05",
+      "type": "repository",
+      "title": "MONAI",
+      "url": "https://github.com/Project-MONAI/MONAI",
+      "reference_role": "image transforms and evaluation",
+      "investigate": "test spatial transform mask alignment"
+    },
+    {
+      "id": "R06",
+      "type": "repository",
+      "title": "SimpleITK",
+      "url": "https://github.com/SimpleITK/SimpleITK",
+      "reference_role": "physical-space image processing, registration",
+      "investigate": "compare affine/spacing and transform handling"
+    },
+    {
+      "id": "R07",
+      "type": "repository",
+      "title": "IDC Index",
+      "url": "https://github.com/ImagingDataCommons/idc-index",
+      "reference_role": "reproducible dataset collection and download",
+      "investigate": "create patient/study/series manifest"
+    },
+    {
+      "id": "R08",
+      "type": "repository",
+      "title": "dcmqi",
+      "url": "https://github.com/QIICR/dcmqi",
+      "reference_role": "DICOM SEG and quantitative reporting",
+      "investigate": "round-trip mask and references"
+    },
+    {
+      "id": "R09",
+      "type": "repository",
+      "title": "MONAI Label",
+      "url": "https://github.com/Project-MONAI/MONAILabel",
+      "reference_role": "interactive segmentation workflow",
+      "investigate": "inspect sample-apps/radiology"
+    },
+    {
+      "id": "R10",
+      "type": "repository",
+      "title": "Stan",
+      "url": "https://github.com/stan-dev/stan",
+      "reference_role": "probabilistic model reference",
+      "investigate": "not required as production dependency"
+    },
+    {
+      "id": "R11",
+      "type": "repository",
+      "title": "SlicerRT",
+      "url": "https://github.com/SlicerRt/SlicerRT",
+      "reference_role": "segment comparison metrics",
+      "investigate": "cross-check Dice/Hausdorff"
+    },
+    {
+      "id": "R12",
+      "type": "repository",
+      "title": "PyRadiomics",
+      "url": "https://github.com/AIM-Harvard/pyradiomics",
+      "reference_role": "image biomarkers",
+      "investigate": "only add validated radiomics"
+    },
+    {
+      "id": "P01",
+      "type": "paper_or_dataset",
+      "title": "MAMA-MIA multicenter DCE MRI tumor segmentation research",
+      "url": "https://github.com/LidiaGarrucho/MAMA-MIA",
+      "note": "verify actual paper and dataset version before citation"
+    },
+    {
+      "id": "P02",
+      "type": "paper_or_dataset",
+      "title": "nnU-Net: self-configuring medical segmentation",
+      "url": "https://www.nature.com/articles/s41592-020-01008-z",
+      "note": "verify domain applicability"
+    },
+    {
+      "id": "P03",
+      "type": "paper_or_dataset",
+      "title": "TRIPOD-LLM reporting guideline",
+      "url": "https://www.nature.com/articles/s41591-024-03425-5",
+      "note": "evaluate transparency and reporting"
+    },
+    {
+      "id": "P04",
+      "type": "paper_or_dataset",
+      "title": "IBSI image biomarker standardisation",
+      "url": "https://theibsi.github.io/documentation/",
+      "note": "reference feature benchmarks"
+    },
+    {
+      "id": "P05",
+      "type": "paper_or_dataset",
+      "title": "Breast MRI clinical trial image collections",
+      "url": "https://www.cancerimagingarchive.net/collection/ispy2/",
+      "note": "confirm patient/timepoint completeness, annotation semantics"
+    },
+    {
+      "id": "DAT.01",
+      "type": "behavior",
+      "title": "Source patient/study identity",
+      "design_decision": "Preserve pseudonymous patient→study→series→acquisition linkage; distinct DCE phase vs repeat visit",
+      "academic_sources": [
+        "A16",
+        "A03"
+      ],
+      "repository_references": [
+        "R07"
+      ],
+      "paper_references": [
+        "P05"
+      ],
+      "verification": "Patient/study/series manifest round-trip; no patient mixing",
+      "canceros_spec": "003",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "DAT.02",
+      "type": "behavior",
+      "title": "Licensing and provenance",
+      "design_decision": "Separate source licensing, original/derived/synthetic origin and immutable lineage",
+      "academic_sources": [
+        "A14"
+      ],
+      "repository_references": [
+        "R07"
+      ],
+      "paper_references": [
+        "P05"
+      ],
+      "verification": "Provenance complete; unauthorized sources quarantined",
+      "canceros_spec": "003",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "DAT.03",
+      "type": "behavior",
+      "title": "Data quality and missingness",
+      "design_decision": "Do not impute absent labs or tumor labels without explicit derived/synthetic markers",
+      "academic_sources": [
+        "A11",
+        "A14"
+      ],
+      "repository_references": [
+        "R07"
+      ],
+      "paper_references": [
+        "P05"
+      ],
+      "verification": "Missingness and unit validation fixtures",
+      "canceros_spec": "003",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "DAT.04",
+      "type": "behavior",
+      "title": "Patient-level split and duplicate detection",
+      "design_decision": "Keep source patient and synthetic descendants in same evaluation partition",
+      "academic_sources": [
+        "A11",
+        "A14"
+      ],
+      "repository_references": [
+        "R07"
+      ],
+      "paper_references": [
+        "P05"
+      ],
+      "verification": "No split leakage or duplicated derivative patient",
+      "canceros_spec": "003",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "IMG.01",
+      "type": "behavior",
+      "title": "DICOM/NIfTI volume construction",
+      "design_decision": "Read slices using spatial metadata and preserve original image artifacts",
+      "academic_sources": [
+        "A05",
+        "A16",
+        "A03"
+      ],
+      "repository_references": [
+        "R06",
+        "R07"
+      ],
+      "paper_references": [
+        "P05"
+      ],
+      "verification": "Round-trip known volume spacing/origin/orientation",
+      "canceros_spec": "005",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "IMG.02",
+      "type": "behavior",
+      "title": "MRI channel and DCE-phase management",
+      "design_decision": "Do not reinterpret contrast phases as longitudinal patient follow-up",
+      "academic_sources": [
+        "A03",
+        "A16"
+      ],
+      "repository_references": [
+        "R01",
+        "R05"
+      ],
+      "paper_references": [
+        "P01"
+      ],
+      "verification": "Correct channel order and study timestamps",
+      "canceros_spec": "005",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "IMG.03",
+      "type": "behavior",
+      "title": "Intensity preprocessing",
+      "design_decision": "Apply documented modality/model-specific clipping/normalization without changing physical metadata",
+      "academic_sources": [
+        "A03",
+        "A05",
+        "A06"
+      ],
+      "repository_references": [
+        "R05",
+        "R01"
+      ],
+      "paper_references": [
+        "P02"
+      ],
+      "verification": "Deterministic intensity transforms and mask alignment",
+      "canceros_spec": "005",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "IMG.04",
+      "type": "behavior",
+      "title": "Physical-coordinate transformations",
+      "design_decision": "Preserve voxel→patient LPS/RAS→viewer transforms; verify inverses",
+      "academic_sources": [
+        "A05",
+        "A16",
+        "A17"
+      ],
+      "repository_references": [
+        "R03",
+        "R06"
+      ],
+      "paper_references": [
+        "P04"
+      ],
+      "verification": "Known geometry test phantom; round trip",
+      "canceros_spec": "005",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "IMG.05",
+      "type": "behavior",
+      "title": "Reference mask semantic validation",
+      "design_decision": "Distinguish anatomical expert masks from FTV/enhancement ROI/bounding boxes",
+      "academic_sources": [
+        "A01",
+        "A06",
+        "A08"
+      ],
+      "repository_references": [
+        "R01",
+        "R03"
+      ],
+      "paper_references": [
+        "P01"
+      ],
+      "verification": "Annotation type labeled; reject unsupported mask meaning",
+      "canceros_spec": "005",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "IMG.06",
+      "type": "behavior",
+      "title": "Segmentation inference",
+      "design_decision": "Use evaluated model and matched preprocessing; reference-mask fallback",
+      "academic_sources": [
+        "A01",
+        "A06"
+      ],
+      "repository_references": [
+        "R01",
+        "R02",
+        "R05"
+      ],
+      "paper_references": [
+        "P01",
+        "P02"
+      ],
+      "verification": "Held-out Dice/HD95 and empty mask rate",
+      "canceros_spec": "005",
+      "priority": "P1",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "IMG.07",
+      "type": "behavior",
+      "title": "Segmentation postprocessing",
+      "design_decision": "Connected components, label preserving resampling and mask QC",
+      "academic_sources": [
+        "A01",
+        "A05"
+      ],
+      "repository_references": [
+        "R05",
+        "R03"
+      ],
+      "paper_references": [
+        "P02"
+      ],
+      "verification": "No unauthorized lesion deletion; dimensions align",
+      "canceros_spec": "005",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "IMG.08",
+      "type": "behavior",
+      "title": "Lesion volume and diameter",
+      "design_decision": "Compute volume from voxel geometry; do not treat box diameter as RECIST",
+      "academic_sources": [
+        "A05",
+        "A08",
+        "A18"
+      ],
+      "repository_references": [
+        "R03",
+        "R11"
+      ],
+      "paper_references": [
+        "P04"
+      ],
+      "verification": "Known 3D phantom volume and dimensional accuracy",
+      "canceros_spec": "005",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "IMG.09",
+      "type": "behavior",
+      "title": "3D surface reconstruction",
+      "design_decision": "Extract, validate and optionally simplify mask-based surface; calculate authoritative volume on mask",
+      "academic_sources": [
+        "A07",
+        "A17",
+        "A05"
+      ],
+      "repository_references": [
+        "R03"
+      ],
+      "paper_references": [
+        "P04"
+      ],
+      "verification": "Mesh spatial/volume reconciliation",
+      "canceros_spec": "005",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "IMG.10",
+      "type": "behavior",
+      "title": "Longitudinal registration",
+      "design_decision": "Only align real exams if comparable; separate transform quality from volume measurement",
+      "academic_sources": [
+        "A02",
+        "A04",
+        "A05"
+      ],
+      "repository_references": [
+        "R03",
+        "R06"
+      ],
+      "paper_references": [
+        "P05"
+      ],
+      "verification": "Known transform recovery; overlay disabled on failure",
+      "canceros_spec": "005",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "IMG.11",
+      "type": "behavior",
+      "title": "Lesion correspondence",
+      "design_decision": "Track lesion IDs only where evidence supports correspondence across visits",
+      "academic_sources": [
+        "A02",
+        "A06"
+      ],
+      "repository_references": [
+        "R04",
+        "R03"
+      ],
+      "paper_references": [
+        "P05"
+      ],
+      "verification": "Uncertain lesion match abstains",
+      "canceros_spec": "005",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "IMG.12",
+      "type": "behavior",
+      "title": "2D/3D medical browser viewer",
+      "design_decision": "Display actual scans and segmentations in correct orientation and coordinates",
+      "academic_sources": [
+        "A17",
+        "A16"
+      ],
+      "repository_references": [
+        "R04",
+        "R03"
+      ],
+      "paper_references": [
+        "P05"
+      ],
+      "verification": "Image/mask overlay matches 3D surface",
+      "canceros_spec": "009",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "IMG.13",
+      "type": "behavior",
+      "title": "Synthetic shape generation",
+      "design_decision": "Derive simulated mesh from original mask; label geometry simulated; constrain target volume",
+      "academic_sources": [
+        "A07",
+        "A08",
+        "A17"
+      ],
+      "repository_references": [
+        "R03"
+      ],
+      "paper_references": [
+        "P04"
+      ],
+      "verification": "Target-vs-produced mask volume tolerance",
+      "canceros_spec": "004,005",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "TWIN.01",
+      "type": "behavior",
+      "title": "Observed and synthetic twin states",
+      "design_decision": "Maintain immutable actual states and independent simulated branches",
+      "academic_sources": [
+        "A14",
+        "A15"
+      ],
+      "repository_references": [
+        "R04"
+      ],
+      "paper_references": [
+        "P05"
+      ],
+      "verification": "Branch isolation and history tests",
+      "canceros_spec": "001,008",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "TWIN.02",
+      "type": "behavior",
+      "title": "Timeline synchronization",
+      "design_decision": "Selecting visit synchronizes imagery, tumor metrics, labs, treatments and provenance",
+      "academic_sources": [
+        "A11",
+        "A14"
+      ],
+      "repository_references": [
+        "R04"
+      ],
+      "paper_references": [
+        "P05"
+      ],
+      "verification": "E2E multi-date state consistency",
+      "canceros_spec": "009",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "TWIN.03",
+      "type": "behavior",
+      "title": "New observation update",
+      "design_decision": "Append new observation; recompute dependent measurements; retain old calculations",
+      "academic_sources": [
+        "A11",
+        "A14"
+      ],
+      "repository_references": [
+        "R04"
+      ],
+      "paper_references": [
+        "P05"
+      ],
+      "verification": "No silent overwrite; stale interpretation invalidated",
+      "canceros_spec": "008",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "SIM.01",
+      "type": "behavior",
+      "title": "Five trajectory scenario patterns",
+      "design_decision": "Strong response, partial/stable, growth, regrowth, toxicity/deterioration",
+      "academic_sources": [
+        "A11",
+        "A09",
+        "A12"
+      ],
+      "repository_references": [
+        "R10"
+      ],
+      "paper_references": [
+        "P05"
+      ],
+      "verification": "Shape constraints on all five families",
+      "canceros_spec": "004",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "SIM.02",
+      "type": "behavior",
+      "title": "Within/between patient heterogeneity",
+      "design_decision": "Separate individual latent state, scenario trajectory, observation noise and patient variability",
+      "academic_sources": [
+        "A11",
+        "A10",
+        "A09"
+      ],
+      "repository_references": [
+        "R10"
+      ],
+      "paper_references": [
+        "P05"
+      ],
+      "verification": "Between/within variance diagnostics",
+      "canceros_spec": "004",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "SIM.03",
+      "type": "behavior",
+      "title": "Clinical treatment compatibility",
+      "design_decision": "Guard endocrine/HER2/immunotherapy cases by documented subtype and setting",
+      "academic_sources": [
+        "A12"
+      ],
+      "repository_references": [],
+      "paper_references": [],
+      "verification": "Invalid eligibility blocked; unknown not invented",
+      "canceros_spec": "004",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "SIM.04",
+      "type": "behavior",
+      "title": "Discrete surgery and radiotherapy events",
+      "design_decision": "Model intervention as dated event not generic geometric shrinkage",
+      "academic_sources": [
+        "A12",
+        "A11"
+      ],
+      "repository_references": [],
+      "paper_references": [],
+      "verification": "Surgical transition has explicit status and rationale",
+      "canceros_spec": "004",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "SIM.05",
+      "type": "behavior",
+      "title": "Laboratory and symptom generation",
+      "design_decision": "Generate observed variables by timestamp, unit, dependency, missingness and patient state",
+      "academic_sources": [
+        "A11",
+        "A09",
+        "A13"
+      ],
+      "repository_references": [
+        "R10"
+      ],
+      "paper_references": [],
+      "verification": "Cross-modal range, covariance and timing checks",
+      "canceros_spec": "004",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "SIM.06",
+      "type": "behavior",
+      "title": "Toxicity/event grading",
+      "design_decision": "Record abnormal observations and assign CTCAE grade only with defined evidence",
+      "academic_sources": [
+        "A13",
+        "A12"
+      ],
+      "repository_references": [],
+      "paper_references": [],
+      "verification": "Without required evidence no formal grade",
+      "canceros_spec": "004",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "SIM.07",
+      "type": "behavior",
+      "title": "Reproducibility and parameter versioning",
+      "design_decision": "Use seed, config hash, simulator version and independent lineage",
+      "academic_sources": [
+        "A09",
+        "A15"
+      ],
+      "repository_references": [
+        "R10"
+      ],
+      "paper_references": [],
+      "verification": "Byte/semantic reproducibility with controlled tolerance",
+      "canceros_spec": "004",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "SIM.08",
+      "type": "behavior",
+      "title": "Simulation credibility tests",
+      "design_decision": "Distinguish program verification, fit/calibration, external validation and context of use",
+      "academic_sources": [
+        "A09",
+        "A15"
+      ],
+      "repository_references": [
+        "R10"
+      ],
+      "paper_references": [
+        "P05"
+      ],
+      "verification": "Report independent synthetic and real-case metrics",
+      "canceros_spec": "011",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "SIM.09",
+      "type": "behavior",
+      "title": "Missing-data mechanisms",
+      "design_decision": "Represent absent, censored and scheduled-not-collected differently if source supports",
+      "academic_sources": [
+        "A11",
+        "A09"
+      ],
+      "repository_references": [
+        "R10"
+      ],
+      "paper_references": [],
+      "verification": "No missing=normal leaks",
+      "canceros_spec": "004",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "AI.01",
+      "type": "behavior",
+      "title": "Clinical note extraction",
+      "design_decision": "Extract typed mentions with spans, uncertainty, negation and dates",
+      "academic_sources": [
+        "A14",
+        "A12"
+      ],
+      "repository_references": [],
+      "paper_references": [
+        "P03"
+      ],
+      "verification": "Curated entity and negation tests",
+      "canceros_spec": "006",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "AI.02",
+      "type": "behavior",
+      "title": "Deterministic medical arithmetic",
+      "design_decision": "Compute numeric trends outside LLM; units and dates source-grounded",
+      "academic_sources": [
+        "A08",
+        "A14"
+      ],
+      "repository_references": [
+        "R03"
+      ],
+      "paper_references": [
+        "P03"
+      ],
+      "verification": "Exact numeric claims match records",
+      "canceros_spec": "006",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "AI.03",
+      "type": "behavior",
+      "title": "Evidence retrieval and citation checking",
+      "design_decision": "Curate clinical sources, link exact evidence, avoid unverified generated links",
+      "academic_sources": [
+        "A12",
+        "A14"
+      ],
+      "repository_references": [],
+      "paper_references": [
+        "P03"
+      ],
+      "verification": "Every cited claim resolves to supporting source",
+      "canceros_spec": "006",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "AI.04",
+      "type": "behavior",
+      "title": "Multimodal fusion",
+      "design_decision": "Combine observed imaging, labs, notes, symptoms and treatments with conflict/provenance markers",
+      "academic_sources": [
+        "A14",
+        "A11"
+      ],
+      "repository_references": [],
+      "paper_references": [
+        "P03"
+      ],
+      "verification": "Cross-source conflicts surfaced",
+      "canceros_spec": "006",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "AI.05",
+      "type": "behavior",
+      "title": "Temporal forecasting eligibility",
+      "design_decision": "Use simple comparator first; abstain on insufficient real follow-up; synthetic not real proof",
+      "academic_sources": [
+        "A11",
+        "A09",
+        "A15"
+      ],
+      "repository_references": [
+        "R10"
+      ],
+      "paper_references": [
+        "P05"
+      ],
+      "verification": "Held-out simple baselines; no fabricated confidence",
+      "canceros_spec": "006,011",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "AI.06",
+      "type": "behavior",
+      "title": "Interpretation output guard",
+      "design_decision": "Evidence-constrained summaries, validation, provenance and no individualized prescriptions",
+      "academic_sources": [
+        "A14",
+        "A12"
+      ],
+      "repository_references": [],
+      "paper_references": [
+        "P03"
+      ],
+      "verification": "Unsupported numeric and medical claims rejected",
+      "canceros_spec": "006",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "EVAL.01",
+      "type": "behavior",
+      "title": "Segmentation quality reporting",
+      "design_decision": "Report Dice, surface distance, volume error per real source cohort",
+      "academic_sources": [
+        "A01",
+        "A08"
+      ],
+      "repository_references": [
+        "R11",
+        "R05"
+      ],
+      "paper_references": [
+        "P02"
+      ],
+      "verification": "Independent metric tests and cohort boundaries",
+      "canceros_spec": "011",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "EVAL.02",
+      "type": "behavior",
+      "title": "Statistical diagnostics of synthetic cohorts",
+      "design_decision": "Compare real available distributions against replicated synthetic summaries",
+      "academic_sources": [
+        "A09",
+        "A10",
+        "A11"
+      ],
+      "repository_references": [
+        "R10"
+      ],
+      "paper_references": [],
+      "verification": "Plots/tests for correlation, time spacing, missingness",
+      "canceros_spec": "011",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "EVAL.03",
+      "type": "behavior",
+      "title": "Scientific model documentation",
+      "design_decision": "Document context, assumption, version, calibration, applicability and failure",
+      "academic_sources": [
+        "A15",
+        "A14"
+      ],
+      "repository_references": [],
+      "paper_references": [
+        "P03"
+      ],
+      "verification": "Limitations report per model",
+      "canceros_spec": "010,011",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "UX.01",
+      "type": "behavior",
+      "title": "Provenance-labeled scenario comparison",
+      "design_decision": "Real observed / real derived / synthetic / interpolation / forecast never conflated",
+      "academic_sources": [
+        "A14",
+        "A15"
+      ],
+      "repository_references": [
+        "R04"
+      ],
+      "paper_references": [],
+      "verification": "Visible labels in screenshots and E2E tests",
+      "canceros_spec": "009",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    },
+    {
+      "id": "OPS.01",
+      "type": "behavior",
+      "title": "Reproducible image model deployment",
+      "design_decision": "Pinned upstream version, licenses, model weights and scalable inference fallback",
+      "academic_sources": [
+        "A05",
+        "A14"
+      ],
+      "repository_references": [
+        "R02",
+        "R05",
+        "R01"
+      ],
+      "paper_references": [
+        "P02"
+      ],
+      "verification": "Fresh install, no-cloud fallback and logs",
+      "canceros_spec": "007",
+      "priority": "P0",
+      "source_grounding": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior"
+    }
+  ],
+  "edges": [
+    {
+      "from": "DAT.01",
+      "to": "A16",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "DAT.01",
+      "to": "A03",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "DAT.01",
+      "to": "R07",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "DAT.01",
+      "to": "P05",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "DAT.02",
+      "to": "A14",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "DAT.02",
+      "to": "R07",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "DAT.02",
+      "to": "P05",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "DAT.03",
+      "to": "A11",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "DAT.03",
+      "to": "A14",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "DAT.03",
+      "to": "R07",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "DAT.03",
+      "to": "P05",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "DAT.04",
+      "to": "A11",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "DAT.04",
+      "to": "A14",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "DAT.04",
+      "to": "R07",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "DAT.04",
+      "to": "P05",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "IMG.01",
+      "to": "A05",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.01",
+      "to": "A16",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.01",
+      "to": "A03",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.01",
+      "to": "R06",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.01",
+      "to": "R07",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.01",
+      "to": "P05",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "IMG.02",
+      "to": "A03",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.02",
+      "to": "A16",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.02",
+      "to": "R01",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.02",
+      "to": "R05",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.02",
+      "to": "P01",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "IMG.03",
+      "to": "A03",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.03",
+      "to": "A05",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.03",
+      "to": "A06",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.03",
+      "to": "R05",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.03",
+      "to": "R01",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.03",
+      "to": "P02",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "IMG.04",
+      "to": "A05",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.04",
+      "to": "A16",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.04",
+      "to": "A17",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.04",
+      "to": "R03",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.04",
+      "to": "R06",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.04",
+      "to": "P04",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "IMG.05",
+      "to": "A01",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.05",
+      "to": "A06",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.05",
+      "to": "A08",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.05",
+      "to": "R01",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.05",
+      "to": "R03",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.05",
+      "to": "P01",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "IMG.06",
+      "to": "A01",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.06",
+      "to": "A06",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.06",
+      "to": "R01",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.06",
+      "to": "R02",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.06",
+      "to": "R05",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.06",
+      "to": "P01",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "IMG.06",
+      "to": "P02",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "IMG.07",
+      "to": "A01",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.07",
+      "to": "A05",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.07",
+      "to": "R05",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.07",
+      "to": "R03",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.07",
+      "to": "P02",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "IMG.08",
+      "to": "A05",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.08",
+      "to": "A08",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.08",
+      "to": "A18",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.08",
+      "to": "R03",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.08",
+      "to": "R11",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.08",
+      "to": "P04",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "IMG.09",
+      "to": "A07",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.09",
+      "to": "A17",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.09",
+      "to": "A05",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.09",
+      "to": "R03",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.09",
+      "to": "P04",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "IMG.10",
+      "to": "A02",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.10",
+      "to": "A04",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.10",
+      "to": "A05",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.10",
+      "to": "R03",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.10",
+      "to": "R06",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.10",
+      "to": "P05",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "IMG.11",
+      "to": "A02",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.11",
+      "to": "A06",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.11",
+      "to": "R04",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.11",
+      "to": "R03",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.11",
+      "to": "P05",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "IMG.12",
+      "to": "A17",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.12",
+      "to": "A16",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.12",
+      "to": "R04",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.12",
+      "to": "R03",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.12",
+      "to": "P05",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "IMG.13",
+      "to": "A07",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.13",
+      "to": "A08",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.13",
+      "to": "A17",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "IMG.13",
+      "to": "R03",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "IMG.13",
+      "to": "P04",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "TWIN.01",
+      "to": "A14",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "TWIN.01",
+      "to": "A15",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "TWIN.01",
+      "to": "R04",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "TWIN.01",
+      "to": "P05",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "TWIN.02",
+      "to": "A11",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "TWIN.02",
+      "to": "A14",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "TWIN.02",
+      "to": "R04",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "TWIN.02",
+      "to": "P05",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "TWIN.03",
+      "to": "A11",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "TWIN.03",
+      "to": "A14",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "TWIN.03",
+      "to": "R04",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "TWIN.03",
+      "to": "P05",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "SIM.01",
+      "to": "A11",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.01",
+      "to": "A09",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.01",
+      "to": "A12",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.01",
+      "to": "R10",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "SIM.01",
+      "to": "P05",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "SIM.02",
+      "to": "A11",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.02",
+      "to": "A10",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.02",
+      "to": "A09",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.02",
+      "to": "R10",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "SIM.02",
+      "to": "P05",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "SIM.03",
+      "to": "A12",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.04",
+      "to": "A12",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.04",
+      "to": "A11",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.05",
+      "to": "A11",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.05",
+      "to": "A09",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.05",
+      "to": "A13",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.05",
+      "to": "R10",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "SIM.06",
+      "to": "A13",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.06",
+      "to": "A12",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.07",
+      "to": "A09",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.07",
+      "to": "A15",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.07",
+      "to": "R10",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "SIM.08",
+      "to": "A09",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.08",
+      "to": "A15",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.08",
+      "to": "R10",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "SIM.08",
+      "to": "P05",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "SIM.09",
+      "to": "A11",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.09",
+      "to": "A09",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "SIM.09",
+      "to": "R10",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "AI.01",
+      "to": "A14",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "AI.01",
+      "to": "A12",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "AI.01",
+      "to": "P03",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "AI.02",
+      "to": "A08",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "AI.02",
+      "to": "A14",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "AI.02",
+      "to": "R03",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "AI.02",
+      "to": "P03",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "AI.03",
+      "to": "A12",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "AI.03",
+      "to": "A14",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "AI.03",
+      "to": "P03",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "AI.04",
+      "to": "A14",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "AI.04",
+      "to": "A11",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "AI.04",
+      "to": "P03",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "AI.05",
+      "to": "A11",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "AI.05",
+      "to": "A09",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "AI.05",
+      "to": "A15",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "AI.05",
+      "to": "R10",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "AI.05",
+      "to": "P05",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "AI.06",
+      "to": "A14",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "AI.06",
+      "to": "A12",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "AI.06",
+      "to": "P03",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "EVAL.01",
+      "to": "A01",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "EVAL.01",
+      "to": "A08",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "EVAL.01",
+      "to": "R11",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "EVAL.01",
+      "to": "R05",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "EVAL.01",
+      "to": "P02",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "EVAL.02",
+      "to": "A09",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "EVAL.02",
+      "to": "A10",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "EVAL.02",
+      "to": "A11",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "EVAL.02",
+      "to": "R10",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "EVAL.03",
+      "to": "A15",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "EVAL.03",
+      "to": "A14",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "EVAL.03",
+      "to": "P03",
+      "relation": "CHECK_EVIDENCE"
+    },
+    {
+      "from": "UX.01",
+      "to": "A14",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "UX.01",
+      "to": "A15",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "UX.01",
+      "to": "R04",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "OPS.01",
+      "to": "A05",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "OPS.01",
+      "to": "A14",
+      "relation": "READ_TO_DESIGN"
+    },
+    {
+      "from": "OPS.01",
+      "to": "R02",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "OPS.01",
+      "to": "R05",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "OPS.01",
+      "to": "R01",
+      "relation": "INSPECT_IMPLEMENTATION"
+    },
+    {
+      "from": "OPS.01",
+      "to": "P02",
+      "relation": "CHECK_EVIDENCE"
+    }
+  ],
+  "important_note": "All link mappings are curated research-navigation guidance; inspect actual accessible text and source code to justify design. No copyrighted textbook chapter contents bundled."
+}

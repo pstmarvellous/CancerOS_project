@@ -1,0 +1,193 @@
+{
+  "task": "COS-023",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "quality",
+      "returncode": 0,
+      "output": "\n=== D.IMG Medical imaging ===\n MRI loading, preprocessing, masks, measurements, geometric representations and spatial quality. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS IMG.INGEST DICOM and NIfTI ingestion\n  --> IMPLEMENTS IMG.PRE MRI preprocessing\n  --> IMPLEMENTS IMG.MASK Mask classification and import\n  --> IMPLEMENTS IMG.MODEL Optional automated segmentation\n  --> IMPLEMENTS IMG.VOL Quantitative measurement\n  --> IMPLEMENTS IMG.REG Longitudinal registration\n  --> IMPLEMENTS IMG.TRACK Cross-visit lesion identity\n  --> IMPLEMENTS IMG.MESH Mask-to-mesh conversion\n  --> IMPLEMENTS IMG.SYNMESH Synthetic lesion geometry\n  --> IMPLEMENTS IMG.VIEW Web MRI viewer\n\n=== DATA.SEG SegmentationArtifact ===\n Mask whose semantics, source image, class, quality and provenance are known. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- RELATES_TO DATA.STUDY ImagingStudy\n  --> RELATES_TO DATA.LESION Lesion\n  --> RELATES_TO DATA.MEASURE TumorMeasurement\n\n=== IMG.REG Longitudinal registration ===\n Use rigid/affine as warranted, explicit quality gate; numerical comparisons may survive registration failure. \nSources: IMG,REF\n  <-- IMPLEMENTS D.IMG Medical imaging\n  --> PRECEDES IMG.TRACK Cross-visit lesion identity\n  <-- HAS_STEP WF.REALVAL Actual longitudinal evaluation\n  <-- WORKFLOW_PRECEDES IMG.INGEST DICOM and NIfTI ingestion\n  --> WORKFLOW_PRECEDES IMG.TRACK Cross-visit lesion identity\n  <-- CONSTRAINS GOV.ABSTAIN Disclose unknowns\n\n=== TWIN.STATE Time-indexed state ===\n State binds patient, timestamp, geometry, clinical observations, treatment events, quality, missingness and provenance. \nSources: PRD,IMG,SIM\n  <-- IMPLEMENTS D.TWIN Digital twin\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "quality",
+      "returncode": 0,
+      "output": "\nDAT.03 — Data quality and missingness\nDesign: Do not impute absent labs or tumor labels without explicit derived/synthetic markers\nAcceptance: Missingness and unit validation fixtures\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R07 IDC Index — reproducible dataset collection and download — https://github.com/ImagingDataCommons/idc-index\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n\nIMG.10 — Longitudinal registration\nDesign: Only align real exams if comparable; separate transform quality from volume measurement\nAcceptance: Known transform recovery; overlay disabled on failure\n  READ A02 MIT HST.582J — Lectures 15–16 — Image registration I and II — https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/\n  READ A04 MIT HST.582J — Lab 3 — Post-processing brain MRI images; Lab 4 — Registration of medical images — https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/labs/\n  READ A05 ITK Software Guide — Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition — https://itk.org/ITKSoftwareGuide/html/\n  REPO R03 3D Slicer — reference geometry/segmentation/measurement — https://github.com/Slicer/Slicer\n  REPO R06 SimpleITK — physical-space image processing, registration — https://github.com/SimpleITK/SimpleITK\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n\nEVAL.01 — Segmentation quality reporting\nDesign: Report Dice, surface distance, volume error per real source cohort\nAcceptance: Independent metric tests and cohort boundaries\n  READ A01 MIT HST.582J — Lecture 14 — Introduction to medical image segmentation — https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/\n  READ A08 IBSI Reference Manuals — IBSI 1 reference manual — image preprocessing and biomarker feature definitions; select benchmark in documentation — https://theibsi.github.io/documentation/\n  REPO R11 SlicerRT — segment comparison metrics — https://github.com/SlicerRt/SlicerRT\n  REPO R05 MONAI — image transforms and evaluation — https://github.com/Project-MONAI/MONAI\n  PAPER P02 nnU-Net: self-configuring medical segmentation —  — https://www.nature.com/articles/s41592-020-01008-z\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "quality",
+      "returncode": 0,
+      "output": "\n== DAT.03 Data quality and missingness ==\nIntent: Do not impute absent labs or tumor labels without explicit derived/synthetic markers \nTest: Missingness and unit validation fixtures\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R07 IDC Index | https://github.com/ImagingDataCommons/idc-index \n  Inspect: Inspect IDCClient metadata hierarchy, SQL querying, download manifests \n  Reuse: Adopt maintained package to download authorized selected studies \n  Avoid: Do not bulk-download entire datasets or assume every cohort is in IDC \n  Verify: Download one approved series, SHA-256 and patient/study linkage\n\n== IMG.10 Longitudinal registration ==\nIntent: Only align real exams if comparable; separate transform quality from volume measurement \nTest: Known transform recovery; overlay disabled on failure\n BOOK/LECTURE A02 MIT HST.582J | Lectures 15–16 — Image registration I and II | https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/ | verified section\n BOOK/LECTURE A04 MIT HST.582J | Lab 3 — Post-processing brain MRI images; Lab 4 — Registration of medical images | https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/labs/ | verified lab\n BOOK/LECTURE A05 ITK Software Guide | Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition | https://itk.org/ITKSoftwareGuide/html/ | verified topical volume; exact chapter pending\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R03 3D Slicer | https://github.com/Slicer/Slicer \n  Inspect: Inspect MRML, Segmentations, Segment Editor, transformations, model/segment statistics \n  Reuse: Use as independent geometry reference; leverage VTK/SimpleITK libraries \n  Avoid: Do not transplant desktop application to web \n  Verify: Compare exported mesh dimensions and mask-derived volume\n REPOSITORY R06 SimpleITK | https://github.com/SimpleITK/SimpleITK \n  Inspect: Inspect ImageRegistrationMethod, Resample, direction/origin/spacing and examples \n  Reuse: Adopt supported registration/resampling and save transforms \n  Avoid: Do not assume registration always valid or comparability equal overlay \n  Verify: Known rigid transform, LPS/RAS roundtrip, failure QC\n REPOSITORY R13 Cornerstone3D | https://github.com/cornerstonejs/cornerstone3D \n  Inspect: Inspect packages/tools, viewport, segmentation loaders and examples \n  Reuse: Evaluate direct library integration rather than all of OHIF \n  Avoid: Do not recode entire DICOM viewport layer \n  Verify: Render known DICOM and overlay matched segmentation\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n\n== EVAL.01 Segmentation quality reporting ==\nIntent: Report Dice, surface distance, volume error per real source cohort \nTest: Independent metric tests and cohort boundaries\n BOOK/LECTURE A01 MIT HST.582J | Lecture 14 — Introduction to medical image segmentation | https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/ | verified section\n BOOK/LECTURE A08 IBSI Reference Manuals | IBSI 1 reference manual — image preprocessing and biomarker feature definitions; select benchmark in documentation | https://theibsi.github.io/documentation/ | reference manual verified\n PAPER P02 nnU-Net: self-configuring medical segmentation | https://www.nature.com/articles/s41592-020-01008-z\n REPOSITORY R11 SlicerRT | https://github.com/SlicerRt/SlicerRT \n  Inspect: Inspect segment comparison and volume/morphology workflow \n  Reuse: Study measurement comparison implementation \n  Avoid: Do not add radiotherapy treatment planner \n  Verify: Dice and physical distance checks against reference\n REPOSITORY R05 MONAI | https://github.com/Project-MONAI/MONAI \n  Inspect: Inspect transforms, MetaTensor/affine behavior, data readers, metrics and tutorials \n  Reuse: Adopt supported transformations and segmentation metrics \n  Avoid: Do not use unrelated organ models as breast segmentation \n  Verify: Image-mask transforms, invertibility, geometry unit tests\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "completeness",
+      "returncode": 0,
+      "output": "\n=== UX.CASE Research case browser ===\n Pseudonymous case listing, source metadata, completeness and access. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "completeness",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "completeness",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "D.IMG",
+    "DATA.SEG",
+    "IMG.REG",
+    "TWIN.STATE",
+    "UX.CASE"
+  ],
+  "academic_behavior_ids": [
+    "DAT.03",
+    "IMG.10",
+    "EVAL.01"
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.IMG"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SEG"
+    },
+    {
+      "from_id": "DATA.STUDY",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.SEG"
+    },
+    {
+      "from_id": "DATA.SEG",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.LESION"
+    },
+    {
+      "from_id": "DATA.SEG",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.MEASURE"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MODEL"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.VIEW"
+    },
+    {
+      "from_id": "IMG.REG",
+      "relation": "PRECEDES",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.CASE"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "IMG.REG",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "GOV.ABSTAIN",
+      "relation": "CONSTRAINS",
+      "to_id": "IMG.REG"
+    }
+  ],
+  "mapped_source_ids": [
+    "A01",
+    "A02",
+    "A04",
+    "A05",
+    "A08",
+    "A11",
+    "A14",
+    "P02",
+    "P05",
+    "R03",
+    "R05",
+    "R06",
+    "R07",
+    "R11"
+  ],
+  "source_sections_inspected": "SPEC-003 sections 9/11, SPEC-008 sections 14/15/18/20, SPEC-010 SAFE-12/14/15, SPEC-011 data quality/evaluation"
+}

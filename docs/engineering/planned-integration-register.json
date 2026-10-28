@@ -1,0 +1,41 @@
+{
+  "schema_version": "1",
+  "scope": "Future domain enablement; no upstream reproduction claimed",
+  "entries": [
+    {
+      "repository": "MAMA-MIA",
+      "decision": "planned_reference",
+      "version": null,
+      "reproduction": "not_run",
+      "enablement": "Authorized masks/checkpoint/geometry gates required"
+    },
+    {
+      "repository": "nnU-Net",
+      "decision": "planned_reference",
+      "version": null,
+      "reproduction": "not_run",
+      "enablement": "No GPU or weights installed in Phase1"
+    },
+    {
+      "repository": "3D Slicer",
+      "decision": "planned_independent_geometry_reference",
+      "version": null,
+      "reproduction": "not_run",
+      "enablement": "Real mask/source review future"
+    },
+    {
+      "repository": "OHIF/Cornerstone3D",
+      "decision": "future_bounded_comparison",
+      "version": null,
+      "reproduction": "not_run",
+      "enablement": "See ADR-002; no viewer SDK installed"
+    },
+    {
+      "repository": "MONAI/Deploy",
+      "decision": "pattern_reference_only",
+      "version": null,
+      "reproduction": "not_run",
+      "enablement": "No medical pipeline inferred from digest worker"
+    }
+  ]
+}

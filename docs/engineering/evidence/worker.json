@@ -1,0 +1,40 @@
+{
+  "recorded_at": "2026-10-27T18:46:16.641452+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "python": "3.12.14",
+  "scope": "worker engineering foundation only",
+  "input_hash": "776ae6d5d3a5bd2a949ba2336e6d7c1f487a6f2c695301e8e63b8d1ea601560a",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "scripts/migrate_test.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS disposable PostgreSQL migrations and repeated upgrade; no reset/drop performed\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests/test_jobs.py",
+        "--tb=line"
+      ],
+      "exit_code": 0,
+      "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.12.14, pytest-9.1.1, pluggy-1.7.0\nrootdir: C:\\Users\\HomePC\\Desktop\\cancerOs_project\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollected 3 items\n\ntests\\test_jobs.py ...                                                   [100%]\n\n============================== 3 passed in 8.06s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "scripts/worker_smoke.py"
+      ],
+      "exit_code": 0,
+      "stdout": "Engineering-only worker: processed 1 transport entries; SQL records authoritative status\nPASS separate worker process, configured queue, durable SQL result, private byte artifact; ready is not published\n",
+      "stderr": ""
+    }
+  ],
+  "result": "passed"
+}

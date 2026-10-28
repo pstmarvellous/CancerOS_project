@@ -1,0 +1,37 @@
+{
+  "name": "canceros",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/web",
+    "packages/contracts"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @canceros/web",
+    "build": "npm run build --workspace @canceros/web",
+    "start": "npm run start --workspace @canceros/web",
+    "lint": "eslint apps/web packages/contracts/index.ts",
+    "typecheck": "tsc --noEmit -p apps/web/tsconfig.json",
+    "test": "vitest run",
+    "contracts:generate": "uv run python scripts/generate_contracts.py && npm run contracts:types",
+    "contracts:types": "openapi-typescript packages/contracts/generated/openapi.json -o packages/contracts/generated/api.ts && json2ts -i packages/contracts/generated/foundation.schema.json -o packages/contracts/generated/foundation.ts && json2ts -i packages/contracts/generated/clinical.schema.json -o packages/contracts/generated/clinical.ts",
+    "contracts:check": "uv run python scripts/check_contract_drift.py"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/react": "16.3.3",
+    "@types/node": "26.6.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/three": "0.186.0",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.3",
+    "jsdom": "29.1.1",
+    "json-schema-to-typescript": "16.0.0",
+    "openapi-typescript": "7.13.0",
+    "typescript": "5.9.3",
+    "vitest": "5.0.5"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "task_id": "COS-007",
+  "requirement_ids": [
+    "TASK-COS-007"
+  ],
+  "test_id": "EXAMPLE-NOT-EXECUTED",
+  "command": "example only",
+  "environment": {
+    "platform": "not evaluated"
+  },
+  "input_hash": null,
+  "result": "not_run",
+  "artifact": null,
+  "scope": "Illustrative evidence schema; not a test result",
+  "failures": []
+}

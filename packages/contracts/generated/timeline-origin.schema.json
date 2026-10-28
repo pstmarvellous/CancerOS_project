@@ -1,0 +1,45 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "format": "uuid",
+      "title": "Id",
+      "type": "string"
+    },
+    "patient_id": {
+      "format": "uuid",
+      "title": "Patient Id",
+      "type": "string"
+    },
+    "project_id": {
+      "format": "uuid",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "reference_meaning": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Reference Meaning",
+      "type": "string"
+    },
+    "time_domain": {
+      "enum": [
+        "source_calendar",
+        "source_shifted",
+        "source_relative",
+        "simulation"
+      ],
+      "title": "Time Domain",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "project_id",
+    "patient_id",
+    "reference_meaning",
+    "time_domain"
+  ],
+  "title": "TimelineOrigin",
+  "type": "object"
+}

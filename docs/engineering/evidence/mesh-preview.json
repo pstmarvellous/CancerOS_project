@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-10-28T08:54:36.655402+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "python": "3.12.14",
+  "scope": "mesh-preview engineering verification only; no real-data or qualified review claim",
+  "input_hash": "9b49c00add29ffed2d6fe340e03cdf55d41308524d3576c0ff4ec2bf06b75393",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "scripts/verify_mesh_browser.py"
+      ],
+      "exit_code": 0,
+      "stdout": "\nRunning 1 test using 1 worker\n\n\n\n\n\n[1/1] tests\\browser\\mesh-preview.spec.ts:5:1 \u203a real private synthetic mesh, camera controls and authorization recovery\n  1 passed (5.0s)\n",
+      "stderr": "(node:23892) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:23892) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    }
+  ],
+  "result": "passed"
+}

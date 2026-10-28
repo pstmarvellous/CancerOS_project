@@ -1,0 +1,121 @@
+{
+  "schema_version": "1",
+  "checks": [
+    {
+      "id": "governance",
+      "tasks": [
+        "COS-001",
+        "COS-002",
+        "COS-003",
+        "COS-004",
+        "COS-005",
+        "COS-006",
+        "COS-007",
+        "COS-008"
+      ],
+      "gate": "hard",
+      "acceptance": "scripts/check_foundation_docs.py and scripts/check_governance.py",
+      "result": "passed",
+      "evidence_reference": "docs/engineering/phase-1-verification-report.md"
+    },
+    {
+      "id": "locked_python_backend",
+      "tasks": [
+        "COS-009",
+        "COS-010",
+        "COS-015"
+      ],
+      "gate": "hard",
+      "acceptance": "uv sync --locked; backend import/health/unit/lint/types",
+      "result": "passed",
+      "evidence_reference": "docs/engineering/phase-1-verification-report.md"
+    },
+    {
+      "id": "frontend",
+      "tasks": [
+        "COS-011",
+        "COS-015"
+      ],
+      "gate": "hard",
+      "acceptance": "npm ci; lint/typecheck/test/build; browser smoke",
+      "result": "passed",
+      "evidence_reference": "docs/engineering/phase-1-verification-report.md"
+    },
+    {
+      "id": "postgres",
+      "tasks": [
+        "COS-012",
+        "COS-015"
+      ],
+      "gate": "hard",
+      "acceptance": "Disposable real PostgreSQL migration, ownership, append-only and revision tests",
+      "result": "passed",
+      "evidence_reference": "docs/engineering/phase-1-verification-report.md"
+    },
+    {
+      "id": "private_storage",
+      "tasks": [
+        "COS-012",
+        "COS-015"
+      ],
+      "gate": "hard",
+      "acceptance": "Configured private service write/read/hash and denial",
+      "result": "passed",
+      "evidence_reference": "docs/engineering/phase-1-verification-report.md"
+    },
+    {
+      "id": "worker_transport",
+      "tasks": [
+        "COS-013",
+        "COS-015"
+      ],
+      "gate": "hard",
+      "acceptance": "Configured queue, persisted harmless job, restart",
+      "result": "passed",
+      "evidence_reference": "docs/engineering/phase-1-verification-report.md"
+    },
+    {
+      "id": "settings_auth",
+      "tasks": [
+        "COS-014",
+        "COS-015"
+      ],
+      "gate": "hard",
+      "acceptance": "Fail closed, role/project denials, safe errors and export denial",
+      "result": "passed",
+      "evidence_reference": "docs/engineering/phase-1-verification-report.md"
+    },
+    {
+      "id": "contracts_maps",
+      "tasks": [
+        "COS-009",
+        "COS-010",
+        "COS-015"
+      ],
+      "gate": "hard",
+      "acceptance": "Regeneration drift and original map query checks",
+      "result": "passed",
+      "evidence_reference": "docs/engineering/phase-1-verification-report.md"
+    },
+    {
+      "id": "real_science",
+      "tasks": [
+        "future-domain"
+      ],
+      "gate": "future_phase",
+      "acceptance": "SPEC-011 geometry/simulation/LLM/real longitudinal suites",
+      "result": "future_phase",
+      "evidence_reference": null
+    },
+    {
+      "id": "remote_provider",
+      "tasks": [
+        "COS-014"
+      ],
+      "gate": "conditional",
+      "acceptance": "No API entitlement/permission assumed",
+      "result": "not_run",
+      "evidence_reference": null
+    }
+  ]
+}

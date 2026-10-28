@@ -1,0 +1,41 @@
+{
+  "result": "passed",
+  "scope": "Phase1 foundation only; no clinical/P0 demonstration validation",
+  "date": "2026-10-27",
+  "python_tests_passed": 44,
+  "frontend_component_tests_passed": 10,
+  "browser_viewports": [
+    "1280x900",
+    "390x844"
+  ],
+  "browser_version": "155.0.8059.86",
+  "remote_ci": "not_run_no_remote_host_or_Docker_runtime_configured",
+  "versions": {
+    "fastapi": "0.162.0",
+    "pydantic": "2.14.1",
+    "sqlalchemy": "2.1.6",
+    "alembic": "1.20.1",
+    "psycopg": "3.3.6",
+    "boto3": "1.43.119",
+    "redis": "8.1.0",
+    "PyJWT": "2.15.1",
+    "pytest": "9.1.1",
+    "ruff": "0.17.3",
+    "mypy": "2.4.0"
+  },
+  "node": "22.14.0",
+  "uv": "0.12.5",
+  "postgresql": "15.4",
+  "seaweedfs": "4.51",
+  "redis_windows": "8.10.3",
+  "git_commit": null,
+  "limitations": [
+    "Formal baseline adoption not separately evidenced",
+    "Manual normative table/paragraph extraction gaps remain in traceability coverage",
+    "D01-D06 unverified",
+    "Full C01/C04/C06 domain implementation future",
+    "Real issuer/client enrollment and restricted production SQL roles future",
+    "ESLint9 compatibility pin and Starlette httpx deprecation warning",
+    "No real MRI processing/scenarios/Meta agent/model accuracy claims"
+  ]
+}

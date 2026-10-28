@@ -1,0 +1,37 @@
+[
+  {
+    "id": "P01",
+    "type": "paper_or_dataset",
+    "title": "MAMA-MIA multicenter DCE MRI tumor segmentation research",
+    "url": "https://github.com/LidiaGarrucho/MAMA-MIA",
+    "note": "verify actual paper and dataset version before citation"
+  },
+  {
+    "id": "P02",
+    "type": "paper_or_dataset",
+    "title": "nnU-Net: self-configuring medical segmentation",
+    "url": "https://www.nature.com/articles/s41592-020-01008-z",
+    "note": "verify domain applicability"
+  },
+  {
+    "id": "P03",
+    "type": "paper_or_dataset",
+    "title": "TRIPOD-LLM reporting guideline",
+    "url": "https://www.nature.com/articles/s41591-024-03425-5",
+    "note": "evaluate transparency and reporting"
+  },
+  {
+    "id": "P04",
+    "type": "paper_or_dataset",
+    "title": "IBSI image biomarker standardisation",
+    "url": "https://theibsi.github.io/documentation/",
+    "note": "reference feature benchmarks"
+  },
+  {
+    "id": "P05",
+    "type": "paper_or_dataset",
+    "title": "Breast MRI clinical trial image collections",
+    "url": "https://www.cancerimagingarchive.net/collection/ispy2/",
+    "note": "confirm patient/timepoint completeness, annotation semantics"
+  }
+]

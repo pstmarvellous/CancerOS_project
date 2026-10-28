@@ -1,0 +1,117 @@
+{
+  "task": "COS-024",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "DATA.PATIENT",
+      "returncode": 0,
+      "output": "\n=== DATA.PATIENT ResearchPatient ===\n Stable pseudonymous internal patient key; mapping to protected source patient key. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  --> RELATES_TO DATA.DIAGNOSIS CancerDiagnosis\n  --> RELATES_TO DATA.VISIT ClinicalVisit\n  --> RELATES_TO DATA.STUDY ImagingStudy\n  --> RELATES_TO DATA.BRANCH SimulationBranch\n  --> RELATES_TO DATA.TREAT TreatmentEvent\n  --> RELATES_TO DATA.OUTCOME OutcomeObservation\n  <-- HAS_STEP WF.REAL Real imaging vertical slice\n  <-- WORKFLOW_PRECEDES DATA.SOURCE Dataset and licensing registry\n  --> WORKFLOW_PRECEDES IMG.INGEST DICOM and NIfTI ingestion\n  <-- CONSTRAINS GOV.PRIV Privacy and access\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "DATA.PATIENT",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "DATA.PATIENT",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "split",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "split",
+      "returncode": 0,
+      "output": "\nDAT.04 — Patient-level split and duplicate detection\nDesign: Keep source patient and synthetic descendants in same evaluation partition\nAcceptance: No split leakage or duplicated derivative patient\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R07 IDC Index — reproducible dataset collection and download — https://github.com/ImagingDataCommons/idc-index\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "split",
+      "returncode": 0,
+      "output": "\n== DAT.04 Patient-level split and duplicate detection ==\nIntent: Keep source patient and synthetic descendants in same evaluation partition \nTest: No split leakage or duplicated derivative patient\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R07 IDC Index | https://github.com/ImagingDataCommons/idc-index \n  Inspect: Inspect IDCClient metadata hierarchy, SQL querying, download manifests \n  Reuse: Adopt maintained package to download authorized selected studies \n  Avoid: Do not bulk-download entire datasets or assume every cohort is in IDC \n  Verify: Download one approved series, SHA-256 and patient/study linkage\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "DATA.PATIENT"
+  ],
+  "academic_behavior_ids": [
+    "DAT.04"
+  ],
+  "edges": [
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.DIAGNOSIS"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.STUDY"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.BRANCH"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.TREAT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.OUTCOME"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "DATA.SOURCE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.PATIENT"
+    }
+  ],
+  "mapped_source_ids": [
+    "A11",
+    "A14",
+    "P05",
+    "R07"
+  ],
+  "source_sections_inspected": "SPEC-003 section 10, SPEC-008 source identity/18, SPEC-010 evaluation controls, SPEC-011 section 2 patient grouping/frozen manifests/D05"
+}

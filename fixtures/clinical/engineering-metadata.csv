@@ -1,0 +1,3 @@
+record_key,kind,concept,relative_day,value,unit,qualifier,missing_reason,original_term
+fixture-hgb,laboratory,hemoglobin,0,125,g/L,,,Artificial HGB - not a patient observation
+fixture-wbc-missing,laboratory,wbc,,,,,not_collected,Artificial missing WBC - no normal value implied

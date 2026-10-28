@@ -1,0 +1,164 @@
+[
+  {
+    "id": "A01",
+    "type": "academic_source",
+    "title": "MIT HST.582J",
+    "reading_locator": "Lecture 14 — Introduction to medical image segmentation",
+    "url": "https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/",
+    "kind": "lecture",
+    "locator_status": "verified section"
+  },
+  {
+    "id": "A02",
+    "type": "academic_source",
+    "title": "MIT HST.582J",
+    "reading_locator": "Lectures 15–16 — Image registration I and II",
+    "url": "https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/",
+    "kind": "lecture",
+    "locator_status": "verified section"
+  },
+  {
+    "id": "A03",
+    "type": "academic_source",
+    "title": "MIT HST.582J",
+    "reading_locator": "Lecture 17 — Medical image modalities; Lectures 9,12 image processing",
+    "url": "https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/",
+    "kind": "lecture",
+    "locator_status": "verified section"
+  },
+  {
+    "id": "A04",
+    "type": "academic_source",
+    "title": "MIT HST.582J",
+    "reading_locator": "Lab 3 — Post-processing brain MRI images; Lab 4 — Registration of medical images",
+    "url": "https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/labs/",
+    "kind": "lecture-lab",
+    "locator_status": "verified lab"
+  },
+  {
+    "id": "A05",
+    "type": "academic_source",
+    "title": "ITK Software Guide",
+    "reading_locator": "Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition",
+    "url": "https://itk.org/ITKSoftwareGuide/html/",
+    "kind": "technical-textbook",
+    "locator_status": "verified topical volume; exact chapter pending"
+  },
+  {
+    "id": "A06",
+    "type": "academic_source",
+    "title": "Guide to Medical Image Analysis — Klaus D. Toennies",
+    "reading_locator": "Segmentation, registration, shape analysis, validation; inspect edition table of contents for exact chapter",
+    "url": "https://link.springer.com/book/10.1007/978-1-4471-7320-5",
+    "kind": "textbook",
+    "locator_status": "topic verified; precise chapter pending"
+  },
+  {
+    "id": "A07",
+    "type": "academic_source",
+    "title": "Insight into Images — Terry S. Yoo (ed.)",
+    "reading_locator": "Isosurfaces, medical segmentation, deformable models, registration; inspect chapter headings in accessible edition",
+    "url": "https://www.routledge.com/Insight-into-Images/Yooah2/p/book/9781568812175",
+    "kind": "textbook",
+    "locator_status": "topic indicated; precise chapter pending"
+  },
+  {
+    "id": "A08",
+    "type": "academic_source",
+    "title": "IBSI Reference Manuals",
+    "reading_locator": "IBSI 1 reference manual — image preprocessing and biomarker feature definitions; select benchmark in documentation",
+    "url": "https://theibsi.github.io/documentation/",
+    "kind": "technical-standard",
+    "locator_status": "reference manual verified"
+  },
+  {
+    "id": "A09",
+    "type": "academic_source",
+    "title": "Stan User’s Guide",
+    "reading_locator": "Posterior and Prior Predictive Checks",
+    "url": "https://mc-stan.org/docs/stan-users-guide/ppcs.html",
+    "kind": "technical-textbook",
+    "locator_status": "verified section"
+  },
+  {
+    "id": "A10",
+    "type": "academic_source",
+    "title": "Stan User’s Guide",
+    "reading_locator": "Hierarchical models and mixed replication; navigate from current official guide",
+    "url": "https://mc-stan.org/docs/stan-users-guide/",
+    "kind": "technical-textbook",
+    "locator_status": "topical location; subsection pending"
+  },
+  {
+    "id": "A11",
+    "type": "academic_source",
+    "title": "Longitudinal Data Analysis — Wiley",
+    "reading_locator": "Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles",
+    "url": "https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486",
+    "kind": "textbook",
+    "locator_status": "precise chapter pending"
+  },
+  {
+    "id": "A12",
+    "type": "academic_source",
+    "title": "NCI Breast Cancer Treatment PDQ",
+    "reading_locator": "Stage-specific treatment, receptor status and neoadjuvant therapy sections",
+    "url": "https://www.cancer.gov/types/breast/hp/breast-treatment-pdq",
+    "kind": "clinical-reference",
+    "locator_status": "verified document; topic-specific revision required"
+  },
+  {
+    "id": "A13",
+    "type": "academic_source",
+    "title": "NCI CTCAE version 6.0",
+    "reading_locator": "Adverse-event definitions, laboratory abnormalities and grading criteria",
+    "url": "https://dctd.cancer.gov/research/ctep-trials/for-sites/adverse-events/ctcae-v6.pdf",
+    "kind": "clinical-standard",
+    "locator_status": "verified edition"
+  },
+  {
+    "id": "A14",
+    "type": "academic_source",
+    "title": "TRIPOD-LLM",
+    "reading_locator": "Model/data/evaluation reporting checklist; consult full checklist and elaboration",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/",
+    "kind": "reporting-guideline",
+    "locator_status": "verified publication"
+  },
+  {
+    "id": "A15",
+    "type": "academic_source",
+    "title": "FDA Computational Model Credibility Guidance",
+    "reading_locator": "Context of use; model verification, validation and credibility assessment",
+    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions",
+    "kind": "guidance",
+    "locator_status": "applicability limited to intended guidance scope"
+  },
+  {
+    "id": "A16",
+    "type": "academic_source",
+    "title": "DICOM Standard",
+    "reading_locator": "Image spatial geometry, DICOM SEG and referenced source images; locate exact part/modules for version",
+    "url": "https://www.dicomstandard.org/current",
+    "kind": "technical-standard",
+    "locator_status": "standard verified; section number pending"
+  },
+  {
+    "id": "A17",
+    "type": "academic_source",
+    "title": "MIT Computer Graphics OpenCourseWare",
+    "reading_locator": "Transforms and 3D geometry; select exact lecture in course notes",
+    "url": "https://ocw.mit.edu/courses/6-837-computer-graphics-fall-2012/pages/lecture-notes/",
+    "kind": "lecture",
+    "locator_status": "exact lecture pending"
+  },
+  {
+    "id": "A18",
+    "type": "academic_source",
+    "title": "RECIST 1.1",
+    "reading_locator": "Definitions of tumor measurement and formal response categories",
+    "url": "https://recist.eortc.org/recist-1-1/",
+    "kind": "clinical-standard",
+    "locator_status": "verified topical reference"
+  }
+]

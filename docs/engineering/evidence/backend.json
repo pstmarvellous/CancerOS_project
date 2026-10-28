@@ -1,0 +1,84 @@
+{
+  "recorded_at": "2026-10-28T14:11:14.545595+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "python": "3.12.14",
+  "scope": "backend engineering verification only; no real-data or qualified review claim",
+  "input_hash": "9b49c00add29ffed2d6fe340e03cdf55d41308524d3576c0ff4ec2bf06b75393",
+  "checks": [
+    {
+      "command": [
+        "uv",
+        "sync",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Resolved 67 packages in 2ms\nChecked 67 packages in 7ms\n"
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "-m",
+        "ruff",
+        "check",
+        "src",
+        "tests",
+        "scripts",
+        "workers",
+        "migrations"
+      ],
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "src",
+        "tests",
+        "scripts",
+        "workers",
+        "migrations"
+      ],
+      "exit_code": 0,
+      "stdout": "166 files already formatted\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "-m",
+        "mypy"
+      ],
+      "exit_code": 0,
+      "stdout": "Success: no issues found in 54 source files\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "--tb=line"
+      ],
+      "exit_code": 0,
+      "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.12.14, pytest-9.1.1, pluggy-1.7.0\nrootdir: C:\\Users\\HomePC\\Desktop\\cancerOs_project\nconfigfile: pyproject.toml\ntestpaths: tests\nplugins: anyio-4.15.1\ncollected 383 items\n\ntests\\test_alignment_runs.py .....                                       [  1%]\ntests\\test_annotation_contracts.py ................                      [  5%]\ntests\\test_annotation_import.py .....                                    [  6%]\ntests\\test_api.py ...                                                    [  7%]\ntests\\test_clinical_contracts.py .........                               [  9%]\ntests\\test_clinical_ingestion.py ......                                  [ 11%]\ntests\\test_clinical_validation.py .........                              [ 13%]\ntests\\test_contracts.py ...............                                  [ 17%]\ntests\\test_evaluation_splits.py .....                                    [ 19%]\ntests\\test_identity_db.py .                                              [ 19%]\ntests\\test_identity_export.py ...............                            [ 23%]\ntests\\test_imaging_formats.py ..............................             [ 31%]\ntests\\test_imaging_geometry.py ...........................               [ 38%]\ntests\\test_imaging_ingestion.py .......                                  [ 39%]\ntests\\test_imaging_jobs.py ........                                      [ 42%]\ntests\\test_imaging_jobs_http.py .                                        [ 42%]\ntests\\test_imaging_preprocessing.py ................                     [ 46%]\ntests\\test_imaging_storage.py ....                                       [ 47%]\ntests\\test_imaging_volumes.py ..                                         [ 48%]\ntests\\test_imaging_worker_cli.py ..                                      [ 48%]\ntests\\test_jobs.py ...                                                   [ 49%]\ntests\\test_lesion_tracking.py ....                                       [ 50%]\ntests\\test_lineage.py ....                                               [ 51%]\ntests\\test_mask_alignment.py ................                            [ 55%]\ntests\\test_measurement_runs.py ...                                       [ 56%]\ntests\\test_mesh_quality.py ......                                        [ 57%]\ntests\\test_mesh_quality_runs.py ..                                       [ 58%]\ntests\\test_mesh_reconstruction.py .......                                [ 60%]\ntests\\test_mesh_runs.py ..                                               [ 60%]\ntests\\test_metadata_adapters.py ........                                 [ 62%]\ntests\\test_patient_linkage.py .......                                    [ 64%]\ntests\\test_persistence.py ....                                           [ 65%]\ntests\\test_physical_measurements.py ......                               [ 67%]\ntests\\test_preprocessing_runs.py ..                                      [ 67%]\ntests\\test_quality.py ..                                                 [ 68%]\ntests\\test_registration_runs.py ..                                       [ 68%]\ntests\\test_rigid_registration.py ...................                     [ 73%]\ntests\\test_segmentation_qc.py ....................                       [ 79%]\ntests\\test_segmentation_reviews.py ...                                   [ 79%]\ntests\\test_settings.py ..                                                [ 80%]\ntests\\test_source_registry.py ..........                                 [ 83%]\ntests\\test_state_jobs.py .                                               [ 83%]\ntests\\test_storage.py .                                                  [ 83%]\ntests\\test_synthetic_geometry.py ..                                      [ 84%]\ntests\\test_synthetic_shape.py .............................              [ 91%]\ntests\\test_temporal_measurements.py ...........................          [ 98%]\ntests\\test_twin_states.py .....                                          [100%]\n\n============================== warnings summary ===============================\n.venv\\Lib\\site-packages\\fastapi\\testclient.py:1\n  C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Lib\\site-packages\\fastapi\\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n================= 383 passed, 1 warning in 211.09s (0:03:31) ==================\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "scripts/generate_contracts.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS canonical generation check; only implemented runtime routes exposed\n",
+      "stderr": ""
+    }
+  ],
+  "result": "passed"
+}

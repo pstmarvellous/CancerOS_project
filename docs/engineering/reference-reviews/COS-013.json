@@ -1,0 +1,111 @@
+{
+  "task": "COS-013",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "worker",
+      "returncode": 0,
+      "output": "\n=== D.INFRA Platform infrastructure ===\n Backend API, persistence, object storage, workers, jobs, deployment and security. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS INF.API Backend API contracts\n  --> IMPLEMENTS INF.DB Clinical database\n  --> IMPLEMENTS INF.OBJECT Imaging/object storage\n  --> IMPLEMENTS INF.JOBS Async imaging jobs\n  --> IMPLEMENTS INF.DEPLOY Deployment\n  --> IMPLEMENTS INF.CI Continuous verification\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "worker",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "worker",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "resource",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "resource",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "resource",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "pipeline",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "pipeline",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "pipeline",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "D.INFRA"
+  ],
+  "academic_behavior_ids": [],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.INFRA"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.API"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.DB"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.OBJECT"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.JOBS"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.CI"
+    }
+  ],
+  "mapped_source_ids": [],
+  "source_sections_inspected": "SPEC-007 local CPU worker architecture; SPEC-008 jobs/outbox sections9/14/16; audit D06; ADR-003"
+}

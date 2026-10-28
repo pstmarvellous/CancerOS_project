@@ -1,0 +1,3186 @@
+{
+  "metadata": {
+    "title": "CancerOS Engineering Knowledge Map",
+    "version": "1.0",
+    "created": "2026-10-25",
+    "authority": "Navigation and derived synthesis, not a replacement for twelve signed-off specifications",
+    "scope": "Hackathon breast cancer research digital twin",
+    "evidence_state": "Synthesized from prior CancerOS design discussions and draft specifications. GitHub references are investigation candidates, not verified integrations.",
+    "sources": {
+      "PRD": "COS-PRD-001",
+      "DATA": "COS-SPEC-003",
+      "SIM": "COS-SPEC-004",
+      "IMG": "COS-SPEC-005",
+      "AI": "COS-SPEC-006",
+      "REF": "COS-REF-001",
+      "ARCH": "COS-SPEC-007",
+      "API": "COS-SPEC-008",
+      "UX": "COS-SPEC-009",
+      "SAF": "COS-SPEC-010",
+      "TEST": "COS-SPEC-011",
+      "ROAD": "COS-SPEC-012"
+    },
+    "provenance_states": [
+      "REAL_OBSERVED",
+      "REAL_DERIVED",
+      "SYNTHETIC_GENERATED",
+      "INTERPOLATED",
+      "MODEL_PREDICTED"
+    ],
+    "design_status_vocabulary": [
+      "specified",
+      "proposed",
+      "verified",
+      "implemented",
+      "tested",
+      "deferred"
+    ],
+    "rules_of_use": [
+      "Retrieve domain nodes, related edges and invariants before every task.",
+      "Resolve conflicts against authoritative numbered specification, not this derivative map.",
+      "Never equate synthetic trajectory with validated clinical prognosis.",
+      "Require acceptance-test evidence before marking implementation tested.",
+      "Update map nodes when approved decisions change, with change log."
+    ]
+  },
+  "nodes": [
+    {
+      "id": "ROOT",
+      "title": "CancerOS breast cancer digital twin",
+      "type": "product",
+      "description": "Research-only, time-indexed, provenance-aware breast cancer imaging, simulation and interpretation prototype. NOT validated clinical decision support.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD"
+      ],
+      "acceptance": [
+        "Real MRI baseline to 3D lesion to dated simulated trajectory to evidence-linked interpretation works end-to-end"
+      ],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "D.DATA",
+      "title": "Clinical research data",
+      "type": "domain",
+      "description": "Authentic patient, imaging and clinical evidence, normalized but source-preserving.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "ARCH"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "D.IMG",
+      "title": "Medical imaging",
+      "type": "domain",
+      "description": "MRI loading, preprocessing, masks, measurements, geometric representations and spatial quality.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "ARCH"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "D.TWIN",
+      "title": "Digital twin",
+      "type": "domain",
+      "description": "Patient-specific observation states, meshes, timelines and branch isolation.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "ARCH"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "D.SIM",
+      "title": "Synthetic longitudinal engine",
+      "type": "domain",
+      "description": "Five hypothetical trajectories with treatment events, clinical values and uncertainty.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "ARCH"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "D.AI",
+      "title": "Multimodal intelligence",
+      "type": "domain",
+      "description": "Deterministic analysis, constrained NLP, retrieval and validated narrative interpretation.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "ARCH"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "D.UX",
+      "title": "Researcher experience",
+      "type": "domain",
+      "description": "Case browser, image views, 3D tumor, timeline, scenario and AI evidence panels.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "ARCH"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "D.EVAL",
+      "title": "Scientific evaluation",
+      "type": "domain",
+      "description": "Technical correctness and honest real-data evaluation separate from simulation tests.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "ARCH"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "D.INFRA",
+      "title": "Platform infrastructure",
+      "type": "domain",
+      "description": "Backend API, persistence, object storage, workers, jobs, deployment and security.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "ARCH"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "D.GOV",
+      "title": "Safety and provenance",
+      "type": "domain",
+      "description": "Licensing, patient de-identification, traceable origin, abstention and research-only boundary.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "ARCH"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.SOURCE",
+      "title": "Dataset and licensing registry",
+      "type": "entity",
+      "description": "Source identifier, version, DOI, license, acquisition date, restriction, attribution, approval.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.PATIENT",
+      "title": "ResearchPatient",
+      "type": "entity",
+      "description": "Stable pseudonymous internal patient key; mapping to protected source patient key.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.DIAGNOSIS",
+      "title": "CancerDiagnosis",
+      "type": "entity",
+      "description": "Verified subtype, stage, grade, ER/PR/HER2 and breast side; unknown stays unknown.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.VISIT",
+      "title": "ClinicalVisit",
+      "type": "entity",
+      "description": "Clinical encounter with timestamp and links to observations; do not conflate visit and scan.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.STUDY",
+      "title": "ImagingStudy",
+      "type": "entity",
+      "description": "Study with modality, source UID, scan date and acquisition context.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.SERIES",
+      "title": "ImagingSeries",
+      "type": "entity",
+      "description": "Acquisition/contrast phase with orientation, spacing, origin and physical coordinate transform.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.SEG",
+      "title": "SegmentationArtifact",
+      "type": "entity",
+      "description": "Mask whose semantics, source image, class, quality and provenance are known.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.LESION",
+      "title": "Lesion",
+      "type": "entity",
+      "description": "Persistent lesion identity with verified or reviewed cross-visit correspondence.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.MEASURE",
+      "title": "TumorMeasurement",
+      "type": "entity",
+      "description": "Method-defined longest diameter/volume and unit; volume distinct from RECIST diameter.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.LABS",
+      "title": "LaboratoryResult",
+      "type": "entity",
+      "description": "Collection time, analyte code, value, unit, source and reference metadata.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.VITAL",
+      "title": "VitalSign",
+      "type": "entity",
+      "description": "Date, physiologic value, unit and provenance.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.SYMPTOM",
+      "title": "SymptomObservation",
+      "type": "entity",
+      "description": "Structured symptom with explicit severity scale, negation and date.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.TREAT",
+      "title": "TreatmentEvent",
+      "type": "entity",
+      "description": "Time-indexed exposure category, known status, regimen/setting where available.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.NOTE",
+      "title": "ClinicalNote",
+      "type": "entity",
+      "description": "Source text or synthetic note with context, negation and evidence spans.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.OUTCOME",
+      "title": "OutcomeObservation",
+      "type": "entity",
+      "description": "Recorded real endpoint or synthetic state; pCR distinct from MRI response.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.PROV",
+      "title": "ProvenanceRecord",
+      "type": "entity",
+      "description": "Real observed, real derived, synthetic generated, interpolated or model predicted with parent, version and hash.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.BRANCH",
+      "title": "SimulationBranch",
+      "type": "entity",
+      "description": "Immutable hypothesis path originating from real baseline; never overwrites actual history.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.RUN",
+      "title": "SimulationRun",
+      "type": "entity",
+      "description": "Versioned generator settings, seed, status, logs and validator outcomes.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "DATA.ARTIFACT",
+      "title": "Artifact",
+      "type": "entity",
+      "description": "Source DICOM, NIfTI, mask, mesh or report with checksum, access control and transformations.",
+      "priority": "P0",
+      "source_documents": [
+        "DATA",
+        "API"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "IMG.INGEST",
+      "title": "DICOM and NIfTI ingestion",
+      "type": "capability",
+      "description": "Validate study, series, sequence, privacy, slice sorting, pixel geometry and checksums.",
+      "priority": "P0",
+      "source_documents": [
+        "IMG",
+        "REF"
+      ],
+      "acceptance": [
+        "Valid real breast MRI imports with source metadata"
+      ],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "IMG.PRE",
+      "title": "MRI preprocessing",
+      "type": "capability",
+      "description": "Resampling, orientation standardization, intensity normalization, crop and transforms are versioned.",
+      "priority": "P0",
+      "source_documents": [
+        "IMG",
+        "REF"
+      ],
+      "acceptance": [
+        "Image-mask physical geometry survives processing"
+      ],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "IMG.MASK",
+      "title": "Mask classification and import",
+      "type": "capability",
+      "description": "Expert segmentation versus analysis ROI versus bounding box; masks must represent claimed structure.",
+      "priority": "P0",
+      "source_documents": [
+        "IMG",
+        "REF"
+      ],
+      "acceptance": [
+        "Mask class and source documented"
+      ],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "IMG.MODEL",
+      "title": "Optional automated segmentation",
+      "type": "capability",
+      "description": "Use validated masks first; nnU-Net/MAMA-MIA only when weights, domain and outputs verified.",
+      "priority": "P1",
+      "source_documents": [
+        "IMG",
+        "REF"
+      ],
+      "acceptance": [
+        "Independent held-out mask evaluation if deployed"
+      ],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "IMG.VOL",
+      "title": "Quantitative measurement",
+      "type": "capability",
+      "description": "Compute mask volume using physical voxel geometry; derive only supported dimensions.",
+      "priority": "P0",
+      "source_documents": [
+        "IMG",
+        "REF"
+      ],
+      "acceptance": [
+        "Known phantom physical volume reproduced"
+      ],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "IMG.REG",
+      "title": "Longitudinal registration",
+      "type": "capability",
+      "description": "Use rigid/affine as warranted, explicit quality gate; numerical comparisons may survive registration failure.",
+      "priority": "P0",
+      "source_documents": [
+        "IMG",
+        "REF"
+      ],
+      "acceptance": [
+        "Bad registration disables spatial overlay"
+      ],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "IMG.TRACK",
+      "title": "Cross-visit lesion identity",
+      "type": "capability",
+      "description": "Curated or verified lesion association across genuine studies, never inferred from proximity alone.",
+      "priority": "P0",
+      "source_documents": [
+        "IMG",
+        "REF"
+      ],
+      "acceptance": [
+        "Correct lesion mapping through visits"
+      ],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "IMG.MESH",
+      "title": "Mask-to-mesh conversion",
+      "type": "capability",
+      "description": "Marching cubes or tested equivalent; apply physical transform and preserve mask-authoritative measurements.",
+      "priority": "P0",
+      "source_documents": [
+        "IMG",
+        "REF"
+      ],
+      "acceptance": [
+        "Mesh dimensions agree with physical mask"
+      ],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "IMG.SYNMESH",
+      "title": "Synthetic lesion geometry",
+      "type": "capability",
+      "description": "Transform baseline mask to target volume with validated geometry, label synthetic; no fabricated follow-up MRI.",
+      "priority": "P0",
+      "source_documents": [
+        "IMG",
+        "REF"
+      ],
+      "acceptance": [
+        "Synthetic target volume achieved within configured tolerance"
+      ],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "IMG.VIEW",
+      "title": "Web MRI viewer",
+      "type": "capability",
+      "description": "OHIF/Cornerstone3D integration or tested alternative for authentic MRI and overlays.",
+      "priority": "P0",
+      "source_documents": [
+        "IMG",
+        "REF"
+      ],
+      "acceptance": [
+        "Browser shows correct MRI/mask alignment"
+      ],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "TWIN.BASELINE",
+      "title": "Immutable real baseline",
+      "type": "capability",
+      "description": "The source patient and measurements remain authentic, and untouched by any simulated branch.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "IMG",
+        "SIM"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "TWIN.STATE",
+      "title": "Time-indexed state",
+      "type": "capability",
+      "description": "State binds patient, timestamp, geometry, clinical observations, treatment events, quality, missingness and provenance.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "IMG",
+        "SIM"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "TWIN.HISTORY",
+      "title": "Append-only historical updates",
+      "type": "capability",
+      "description": "Adding new observation creates new data/version, triggers selective downstream reanalysis.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "IMG",
+        "SIM"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "TWIN.BRANCH",
+      "title": "Scenario branch isolation",
+      "type": "capability",
+      "description": "All branches share source baseline but maintain isolated descendant records.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "IMG",
+        "SIM"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "TWIN.TIME",
+      "title": "Timeline alignment",
+      "type": "capability",
+      "description": "Different scan, lab, symptoms and intervention dates are retained even in a selected visit summary.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "IMG",
+        "SIM"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "TWIN.COMPARE",
+      "title": "Change analysis",
+      "type": "capability",
+      "description": "Compare appropriate lesion and clinical values with units, comparability and uncertainty.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "IMG",
+        "SIM"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "TWIN.REAL",
+      "title": "Genuine longitudinal viewing",
+      "type": "capability",
+      "description": "At least one real repeated-imaging case, kept separate from hypothetical trajectories.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "IMG",
+        "SIM"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "SIM.ELIG",
+      "title": "Treatment and scenario eligibility",
+      "type": "capability",
+      "description": "Known receptor status, setting and assumptions gate plausible exposures; unknown cannot silently pass.",
+      "priority": "P0",
+      "source_documents": [
+        "SIM",
+        "DATA"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "SIM.RESPONSE",
+      "title": "Family 1: strong response",
+      "type": "capability",
+      "description": "Hypothetical sustained tumor shrinkage, independent adverse effects.",
+      "priority": "P0",
+      "source_documents": [
+        "SIM",
+        "DATA"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "SIM.STABLE",
+      "title": "Family 2: partial/stable",
+      "type": "capability",
+      "description": "Hypothetical small reduction or near stability, measurement noise separate.",
+      "priority": "P0",
+      "source_documents": [
+        "SIM",
+        "DATA"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "SIM.PROGRESS",
+      "title": "Family 3: progression",
+      "type": "capability",
+      "description": "Hypothetical increasing burden; not automatically confirmed resistance.",
+      "priority": "P0",
+      "source_documents": [
+        "SIM",
+        "DATA"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "SIM.REGROW",
+      "title": "Family 4: response then regrowth",
+      "type": "capability",
+      "description": "Hypothetical reduction followed by growth, preserve intermediate inflection.",
+      "priority": "P0",
+      "source_documents": [
+        "SIM",
+        "DATA"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "SIM.TOXIC",
+      "title": "Family 5: clinical deterioration",
+      "type": "capability",
+      "description": "Potential worsening labs/symptoms independent of tumor burden, not proven drug causality.",
+      "priority": "P0",
+      "source_documents": [
+        "SIM",
+        "DATA"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "SIM.EXPOSURE",
+      "title": "Treatment exposures",
+      "type": "capability",
+      "description": "Chemo, endocrine, HER2 targeted, selected immunotherapy, surgery/radiotherapy as time-indexed events.",
+      "priority": "P0",
+      "source_documents": [
+        "SIM",
+        "DATA"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "SIM.LATENT",
+      "title": "Latent evolution state",
+      "type": "capability",
+      "description": "Simulated underlying tumor burden and clinical condition separated from noisy measurement generator.",
+      "priority": "P0",
+      "source_documents": [
+        "SIM",
+        "DATA"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "SIM.OBS",
+      "title": "Observation simulation",
+      "type": "capability",
+      "description": "Timestamped labs, vitals, symptoms, imaging geometry, notes, irregular sampling and missingness.",
+      "priority": "P0",
+      "source_documents": [
+        "SIM",
+        "DATA"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "SIM.SEED",
+      "title": "Reproducibility",
+      "type": "capability",
+      "description": "Pinned simulator, parameters, seed, source baseline, configuration hash.",
+      "priority": "P0",
+      "source_documents": [
+        "SIM",
+        "DATA"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "SIM.VALID",
+      "title": "Simulation validation",
+      "type": "capability",
+      "description": "Reject structural, temporal, unit, cross-modal, geometry, provenance and unsafe interpretation failures.",
+      "priority": "P0",
+      "source_documents": [
+        "SIM",
+        "DATA"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "SIM.BATCH",
+      "title": "Cohort branching target",
+      "type": "capability",
+      "description": "Initial planning up to 100 unique baseline patients, five branches each, four dated states; not independent real patients.",
+      "priority": "P0",
+      "source_documents": [
+        "SIM",
+        "DATA"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "AI.FEAT",
+      "title": "Deterministic multimodal features",
+      "type": "capability",
+      "description": "Measurements and comparisons computed by typed services, not hallucinated by LLM.",
+      "priority": "P0",
+      "source_documents": [
+        "AI",
+        "SAF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "AI.NLP",
+      "title": "Clinical note extraction",
+      "type": "capability",
+      "description": "Extract typed, supported facts with date, negation, certainty and source span.",
+      "priority": "P0",
+      "source_documents": [
+        "AI",
+        "SAF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "AI.FUSE",
+      "title": "Late multimodal fusion",
+      "type": "capability",
+      "description": "Combine imaging, labs, vitals, symptoms, notes, treatment and missingness with provenance, conflict status.",
+      "priority": "P0",
+      "source_documents": [
+        "AI",
+        "SAF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "AI.TEMP",
+      "title": "Temporal analysis",
+      "type": "capability",
+      "description": "State history, trends and baselines, irregular intervals and known input scope.",
+      "priority": "P0",
+      "source_documents": [
+        "AI",
+        "SAF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "AI.FORECAST",
+      "title": "Optional future-state forecasts",
+      "type": "capability",
+      "description": "Only with qualified independent real-data evaluation; abstain otherwise. Synthetic simulator is not predictive validation.",
+      "priority": "P0",
+      "source_documents": [
+        "AI",
+        "SAF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "AI.KNOW",
+      "title": "Clinical knowledge representation",
+      "type": "capability",
+      "description": "Versioned source-linked relationships among observed patient entities and curated medical concepts.",
+      "priority": "P0",
+      "source_documents": [
+        "AI",
+        "SAF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "AI.RETR",
+      "title": "Evidence retrieval",
+      "type": "capability",
+      "description": "Curated NCI/PubMed-type sources, verifiable passage IDs, publication version and permissions.",
+      "priority": "P0",
+      "source_documents": [
+        "AI",
+        "SAF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "AI.LLM",
+      "title": "Grounded explanation",
+      "type": "capability",
+      "description": "Structured interpretation referencing exact measurements, provenance, evidence, uncertainty and limits.",
+      "priority": "P0",
+      "source_documents": [
+        "AI",
+        "SAF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "AI.GUARD",
+      "title": "Output safety validation",
+      "type": "capability",
+      "description": "Numerical grounding, citation validity, hallucination/unsafe claims, prompt-injection defense, abstention.",
+      "priority": "P0",
+      "source_documents": [
+        "AI",
+        "SAF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "AI.FALLBACK",
+      "title": "AI outage tolerance",
+      "type": "capability",
+      "description": "Twin measurements and viewing continue when external model is unavailable.",
+      "priority": "P0",
+      "source_documents": [
+        "AI",
+        "SAF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "UX.CASE",
+      "title": "Research case browser",
+      "type": "capability",
+      "description": "Pseudonymous case listing, source metadata, completeness and access.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "UX"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "UX.PROFILE",
+      "title": "Patient context",
+      "type": "capability",
+      "description": "Known subtype/receptor, available studies, visits, uncertainty and source.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "UX"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "UX.3D",
+      "title": "Interactive lesion viewport",
+      "type": "capability",
+      "description": "Rotate, pan, zoom, reset; clearly distinguish observed/synthetic/illustrative geometry.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "UX"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "UX.TIMELINE",
+      "title": "Observation/date selector",
+      "type": "capability",
+      "description": "Synchronize 3D, clinical charts, date, treatment markers and state provenance.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "UX"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "UX.SCENARIO",
+      "title": "Scenario generation/exploration",
+      "type": "capability",
+      "description": "Select eligible case, treatment exposure and 5 families; show assumptions, progress, validation and branches.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "UX"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "UX.CHART",
+      "title": "Clinical charts",
+      "type": "capability",
+      "description": "Labs, vitals, symptoms, treatments with units and exact observation dates; no invented readings.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "UX"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "UX.INSIGHT",
+      "title": "AI insights with evidence",
+      "type": "capability",
+      "description": "Findings with source links, uncertainties, conflicts and research-only limitation.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "UX"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "UX.IMPORT",
+      "title": "New observation workflow",
+      "type": "capability",
+      "description": "Validate added clinical or image observation; append state and recompute dependencies.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "UX"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "UX.EVAL",
+      "title": "Evaluation/limitations view",
+      "type": "capability",
+      "description": "What was tested, real versus synthetic metrics, cohort size, unknowns and known failures.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "UX"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "UX.FAIL",
+      "title": "Graceful empty/error states",
+      "type": "capability",
+      "description": "No nonfunctional controls, sensible missing-image state, no stale insight falsely current.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "UX"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "INF.API",
+      "title": "Backend API contracts",
+      "type": "capability",
+      "description": "Typed FastAPI/other selected API, auth, versioning and error contracts.",
+      "priority": "P0",
+      "source_documents": [
+        "ARCH",
+        "API",
+        "ROAD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "INF.DB",
+      "title": "Clinical database",
+      "type": "capability",
+      "description": "PostgreSQL logical entities, integrity keys, migrations and isolation.",
+      "priority": "P0",
+      "source_documents": [
+        "ARCH",
+        "API",
+        "ROAD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "INF.OBJECT",
+      "title": "Imaging/object storage",
+      "type": "capability",
+      "description": "Private originals, derivatives, meshes, signed read paths and checksums.",
+      "priority": "P0",
+      "source_documents": [
+        "ARCH",
+        "API",
+        "ROAD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "INF.JOBS",
+      "title": "Async imaging jobs",
+      "type": "capability",
+      "description": "Bounded-memory CPU preparation, remote GPU when needed, status, retry and idempotence.",
+      "priority": "P0",
+      "source_documents": [
+        "ARCH",
+        "API",
+        "ROAD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "INF.DEPLOY",
+      "title": "Deployment",
+      "type": "capability",
+      "description": "Reproducible build, health checks, secure secrets, cost and demo recovery.",
+      "priority": "P0",
+      "source_documents": [
+        "ARCH",
+        "API",
+        "ROAD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "INF.CI",
+      "title": "Continuous verification",
+      "type": "capability",
+      "description": "Unit/integration/e2e tests, static checks, version pinning and audit logs.",
+      "priority": "P0",
+      "source_documents": [
+        "ARCH",
+        "API",
+        "ROAD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "EVAL.PHANTOM",
+      "title": "Geometry phantom tests",
+      "type": "test_gate",
+      "description": "Known millimeter cubes/ellipsoids to verify units, transforms, mask volume and mesh.",
+      "priority": "P0",
+      "source_documents": [
+        "TEST"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "EVAL.SEG",
+      "title": "Imaging segmentation metrics",
+      "type": "test_gate",
+      "description": "Dice, HD95, measured volume error on relevant held-out expert masks, no unsupported claims.",
+      "priority": "P0",
+      "source_documents": [
+        "TEST"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "EVAL.REAL",
+      "title": "Authentic longitudinal case evaluation",
+      "type": "test_gate",
+      "description": "Track genuine repeat scans separately; error against actual holdout outcomes if forecasting used.",
+      "priority": "P0",
+      "source_documents": [
+        "TEST"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "EVAL.SIM",
+      "title": "Simulation integrity evaluation",
+      "type": "test_gate",
+      "description": "Plausibility review, parameter assumptions, correlations, chronology, reproducibility and missingness.",
+      "priority": "P0",
+      "source_documents": [
+        "TEST"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "EVAL.AI",
+      "title": "NLP/LLM grounding evaluation",
+      "type": "test_gate",
+      "description": "Extraction, negation, citation validity, numerical fidelity, clinical abstention and adversarial notes.",
+      "priority": "P0",
+      "source_documents": [
+        "TEST"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "EVAL.E2E",
+      "title": "End-to-end demo",
+      "type": "test_gate",
+      "description": "One MRI → mask → measurable mesh → five synthetic scenarios → timeline → AI interpretation.",
+      "priority": "P0",
+      "source_documents": [
+        "TEST"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "EVAL.REPORT",
+      "title": "Scientific limitations report",
+      "type": "test_gate",
+      "description": "Cohort size, methods, source licenses, real/synthetic distinction and unvalidated claims.",
+      "priority": "P0",
+      "source_documents": [
+        "TEST"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "GOV.REAL",
+      "title": "Immutable source truth",
+      "type": "invariant",
+      "description": "Original observed records never silently altered or overwritten.",
+      "priority": "P0",
+      "source_documents": [
+        "SAF",
+        "PRD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "GOV.PROV",
+      "title": "Five provenance classes",
+      "type": "invariant",
+      "description": "REAL_OBSERVED, REAL_DERIVED, SYNTHETIC_GENERATED, INTERPOLATED, MODEL_PREDICTED.",
+      "priority": "P0",
+      "source_documents": [
+        "SAF",
+        "PRD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "GOV.PRIV",
+      "title": "Privacy and access",
+      "type": "invariant",
+      "description": "Pseudonyms, deidentification checks, role-aware access, approved external data processing only.",
+      "priority": "P0",
+      "source_documents": [
+        "SAF",
+        "PRD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "GOV.LIC",
+      "title": "License separation",
+      "type": "invariant",
+      "description": "Check source-code, dataset, model-checkpoint and outputs independently; CC BY-NC use needs review.",
+      "priority": "P0",
+      "source_documents": [
+        "SAF",
+        "PRD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "GOV.NOCLIN",
+      "title": "No autonomous care",
+      "type": "invariant",
+      "description": "No diagnoses, prescriptions, therapy ranking, survival promises or fabricated clinical efficacy.",
+      "priority": "P0",
+      "source_documents": [
+        "SAF",
+        "PRD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "GOV.RECIST",
+      "title": "Formal response boundary",
+      "type": "invariant",
+      "description": "Tumor volume labels never automatically RECIST categories or pathology complete response.",
+      "priority": "P0",
+      "source_documents": [
+        "SAF",
+        "PRD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "GOV.CTCAE",
+      "title": "Adverse-event grading boundary",
+      "type": "invariant",
+      "description": "CTCAE grade only when exact evidence and versioned rule requirements satisfied.",
+      "priority": "P0",
+      "source_documents": [
+        "SAF",
+        "PRD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "GOV.ABSTAIN",
+      "title": "Disclose unknowns",
+      "type": "invariant",
+      "description": "Missing values, poor registration, lack of calibrated forecast or uncertain evidence yield caveat/abstention.",
+      "priority": "P0",
+      "source_documents": [
+        "SAF",
+        "PRD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "X.WHOLE",
+      "title": "Whole-body digital twin",
+      "type": "excluded",
+      "description": "Explicitly outside the hackathon prototype scope.",
+      "priority": "OUT",
+      "source_documents": [
+        "PRD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "X.MULTI",
+      "title": "Multiple cancers",
+      "type": "excluded",
+      "description": "Explicitly outside the hackathon prototype scope.",
+      "priority": "OUT",
+      "source_documents": [
+        "PRD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "X.CARE",
+      "title": "Clinical diagnosis/prescription",
+      "type": "excluded",
+      "description": "Explicitly outside the hackathon prototype scope.",
+      "priority": "OUT",
+      "source_documents": [
+        "PRD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "X.SURV",
+      "title": "Validated prognosis/survival prediction",
+      "type": "excluded",
+      "description": "Explicitly outside the hackathon prototype scope.",
+      "priority": "OUT",
+      "source_documents": [
+        "PRD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "X.GENOME",
+      "title": "Whole-genome/cell-scale simulation",
+      "type": "excluded",
+      "description": "Explicitly outside the hackathon prototype scope.",
+      "priority": "OUT",
+      "source_documents": [
+        "PRD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "X.HOSP",
+      "title": "Production EHR/hospital integrations",
+      "type": "excluded",
+      "description": "Explicitly outside the hackathon prototype scope.",
+      "priority": "OUT",
+      "source_documents": [
+        "PRD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "X.DRUG",
+      "title": "Drug discovery or causal therapy optimization",
+      "type": "excluded",
+      "description": "Explicitly outside the hackathon prototype scope.",
+      "priority": "OUT",
+      "source_documents": [
+        "PRD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "X.PHOTOMRI",
+      "title": "Synthetic follow-up scans represented as authentic MRI",
+      "type": "excluded",
+      "description": "Explicitly outside the hackathon prototype scope.",
+      "priority": "OUT",
+      "source_documents": [
+        "PRD"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "REF.MAMA",
+      "title": "MAMA-MIA",
+      "type": "reference",
+      "description": "Inspect breast MRI masks and checkpoint compatibility; no unverified model claim.",
+      "priority": "REFERENCE",
+      "source_documents": [
+        "REF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "REF.NNUNET",
+      "title": "nnU-Net",
+      "type": "reference",
+      "description": "Adopt supported segmentation inference when feasible.",
+      "priority": "REFERENCE",
+      "source_documents": [
+        "REF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "REF.SLICER",
+      "title": "3D Slicer",
+      "type": "reference",
+      "description": "Cross-check source-space geometry and surface/volume calculations.",
+      "priority": "REFERENCE",
+      "source_documents": [
+        "REF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "REF.OHIF",
+      "title": "OHIF/Cornerstone3D",
+      "type": "reference",
+      "description": "Investigate reusable browser DICOM viewer and longitudinal mode.",
+      "priority": "REFERENCE",
+      "source_documents": [
+        "REF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "REF.MONAI",
+      "title": "MONAI",
+      "type": "reference",
+      "description": "Medical image transforms, evaluation, optional annotation/inference.",
+      "priority": "REFERENCE",
+      "source_documents": [
+        "REF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "REF.IDC",
+      "title": "IDC Index",
+      "type": "reference",
+      "description": "Reproducible imaging manifests and subset acquisition.",
+      "priority": "REFERENCE",
+      "source_documents": [
+        "REF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "REF.DCMQI",
+      "title": "dcmqi",
+      "type": "reference",
+      "description": "DICOM SEG and TID1500 interoperability where required.",
+      "priority": "REFERENCE",
+      "source_documents": [
+        "REF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "REF.LIT",
+      "title": "Textbook and clinical standards",
+      "type": "reference",
+      "description": "ITK, MIT imaging lectures, NCI breast PDQ, RECIST, CTCAE, Stan, IBSI, TRIPOD-LLM.",
+      "priority": "REFERENCE",
+      "source_documents": [
+        "REF"
+      ],
+      "acceptance": [],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "WF.REAL",
+      "title": "Real imaging vertical slice",
+      "type": "workflow",
+      "description": "Ordered sequence; inspect dependent nodes before implementation.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "ROAD"
+      ],
+      "acceptance": [
+        "Every stage emits versioned data and explicit validation evidence"
+      ],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "WF.SIM",
+      "title": "Synthetic scenario vertical slice",
+      "type": "workflow",
+      "description": "Ordered sequence; inspect dependent nodes before implementation.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "ROAD"
+      ],
+      "acceptance": [
+        "Every stage emits versioned data and explicit validation evidence"
+      ],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "WF.NEW",
+      "title": "Add observation",
+      "type": "workflow",
+      "description": "Ordered sequence; inspect dependent nodes before implementation.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "ROAD"
+      ],
+      "acceptance": [
+        "Every stage emits versioned data and explicit validation evidence"
+      ],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "WF.AI",
+      "title": "Evidence linked interpretation",
+      "type": "workflow",
+      "description": "Ordered sequence; inspect dependent nodes before implementation.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "ROAD"
+      ],
+      "acceptance": [
+        "Every stage emits versioned data and explicit validation evidence"
+      ],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "WF.REALVAL",
+      "title": "Actual longitudinal evaluation",
+      "type": "workflow",
+      "description": "Ordered sequence; inspect dependent nodes before implementation.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "ROAD"
+      ],
+      "acceptance": [
+        "Every stage emits versioned data and explicit validation evidence"
+      ],
+      "design_status": "specified",
+      "tags": []
+    },
+    {
+      "id": "WF.RELEASE",
+      "title": "Demo readiness",
+      "type": "workflow",
+      "description": "Ordered sequence; inspect dependent nodes before implementation.",
+      "priority": "P0",
+      "source_documents": [
+        "PRD",
+        "ROAD"
+      ],
+      "acceptance": [
+        "Every stage emits versioned data and explicit validation evidence"
+      ],
+      "design_status": "specified",
+      "tags": []
+    }
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.DATA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.IMG"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.TWIN"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.SIM"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.AI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.UX"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.EVAL"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.INFRA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.GOV"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SOURCE"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.DIAGNOSIS"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.STUDY"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SERIES"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SEG"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.LESION"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.MEASURE"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.LABS"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.VITAL"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SYMPTOM"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.TREAT"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.NOTE"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.OUTCOME"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.PROV"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.BRANCH"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.RUN"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.ARTIFACT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.DIAGNOSIS"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.STUDY"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.BRANCH"
+    },
+    {
+      "from_id": "DATA.STUDY",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.SERIES"
+    },
+    {
+      "from_id": "DATA.STUDY",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.SEG"
+    },
+    {
+      "from_id": "DATA.SEG",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.LESION"
+    },
+    {
+      "from_id": "DATA.SEG",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.MEASURE"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.LABS"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.VITAL"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.SYMPTOM"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.NOTE"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.TREAT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.OUTCOME"
+    },
+    {
+      "from_id": "DATA.BRANCH",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.RUN"
+    },
+    {
+      "from_id": "DATA.SOURCE",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.ARTIFACT"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MODEL"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.VIEW"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "PRECEDES",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "IMG.PRE",
+      "relation": "PRECEDES",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "IMG.MASK",
+      "relation": "PRECEDES",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "IMG.MASK",
+      "relation": "PRECEDES",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "IMG.VOL",
+      "relation": "PRECEDES",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "IMG.REG",
+      "relation": "PRECEDES",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "IMG.MESH",
+      "relation": "PRECEDES",
+      "to_id": "IMG.VIEW"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.BASELINE"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.TIME"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.COMPARE"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.REAL"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.ELIG"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.RESPONSE"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.STABLE"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.PROGRESS"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.REGROW"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.TOXIC"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.EXPOSURE"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.LATENT"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.SEED"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.BATCH"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.RESPONSE"
+    },
+    {
+      "from_id": "SIM.RESPONSE",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.STABLE"
+    },
+    {
+      "from_id": "SIM.STABLE",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.PROGRESS"
+    },
+    {
+      "from_id": "SIM.PROGRESS",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.REGROW"
+    },
+    {
+      "from_id": "SIM.REGROW",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.TOXIC"
+    },
+    {
+      "from_id": "SIM.TOXIC",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FEAT"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.NLP"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.TEMP"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.KNOW"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.RETR"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FALLBACK"
+    },
+    {
+      "from_id": "AI.NLP",
+      "relation": "PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.RETR",
+      "relation": "PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.LLM",
+      "relation": "PRECEDES",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.CASE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.PROFILE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.SCENARIO"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.CHART"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.IMPORT"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.EVAL"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.FAIL"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.API"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.DB"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.OBJECT"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.JOBS"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.CI"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.SEG"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.REAL"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.SIM"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.REAL"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.LIC"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.NOCLIN"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.RECIST"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.CTCAE"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.ABSTAIN"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.WHOLE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.MULTI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.CARE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.SURV"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.GENOME"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.HOSP"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.DRUG"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.PHOTOMRI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.MAMA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.NNUNET"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.SLICER"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.OHIF"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.MONAI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.IDC"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.DCMQI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.LIT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.SOURCE"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "DATA.SOURCE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "IMG.PRE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "IMG.MASK",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "IMG.VOL",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "IMG.MESH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "UX.3D",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.SIM"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.BASELINE"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.ELIG"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.LATENT"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "TWIN.BASELINE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.ELIG"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.LATENT"
+    },
+    {
+      "from_id": "SIM.LATENT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "SIM.OBS",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "IMG.SYNMESH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "SIM.VALID",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "TWIN.BRANCH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.NEW"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "UX.IMPORT"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.COMPARE"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FEAT"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "UX.IMPORT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "TWIN.HISTORY",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.COMPARE"
+    },
+    {
+      "from_id": "TWIN.COMPARE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.FEAT"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.AI"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.NLP"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FEAT"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.RETR"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "AI.NLP",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.FEAT"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.RETR"
+    },
+    {
+      "from_id": "AI.RETR",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.LLM",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "AI.GUARD",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REALVAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.REAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "IMG.REG",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "IMG.TRACK",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.REAL"
+    },
+    {
+      "from_id": "TWIN.REAL",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.REAL"
+    },
+    {
+      "from_id": "EVAL.REAL",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.RELEASE"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "EVAL.AI",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "INF.DEPLOY",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.PROV"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "GOV.REAL",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.BASELINE"
+    },
+    {
+      "from_id": "GOV.REAL",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "GOV.REAL",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.ARTIFACT"
+    },
+    {
+      "from_id": "GOV.NOCLIN",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "GOV.NOCLIN",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.ELIG"
+    },
+    {
+      "from_id": "GOV.NOCLIN",
+      "relation": "CONSTRAINS",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "GOV.RECIST",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.MEASURE"
+    },
+    {
+      "from_id": "GOV.RECIST",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.RESPONSE"
+    },
+    {
+      "from_id": "GOV.RECIST",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "GOV.CTCAE",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.TOXIC"
+    },
+    {
+      "from_id": "GOV.CTCAE",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "GOV.ABSTAIN",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "GOV.ABSTAIN",
+      "relation": "CONSTRAINS",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "GOV.ABSTAIN",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "GOV.LIC",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.SOURCE"
+    },
+    {
+      "from_id": "GOV.LIC",
+      "relation": "CONSTRAINS",
+      "to_id": "REF.MAMA"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "CONSTRAINS",
+      "to_id": "INF.OBJECT"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.NLP"
+    },
+    {
+      "from_id": "EVAL.PHANTOM",
+      "relation": "VERIFIES",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "EVAL.PHANTOM",
+      "relation": "VERIFIES",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "EVAL.SEG",
+      "relation": "VERIFIES",
+      "to_id": "IMG.MODEL"
+    },
+    {
+      "from_id": "EVAL.REAL",
+      "relation": "VERIFIES",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "EVAL.SIM",
+      "relation": "VERIFIES",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "EVAL.AI",
+      "relation": "VERIFIES",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.SIM"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "WF.REAL",
+      "steps": [
+        "DATA.SOURCE",
+        "DATA.PATIENT",
+        "IMG.INGEST",
+        "IMG.PRE",
+        "IMG.MASK",
+        "IMG.VOL",
+        "IMG.MESH",
+        "UX.3D",
+        "EVAL.PHANTOM"
+      ]
+    },
+    {
+      "id": "WF.SIM",
+      "steps": [
+        "TWIN.BASELINE",
+        "SIM.ELIG",
+        "SIM.LATENT",
+        "SIM.OBS",
+        "IMG.SYNMESH",
+        "SIM.VALID",
+        "TWIN.BRANCH",
+        "UX.TIMELINE"
+      ]
+    },
+    {
+      "id": "WF.NEW",
+      "steps": [
+        "UX.IMPORT",
+        "DATA.VISIT",
+        "TWIN.HISTORY",
+        "TWIN.COMPARE",
+        "AI.FEAT",
+        "UX.INSIGHT"
+      ]
+    },
+    {
+      "id": "WF.AI",
+      "steps": [
+        "AI.NLP",
+        "AI.FEAT",
+        "AI.FUSE",
+        "AI.RETR",
+        "AI.LLM",
+        "AI.GUARD",
+        "UX.INSIGHT"
+      ]
+    },
+    {
+      "id": "WF.REALVAL",
+      "steps": [
+        "IMG.INGEST",
+        "IMG.REG",
+        "IMG.TRACK",
+        "TWIN.REAL",
+        "EVAL.REAL",
+        "EVAL.REPORT"
+      ]
+    },
+    {
+      "id": "WF.RELEASE",
+      "steps": [
+        "EVAL.E2E",
+        "EVAL.AI",
+        "GOV.PROV",
+        "GOV.PRIV",
+        "INF.DEPLOY",
+        "EVAL.REPORT"
+      ]
+    }
+  ]
+}

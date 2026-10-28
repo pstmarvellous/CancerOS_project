@@ -1,0 +1,1477 @@
+{
+  "$defs": {
+    "Availability": {
+      "enum": [
+        "available",
+        "unavailable",
+        "pending",
+        "invalid",
+        "rejected"
+      ],
+      "title": "Availability",
+      "type": "string"
+    },
+    "CensoredResult": {
+      "additionalProperties": false,
+      "properties": {
+        "comparator": {
+          "enum": [
+            "<",
+            "<=",
+            ">",
+            ">="
+          ],
+          "title": "Comparator",
+          "type": "string"
+        },
+        "form": {
+          "const": "censored",
+          "title": "Form",
+          "type": "string"
+        },
+        "threshold": {
+          "$ref": "#/$defs/Quantity"
+        }
+      },
+      "required": [
+        "form",
+        "comparator",
+        "threshold"
+      ],
+      "title": "CensoredResult",
+      "type": "object"
+    },
+    "ClinicalTime": {
+      "additionalProperties": false,
+      "properties": {
+        "date_shift_basis": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date Shift Basis"
+        },
+        "precision": {
+          "enum": [
+            "second",
+            "minute",
+            "day",
+            "relative_day",
+            "unknown"
+          ],
+          "title": "Precision",
+          "type": "string"
+        },
+        "reference": {
+          "discriminator": {
+            "mapping": {
+              "date": "#/$defs/DateTimeReference",
+              "relative_day": "#/$defs/RelativeTime",
+              "timestamp": "#/$defs/TimestampTime",
+              "unknown": "#/$defs/UnknownTime"
+            },
+            "propertyName": "basis"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/TimestampTime"
+            },
+            {
+              "$ref": "#/$defs/DateTimeReference"
+            },
+            {
+              "$ref": "#/$defs/RelativeTime"
+            },
+            {
+              "$ref": "#/$defs/UnknownTime"
+            }
+          ],
+          "title": "Reference"
+        },
+        "uncertainty_days": {
+          "anyOf": [
+            {
+              "pattern": "^-?(0|[1-9]\\d*)(\\.\\d{1,9})?$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Uncertainty Days"
+        }
+      },
+      "required": [
+        "reference",
+        "precision"
+      ],
+      "title": "ClinicalTime",
+      "type": "object"
+    },
+    "Context": {
+      "enum": [
+        "OBSERVED",
+        "SYNTHETIC"
+      ],
+      "title": "Context",
+      "type": "string"
+    },
+    "DateTimeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "const": "date",
+          "title": "Basis",
+          "type": "string"
+        },
+        "time_domain": {
+          "enum": [
+            "source_calendar",
+            "source_shifted",
+            "simulation"
+          ],
+          "title": "Time Domain",
+          "type": "string"
+        },
+        "value": {
+          "format": "date",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "basis",
+        "value",
+        "time_domain"
+      ],
+      "title": "DateTimeReference",
+      "type": "object"
+    },
+    "DiagnosisInput": {
+      "additionalProperties": false,
+      "properties": {
+        "certainty": {
+          "enum": [
+            "documented",
+            "reported",
+            "uncertain",
+            "unknown"
+          ],
+          "title": "Certainty",
+          "type": "string"
+        },
+        "client_record_key": {
+          "pattern": "^[A-Za-z0-9._-]{1,80}$",
+          "title": "Client Record Key",
+          "type": "string"
+        },
+        "clinical_stage": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Clinical Stage"
+        },
+        "concept": {
+          "const": "source_pathology",
+          "title": "Concept",
+          "type": "string"
+        },
+        "dictionary_version": {
+          "const": "canceros-local/1",
+          "default": "canceros-local/1",
+          "title": "Dictionary Version",
+          "type": "string"
+        },
+        "er_status": {
+          "enum": [
+            "positive",
+            "negative",
+            "equivocal",
+            "unknown",
+            "not_tested",
+            "not_recorded",
+            "invalid"
+          ],
+          "title": "Er Status",
+          "type": "string"
+        },
+        "her2_status": {
+          "enum": [
+            "positive",
+            "negative",
+            "equivocal",
+            "unknown",
+            "not_tested",
+            "not_recorded",
+            "invalid"
+          ],
+          "title": "Her2 Status",
+          "type": "string"
+        },
+        "histology": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Histology"
+        },
+        "kind": {
+          "const": "diagnosis",
+          "title": "Kind",
+          "type": "string"
+        },
+        "negation": {
+          "enum": [
+            "affirmed",
+            "negated",
+            "unspecified"
+          ],
+          "title": "Negation",
+          "type": "string"
+        },
+        "original_term": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Original Term",
+          "type": "string"
+        },
+        "pathologic_stage": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pathologic Stage"
+        },
+        "pr_status": {
+          "enum": [
+            "positive",
+            "negative",
+            "equivocal",
+            "unknown",
+            "not_tested",
+            "not_recorded",
+            "invalid"
+          ],
+          "title": "Pr Status",
+          "type": "string"
+        },
+        "side": {
+          "enum": [
+            "left",
+            "right",
+            "bilateral",
+            "unknown"
+          ],
+          "title": "Side",
+          "type": "string"
+        },
+        "source_locator_id": {
+          "format": "uuid",
+          "title": "Source Locator Id",
+          "type": "string"
+        },
+        "staging_system": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Staging System"
+        },
+        "time": {
+          "$ref": "#/$defs/ClinicalTime"
+        },
+        "visit_id": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Visit Id"
+        }
+      },
+      "required": [
+        "client_record_key",
+        "source_locator_id",
+        "time",
+        "original_term",
+        "certainty",
+        "negation",
+        "kind",
+        "concept",
+        "side",
+        "er_status",
+        "pr_status",
+        "her2_status"
+      ],
+      "title": "DiagnosisInput",
+      "type": "object"
+    },
+    "ExactResult": {
+      "additionalProperties": false,
+      "properties": {
+        "form": {
+          "const": "exact",
+          "title": "Form",
+          "type": "string"
+        },
+        "quantity": {
+          "$ref": "#/$defs/Quantity"
+        }
+      },
+      "required": [
+        "form",
+        "quantity"
+      ],
+      "title": "ExactResult",
+      "type": "object"
+    },
+    "MissingResult": {
+      "additionalProperties": false,
+      "properties": {
+        "form": {
+          "const": "missing",
+          "title": "Form",
+          "type": "string"
+        },
+        "missing_reason": {
+          "enum": [
+            "unknown",
+            "not_recorded",
+            "not_collected",
+            "not_applicable",
+            "below_detection",
+            "withheld"
+          ],
+          "title": "Missing Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "form",
+        "missing_reason"
+      ],
+      "title": "MissingResult",
+      "type": "object"
+    },
+    "NoteInput": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "format": "uuid",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "certainty": {
+          "enum": [
+            "documented",
+            "reported",
+            "uncertain",
+            "unknown"
+          ],
+          "title": "Certainty",
+          "type": "string"
+        },
+        "client_record_key": {
+          "pattern": "^[A-Za-z0-9._-]{1,80}$",
+          "title": "Client Record Key",
+          "type": "string"
+        },
+        "concept": {
+          "const": "source_note",
+          "title": "Concept",
+          "type": "string"
+        },
+        "content_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        },
+        "dictionary_version": {
+          "const": "canceros-local/1",
+          "default": "canceros-local/1",
+          "title": "Dictionary Version",
+          "type": "string"
+        },
+        "kind": {
+          "const": "note",
+          "title": "Kind",
+          "type": "string"
+        },
+        "language": {
+          "maxLength": 20,
+          "minLength": 2,
+          "title": "Language",
+          "type": "string"
+        },
+        "negation": {
+          "enum": [
+            "affirmed",
+            "negated",
+            "unspecified"
+          ],
+          "title": "Negation",
+          "type": "string"
+        },
+        "original_term": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Original Term",
+          "type": "string"
+        },
+        "source_locator_id": {
+          "format": "uuid",
+          "title": "Source Locator Id",
+          "type": "string"
+        },
+        "time": {
+          "$ref": "#/$defs/ClinicalTime"
+        },
+        "visit_id": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Visit Id"
+        }
+      },
+      "required": [
+        "client_record_key",
+        "source_locator_id",
+        "time",
+        "original_term",
+        "certainty",
+        "negation",
+        "kind",
+        "concept",
+        "artifact_id",
+        "content_sha256",
+        "language"
+      ],
+      "title": "NoteInput",
+      "type": "object"
+    },
+    "NumericInput": {
+      "additionalProperties": false,
+      "properties": {
+        "certainty": {
+          "enum": [
+            "documented",
+            "reported",
+            "uncertain",
+            "unknown"
+          ],
+          "title": "Certainty",
+          "type": "string"
+        },
+        "client_record_key": {
+          "pattern": "^[A-Za-z0-9._-]{1,80}$",
+          "title": "Client Record Key",
+          "type": "string"
+        },
+        "component_group": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Component Group"
+        },
+        "concept": {
+          "enum": [
+            "hemoglobin",
+            "wbc",
+            "anc",
+            "platelets",
+            "creatinine",
+            "alt",
+            "ast",
+            "heart_rate",
+            "temperature",
+            "weight",
+            "systolic_bp",
+            "diastolic_bp"
+          ],
+          "title": "Concept",
+          "type": "string"
+        },
+        "dictionary_version": {
+          "const": "canceros-local/1",
+          "default": "canceros-local/1",
+          "title": "Dictionary Version",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "laboratory",
+            "vital"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "negation": {
+          "enum": [
+            "affirmed",
+            "negated",
+            "unspecified"
+          ],
+          "title": "Negation",
+          "type": "string"
+        },
+        "original_term": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Original Term",
+          "type": "string"
+        },
+        "original_unit": {
+          "anyOf": [
+            {
+              "maxLength": 32,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Original Unit"
+        },
+        "original_value": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Original Value"
+        },
+        "reference_interval": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceReferenceInterval"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "result": {
+          "discriminator": {
+            "mapping": {
+              "censored": "#/$defs/CensoredResult",
+              "exact": "#/$defs/ExactResult",
+              "missing": "#/$defs/MissingResult"
+            },
+            "propertyName": "form"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ExactResult"
+            },
+            {
+              "$ref": "#/$defs/CensoredResult"
+            },
+            {
+              "$ref": "#/$defs/MissingResult"
+            }
+          ],
+          "title": "Result"
+        },
+        "source_locator_id": {
+          "format": "uuid",
+          "title": "Source Locator Id",
+          "type": "string"
+        },
+        "time": {
+          "$ref": "#/$defs/ClinicalTime"
+        },
+        "visit_id": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Visit Id"
+        }
+      },
+      "required": [
+        "client_record_key",
+        "source_locator_id",
+        "time",
+        "original_term",
+        "certainty",
+        "negation",
+        "kind",
+        "concept",
+        "result"
+      ],
+      "title": "NumericInput",
+      "type": "object"
+    },
+    "NumericNormalization": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical_result": {
+          "discriminator": {
+            "mapping": {
+              "censored": "#/$defs/CensoredResult",
+              "exact": "#/$defs/ExactResult",
+              "missing": "#/$defs/MissingResult"
+            },
+            "propertyName": "form"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ExactResult"
+            },
+            {
+              "$ref": "#/$defs/CensoredResult"
+            },
+            {
+              "$ref": "#/$defs/MissingResult"
+            }
+          ],
+          "title": "Canonical Result"
+        },
+        "conversion_rule_version": {
+          "const": "local-units/1",
+          "default": "local-units/1",
+          "title": "Conversion Rule Version",
+          "type": "string"
+        },
+        "original_unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Original Unit"
+        },
+        "original_value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Original Value"
+        }
+      },
+      "required": [
+        "original_value",
+        "original_unit",
+        "canonical_result"
+      ],
+      "title": "NumericNormalization",
+      "type": "object"
+    },
+    "Provenance": {
+      "enum": [
+        "REAL_OBSERVED",
+        "REAL_DERIVED",
+        "SYNTHETIC_GENERATED",
+        "INTERPOLATED",
+        "MODEL_PREDICTED"
+      ],
+      "title": "Provenance",
+      "type": "string"
+    },
+    "Publication": {
+      "enum": [
+        "draft",
+        "validating",
+        "ready",
+        "published",
+        "rejected",
+        "withdrawn"
+      ],
+      "title": "Publication",
+      "type": "string"
+    },
+    "Quality": {
+      "enum": [
+        "pending",
+        "pass",
+        "warning",
+        "fail",
+        "not_applicable"
+      ],
+      "title": "Quality",
+      "type": "string"
+    },
+    "Quantity": {
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "maxLength": 32,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9/%._\\[\\]-]+$",
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^-?(0|[1-9]\\d*)(\\.\\d{1,9})?$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "title": "Quantity",
+      "type": "object"
+    },
+    "RelativeTime": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor_state_id": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Anchor State Id"
+        },
+        "basis": {
+          "const": "relative_day",
+          "title": "Basis",
+          "type": "string"
+        },
+        "time_domain": {
+          "enum": [
+            "source_relative",
+            "simulation"
+          ],
+          "title": "Time Domain",
+          "type": "string"
+        },
+        "timeline_origin_id": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Timeline Origin Id"
+        },
+        "value": {
+          "pattern": "^-?(0|[1-9]\\d*)(\\.\\d{1,9})?$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "basis",
+        "value",
+        "time_domain"
+      ],
+      "title": "RelativeTime",
+      "type": "object"
+    },
+    "SourceReferenceInterval": {
+      "additionalProperties": false,
+      "properties": {
+        "high": {
+          "anyOf": [
+            {
+              "pattern": "^-?(0|[1-9]\\d*)(\\.\\d{1,9})?$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "High"
+        },
+        "low": {
+          "anyOf": [
+            {
+              "pattern": "^-?(0|[1-9]\\d*)(\\.\\d{1,9})?$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Low"
+        },
+        "population_context": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Population Context",
+          "type": "string"
+        },
+        "source_description": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Source Description",
+          "type": "string"
+        },
+        "unit": {
+          "maxLength": 32,
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "unit",
+        "source_description",
+        "population_context",
+        "version"
+      ],
+      "title": "SourceReferenceInterval",
+      "type": "object"
+    },
+    "SymptomInput": {
+      "additionalProperties": false,
+      "properties": {
+        "certainty": {
+          "enum": [
+            "documented",
+            "reported",
+            "uncertain",
+            "unknown"
+          ],
+          "title": "Certainty",
+          "type": "string"
+        },
+        "client_record_key": {
+          "pattern": "^[A-Za-z0-9._-]{1,80}$",
+          "title": "Client Record Key",
+          "type": "string"
+        },
+        "concept": {
+          "enum": [
+            "fatigue",
+            "pain",
+            "nausea",
+            "swelling",
+            "other"
+          ],
+          "title": "Concept",
+          "type": "string"
+        },
+        "dictionary_version": {
+          "const": "canceros-local/1",
+          "default": "canceros-local/1",
+          "title": "Dictionary Version",
+          "type": "string"
+        },
+        "instrument": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Instrument"
+        },
+        "instrument_version": {
+          "anyOf": [
+            {
+              "maxLength": 50,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Instrument Version"
+        },
+        "kind": {
+          "const": "symptom",
+          "title": "Kind",
+          "type": "string"
+        },
+        "negation": {
+          "enum": [
+            "affirmed",
+            "negated",
+            "unspecified"
+          ],
+          "title": "Negation",
+          "type": "string"
+        },
+        "original_term": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Original Term",
+          "type": "string"
+        },
+        "presence": {
+          "enum": [
+            "present",
+            "absent",
+            "unknown",
+            "not_assessed"
+          ],
+          "title": "Presence",
+          "type": "string"
+        },
+        "reporter": {
+          "enum": [
+            "patient",
+            "clinician",
+            "unknown"
+          ],
+          "title": "Reporter",
+          "type": "string"
+        },
+        "severity": {
+          "anyOf": [
+            {
+              "pattern": "^-?(0|[1-9]\\d*)(\\.\\d{1,9})?$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Severity"
+        },
+        "source_locator_id": {
+          "format": "uuid",
+          "title": "Source Locator Id",
+          "type": "string"
+        },
+        "time": {
+          "$ref": "#/$defs/ClinicalTime"
+        },
+        "visit_id": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Visit Id"
+        }
+      },
+      "required": [
+        "client_record_key",
+        "source_locator_id",
+        "time",
+        "original_term",
+        "certainty",
+        "negation",
+        "kind",
+        "concept",
+        "presence",
+        "reporter"
+      ],
+      "title": "SymptomInput",
+      "type": "object"
+    },
+    "TimestampTime": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "const": "timestamp",
+          "title": "Basis",
+          "type": "string"
+        },
+        "time_domain": {
+          "enum": [
+            "source_calendar",
+            "source_shifted",
+            "simulation"
+          ],
+          "title": "Time Domain",
+          "type": "string"
+        },
+        "value": {
+          "format": "date-time",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "basis",
+        "value",
+        "time_domain"
+      ],
+      "title": "TimestampTime",
+      "type": "object"
+    },
+    "TreatmentInput": {
+      "additionalProperties": false,
+      "properties": {
+        "certainty": {
+          "enum": [
+            "documented",
+            "reported",
+            "uncertain",
+            "unknown"
+          ],
+          "title": "Certainty",
+          "type": "string"
+        },
+        "client_record_key": {
+          "pattern": "^[A-Za-z0-9._-]{1,80}$",
+          "title": "Client Record Key",
+          "type": "string"
+        },
+        "concept": {
+          "enum": [
+            "chemotherapy",
+            "endocrine",
+            "her2_targeted",
+            "immunotherapy",
+            "surgery",
+            "radiotherapy",
+            "other",
+            "unknown"
+          ],
+          "title": "Concept",
+          "type": "string"
+        },
+        "dictionary_version": {
+          "const": "canceros-local/1",
+          "default": "canceros-local/1",
+          "title": "Dictionary Version",
+          "type": "string"
+        },
+        "ended_time": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ClinicalTime"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "event_type": {
+          "enum": [
+            "ordered",
+            "prescribed",
+            "administered",
+            "reported_exposure",
+            "stopped",
+            "unknown"
+          ],
+          "title": "Event Type",
+          "type": "string"
+        },
+        "exposure_status": {
+          "enum": [
+            "documented_delivery",
+            "ordered_only",
+            "reported",
+            "unknown"
+          ],
+          "title": "Exposure Status",
+          "type": "string"
+        },
+        "kind": {
+          "const": "treatment",
+          "title": "Kind",
+          "type": "string"
+        },
+        "negation": {
+          "enum": [
+            "affirmed",
+            "negated",
+            "unspecified"
+          ],
+          "title": "Negation",
+          "type": "string"
+        },
+        "original_term": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Original Term",
+          "type": "string"
+        },
+        "regimen_text": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Regimen Text"
+        },
+        "source_locator_id": {
+          "format": "uuid",
+          "title": "Source Locator Id",
+          "type": "string"
+        },
+        "time": {
+          "$ref": "#/$defs/ClinicalTime"
+        },
+        "visit_id": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Visit Id"
+        }
+      },
+      "required": [
+        "client_record_key",
+        "source_locator_id",
+        "time",
+        "original_term",
+        "certainty",
+        "negation",
+        "kind",
+        "concept",
+        "event_type",
+        "exposure_status"
+      ],
+      "title": "TreatmentInput",
+      "type": "object"
+    },
+    "UnknownTime": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "const": "unknown",
+          "title": "Basis",
+          "type": "string"
+        },
+        "missing_reason": {
+          "enum": [
+            "unknown",
+            "not_recorded",
+            "not_collected",
+            "not_applicable",
+            "below_detection",
+            "withheld"
+          ],
+          "title": "Missing Reason",
+          "type": "string"
+        },
+        "time_domain": {
+          "enum": [
+            "source_calendar",
+            "source_shifted",
+            "source_relative",
+            "simulation"
+          ],
+          "title": "Time Domain",
+          "type": "string"
+        }
+      },
+      "required": [
+        "basis",
+        "missing_reason",
+        "time_domain"
+      ],
+      "title": "UnknownTime",
+      "type": "object"
+    },
+    "VisitInput": {
+      "additionalProperties": false,
+      "properties": {
+        "certainty": {
+          "enum": [
+            "documented",
+            "reported",
+            "uncertain",
+            "unknown"
+          ],
+          "title": "Certainty",
+          "type": "string"
+        },
+        "client_record_key": {
+          "pattern": "^[A-Za-z0-9._-]{1,80}$",
+          "title": "Client Record Key",
+          "type": "string"
+        },
+        "concept": {
+          "enum": [
+            "clinical_visit",
+            "imaging_exam",
+            "source_occasion",
+            "unknown"
+          ],
+          "title": "Concept",
+          "type": "string"
+        },
+        "dictionary_version": {
+          "const": "canceros-local/1",
+          "default": "canceros-local/1",
+          "title": "Dictionary Version",
+          "type": "string"
+        },
+        "kind": {
+          "const": "visit",
+          "title": "Kind",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "negation": {
+          "enum": [
+            "affirmed",
+            "negated",
+            "unspecified"
+          ],
+          "title": "Negation",
+          "type": "string"
+        },
+        "original_term": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Original Term",
+          "type": "string"
+        },
+        "source_locator_id": {
+          "format": "uuid",
+          "title": "Source Locator Id",
+          "type": "string"
+        },
+        "time": {
+          "$ref": "#/$defs/ClinicalTime"
+        },
+        "visit_id": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Visit Id"
+        }
+      },
+      "required": [
+        "client_record_key",
+        "source_locator_id",
+        "time",
+        "original_term",
+        "certainty",
+        "negation",
+        "kind",
+        "concept",
+        "label"
+      ],
+      "title": "VisitInput",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "availability": {
+      "$ref": "#/$defs/Availability"
+    },
+    "context": {
+      "$ref": "#/$defs/Context"
+    },
+    "id": {
+      "format": "uuid",
+      "title": "Id",
+      "type": "string"
+    },
+    "item": {
+      "discriminator": {
+        "mapping": {
+          "diagnosis": "#/$defs/DiagnosisInput",
+          "laboratory": "#/$defs/NumericInput",
+          "note": "#/$defs/NoteInput",
+          "symptom": "#/$defs/SymptomInput",
+          "treatment": "#/$defs/TreatmentInput",
+          "visit": "#/$defs/VisitInput",
+          "vital": "#/$defs/NumericInput"
+        },
+        "propertyName": "kind"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/VisitInput"
+        },
+        {
+          "$ref": "#/$defs/NumericInput"
+        },
+        {
+          "$ref": "#/$defs/DiagnosisInput"
+        },
+        {
+          "$ref": "#/$defs/TreatmentInput"
+        },
+        {
+          "$ref": "#/$defs/SymptomInput"
+        },
+        {
+          "$ref": "#/$defs/NoteInput"
+        }
+      ],
+      "title": "Item"
+    },
+    "numeric_normalization": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/NumericNormalization"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "origin": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "patient_id": {
+      "format": "uuid",
+      "title": "Patient Id",
+      "type": "string"
+    },
+    "project_id": {
+      "format": "uuid",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "publication": {
+      "$ref": "#/$defs/Publication",
+      "default": "draft"
+    },
+    "quality": {
+      "$ref": "#/$defs/Quality"
+    },
+    "schema_version": {
+      "const": "clinical/1",
+      "default": "clinical/1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scientific_review": {
+      "default": "pending",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected",
+        "not_applicable"
+      ],
+      "title": "Scientific Review",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "project_id",
+    "patient_id",
+    "item",
+    "origin",
+    "context",
+    "quality",
+    "availability"
+  ],
+  "title": "ClinicalRecord",
+  "type": "object"
+}

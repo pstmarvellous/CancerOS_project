@@ -1,0 +1,14 @@
+{
+  "result": "passed",
+  "scope": "Actual native dependency readiness and anonymous denial; not scientific readiness",
+  "checks": [
+    "Authenticated monitor readiness200",
+    "Anonymous readiness401",
+    "Anonymous identity401"
+  ],
+  "browser_version": "155.0.8059.86",
+  "viewports": [
+    "1280x900",
+    "390x844"
+  ]
+}

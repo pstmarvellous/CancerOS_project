@@ -1,0 +1,61 @@
+{
+  "recorded_at": "2026-10-27T19:55:57.796869+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "python": "3.12.14",
+  "scope": "lineage engineering verification only; no real-data or qualified review claim",
+  "input_hash": "56413fef74626cbee353418d461ea5f2c2eca91222817b3b55018b43dfc8e7ea",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "scripts/migrate_test.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS disposable PostgreSQL migrations and repeated upgrade; no reset/drop performed\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests/test_lineage.py",
+        "tests/test_metadata_adapters.py",
+        "tests/test_clinical_ingestion.py",
+        "--tb=line"
+      ],
+      "exit_code": 0,
+      "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.12.14, pytest-9.1.1, pluggy-1.7.0\nrootdir: C:\\Users\\HomePC\\Desktop\\cancerOs_project\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollected 18 items\n\ntests\\test_lineage.py ....                                               [ 22%]\ntests\\test_metadata_adapters.py ........                                 [ 66%]\ntests\\test_clinical_ingestion.py ......                                  [100%]\n\n============================== warnings summary ===============================\n.venv\\Lib\\site-packages\\fastapi\\testclient.py:1\n  C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Lib\\site-packages\\fastapi\\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n======================== 18 passed, 1 warning in 8.17s ========================\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "scripts/clinical_fixture.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS synthetic clinical HTTP workflow; evidence: docs\\engineering\\evidence\\clinical-fixture.json\n",
+      "stderr": "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Lib\\site-packages\\fastapi\\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n  from starlette.testclient import TestClient as TestClient  # noqa\n"
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "-m",
+        "mypy"
+      ],
+      "exit_code": 0,
+      "stdout": "Success: no issues found in 20 source files\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "scripts/check_contract_drift.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS canonical generation check; only implemented runtime routes exposed\n\n> canceros@0.1.0 contracts:types\n> openapi-typescript packages/contracts/generated/openapi.json -o packages/contracts/generated/api.ts && json2ts -i packages/contracts/generated/foundation.schema.json -o packages/contracts/generated/foundation.ts && json2ts -i packages/contracts/generated/clinical.schema.json -o packages/contracts/generated/clinical.ts\n\n\u2728 openapi-typescript 7.13.0\n\ud83d\ude80 packages/contracts/generated/openapi.json \u2192 packages/contracts/generated/api.ts [358.7ms]\nPASS runtime OpenAPI, foundation schemas and generated TypeScript drift check\n",
+      "stderr": ""
+    }
+  ],
+  "result": "passed"
+}

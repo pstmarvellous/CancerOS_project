@@ -1,0 +1,9 @@
+{
+  "recorded_at": "2026-10-28T08:01:02.762311+00:00",
+  "scope": "One supervised artificial 3x4x2 segmentation-QC stage; no real MRI or general performance claim",
+  "stage_wall_seconds": 0.8440000000118744,
+  "stage_sampled_peak_rss_bytes": 156835840,
+  "wall_limit_seconds": 120,
+  "sampled_rss_limit_bytes": 536870912,
+  "sampling_is_not_an_OS_memory_reservation": true
+}

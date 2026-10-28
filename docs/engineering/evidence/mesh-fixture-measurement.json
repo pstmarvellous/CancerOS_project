@@ -1,0 +1,16 @@
+{
+  "recorded_at": "2026-10-28T08:48:28.838407+00:00",
+  "scope": "artificial_3x4x2_cpu_fixture_only_not_browser_or_clinical",
+  "original_vertices": 52,
+  "original_triangles": 100,
+  "lod_vertices": 24,
+  "lod_triangles": 44,
+  "original_bytes": 4903,
+  "lod_bytes": 2755,
+  "cpu_total_seconds": 0.058647199999541044,
+  "json_decode_seconds": 0.00014109999756328762,
+  "process_rss_after_bytes": 98664448,
+  "peak_rss": "not_measured",
+  "browser_load": "not_measured",
+  "target_laptop": "not_measured"
+}

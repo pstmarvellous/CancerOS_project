@@ -1,0 +1,162 @@
+{
+  "task": "COS-032",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "workers",
+      "returncode": 0,
+      "output": "\n=== D.INFRA Platform infrastructure ===\n Backend API, persistence, object storage, workers, jobs, deployment and security. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS INF.API Backend API contracts\n  --> IMPLEMENTS INF.DB Clinical database\n  --> IMPLEMENTS INF.OBJECT Imaging/object storage\n  --> IMPLEMENTS INF.JOBS Async imaging jobs\n  --> IMPLEMENTS INF.DEPLOY Deployment\n  --> IMPLEMENTS INF.CI Continuous verification\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "workers",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "workers",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "jobs",
+      "returncode": 0,
+      "output": "\n=== D.INFRA Platform infrastructure ===\n Backend API, persistence, object storage, workers, jobs, deployment and security. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS INF.API Backend API contracts\n  --> IMPLEMENTS INF.DB Clinical database\n  --> IMPLEMENTS INF.OBJECT Imaging/object storage\n  --> IMPLEMENTS INF.JOBS Async imaging jobs\n  --> IMPLEMENTS INF.DEPLOY Deployment\n  --> IMPLEMENTS INF.CI Continuous verification\n\n=== INF.JOBS Async imaging jobs ===\n Bounded-memory CPU preparation, remote GPU when needed, status, retry and idempotence. \nSources: ARCH,API,ROAD\n  <-- IMPLEMENTS D.INFRA Platform infrastructure\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "jobs",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "jobs",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "recovery",
+      "returncode": 0,
+      "output": "\n=== INF.DEPLOY Deployment ===\n Reproducible build, health checks, secure secrets, cost and demo recovery. \nSources: ARCH,API,ROAD\n  <-- IMPLEMENTS D.INFRA Platform infrastructure\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  <-- WORKFLOW_PRECEDES GOV.PRIV Privacy and access\n  --> WORKFLOW_PRECEDES EVAL.REPORT Scientific limitations report\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "recovery",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "recovery",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "artifacts",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "artifacts",
+      "returncode": 0,
+      "output": "\nIMG.01 — DICOM/NIfTI volume construction\nDesign: Read slices using spatial metadata and preserve original image artifacts\nAcceptance: Round-trip known volume spacing/origin/orientation\n  READ A05 ITK Software Guide — Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition — https://itk.org/ITKSoftwareGuide/html/\n  READ A16 DICOM Standard — Image spatial geometry, DICOM SEG and referenced source images; locate exact part/modules for version — https://www.dicomstandard.org/current\n  READ A03 MIT HST.582J — Lecture 17 — Medical image modalities; Lectures 9,12 image processing — https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/\n  REPO R06 SimpleITK — physical-space image processing, registration — https://github.com/SimpleITK/SimpleITK\n  REPO R07 IDC Index — reproducible dataset collection and download — https://github.com/ImagingDataCommons/idc-index\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "artifacts",
+      "returncode": 0,
+      "output": "\n== IMG.01 DICOM/NIfTI volume construction ==\nIntent: Read slices using spatial metadata and preserve original image artifacts \nTest: Round-trip known volume spacing/origin/orientation\n BOOK/LECTURE A05 ITK Software Guide | Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition | https://itk.org/ITKSoftwareGuide/html/ | verified topical volume; exact chapter pending\n BOOK/LECTURE A16 DICOM Standard | Image spatial geometry, DICOM SEG and referenced source images; locate exact part/modules for version | https://www.dicomstandard.org/current | standard verified; section number pending\n BOOK/LECTURE A03 MIT HST.582J | Lecture 17 — Medical image modalities; Lectures 9,12 image processing | https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/ | verified section\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R06 SimpleITK | https://github.com/SimpleITK/SimpleITK \n  Inspect: Inspect ImageRegistrationMethod, Resample, direction/origin/spacing and examples \n  Reuse: Adopt supported registration/resampling and save transforms \n  Avoid: Do not assume registration always valid or comparability equal overlay \n  Verify: Known rigid transform, LPS/RAS roundtrip, failure QC\n REPOSITORY R07 IDC Index | https://github.com/ImagingDataCommons/idc-index \n  Inspect: Inspect IDCClient metadata hierarchy, SQL querying, download manifests \n  Reuse: Adopt maintained package to download authorized selected studies \n  Avoid: Do not bulk-download entire datasets or assume every cohort is in IDC \n  Verify: Download one approved series, SHA-256 and patient/study linkage\n REPOSITORY R13 Cornerstone3D | https://github.com/cornerstonejs/cornerstone3D \n  Inspect: Inspect packages/tools, viewport, segmentation loaders and examples \n  Reuse: Evaluate direct library integration rather than all of OHIF \n  Avoid: Do not recode entire DICOM viewport layer \n  Verify: Render known DICOM and overlay matched segmentation\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "D.INFRA",
+    "INF.DEPLOY",
+    "INF.JOBS"
+  ],
+  "academic_behavior_ids": [
+    "IMG.01",
+    "IMG.10"
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.INFRA"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.API"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.DB"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.OBJECT"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.JOBS"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.CI"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "INF.DEPLOY",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.REPORT"
+    }
+  ],
+  "mapped_source_ids": [
+    "A02",
+    "A03",
+    "A04",
+    "A05",
+    "A16",
+    "P05",
+    "R03",
+    "R06",
+    "R07"
+  ],
+  "source_sections_inspected": "SPEC-007 worker/outboxarchitecture; SPEC-008 jobs/attempts/publication/artifactcontracts; SPEC-010 sourceprivacy; SPEC-011 failurerecovery; audit A03/C02/C05; Phase1COS012/013evidence"
+}

@@ -1,0 +1,4 @@
+PASS original map lookup: docs/Agent_knowledge_map/Knowlage_map_1/query_map.py
+PASS original map lookup: docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py
+PASS original map lookup: docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py
+PASS readable original maps/registry/index; external URLs and source contents not verified by this check

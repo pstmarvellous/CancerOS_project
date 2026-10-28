@@ -1,0 +1,45 @@
+{
+  "capability_nodes": 121,
+  "academic_nodes": 75,
+  "dangling_capability_edges": [],
+  "missing_academic_references": [],
+  "locators_needing_verification": [
+    {
+      "id": "A05",
+      "locator_status": "verified topical volume; exact chapter pending"
+    },
+    {
+      "id": "A06",
+      "locator_status": "topic verified; precise chapter pending"
+    },
+    {
+      "id": "A07",
+      "locator_status": "topic indicated; precise chapter pending"
+    },
+    {
+      "id": "A10",
+      "locator_status": "topical location; subsection pending"
+    },
+    {
+      "id": "A11",
+      "locator_status": "precise chapter pending"
+    },
+    {
+      "id": "A12",
+      "locator_status": "verified document; topic-specific revision required"
+    },
+    {
+      "id": "A16",
+      "locator_status": "standard verified; section number pending"
+    },
+    {
+      "id": "A17",
+      "locator_status": "exact lecture pending"
+    },
+    {
+      "id": "A18",
+      "locator_status": "verified topical reference"
+    }
+  ],
+  "remote_urls_checked": false
+}

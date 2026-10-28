@@ -1,0 +1,606 @@
+[
+  {
+    "id": "DAT.01",
+    "title": "Source patient/study identity",
+    "purpose": "Preserve pseudonymous patient→study→series→acquisition linkage; distinct DCE phase vs repeat visit",
+    "priority": "P0",
+    "specification": "COS-SPEC-003",
+    "repositories": [
+      "R07"
+    ],
+    "scientific_behavior_id": "DAT.01",
+    "validation": "Patient/study/series manifest round-trip; no patient mixing",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "DAT.02",
+    "title": "Licensing and provenance",
+    "purpose": "Separate source licensing, original/derived/synthetic origin and immutable lineage",
+    "priority": "P0",
+    "specification": "COS-SPEC-003",
+    "repositories": [
+      "R07"
+    ],
+    "scientific_behavior_id": "DAT.02",
+    "validation": "Provenance complete; unauthorized sources quarantined",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "DAT.03",
+    "title": "Data quality and missingness",
+    "purpose": "Do not impute absent labs or tumor labels without explicit derived/synthetic markers",
+    "priority": "P0",
+    "specification": "COS-SPEC-003",
+    "repositories": [
+      "R07"
+    ],
+    "scientific_behavior_id": "DAT.03",
+    "validation": "Missingness and unit validation fixtures",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "DAT.04",
+    "title": "Patient-level split and duplicate detection",
+    "purpose": "Keep source patient and synthetic descendants in same evaluation partition",
+    "priority": "P0",
+    "specification": "COS-SPEC-003",
+    "repositories": [
+      "R07"
+    ],
+    "scientific_behavior_id": "DAT.04",
+    "validation": "No split leakage or duplicated derivative patient",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "IMG.01",
+    "title": "DICOM/NIfTI volume construction",
+    "purpose": "Read slices using spatial metadata and preserve original image artifacts",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "repositories": [
+      "R06",
+      "R07",
+      "R13",
+      "R14"
+    ],
+    "scientific_behavior_id": "IMG.01",
+    "validation": "Round-trip known volume spacing/origin/orientation",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "IMG.02",
+    "title": "MRI channel and DCE-phase management",
+    "purpose": "Do not reinterpret contrast phases as longitudinal patient follow-up",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "repositories": [
+      "R01",
+      "R05",
+      "R13",
+      "R14"
+    ],
+    "scientific_behavior_id": "IMG.02",
+    "validation": "Correct channel order and study timestamps",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "IMG.03",
+    "title": "Intensity preprocessing",
+    "purpose": "Apply documented modality/model-specific clipping/normalization without changing physical metadata",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "repositories": [
+      "R05",
+      "R01",
+      "R13",
+      "R14"
+    ],
+    "scientific_behavior_id": "IMG.03",
+    "validation": "Deterministic intensity transforms and mask alignment",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "IMG.04",
+    "title": "Physical-coordinate transformations",
+    "purpose": "Preserve voxel→patient LPS/RAS→viewer transforms; verify inverses",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "repositories": [
+      "R03",
+      "R06",
+      "R13",
+      "R14"
+    ],
+    "scientific_behavior_id": "IMG.04",
+    "validation": "Known geometry test phantom; round trip",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "IMG.05",
+    "title": "Reference mask semantic validation",
+    "purpose": "Distinguish anatomical expert masks from FTV/enhancement ROI/bounding boxes",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "repositories": [
+      "R01",
+      "R03",
+      "R13",
+      "R14"
+    ],
+    "scientific_behavior_id": "IMG.05",
+    "validation": "Annotation type labeled; reject unsupported mask meaning",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "IMG.06",
+    "title": "Segmentation inference",
+    "purpose": "Use evaluated model and matched preprocessing; reference-mask fallback",
+    "priority": "P1",
+    "specification": "COS-SPEC-005",
+    "repositories": [
+      "R01",
+      "R02",
+      "R05",
+      "R13",
+      "R14"
+    ],
+    "scientific_behavior_id": "IMG.06",
+    "validation": "Held-out Dice/HD95 and empty mask rate",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "IMG.07",
+    "title": "Segmentation postprocessing",
+    "purpose": "Connected components, label preserving resampling and mask QC",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "repositories": [
+      "R05",
+      "R03",
+      "R13",
+      "R14"
+    ],
+    "scientific_behavior_id": "IMG.07",
+    "validation": "No unauthorized lesion deletion; dimensions align",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "IMG.08",
+    "title": "Lesion volume and diameter",
+    "purpose": "Compute volume from voxel geometry; do not treat box diameter as RECIST",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "repositories": [
+      "R03",
+      "R11",
+      "R13",
+      "R14"
+    ],
+    "scientific_behavior_id": "IMG.08",
+    "validation": "Known 3D phantom volume and dimensional accuracy",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "IMG.09",
+    "title": "3D surface reconstruction",
+    "purpose": "Extract, validate and optionally simplify mask-based surface; calculate authoritative volume on mask",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "repositories": [
+      "R03",
+      "R13",
+      "R14"
+    ],
+    "scientific_behavior_id": "IMG.09",
+    "validation": "Mesh spatial/volume reconciliation",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "IMG.10",
+    "title": "Longitudinal registration",
+    "purpose": "Only align real exams if comparable; separate transform quality from volume measurement",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "repositories": [
+      "R03",
+      "R06",
+      "R13",
+      "R14"
+    ],
+    "scientific_behavior_id": "IMG.10",
+    "validation": "Known transform recovery; overlay disabled on failure",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "IMG.11",
+    "title": "Lesion correspondence",
+    "purpose": "Track lesion IDs only where evidence supports correspondence across visits",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "repositories": [
+      "R04",
+      "R03",
+      "R13",
+      "R14"
+    ],
+    "scientific_behavior_id": "IMG.11",
+    "validation": "Uncertain lesion match abstains",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "IMG.12",
+    "title": "2D/3D medical browser viewer",
+    "purpose": "Display actual scans and segmentations in correct orientation and coordinates",
+    "priority": "P0",
+    "specification": "COS-SPEC-009",
+    "repositories": [
+      "R04",
+      "R03",
+      "R13",
+      "R14"
+    ],
+    "scientific_behavior_id": "IMG.12",
+    "validation": "Image/mask overlay matches 3D surface",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "IMG.13",
+    "title": "Synthetic shape generation",
+    "purpose": "Derive simulated mesh from original mask; label geometry simulated; constrain target volume",
+    "priority": "P0",
+    "specification": "COS-SPEC-004,005",
+    "repositories": [
+      "R03",
+      "R13",
+      "R14"
+    ],
+    "scientific_behavior_id": "IMG.13",
+    "validation": "Target-vs-produced mask volume tolerance",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "TWIN.01",
+    "title": "Observed and synthetic twin states",
+    "purpose": "Maintain immutable actual states and independent simulated branches",
+    "priority": "P0",
+    "specification": "COS-SPEC-001,008",
+    "repositories": [
+      "R04",
+      "R14"
+    ],
+    "scientific_behavior_id": "TWIN.01",
+    "validation": "Branch isolation and history tests",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "TWIN.02",
+    "title": "Timeline synchronization",
+    "purpose": "Selecting visit synchronizes imagery, tumor metrics, labs, treatments and provenance",
+    "priority": "P0",
+    "specification": "COS-SPEC-009",
+    "repositories": [
+      "R04",
+      "R14"
+    ],
+    "scientific_behavior_id": "TWIN.02",
+    "validation": "E2E multi-date state consistency",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "TWIN.03",
+    "title": "New observation update",
+    "purpose": "Append new observation; recompute dependent measurements; retain old calculations",
+    "priority": "P0",
+    "specification": "COS-SPEC-008",
+    "repositories": [
+      "R04",
+      "R14"
+    ],
+    "scientific_behavior_id": "TWIN.03",
+    "validation": "No silent overwrite; stale interpretation invalidated",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "SIM.01",
+    "title": "Five trajectory scenario patterns",
+    "purpose": "Strong response, partial/stable, growth, regrowth, toxicity/deterioration",
+    "priority": "P0",
+    "specification": "COS-SPEC-004",
+    "repositories": [
+      "R10"
+    ],
+    "scientific_behavior_id": "SIM.01",
+    "validation": "Shape constraints on all five families",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "SIM.02",
+    "title": "Within/between patient heterogeneity",
+    "purpose": "Separate individual latent state, scenario trajectory, observation noise and patient variability",
+    "priority": "P0",
+    "specification": "COS-SPEC-004",
+    "repositories": [
+      "R10"
+    ],
+    "scientific_behavior_id": "SIM.02",
+    "validation": "Between/within variance diagnostics",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "SIM.03",
+    "title": "Clinical treatment compatibility",
+    "purpose": "Guard endocrine/HER2/immunotherapy cases by documented subtype and setting",
+    "priority": "P0",
+    "specification": "COS-SPEC-004",
+    "repositories": [
+      "R10"
+    ],
+    "scientific_behavior_id": "SIM.03",
+    "validation": "Invalid eligibility blocked; unknown not invented",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "SIM.04",
+    "title": "Discrete surgery and radiotherapy events",
+    "purpose": "Model intervention as dated event not generic geometric shrinkage",
+    "priority": "P0",
+    "specification": "COS-SPEC-004",
+    "repositories": [
+      "R10"
+    ],
+    "scientific_behavior_id": "SIM.04",
+    "validation": "Surgical transition has explicit status and rationale",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "SIM.05",
+    "title": "Laboratory and symptom generation",
+    "purpose": "Generate observed variables by timestamp, unit, dependency, missingness and patient state",
+    "priority": "P0",
+    "specification": "COS-SPEC-004",
+    "repositories": [
+      "R10"
+    ],
+    "scientific_behavior_id": "SIM.05",
+    "validation": "Cross-modal range, covariance and timing checks",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "SIM.06",
+    "title": "Toxicity/event grading",
+    "purpose": "Record abnormal observations and assign CTCAE grade only with defined evidence",
+    "priority": "P0",
+    "specification": "COS-SPEC-004",
+    "repositories": [
+      "R10"
+    ],
+    "scientific_behavior_id": "SIM.06",
+    "validation": "Without required evidence no formal grade",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "SIM.07",
+    "title": "Reproducibility and parameter versioning",
+    "purpose": "Use seed, config hash, simulator version and independent lineage",
+    "priority": "P0",
+    "specification": "COS-SPEC-004",
+    "repositories": [
+      "R10"
+    ],
+    "scientific_behavior_id": "SIM.07",
+    "validation": "Byte/semantic reproducibility with controlled tolerance",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "SIM.08",
+    "title": "Simulation credibility tests",
+    "purpose": "Distinguish program verification, fit/calibration, external validation and context of use",
+    "priority": "P0",
+    "specification": "COS-SPEC-011",
+    "repositories": [
+      "R10"
+    ],
+    "scientific_behavior_id": "SIM.08",
+    "validation": "Report independent synthetic and real-case metrics",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "SIM.09",
+    "title": "Missing-data mechanisms",
+    "purpose": "Represent absent, censored and scheduled-not-collected differently if source supports",
+    "priority": "P0",
+    "specification": "COS-SPEC-004",
+    "repositories": [
+      "R10"
+    ],
+    "scientific_behavior_id": "SIM.09",
+    "validation": "No missing=normal leaks",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "AI.01",
+    "title": "Clinical note extraction",
+    "purpose": "Extract typed mentions with spans, uncertainty, negation and dates",
+    "priority": "P0",
+    "specification": "COS-SPEC-006",
+    "repositories": [
+      "R15"
+    ],
+    "scientific_behavior_id": "AI.01",
+    "validation": "Curated entity and negation tests",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "AI.02",
+    "title": "Deterministic medical arithmetic",
+    "purpose": "Compute numeric trends outside LLM; units and dates source-grounded",
+    "priority": "P0",
+    "specification": "COS-SPEC-006",
+    "repositories": [
+      "R03",
+      "R15"
+    ],
+    "scientific_behavior_id": "AI.02",
+    "validation": "Exact numeric claims match records",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "AI.03",
+    "title": "Evidence retrieval and citation checking",
+    "purpose": "Curate clinical sources, link exact evidence, avoid unverified generated links",
+    "priority": "P0",
+    "specification": "COS-SPEC-006",
+    "repositories": [
+      "R15"
+    ],
+    "scientific_behavior_id": "AI.03",
+    "validation": "Every cited claim resolves to supporting source",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "AI.04",
+    "title": "Multimodal fusion",
+    "purpose": "Combine observed imaging, labs, notes, symptoms and treatments with conflict/provenance markers",
+    "priority": "P0",
+    "specification": "COS-SPEC-006",
+    "repositories": [
+      "R15"
+    ],
+    "scientific_behavior_id": "AI.04",
+    "validation": "Cross-source conflicts surfaced",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "AI.05",
+    "title": "Temporal forecasting eligibility",
+    "purpose": "Use simple comparator first; abstain on insufficient real follow-up; synthetic not real proof",
+    "priority": "P0",
+    "specification": "COS-SPEC-006,011",
+    "repositories": [
+      "R10",
+      "R15"
+    ],
+    "scientific_behavior_id": "AI.05",
+    "validation": "Held-out simple baselines; no fabricated confidence",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "AI.06",
+    "title": "Interpretation output guard",
+    "purpose": "Evidence-constrained summaries, validation, provenance and no individualized prescriptions",
+    "priority": "P0",
+    "specification": "COS-SPEC-006",
+    "repositories": [
+      "R15"
+    ],
+    "scientific_behavior_id": "AI.06",
+    "validation": "Unsupported numeric and medical claims rejected",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "EVAL.01",
+    "title": "Segmentation quality reporting",
+    "purpose": "Report Dice, surface distance, volume error per real source cohort",
+    "priority": "P0",
+    "specification": "COS-SPEC-011",
+    "repositories": [
+      "R11",
+      "R05"
+    ],
+    "scientific_behavior_id": "EVAL.01",
+    "validation": "Independent metric tests and cohort boundaries",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "EVAL.02",
+    "title": "Statistical diagnostics of synthetic cohorts",
+    "purpose": "Compare real available distributions against replicated synthetic summaries",
+    "priority": "P0",
+    "specification": "COS-SPEC-011",
+    "repositories": [
+      "R10"
+    ],
+    "scientific_behavior_id": "EVAL.02",
+    "validation": "Plots/tests for correlation, time spacing, missingness",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "EVAL.03",
+    "title": "Scientific model documentation",
+    "purpose": "Document context, assumption, version, calibration, applicability and failure",
+    "priority": "P0",
+    "specification": "COS-SPEC-010,011",
+    "repositories": [],
+    "scientific_behavior_id": "EVAL.03",
+    "validation": "Limitations report per model",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "UX.01",
+    "title": "Provenance-labeled scenario comparison",
+    "purpose": "Real observed / real derived / synthetic / interpolation / forecast never conflated",
+    "priority": "P0",
+    "specification": "COS-SPEC-009",
+    "repositories": [
+      "R04"
+    ],
+    "scientific_behavior_id": "UX.01",
+    "validation": "Visible labels in screenshots and E2E tests",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  },
+  {
+    "id": "OPS.01",
+    "title": "Reproducible image model deployment",
+    "purpose": "Pinned upstream version, licenses, model weights and scalable inference fallback",
+    "priority": "P0",
+    "specification": "COS-SPEC-007",
+    "repositories": [
+      "R02",
+      "R05",
+      "R01"
+    ],
+    "scientific_behavior_id": "OPS.01",
+    "validation": "Fresh install, no-cloud fallback and logs",
+    "adoption_state": "not_assessed",
+    "evidence_kind": "reference_map_not_executed"
+  }
+]

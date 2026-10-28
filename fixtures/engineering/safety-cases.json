@@ -1,0 +1,96 @@
+{
+  "fixture_origin": "ENGINEERING_ONLY_NONCLINICAL",
+  "no_patient_data": true,
+  "cases": [
+    {
+      "id": "NEG-cross_patient",
+      "input": {
+        "artificial_case": "cross_patient"
+      },
+      "expected": "Reject foreign patient/project reference",
+      "owner": "backend+database",
+      "status": "planned_typed_fixture"
+    },
+    {
+      "id": "NEG-wrong_branch",
+      "input": {
+        "artificial_case": "wrong_branch"
+      },
+      "expected": "Reject ordinary cross-context link; baseline uses explicit exception",
+      "owner": "backend+database",
+      "status": "planned_typed_fixture"
+    },
+    {
+      "id": "NEG-missing_receptor",
+      "input": {
+        "artificial_case": "missing_receptor"
+      },
+      "expected": "Unknown is not negative; block exposure eligibility",
+      "owner": "future clinical dictionary",
+      "status": "planned_typed_fixture"
+    },
+    {
+      "id": "NEG-invalid_unit",
+      "input": {
+        "artificial_case": "invalid_unit"
+      },
+      "expected": "Reject incompatible unit; preserve original source value",
+      "owner": "contracts+future dictionaries",
+      "status": "planned_typed_fixture"
+    },
+    {
+      "id": "NEG-unknown_date",
+      "input": {
+        "artificial_case": "unknown_date"
+      },
+      "expected": "Keep unplaced; no fabricated root date",
+      "owner": "contracts+timeline",
+      "status": "planned_typed_fixture"
+    },
+    {
+      "id": "NEG-unsupported_claim",
+      "input": {
+        "artificial_case": "unsupported_claim"
+      },
+      "expected": "Reject invented measurement/pathology/clinical recommendation before publication",
+      "owner": "future grounding",
+      "status": "planned_typed_fixture"
+    },
+    {
+      "id": "NEG-injection",
+      "input": {
+        "artificial_case": "injection"
+      },
+      "expected": "Treat embedded instruction as inert text; no tool escalation",
+      "owner": "future retrieval/provider",
+      "status": "planned_typed_fixture"
+    },
+    {
+      "id": "NEG-denied_export",
+      "input": {
+        "artificial_case": "denied_export"
+      },
+      "expected": "No provider request without versioned export permission",
+      "owner": "gateway",
+      "status": "planned_typed_fixture"
+    },
+    {
+      "id": "NEG-censored",
+      "input": {
+        "artificial_case": "censored"
+      },
+      "expected": "Comparator and threshold retained; no exact value conversion",
+      "owner": "future clinical result",
+      "status": "planned_typed_fixture"
+    },
+    {
+      "id": "NEG-lab_only",
+      "input": {
+        "artificial_case": "lab_only"
+      },
+      "expected": "Prior imaging explicitly historical, no new scan asserted",
+      "owner": "future state builder",
+      "status": "planned_typed_fixture"
+    }
+  ]
+}

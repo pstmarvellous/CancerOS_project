@@ -1,0 +1,9 @@
+{
+  "scope": "Engineering-only persisted transport/job process smoke; no medical processing",
+  "job_id": "2b486ca9-e389-48cf-a651-1b2e1869190c",
+  "result": "passed",
+  "status": "succeeded",
+  "publication_status": "ready",
+  "digest": "dcef95752b8f2a6d53c912aa3f527d2d3a4628263f2aae2a4739cd61b3716f32",
+  "command": "uv run python scripts/worker_smoke.py"
+}

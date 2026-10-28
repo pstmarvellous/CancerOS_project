@@ -1,0 +1,4 @@
+# Add to root AGENTS.md (merge; do not overwrite existing project rules)
+
+## Mandatory dual reference map preflight
+For each substantial CancerOS engineering task consult both the repository implementation knowledge map (`docs/reference-maps/repository-map/`) and scientific/research knowledge map (`docs/reference-maps/scientific-map/`). Use the same stable behavior IDs and `docs/reference-maps/shared/query_references.py`. Inspect relevant textbook/lecture materials, research papers and repository source at pinned commits before making a consequential scientific or architecture decision. Record source learning, license compatibility, reproducibility and acceptance evidence as specified in `docs/reference-maps/shared/AGENT-DUAL-MAP-PROTOCOL.md`. Do not confuse a mapped reference with tested code or scientific validation. Keep the twelve specifications authoritative for project behavior.

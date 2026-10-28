@@ -1,0 +1,32 @@
+{
+  "recorded_at": "2026-10-27T18:38:17.307318+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "python": "3.12.14",
+  "scope": "persistence engineering foundation only",
+  "input_hash": "776ae6d5d3a5bd2a949ba2336e6d7c1f487a6f2c695301e8e63b8d1ea601560a",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "scripts/migrate_test.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS disposable PostgreSQL migrations and repeated upgrade; no reset/drop performed\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests/test_persistence.py",
+        "tests/test_storage.py",
+        "--tb=line"
+      ],
+      "exit_code": 0,
+      "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.12.14, pytest-9.1.1, pluggy-1.7.0\nrootdir: C:\\Users\\HomePC\\Desktop\\cancerOs_project\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollected 4 items\n\ntests\\test_persistence.py ...                                            [ 75%]\ntests\\test_storage.py .                                                  [100%]\n\n============================== 4 passed in 3.18s ==============================\n",
+      "stderr": ""
+    }
+  ],
+  "result": "passed"
+}

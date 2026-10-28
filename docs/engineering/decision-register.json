@@ -1,0 +1,300 @@
+{
+  "schema_version": "1",
+  "baseline_adoption": "not_evidenced",
+  "decisions": [
+    {
+      "id": "A01",
+      "title": "API catalog reconciliation",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p2; SPEC-005 pp22-23, SPEC-006 pp30-32, SPEC-007 pp11-12, SPEC-008 pp8-13",
+      "resolution": "SPEC-008 governs project-scoped REST, not legacy examples",
+      "owner": "API/contracts",
+      "affected_tasks": [
+        "COS-008"
+      ],
+      "status": "resolved_design_pending_adoption",
+      "adoption_evidence": null,
+      "implementation_status": "not_started",
+      "verification_evidence": [],
+      "next_action": "SPEC-008 governs project-scoped REST, not legacy examples"
+    },
+    {
+      "id": "A02",
+      "title": "Synthetic derivative origin",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p2; SPEC-004 p24; SPEC-010 p2",
+      "resolution": "Synthetic processing retains SYNTHETIC_GENERATED under SAFE-02",
+      "owner": "data/safety",
+      "affected_tasks": [
+        "COS-005"
+      ],
+      "status": "resolved_design_pending_adoption",
+      "adoption_evidence": null,
+      "implementation_status": "not_started",
+      "verification_evidence": [],
+      "next_action": "Synthetic processing retains SYNTHETIC_GENERATED under SAFE-02"
+    },
+    {
+      "id": "A03",
+      "title": "Ready versus published",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p2; SPEC-004 p25; SPEC-008 pp12-14; SPEC-009 p6",
+      "resolution": "Authorized publication is separate from successful worker execution",
+      "owner": "backend/worker",
+      "affected_tasks": [
+        "COS-008"
+      ],
+      "status": "resolved_design_pending_adoption",
+      "adoption_evidence": null,
+      "implementation_status": "not_started",
+      "verification_evidence": [],
+      "next_action": "Authorized publication is separate from successful worker execution"
+    },
+    {
+      "id": "A04",
+      "title": "Provider neutrality",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p2; SPEC-006 p32; SPEC-007 p17; SPEC-010 p4",
+      "resolution": "Provider-neutral gateway, external export denied until evidenced; Meta target remains supplemental",
+      "owner": "AI/security",
+      "affected_tasks": [
+        "COS-014"
+      ],
+      "status": "resolved_design_pending_adoption",
+      "adoption_evidence": null,
+      "implementation_status": "not_started",
+      "verification_evidence": [],
+      "next_action": "Provider-neutral gateway, external export denied until evidenced; Meta target remains supplemental"
+    },
+    {
+      "id": "A05",
+      "title": "Baseline counting",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p2; PRD p4; SPEC-004 p4; SPEC-008 p1",
+      "resolution": "Four branch positions = shared real baseline plus at least three synthetic follow-ups",
+      "owner": "simulation",
+      "affected_tasks": [
+        "COS-008"
+      ],
+      "status": "resolved_design_pending_adoption",
+      "adoption_evidence": null,
+      "implementation_status": "not_started",
+      "verification_evidence": [],
+      "next_action": "Four branch positions = shared real baseline plus at least three synthetic follow-ups"
+    },
+    {
+      "id": "A06",
+      "title": "Constrained scope",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p2; SPEC-004 pp3/18; SPEC-008 p6; RA-001 pp4-6",
+      "resolution": "Defer automatic grading and literature experiments; preserve evidence drill-down",
+      "owner": "scientific/product",
+      "affected_tasks": [
+        "COS-005"
+      ],
+      "status": "resolved_design_pending_adoption",
+      "adoption_evidence": null,
+      "implementation_status": "not_started",
+      "verification_evidence": [],
+      "next_action": "Defer automatic grading and literature experiments; preserve evidence drill-down"
+    },
+    {
+      "id": "C01",
+      "title": "UI discovery contracts",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p3; SPEC-009 pp14-15; SPEC-012 p4",
+      "resolution": "Freeze capabilities/dictionaries, branches, exact observations, interpretation/evaluation reads early",
+      "owner": "API/frontend",
+      "affected_tasks": [
+        "COS-008"
+      ],
+      "status": "proposed_decision",
+      "adoption_evidence": null,
+      "implementation_status": "design_selected_runtime_future",
+      "verification_evidence": [],
+      "next_action": "design_recorded_domain_reads_future"
+    },
+    {
+      "id": "C02",
+      "title": "Durable revision reconstruction",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p3; SPEC-008 pp4/8/11/14",
+      "resolution": "Persist append-only revision journal and immutable queued input manifest; pin list revision",
+      "owner": "persistence",
+      "affected_tasks": [
+        "COS-012"
+      ],
+      "status": "implemented_unverified",
+      "adoption_evidence": null,
+      "implementation_status": "foundation_subset_verified_full_domain_or_deployment_closure_open",
+      "verification_evidence": [
+        "docs/engineering/evidence/backend.json"
+      ],
+      "next_action": "durable_revision_and_job_input_primitives_verified_full_state_builder_future"
+    },
+    {
+      "id": "C03",
+      "title": "Relative-time root",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p3; SPEC-008 pp3/11",
+      "resolution": "Patient-owned timeline origin independent of state; no fabricated date or self-anchor",
+      "owner": "contracts/persistence",
+      "affected_tasks": [
+        "COS-012"
+      ],
+      "status": "implemented_unverified",
+      "adoption_evidence": null,
+      "implementation_status": "foundation_subset_verified_full_domain_or_deployment_closure_open",
+      "verification_evidence": [
+        "docs/engineering/evidence/backend.json"
+      ],
+      "next_action": "patient_origin_and_relative_root_verified_branch_anchors_future"
+    },
+    {
+      "id": "C04",
+      "title": "Snapshot assembly",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p3; SPEC-008 pp6/11/14; SPEC-009 pp9-10",
+      "resolution": "Version exact-membership/conflict policy; no silent carry-forward; historical imaging explicitly historical",
+      "owner": "state domain",
+      "affected_tasks": [
+        "COS-008"
+      ],
+      "status": "proposed_decision",
+      "adoption_evidence": null,
+      "implementation_status": "design_selected_runtime_future",
+      "verification_evidence": [],
+      "next_action": "exact-membership/1_design_recorded_domain_assembly_future"
+    },
+    {
+      "id": "C05",
+      "title": "Identity/configuration",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p3; SPEC-007/008 access rules",
+      "resolution": "Select validated bearer identity, project membership, private services and explicit limits",
+      "owner": "security/platform",
+      "affected_tasks": [
+        "COS-014"
+      ],
+      "status": "implemented_unverified",
+      "adoption_evidence": null,
+      "implementation_status": "foundation_subset_verified_full_domain_or_deployment_closure_open",
+      "verification_evidence": [
+        "docs/engineering/evidence/backend.json"
+      ],
+      "next_action": "RS256_and_SQL_membership_foundation_verified_real_enrollment_and_restricted_roles_future"
+    },
+    {
+      "id": "C06",
+      "title": "Clinical/simulation dictionaries",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p3; SPEC-004 pp10-18; SPEC-008 pp3/6/12",
+      "resolution": "Reviewed versioned five-family dictionaries/rules required before domain enablement",
+      "owner": "scientific/data",
+      "affected_tasks": [
+        "future-domain"
+      ],
+      "status": "unimplemented_contract",
+      "adoption_evidence": null,
+      "implementation_status": "not_started",
+      "verification_evidence": [],
+      "next_action": "Reviewed versioned five-family dictionaries/rules required before domain enablement"
+    },
+    {
+      "id": "D01",
+      "title": "Real baseline/mask",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p4; SPEC-003 pp20-24; SPEC-005 pp3-4/26",
+      "resolution": "Verify release, demo rights, identity, mask class, physical geometry and overlay",
+      "owner": "data/scientific owner",
+      "affected_tasks": [
+        "future-domain"
+      ],
+      "status": "external_evidence_dependency",
+      "adoption_evidence": null,
+      "implementation_status": "not_started",
+      "verification_evidence": [],
+      "next_action": "Verify release, demo rights, identity, mask class, physical geometry and overlay"
+    },
+    {
+      "id": "D02",
+      "title": "Genuine longitudinal case",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p4",
+      "resolution": "Two real examinations, valid timing/lesion correspondence and comparable measurements",
+      "owner": "data/scientific owner",
+      "affected_tasks": [
+        "future-domain"
+      ],
+      "status": "external_evidence_dependency",
+      "adoption_evidence": null,
+      "implementation_status": "not_started",
+      "verification_evidence": [],
+      "next_action": "Two real examinations, valid timing/lesion correspondence and comparable measurements"
+    },
+    {
+      "id": "D03",
+      "title": "Source rights/privacy",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p4",
+      "resolution": "Artifact-level use/distribution, privacy and retention review",
+      "owner": "project/data owner",
+      "affected_tasks": [
+        "future-domain"
+      ],
+      "status": "external_evidence_dependency",
+      "adoption_evidence": null,
+      "implementation_status": "not_started",
+      "verification_evidence": [],
+      "next_action": "Artifact-level use/distribution, privacy and retention review"
+    },
+    {
+      "id": "D04",
+      "title": "External inference",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p4; SPEC-010 pp4-5",
+      "resolution": "Account/model, minimized payload rights, retention/training terms and grounding evidence",
+      "owner": "project/AI owner",
+      "affected_tasks": [
+        "COS-014"
+      ],
+      "status": "external_evidence_dependency",
+      "adoption_evidence": null,
+      "implementation_status": "not_started",
+      "verification_evidence": [],
+      "next_action": "Account/model, minimized payload rights, retention/training terms and grounding evidence"
+    },
+    {
+      "id": "D05",
+      "title": "Scientific evaluation",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p4; SPEC-011",
+      "resolution": "Frozen actual results, physical checks, patient splits and real review evidence",
+      "owner": "engineering/scientific owner",
+      "affected_tasks": [
+        "future-domain"
+      ],
+      "status": "external_evidence_dependency",
+      "adoption_evidence": null,
+      "implementation_status": "not_started",
+      "verification_evidence": [],
+      "next_action": "Frozen actual results, physical checks, patient splits and real review evidence"
+    },
+    {
+      "id": "D06",
+      "title": "Deployment/demo",
+      "source_document": "COS-AUD-001",
+      "source_locator": "audit p4; SPEC-012",
+      "resolution": "Measured target-device behavior, restore/access/retry and official event verification",
+      "owner": "engineering/project owner",
+      "affected_tasks": [
+        "COS-015"
+      ],
+      "status": "external_evidence_dependency",
+      "adoption_evidence": null,
+      "implementation_status": "not_started",
+      "verification_evidence": [],
+      "next_action": "Measured target-device behavior, restore/access/retry and official event verification"
+    }
+  ]
+}

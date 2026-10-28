@@ -1,0 +1,842 @@
+[
+  {
+    "id": "DAT.01",
+    "title": "Source patient/study identity",
+    "intended_behavior": "Preserve pseudonymous patient→study→series→acquisition linkage; distinct DCE phase vs repeat visit",
+    "priority": "P0",
+    "specification": "COS-SPEC-003",
+    "academic_sources": [
+      "A16",
+      "A03"
+    ],
+    "papers": [
+      "P05"
+    ],
+    "implementations": [
+      "R07"
+    ],
+    "verification": "Patient/study/series manifest round-trip; no patient mixing",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "DAT.02",
+    "title": "Licensing and provenance",
+    "intended_behavior": "Separate source licensing, original/derived/synthetic origin and immutable lineage",
+    "priority": "P0",
+    "specification": "COS-SPEC-003",
+    "academic_sources": [
+      "A14"
+    ],
+    "papers": [
+      "P05"
+    ],
+    "implementations": [
+      "R07"
+    ],
+    "verification": "Provenance complete; unauthorized sources quarantined",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "DAT.03",
+    "title": "Data quality and missingness",
+    "intended_behavior": "Do not impute absent labs or tumor labels without explicit derived/synthetic markers",
+    "priority": "P0",
+    "specification": "COS-SPEC-003",
+    "academic_sources": [
+      "A11",
+      "A14"
+    ],
+    "papers": [
+      "P05"
+    ],
+    "implementations": [
+      "R07"
+    ],
+    "verification": "Missingness and unit validation fixtures",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "DAT.04",
+    "title": "Patient-level split and duplicate detection",
+    "intended_behavior": "Keep source patient and synthetic descendants in same evaluation partition",
+    "priority": "P0",
+    "specification": "COS-SPEC-003",
+    "academic_sources": [
+      "A11",
+      "A14"
+    ],
+    "papers": [
+      "P05"
+    ],
+    "implementations": [
+      "R07"
+    ],
+    "verification": "No split leakage or duplicated derivative patient",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "IMG.01",
+    "title": "DICOM/NIfTI volume construction",
+    "intended_behavior": "Read slices using spatial metadata and preserve original image artifacts",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "academic_sources": [
+      "A05",
+      "A16",
+      "A03"
+    ],
+    "papers": [
+      "P05"
+    ],
+    "implementations": [
+      "R06",
+      "R07",
+      "R13",
+      "R14"
+    ],
+    "verification": "Round-trip known volume spacing/origin/orientation",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "IMG.02",
+    "title": "MRI channel and DCE-phase management",
+    "intended_behavior": "Do not reinterpret contrast phases as longitudinal patient follow-up",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "academic_sources": [
+      "A03",
+      "A16"
+    ],
+    "papers": [
+      "P01"
+    ],
+    "implementations": [
+      "R01",
+      "R05",
+      "R13",
+      "R14"
+    ],
+    "verification": "Correct channel order and study timestamps",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "IMG.03",
+    "title": "Intensity preprocessing",
+    "intended_behavior": "Apply documented modality/model-specific clipping/normalization without changing physical metadata",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "academic_sources": [
+      "A03",
+      "A05",
+      "A06"
+    ],
+    "papers": [
+      "P02"
+    ],
+    "implementations": [
+      "R05",
+      "R01",
+      "R13",
+      "R14"
+    ],
+    "verification": "Deterministic intensity transforms and mask alignment",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "IMG.04",
+    "title": "Physical-coordinate transformations",
+    "intended_behavior": "Preserve voxel→patient LPS/RAS→viewer transforms; verify inverses",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "academic_sources": [
+      "A05",
+      "A16",
+      "A17"
+    ],
+    "papers": [
+      "P04"
+    ],
+    "implementations": [
+      "R03",
+      "R06",
+      "R13",
+      "R14"
+    ],
+    "verification": "Known geometry test phantom; round trip",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "IMG.05",
+    "title": "Reference mask semantic validation",
+    "intended_behavior": "Distinguish anatomical expert masks from FTV/enhancement ROI/bounding boxes",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "academic_sources": [
+      "A01",
+      "A06",
+      "A08"
+    ],
+    "papers": [
+      "P01"
+    ],
+    "implementations": [
+      "R01",
+      "R03",
+      "R13",
+      "R14"
+    ],
+    "verification": "Annotation type labeled; reject unsupported mask meaning",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "IMG.06",
+    "title": "Segmentation inference",
+    "intended_behavior": "Use evaluated model and matched preprocessing; reference-mask fallback",
+    "priority": "P1",
+    "specification": "COS-SPEC-005",
+    "academic_sources": [
+      "A01",
+      "A06"
+    ],
+    "papers": [
+      "P01",
+      "P02"
+    ],
+    "implementations": [
+      "R01",
+      "R02",
+      "R05",
+      "R13",
+      "R14"
+    ],
+    "verification": "Held-out Dice/HD95 and empty mask rate",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "IMG.07",
+    "title": "Segmentation postprocessing",
+    "intended_behavior": "Connected components, label preserving resampling and mask QC",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "academic_sources": [
+      "A01",
+      "A05"
+    ],
+    "papers": [
+      "P02"
+    ],
+    "implementations": [
+      "R05",
+      "R03",
+      "R13",
+      "R14"
+    ],
+    "verification": "No unauthorized lesion deletion; dimensions align",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "IMG.08",
+    "title": "Lesion volume and diameter",
+    "intended_behavior": "Compute volume from voxel geometry; do not treat box diameter as RECIST",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "academic_sources": [
+      "A05",
+      "A08",
+      "A18"
+    ],
+    "papers": [
+      "P04"
+    ],
+    "implementations": [
+      "R03",
+      "R11",
+      "R13",
+      "R14"
+    ],
+    "verification": "Known 3D phantom volume and dimensional accuracy",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "IMG.09",
+    "title": "3D surface reconstruction",
+    "intended_behavior": "Extract, validate and optionally simplify mask-based surface; calculate authoritative volume on mask",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "academic_sources": [
+      "A07",
+      "A17",
+      "A05"
+    ],
+    "papers": [
+      "P04"
+    ],
+    "implementations": [
+      "R03",
+      "R13",
+      "R14"
+    ],
+    "verification": "Mesh spatial/volume reconciliation",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "IMG.10",
+    "title": "Longitudinal registration",
+    "intended_behavior": "Only align real exams if comparable; separate transform quality from volume measurement",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "academic_sources": [
+      "A02",
+      "A04",
+      "A05"
+    ],
+    "papers": [
+      "P05"
+    ],
+    "implementations": [
+      "R03",
+      "R06",
+      "R13",
+      "R14"
+    ],
+    "verification": "Known transform recovery; overlay disabled on failure",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "IMG.11",
+    "title": "Lesion correspondence",
+    "intended_behavior": "Track lesion IDs only where evidence supports correspondence across visits",
+    "priority": "P0",
+    "specification": "COS-SPEC-005",
+    "academic_sources": [
+      "A02",
+      "A06"
+    ],
+    "papers": [
+      "P05"
+    ],
+    "implementations": [
+      "R04",
+      "R03",
+      "R13",
+      "R14"
+    ],
+    "verification": "Uncertain lesion match abstains",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "IMG.12",
+    "title": "2D/3D medical browser viewer",
+    "intended_behavior": "Display actual scans and segmentations in correct orientation and coordinates",
+    "priority": "P0",
+    "specification": "COS-SPEC-009",
+    "academic_sources": [
+      "A17",
+      "A16"
+    ],
+    "papers": [
+      "P05"
+    ],
+    "implementations": [
+      "R04",
+      "R03",
+      "R13",
+      "R14"
+    ],
+    "verification": "Image/mask overlay matches 3D surface",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "IMG.13",
+    "title": "Synthetic shape generation",
+    "intended_behavior": "Derive simulated mesh from original mask; label geometry simulated; constrain target volume",
+    "priority": "P0",
+    "specification": "COS-SPEC-004,005",
+    "academic_sources": [
+      "A07",
+      "A08",
+      "A17"
+    ],
+    "papers": [
+      "P04"
+    ],
+    "implementations": [
+      "R03",
+      "R13",
+      "R14"
+    ],
+    "verification": "Target-vs-produced mask volume tolerance",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "TWIN.01",
+    "title": "Observed and synthetic twin states",
+    "intended_behavior": "Maintain immutable actual states and independent simulated branches",
+    "priority": "P0",
+    "specification": "COS-SPEC-001,008",
+    "academic_sources": [
+      "A14",
+      "A15"
+    ],
+    "papers": [
+      "P05"
+    ],
+    "implementations": [
+      "R04",
+      "R14"
+    ],
+    "verification": "Branch isolation and history tests",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "TWIN.02",
+    "title": "Timeline synchronization",
+    "intended_behavior": "Selecting visit synchronizes imagery, tumor metrics, labs, treatments and provenance",
+    "priority": "P0",
+    "specification": "COS-SPEC-009",
+    "academic_sources": [
+      "A11",
+      "A14"
+    ],
+    "papers": [
+      "P05"
+    ],
+    "implementations": [
+      "R04",
+      "R14"
+    ],
+    "verification": "E2E multi-date state consistency",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "TWIN.03",
+    "title": "New observation update",
+    "intended_behavior": "Append new observation; recompute dependent measurements; retain old calculations",
+    "priority": "P0",
+    "specification": "COS-SPEC-008",
+    "academic_sources": [
+      "A11",
+      "A14"
+    ],
+    "papers": [
+      "P05"
+    ],
+    "implementations": [
+      "R04",
+      "R14"
+    ],
+    "verification": "No silent overwrite; stale interpretation invalidated",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "SIM.01",
+    "title": "Five trajectory scenario patterns",
+    "intended_behavior": "Strong response, partial/stable, growth, regrowth, toxicity/deterioration",
+    "priority": "P0",
+    "specification": "COS-SPEC-004",
+    "academic_sources": [
+      "A11",
+      "A09",
+      "A12"
+    ],
+    "papers": [
+      "P05"
+    ],
+    "implementations": [
+      "R10"
+    ],
+    "verification": "Shape constraints on all five families",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "SIM.02",
+    "title": "Within/between patient heterogeneity",
+    "intended_behavior": "Separate individual latent state, scenario trajectory, observation noise and patient variability",
+    "priority": "P0",
+    "specification": "COS-SPEC-004",
+    "academic_sources": [
+      "A11",
+      "A10",
+      "A09"
+    ],
+    "papers": [
+      "P05"
+    ],
+    "implementations": [
+      "R10"
+    ],
+    "verification": "Between/within variance diagnostics",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "SIM.03",
+    "title": "Clinical treatment compatibility",
+    "intended_behavior": "Guard endocrine/HER2/immunotherapy cases by documented subtype and setting",
+    "priority": "P0",
+    "specification": "COS-SPEC-004",
+    "academic_sources": [
+      "A12"
+    ],
+    "papers": [],
+    "implementations": [
+      "R10"
+    ],
+    "verification": "Invalid eligibility blocked; unknown not invented",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "SIM.04",
+    "title": "Discrete surgery and radiotherapy events",
+    "intended_behavior": "Model intervention as dated event not generic geometric shrinkage",
+    "priority": "P0",
+    "specification": "COS-SPEC-004",
+    "academic_sources": [
+      "A12",
+      "A11"
+    ],
+    "papers": [],
+    "implementations": [
+      "R10"
+    ],
+    "verification": "Surgical transition has explicit status and rationale",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "SIM.05",
+    "title": "Laboratory and symptom generation",
+    "intended_behavior": "Generate observed variables by timestamp, unit, dependency, missingness and patient state",
+    "priority": "P0",
+    "specification": "COS-SPEC-004",
+    "academic_sources": [
+      "A11",
+      "A09",
+      "A13"
+    ],
+    "papers": [],
+    "implementations": [
+      "R10"
+    ],
+    "verification": "Cross-modal range, covariance and timing checks",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "SIM.06",
+    "title": "Toxicity/event grading",
+    "intended_behavior": "Record abnormal observations and assign CTCAE grade only with defined evidence",
+    "priority": "P0",
+    "specification": "COS-SPEC-004",
+    "academic_sources": [
+      "A13",
+      "A12"
+    ],
+    "papers": [],
+    "implementations": [
+      "R10"
+    ],
+    "verification": "Without required evidence no formal grade",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "SIM.07",
+    "title": "Reproducibility and parameter versioning",
+    "intended_behavior": "Use seed, config hash, simulator version and independent lineage",
+    "priority": "P0",
+    "specification": "COS-SPEC-004",
+    "academic_sources": [
+      "A09",
+      "A15"
+    ],
+    "papers": [],
+    "implementations": [
+      "R10"
+    ],
+    "verification": "Byte/semantic reproducibility with controlled tolerance",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "SIM.08",
+    "title": "Simulation credibility tests",
+    "intended_behavior": "Distinguish program verification, fit/calibration, external validation and context of use",
+    "priority": "P0",
+    "specification": "COS-SPEC-011",
+    "academic_sources": [
+      "A09",
+      "A15"
+    ],
+    "papers": [
+      "P05"
+    ],
+    "implementations": [
+      "R10"
+    ],
+    "verification": "Report independent synthetic and real-case metrics",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "SIM.09",
+    "title": "Missing-data mechanisms",
+    "intended_behavior": "Represent absent, censored and scheduled-not-collected differently if source supports",
+    "priority": "P0",
+    "specification": "COS-SPEC-004",
+    "academic_sources": [
+      "A11",
+      "A09"
+    ],
+    "papers": [],
+    "implementations": [
+      "R10"
+    ],
+    "verification": "No missing=normal leaks",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "AI.01",
+    "title": "Clinical note extraction",
+    "intended_behavior": "Extract typed mentions with spans, uncertainty, negation and dates",
+    "priority": "P0",
+    "specification": "COS-SPEC-006",
+    "academic_sources": [
+      "A14",
+      "A12"
+    ],
+    "papers": [
+      "P03"
+    ],
+    "implementations": [
+      "R15"
+    ],
+    "verification": "Curated entity and negation tests",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "AI.02",
+    "title": "Deterministic medical arithmetic",
+    "intended_behavior": "Compute numeric trends outside LLM; units and dates source-grounded",
+    "priority": "P0",
+    "specification": "COS-SPEC-006",
+    "academic_sources": [
+      "A08",
+      "A14"
+    ],
+    "papers": [
+      "P03"
+    ],
+    "implementations": [
+      "R03",
+      "R15"
+    ],
+    "verification": "Exact numeric claims match records",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "AI.03",
+    "title": "Evidence retrieval and citation checking",
+    "intended_behavior": "Curate clinical sources, link exact evidence, avoid unverified generated links",
+    "priority": "P0",
+    "specification": "COS-SPEC-006",
+    "academic_sources": [
+      "A12",
+      "A14"
+    ],
+    "papers": [
+      "P03"
+    ],
+    "implementations": [
+      "R15"
+    ],
+    "verification": "Every cited claim resolves to supporting source",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "AI.04",
+    "title": "Multimodal fusion",
+    "intended_behavior": "Combine observed imaging, labs, notes, symptoms and treatments with conflict/provenance markers",
+    "priority": "P0",
+    "specification": "COS-SPEC-006",
+    "academic_sources": [
+      "A14",
+      "A11"
+    ],
+    "papers": [
+      "P03"
+    ],
+    "implementations": [
+      "R15"
+    ],
+    "verification": "Cross-source conflicts surfaced",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "AI.05",
+    "title": "Temporal forecasting eligibility",
+    "intended_behavior": "Use simple comparator first; abstain on insufficient real follow-up; synthetic not real proof",
+    "priority": "P0",
+    "specification": "COS-SPEC-006,011",
+    "academic_sources": [
+      "A11",
+      "A09",
+      "A15"
+    ],
+    "papers": [
+      "P05"
+    ],
+    "implementations": [
+      "R10",
+      "R15"
+    ],
+    "verification": "Held-out simple baselines; no fabricated confidence",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "AI.06",
+    "title": "Interpretation output guard",
+    "intended_behavior": "Evidence-constrained summaries, validation, provenance and no individualized prescriptions",
+    "priority": "P0",
+    "specification": "COS-SPEC-006",
+    "academic_sources": [
+      "A14",
+      "A12"
+    ],
+    "papers": [
+      "P03"
+    ],
+    "implementations": [
+      "R15"
+    ],
+    "verification": "Unsupported numeric and medical claims rejected",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "EVAL.01",
+    "title": "Segmentation quality reporting",
+    "intended_behavior": "Report Dice, surface distance, volume error per real source cohort",
+    "priority": "P0",
+    "specification": "COS-SPEC-011",
+    "academic_sources": [
+      "A01",
+      "A08"
+    ],
+    "papers": [
+      "P02"
+    ],
+    "implementations": [
+      "R11",
+      "R05"
+    ],
+    "verification": "Independent metric tests and cohort boundaries",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "EVAL.02",
+    "title": "Statistical diagnostics of synthetic cohorts",
+    "intended_behavior": "Compare real available distributions against replicated synthetic summaries",
+    "priority": "P0",
+    "specification": "COS-SPEC-011",
+    "academic_sources": [
+      "A09",
+      "A10",
+      "A11"
+    ],
+    "papers": [],
+    "implementations": [
+      "R10"
+    ],
+    "verification": "Plots/tests for correlation, time spacing, missingness",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "EVAL.03",
+    "title": "Scientific model documentation",
+    "intended_behavior": "Document context, assumption, version, calibration, applicability and failure",
+    "priority": "P0",
+    "specification": "COS-SPEC-010,011",
+    "academic_sources": [
+      "A15",
+      "A14"
+    ],
+    "papers": [
+      "P03"
+    ],
+    "implementations": [],
+    "verification": "Limitations report per model",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "UX.01",
+    "title": "Provenance-labeled scenario comparison",
+    "intended_behavior": "Real observed / real derived / synthetic / interpolation / forecast never conflated",
+    "priority": "P0",
+    "specification": "COS-SPEC-009",
+    "academic_sources": [
+      "A14",
+      "A15"
+    ],
+    "papers": [],
+    "implementations": [
+      "R04"
+    ],
+    "verification": "Visible labels in screenshots and E2E tests",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  },
+  {
+    "id": "OPS.01",
+    "title": "Reproducible image model deployment",
+    "intended_behavior": "Pinned upstream version, licenses, model weights and scalable inference fallback",
+    "priority": "P0",
+    "specification": "COS-SPEC-007",
+    "academic_sources": [
+      "A05",
+      "A14"
+    ],
+    "papers": [
+      "P02"
+    ],
+    "implementations": [
+      "R02",
+      "R05",
+      "R01"
+    ],
+    "verification": "Fresh install, no-cloud fallback and logs",
+    "caution": "design synthesis; not a claim that all cited works demonstrate the full CancerOS behavior",
+    "scientific_status": "design_guidance_not_clinically_validated"
+  }
+]

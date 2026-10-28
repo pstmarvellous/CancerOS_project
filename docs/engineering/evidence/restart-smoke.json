@@ -1,0 +1,14 @@
+{
+  "result": "passed",
+  "command": "uv run python scripts/restart_smoke.py",
+  "scope": "Owned local services and nonclinical byte/job/queue markers; not production backup/restore",
+  "completed_jobs_retained": 3,
+  "tracked_process_rss_mib": {
+    "api": 4.64,
+    "web": 68.61,
+    "storage": 151.68,
+    "queue": 12.41
+  },
+  "host_total_ram_gib": 5.92,
+  "limitations": "Point-in-time process RSS, not peak workload or full8GB scientific pipeline benchmark"
+}

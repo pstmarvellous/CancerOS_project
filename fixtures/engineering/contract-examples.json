@@ -1,0 +1,36 @@
+{
+  "fixture_origin": "ENGINEERING_ONLY_NONCLINICAL",
+  "schema_version": "foundation/1",
+  "revision_example": {
+    "revision_n": {
+      "revision": 1,
+      "member_ids": [
+        "artificial-observation-original"
+      ]
+    },
+    "revision_n_plus_1": {
+      "revision": 2,
+      "member_ids": [
+        "artificial-observation-correction"
+      ]
+    },
+    "required_as_of_n": [
+      "artificial-observation-original"
+    ]
+  },
+  "relative_only_baseline": {
+    "basis": "relative_day",
+    "value": "0",
+    "time_domain": "source_relative",
+    "timeline_origin_id": "00000000-0000-4000-8000-000000000010"
+  },
+  "lab_only_state": {
+    "assembly_policy": "exact-membership/1",
+    "observation_ids": [
+      "artificial-lab"
+    ],
+    "current_geometry": [],
+    "historical_geometry": [],
+    "absence_reason": "No imaging at this anchor"
+  }
+}
