@@ -180,6 +180,7 @@ def generate(check=False):
             "/api/v1/projects/{project_id}/patients/{patient_id}/segmentation-discoveries",
             "/api/v1/projects/{project_id}/patients/{patient_id}/branches",
             "/api/v1/projects/{project_id}/patients/{patient_id}/scenario-definitions",
+            "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/manifest",
         )
         for p in output["openapi.json"]["paths"]
     ), "Unreviewed runtime endpoint"

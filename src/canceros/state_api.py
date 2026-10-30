@@ -60,6 +60,7 @@ from canceros.simulation_runs import (
     save_config,
 )
 from canceros.state_fusion import FusionReport
+from canceros.state_manifest import StateManifest, state_manifest
 from canceros.storage import PrivateStorage
 from canceros.synthetic_contracts import GeneratedMesh
 from canceros.synthetic_geometry import (
@@ -331,6 +332,16 @@ def state_routes(config, memberships):
     ):
         with session(authorization) as (c, i):
             return read_state(c, i, project_id, patient_id, state_id)
+
+    @router.get("/states/{state_id}/manifest", response_model=StateManifest)
+    def get_manifest(
+        project_id: UUID,
+        patient_id: UUID,
+        state_id: UUID,
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (c, i):
+            return state_manifest(c, i, project_id, patient_id, state_id)
 
     @router.post("/states/{state_id}/reviews", response_model=ReviewEvent, status_code=201)
     def post_state_review(

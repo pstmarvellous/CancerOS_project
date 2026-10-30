@@ -18463,6 +18463,43 @@
         "title": "SplitManifest",
         "type": "object"
       },
+      "StateArtifact": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Artifact Id"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "next_action": {
+            "title": "Next Action",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "artifact_id",
+          "status",
+          "next_action"
+        ],
+        "title": "StateArtifact",
+        "type": "object"
+      },
       "StateBuildInput": {
         "additionalProperties": false,
         "properties": {
@@ -18553,6 +18590,62 @@
           "input"
         ],
         "title": "StateCommand",
+        "type": "object"
+      },
+      "StateManifest": {
+        "additionalProperties": false,
+        "properties": {
+          "artifacts": {
+            "items": {
+              "$ref": "#/components/schemas/StateArtifact"
+            },
+            "title": "Artifacts",
+            "type": "array"
+          },
+          "current_use_allowed": {
+            "title": "Current Use Allowed",
+            "type": "boolean"
+          },
+          "next_action": {
+            "default": "resolve_grants_for_selected_state_only",
+            "title": "Next Action",
+            "type": "string"
+          },
+          "restrictions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Restrictions",
+            "type": "array"
+          },
+          "selection_identity": {
+            "title": "Selection Identity",
+            "type": "string"
+          },
+          "snapshot_hash": {
+            "title": "Snapshot Hash",
+            "type": "string"
+          },
+          "snapshot_id": {
+            "format": "uuid",
+            "title": "Snapshot Id",
+            "type": "string"
+          },
+          "stale": {
+            "title": "Stale",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "snapshot_id",
+          "snapshot_hash",
+          "stale",
+          "current_use_allowed",
+          "restrictions",
+          "artifacts",
+          "selection_identity"
+        ],
+        "title": "StateManifest",
         "type": "object"
       },
       "StatePage": {
@@ -30999,6 +31092,82 @@
           }
         },
         "summary": "Saved Create"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/manifest": {
+      "get": {
+        "operationId": "get_manifest_api_v1_projects__project_id__patients__patient_id__states__state_id__manifest_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "state_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "State Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StateManifest"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Manifest"
       }
     },
     "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/publications": {

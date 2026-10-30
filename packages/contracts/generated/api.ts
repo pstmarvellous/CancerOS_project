@@ -2098,6 +2098,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/manifest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Manifest */
+        get: operations["get_manifest_api_v1_projects__project_id__patients__patient_id__states__state_id__manifest_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/publications": {
         parameters: {
             query?: never;
@@ -10578,6 +10595,17 @@ export interface components {
              */
             version: "patient-groups/1";
         };
+        /** StateArtifact */
+        StateArtifact: {
+            /** Artifact Id */
+            artifact_id: string | null;
+            /** Kind */
+            kind: string;
+            /** Next Action */
+            next_action: string;
+            /** Status */
+            status: string;
+        };
         /** StateBuildInput */
         StateBuildInput: {
             /** Association Head */
@@ -10606,6 +10634,31 @@ export interface components {
              * @enum {string}
              */
             operation: "state_assembly";
+        };
+        /** StateManifest */
+        StateManifest: {
+            /** Artifacts */
+            artifacts: components["schemas"]["StateArtifact"][];
+            /** Current Use Allowed */
+            current_use_allowed: boolean;
+            /**
+             * Next Action
+             * @default resolve_grants_for_selected_state_only
+             */
+            next_action: string;
+            /** Restrictions */
+            restrictions: string[];
+            /** Selection Identity */
+            selection_identity: string;
+            /** Snapshot Hash */
+            snapshot_hash: string;
+            /**
+             * Snapshot Id
+             * Format: uuid
+             */
+            snapshot_id: string;
+            /** Stale */
+            stale: boolean;
         };
         /** StatePage */
         StatePage: {
@@ -16235,6 +16288,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PersistedInterpretation"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_manifest_api_v1_projects__project_id__patients__patient_id__states__state_id__manifest_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                state_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StateManifest"];
                 };
             };
             /** @description Validation Error */

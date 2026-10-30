@@ -19,7 +19,7 @@ Private original-object retention requires separate review; removing search text
 does not claim complete erasure. See phase-4-execution.md, ADR043–047 and
 task-specific evidence/runbooks.
 
-Current: COS-069 twin state/timeline/comparison API closure, then COS-070–071.
+Current: COS-070 AI interpretation/evidence/evaluation API closure, then COS-071.
 COS-056 optional/deferred. Phase3 code was committed/pushed at77eb4fe; Phase4 is
 local/uncommitted. No live provider, authentic notes, qualified scientific review,
 Phase4 browser verification or new publication performed. D01–D06 remain open;

@@ -20374,17 +20374,34 @@
     "TASK-COS-069"
    ],
    "allowed_scope": "Phase 4 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
-   "status": "planned",
+   "status": "implemented_unverified",
    "status_history": [
-    "planned"
+    "planned",
+    "in_progress",
+    "implemented_unverified"
    ],
    "owner_responsibility": "Primary agent; specialist self-review only",
-   "actual_touched_files": [],
-   "decisions": [],
-   "checks_evidence": [],
+   "actual_touched_files": [
+    "src/canceros/state_manifest.py",
+    "src/canceros/state_api.py",
+    "src/canceros/api.py",
+    "tests/test_twin_closure.py",
+    "scripts/generate_contracts.py",
+    "scripts/run_checks.py",
+    "packages/contracts/generated/openapi.json",
+    "packages/contracts/generated/api.ts",
+    "docs/engineering/architecture-decisions/ADR-055-twin-timeline-closure.md",
+    "docs/engineering/runbooks/twin-closure.md"
+   ],
+   "decisions": [
+    "ADR-055: selected-state manifest over owned assembly; timelines/comparisons keep deterministic semantics; no reassembly or geometry changes"
+   ],
+   "checks_evidence": [
+    "docs/engineering/evidence/twin-closure.json: 3 passed (manifest coherence with isolation, pair/scope rejection, HTTP manifest/timeline/trend paths); Ruff/mypy/migrations/contract drift PASS"
+   ],
    "known_failures": [],
    "blocked_on": [],
-   "next_action": "Execute in Phase 4 order; optional P1 prompts remain gated"
+   "next_action": "Continue COS-070 AI interpretation evidence evaluation API closure; COS-071 covers system test coverage"
   },
   {
    "id": "COS-070",
