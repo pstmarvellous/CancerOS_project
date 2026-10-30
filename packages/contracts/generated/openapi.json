@@ -11266,6 +11266,103 @@
         "title": "ObjectQC",
         "type": "object"
       },
+      "ObservationFilter": {
+        "additionalProperties": false,
+        "properties": {
+          "concept": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Concept"
+          },
+          "cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cursor"
+          },
+          "kind": {
+            "anyOf": [
+              {
+                "enum": [
+                  "laboratory",
+                  "vital",
+                  "diagnosis",
+                  "treatment",
+                  "symptom",
+                  "visit",
+                  "note"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kind"
+          },
+          "limit": {
+            "default": 25,
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "visit_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Visit Id"
+          }
+        },
+        "title": "ObservationFilter",
+        "type": "object"
+      },
+      "ObservationPage": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ObservationSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_action": {
+            "default": "open_exact_observation_or_stage_correction",
+            "title": "Next Action",
+            "type": "string"
+          },
+          "snapshot_cursor": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Snapshot Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "snapshot_cursor"
+        ],
+        "title": "ObservationPage",
+        "type": "object"
+      },
       "ObservationSchedule": {
         "additionalProperties": false,
         "properties": {
@@ -11283,6 +11380,42 @@
           "slots"
         ],
         "title": "ObservationSchedule",
+        "type": "object"
+      },
+      "ObservationSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "concept": {
+            "title": "Concept",
+            "type": "string"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "record_id": {
+            "format": "uuid",
+            "title": "Record Id",
+            "type": "string"
+          },
+          "source_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Source Hash",
+            "type": "string"
+          },
+          "superseded": {
+            "title": "Superseded",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "record_id",
+          "kind",
+          "concept",
+          "source_hash",
+          "superseded"
+        ],
+        "title": "ObservationSummary",
         "type": "object"
       },
       "OriginInput": {
@@ -11521,6 +11654,46 @@
         "title": "PatientAssignment",
         "type": "object"
       },
+      "PatientDetail": {
+        "additionalProperties": false,
+        "properties": {
+          "data_revision": {
+            "title": "Data Revision",
+            "type": "integer"
+          },
+          "display_code": {
+            "title": "Display Code",
+            "type": "string"
+          },
+          "next_action": {
+            "default": "review_observations_or_stage_source_update",
+            "title": "Next Action",
+            "type": "string"
+          },
+          "observation_count": {
+            "title": "Observation Count",
+            "type": "integer"
+          },
+          "patient_id": {
+            "format": "uuid",
+            "title": "Patient Id",
+            "type": "string"
+          },
+          "visit_count": {
+            "title": "Visit Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "patient_id",
+          "display_code",
+          "data_revision",
+          "observation_count",
+          "visit_count"
+        ],
+        "title": "PatientDetail",
+        "type": "object"
+      },
       "PatientIdentity": {
         "additionalProperties": false,
         "properties": {
@@ -11566,6 +11739,64 @@
           "origin"
         ],
         "title": "PatientIdentity",
+        "type": "object"
+      },
+      "PatientPage": {
+        "additionalProperties": false,
+        "properties": {
+          "cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cursor"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PatientSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_action": {
+            "default": "select_patient_for_observation_review",
+            "title": "Next Action",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "PatientPage",
+        "type": "object"
+      },
+      "PatientSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "data_revision": {
+            "title": "Data Revision",
+            "type": "integer"
+          },
+          "display_code": {
+            "title": "Display Code",
+            "type": "string"
+          },
+          "patient_id": {
+            "format": "uuid",
+            "title": "Patient Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "patient_id",
+          "display_code",
+          "data_revision"
+        ],
+        "title": "PatientSummary",
         "type": "object"
       },
       "PersistedInterpretation": {
@@ -20578,6 +20809,53 @@
         "title": "VisitInput",
         "type": "object"
       },
+      "VisitPage": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/VisitSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_action": {
+            "default": "select_visit_for_filtered_observations",
+            "title": "Next Action",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "VisitPage",
+        "type": "object"
+      },
+      "VisitSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "observation_count": {
+            "title": "Observation Count",
+            "type": "integer"
+          },
+          "time_basis": {
+            "title": "Time Basis",
+            "type": "string"
+          },
+          "visit_id": {
+            "format": "uuid",
+            "title": "Visit Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "visit_id",
+          "time_basis",
+          "observation_count"
+        ],
+        "title": "VisitSummary",
+        "type": "object"
+      },
       "WithdrawalInput": {
         "additionalProperties": false,
         "properties": {
@@ -22593,6 +22871,128 @@
         "summary": "Rotate"
       }
     },
+    "/api/v1/projects/{project_id}/patients": {
+      "get": {
+        "operationId": "patient_list_api_v1_projects__project_id__patients_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Patient List"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}": {
+      "get": {
+        "operationId": "patient_detail_view_api_v1_projects__project_id__patients__patient_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Patient Detail View"
+      }
+    },
     "/api/v1/projects/{project_id}/patients/{patient_id}/annotation-batches": {
       "post": {
         "operationId": "annotations_api_v1_projects__project_id__patients__patient_id__annotation_batches_post",
@@ -23588,6 +23988,84 @@
           }
         },
         "summary": "Get Dependent Update"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/diagnoses/{record_id}/confirmations": {
+      "post": {
+        "operationId": "diagnosis_confirm_api_v1_projects__project_id__patients__patient_id__diagnoses__record_id__confirmations_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "record_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Record Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Diagnosis Confirm Api V1 Projects  Project Id  Patients  Patient Id  Diagnoses  Record Id  Confirmations Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Diagnosis Confirm"
       }
     },
     "/api/v1/projects/{project_id}/patients/{patient_id}/eligibility-checks": {
@@ -27077,6 +27555,82 @@
           }
         },
         "summary": "Validate"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/observation-queries": {
+      "post": {
+        "operationId": "observation_query_api_v1_projects__project_id__patients__patient_id__observation_queries_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObservationFilter"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObservationPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Observation Query"
       }
     },
     "/api/v1/projects/{project_id}/patients/{patient_id}/observations/{record_id}": {
@@ -30667,6 +31221,72 @@
           }
         },
         "summary": "Post Trend Query"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/visits": {
+      "get": {
+        "operationId": "visit_list_api_v1_projects__project_id__patients__patient_id__visits_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VisitPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Visit List"
       }
     },
     "/api/v1/projects/{project_id}/person-link-events": {

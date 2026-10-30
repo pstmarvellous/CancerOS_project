@@ -170,6 +170,11 @@ def generate(check=False):
             "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/interpretations/{interpretation_id}/saved-results",
             "/api/v1/projects/{project_id}/patients/{patient_id}/saved-interpretations/{saved_id}",
             "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/saved-result-queries",
+            "/api/v1/projects/{project_id}/patients",
+            "/api/v1/projects/{project_id}/patients/{patient_id}",
+            "/api/v1/projects/{project_id}/patients/{patient_id}/observation-queries",
+            "/api/v1/projects/{project_id}/patients/{patient_id}/visits",
+            "/api/v1/projects/{project_id}/patients/{patient_id}/diagnoses/{record_id}/confirmations",
         )
         for p in output["openapi.json"]["paths"]
     ), "Unreviewed runtime endpoint"

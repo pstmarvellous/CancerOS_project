@@ -20234,17 +20234,35 @@
     "TASK-COS-066"
    ],
    "allowed_scope": "Phase 4 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
-   "status": "planned",
+   "status": "implemented_unverified",
    "status_history": [
-    "planned"
+    "planned",
+    "in_progress",
+    "implemented_unverified"
    ],
    "owner_responsibility": "Primary agent; specialist self-review only",
-   "actual_touched_files": [],
-   "decisions": [],
-   "checks_evidence": [],
+   "actual_touched_files": [
+    "src/canceros/patient_runs.py",
+    "src/canceros/patient_api.py",
+    "src/canceros/clinical_api.py",
+    "src/canceros/api.py",
+    "tests/test_patient_closure.py",
+    "scripts/generate_contracts.py",
+    "scripts/run_checks.py",
+    "packages/contracts/generated/openapi.json",
+    "packages/contracts/generated/api.ts",
+    "docs/engineering/architecture-decisions/ADR-052-patient-clinical-closure.md",
+    "docs/engineering/runbooks/patient-closure.md"
+   ],
+   "decisions": [
+    "ADR-052: closure over existing services; grant-scoped reads, signed cursors, source-backed diagnosis; no parallel store or new persistence"
+   ],
+   "checks_evidence": [
+    "docs/engineering/evidence/patient-closure.json: 4 passed (grant-scoped list/detail, snapshot-stable filtered queries, source-backed diagnosis gating, HTTP paths/auth); Ruff/mypy/migrations/contract drift PASS"
+   ],
    "known_failures": [],
    "blocked_on": [],
-   "next_action": "Execute in Phase 4 order; optional P1 prompts remain gated"
+   "next_action": "Continue COS-067 imaging/segmentation/geometry API closure; COS-071 covers system test coverage"
   },
   {
    "id": "COS-067",

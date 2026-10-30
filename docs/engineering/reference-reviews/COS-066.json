@@ -1,0 +1,95 @@
+{
+  "task": "COS-066",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "observations",
+      "returncode": 0,
+      "output": "\n=== DATA.VISIT ClinicalVisit ===\n Clinical encounter with timestamp and links to observations; do not conflate visit and scan. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- RELATES_TO DATA.PATIENT ResearchPatient\n  --> RELATES_TO DATA.LABS LaboratoryResult\n  --> RELATES_TO DATA.VITAL VitalSign\n  --> RELATES_TO DATA.SYMPTOM SymptomObservation\n  --> RELATES_TO DATA.NOTE ClinicalNote\n  <-- HAS_STEP WF.NEW Add observation\n  <-- WORKFLOW_PRECEDES UX.IMPORT New observation workflow\n  --> WORKFLOW_PRECEDES TWIN.HISTORY Append-only historical updates\n\n=== TWIN.STATE Time-indexed state ===\n State binds patient, timestamp, geometry, clinical observations, treatment events, quality, missingness and provenance. \nSources: PRD,IMG,SIM\n  <-- IMPLEMENTS D.TWIN Digital twin\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "observations",
+      "returncode": 0,
+      "output": "\nSIM.06 — Toxicity/event grading\nDesign: Record abnormal observations and assign CTCAE grade only with defined evidence\nAcceptance: Without required evidence no formal grade\n  READ A13 NCI CTCAE version 6.0 — Adverse-event definitions, laboratory abnormalities and grading criteria — https://dctd.cancer.gov/research/ctep-trials/for-sites/adverse-events/ctcae-v6.pdf\n  READ A12 NCI Breast Cancer Treatment PDQ — Stage-specific treatment, receptor status and neoadjuvant therapy sections — https://www.cancer.gov/types/breast/hp/breast-treatment-pdq\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "observations",
+      "returncode": 0,
+      "output": "\n== SIM.06 Toxicity/event grading ==\nIntent: Record abnormal observations and assign CTCAE grade only with defined evidence \nTest: Without required evidence no formal grade\n BOOK/LECTURE A13 NCI CTCAE version 6.0 | Adverse-event definitions, laboratory abnormalities and grading criteria | https://dctd.cancer.gov/research/ctep-trials/for-sites/adverse-events/ctcae-v6.pdf | verified edition\n BOOK/LECTURE A12 NCI Breast Cancer Treatment PDQ | Stage-specific treatment, receptor status and neoadjuvant therapy sections | https://www.cancer.gov/types/breast/hp/breast-treatment-pdq | verified document; topic-specific revision required\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "DATA.VISIT",
+    "TWIN.STATE"
+  ],
+  "academic_behavior_ids": [
+    "SIM.06"
+  ],
+  "edges": [
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.LABS"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.VITAL"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.SYMPTOM"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.NOTE"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "UX.IMPORT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.STATE"
+    }
+  ],
+  "mapped_source_ids": [
+    "A12",
+    "A13"
+  ],
+  "source_sections_inspected": "SPEC-008 sections 6 11-13; audit C01-C05"
+}

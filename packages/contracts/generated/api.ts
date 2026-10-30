@@ -463,6 +463,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Patient List */
+        get: operations["patient_list_api_v1_projects__project_id__patients_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Patient Detail View */
+        get: operations["patient_detail_view_api_v1_projects__project_id__patients__patient_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/annotation-batches": {
         parameters: {
             query?: never;
@@ -661,6 +695,23 @@ export interface paths {
         get: operations["get_dependent_update_api_v1_projects__project_id__patients__patient_id__dependent_updates_latest_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/diagnoses/{record_id}/confirmations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Diagnosis Confirm */
+        post: operations["diagnosis_confirm_api_v1_projects__project_id__patients__patient_id__diagnoses__record_id__confirmations_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1400,6 +1451,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/observation-queries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Observation Query */
+        post: operations["observation_query_api_v1_projects__project_id__patients__patient_id__observation_queries_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/observations/{record_id}": {
         parameters: {
             query?: never;
@@ -2125,6 +2193,23 @@ export interface paths {
         put?: never;
         /** Post Trend Query */
         post: operations["post_trend_query_api_v1_projects__project_id__patients__patient_id__trend_queries_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/visits": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Visit List */
+        get: operations["visit_list_api_v1_projects__project_id__patients__patient_id__visits_get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -7375,10 +7460,54 @@ export interface components {
              */
             segmentation_id: string;
         };
+        /** ObservationFilter */
+        ObservationFilter: {
+            /** Concept */
+            concept?: string | null;
+            /** Cursor */
+            cursor?: string | null;
+            /** Kind */
+            kind?: ("laboratory" | "vital" | "diagnosis" | "treatment" | "symptom" | "visit" | "note") | null;
+            /**
+             * Limit
+             * @default 25
+             */
+            limit: number;
+            /** Visit Id */
+            visit_id?: string | null;
+        };
+        /** ObservationPage */
+        ObservationPage: {
+            /** Items */
+            items: components["schemas"]["ObservationSummary"][];
+            /**
+             * Next Action
+             * @default open_exact_observation_or_stage_correction
+             */
+            next_action: string;
+            /** Snapshot Cursor */
+            snapshot_cursor: string;
+        };
         /** ObservationSchedule */
         ObservationSchedule: {
             /** Slots */
             slots: components["schemas"]["ScheduleSlot"][];
+        };
+        /** ObservationSummary */
+        ObservationSummary: {
+            /** Concept */
+            concept: string;
+            /** Kind */
+            kind: string;
+            /**
+             * Record Id
+             * Format: uuid
+             */
+            record_id: string;
+            /** Source Hash */
+            source_hash: string;
+            /** Superseded */
+            superseded: boolean;
         };
         /** OriginInput */
         OriginInput: {
@@ -7498,6 +7627,27 @@ export interface components {
              */
             role: "train" | "validation" | "test" | "demo" | "unassigned";
         };
+        /** PatientDetail */
+        PatientDetail: {
+            /** Data Revision */
+            data_revision: number;
+            /** Display Code */
+            display_code: string;
+            /**
+             * Next Action
+             * @default review_observations_or_stage_source_update
+             */
+            next_action: string;
+            /** Observation Count */
+            observation_count: number;
+            /**
+             * Patient Id
+             * Format: uuid
+             */
+            patient_id: string;
+            /** Visit Count */
+            visit_count: number;
+        };
         /** PatientIdentity */
         PatientIdentity: {
             /** Display Code */
@@ -7527,6 +7677,30 @@ export interface components {
              * Format: uuid
              */
             source_version_id: string;
+        };
+        /** PatientPage */
+        PatientPage: {
+            /** Cursor */
+            cursor?: string | null;
+            /** Items */
+            items: components["schemas"]["PatientSummary"][];
+            /**
+             * Next Action
+             * @default select_patient_for_observation_review
+             */
+            next_action: string;
+        };
+        /** PatientSummary */
+        PatientSummary: {
+            /** Data Revision */
+            data_revision: number;
+            /** Display Code */
+            display_code: string;
+            /**
+             * Patient Id
+             * Format: uuid
+             */
+            patient_id: string;
         };
         /** PersistedInterpretation */
         PersistedInterpretation: {
@@ -11179,6 +11353,28 @@ export interface components {
             /** Visit Id */
             visit_id?: string | null;
         };
+        /** VisitPage */
+        VisitPage: {
+            /** Items */
+            items: components["schemas"]["VisitSummary"][];
+            /**
+             * Next Action
+             * @default select_visit_for_filtered_observations
+             */
+            next_action: string;
+        };
+        /** VisitSummary */
+        VisitSummary: {
+            /** Observation Count */
+            observation_count: number;
+            /** Time Basis */
+            time_basis: string;
+            /**
+             * Visit Id
+             * Format: uuid
+             */
+            visit_id: string;
+        };
         /** WithdrawalInput */
         WithdrawalInput: {
             /**
@@ -12236,6 +12432,73 @@ export interface operations {
             };
         };
     };
+    patient_list_api_v1_projects__project_id__patients_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatientPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    patient_detail_view_api_v1_projects__project_id__patients__patient_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatientDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     annotations_api_v1_projects__project_id__patients__patient_id__annotation_batches_post: {
         parameters: {
             query?: never;
@@ -12672,6 +12935,43 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DependentUpdateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    diagnosis_confirm_api_v1_projects__project_id__patients__patient_id__diagnoses__record_id__confirmations_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                record_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
                 };
             };
             /** @description Validation Error */
@@ -14324,6 +14624,44 @@ export interface operations {
             };
         };
     };
+    observation_query_api_v1_projects__project_id__patients__patient_id__observation_queries_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ObservationFilter"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ObservationPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     observation_api_v1_projects__project_id__patients__patient_id__observations__record_id__get: {
         parameters: {
             query?: never;
@@ -15908,6 +16246,40 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["TrendReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    visit_list_api_v1_projects__project_id__patients__patient_id__visits_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VisitPage"];
                 };
             };
             /** @description Validation Error */

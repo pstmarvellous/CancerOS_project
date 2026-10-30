@@ -46,6 +46,14 @@ from canceros.note_runs import (
     register_note,
 )
 from canceros.patient_linkage import audit, authorize_patient
+from canceros.patient_runs import (
+    ObservationFilter,
+    ObservationPage,
+    VisitPage,
+    create_source_diagnosis,
+    list_visits,
+    query_observations,
+)
 from canceros.persistence import engine_for
 from canceros.quality import (
     QualityRequest,
@@ -503,5 +511,34 @@ def clinical_routes(config, memberships):
                 ),
                 minimum="editor",
             )
+
+    @router.post("/observation-queries", response_model=ObservationPage)
+    def observation_query(
+        project_id: UUID,
+        patient_id: UUID,
+        value: ObservationFilter,
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (connection, identity):
+            return query_observations(connection, identity, project_id, patient_id, value)
+
+    @router.get("/visits", response_model=VisitPage)
+    def visit_list(
+        project_id: UUID,
+        patient_id: UUID,
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (connection, identity):
+            return list_visits(connection, identity, project_id, patient_id)
+
+    @router.post("/diagnoses/{record_id}/confirmations", response_model=dict)
+    def diagnosis_confirm(
+        project_id: UUID,
+        patient_id: UUID,
+        record_id: UUID,
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (connection, identity):
+            return create_source_diagnosis(connection, identity, project_id, patient_id, record_id)
 
     return router

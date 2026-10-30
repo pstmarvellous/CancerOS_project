@@ -18,6 +18,7 @@ from canceros.patient_linkage import (
     resolve_mapping,
     rotate_mapping,
 )
+from canceros.patient_runs import PatientDetail, PatientPage, list_patients, patient_detail
 from canceros.persistence import engine_for
 from canceros.source_registry import registry_command
 
@@ -30,6 +31,18 @@ def patient_routes(config, memberships):
         identity = authenticate(authorization, config, memberships)
         authorize_project(identity, project_id)
         return clinical_dictionary()
+
+    @router.get("/patients", response_model=PatientPage)
+    def patient_list(project_id: UUID, authorization: str | None = Header(default=None)):
+        with session(authorization) as (connection, identity):
+            return list_patients(connection, identity, project_id)
+
+    @router.get("/patients/{patient_id}", response_model=PatientDetail)
+    def patient_detail_view(
+        project_id: UUID, patient_id: UUID, authorization: str | None = Header(default=None)
+    ):
+        with session(authorization) as (connection, identity):
+            return patient_detail(connection, identity, project_id, patient_id)
 
     @contextmanager
     def session(header):
