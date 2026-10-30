@@ -1927,6 +1927,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/interpretations/{interpretation_id}/grounding": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Grounding Check */
+        post: operations["grounding_check_api_v1_projects__project_id__patients__patient_id__states__state_id__interpretations__interpretation_id__grounding_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/publications": {
         parameters: {
             query?: never;
@@ -5757,6 +5774,51 @@ export interface components {
              * @constant
              */
             verification: "unverified_extracted_assertion";
+        };
+        /** GroundingCheckInput */
+        GroundingCheckInput: {
+            /** Expected Context Hash */
+            expected_context_hash?: string | null;
+            /**
+             * Interpretation Snapshot Id
+             * Format: uuid
+             */
+            interpretation_snapshot_id: string;
+        };
+        /** GroundingReport */
+        GroundingReport: {
+            /**
+             * Context Snapshot Id
+             * Format: uuid
+             */
+            context_snapshot_id: string;
+            /**
+             * Interpretation Snapshot Id
+             * Format: uuid
+             */
+            interpretation_snapshot_id: string;
+            /** Next Action */
+            next_action: string;
+            /** Numeric Matched */
+            numeric_matched: number;
+            /** Numeric Statements */
+            numeric_statements: number;
+            /** Prohibited Critical */
+            prohibited_critical: number;
+            /**
+             * Reason Codes
+             * @default []
+             */
+            reason_codes: ("SCHEMA_MISMATCH" | "CONTEXT_MISMATCH" | "UNRESOLVED_REFERENCE" | "STALE_SOURCE_RIGHTS" | "NUMERIC_MISMATCH" | "UNIT_MISMATCH" | "ORIGIN_MISMATCH" | "PROHIBITED_CLAIM" | "UNSUPPORTED_NOVEL_PROSE" | "ABSTAIN_CRITICAL_INSUFFICIENT")[];
+            /** Supported Claims */
+            supported_claims: number;
+            /** Unsupported Claims */
+            unsupported_claims: number;
+            /**
+             * Verdict
+             * @enum {string}
+             */
+            verdict: "published" | "withheld_insufficient_evidence" | "failed_grounding";
         };
         /** GroupAssignment */
         GroupAssignment: {
@@ -15256,6 +15318,46 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["InterpretationReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    grounding_check_api_v1_projects__project_id__patients__patient_id__states__state_id__interpretations__interpretation_id__grounding_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                state_id: string;
+                interpretation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GroundingCheckInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GroundingReport"];
                 };
             };
             /** @description Validation Error */

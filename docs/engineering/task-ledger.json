@@ -20137,17 +20137,37 @@
     "TASK-COS-064"
    ],
    "allowed_scope": "Phase 4 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
-   "status": "planned",
+   "status": "implemented_unverified",
    "status_history": [
-    "planned"
+    "planned",
+    "in_progress",
+    "implemented_unverified"
    ],
    "owner_responsibility": "Primary agent; specialist self-review only",
-   "actual_touched_files": [],
-   "decisions": [],
-   "checks_evidence": [],
+   "actual_touched_files": [
+    "src/canceros/grounding_contracts.py",
+    "src/canceros/grounding_runs.py",
+    "src/canceros/grounding_suite.py",
+    "src/canceros/grounding_api.py",
+    "src/canceros/api.py",
+    "migrations/versions/0047_grounding_decisions.py",
+    "tests/test_grounding_runs.py",
+    "scripts/generate_contracts.py",
+    "scripts/run_checks.py",
+    "packages/contracts/generated/openapi.json",
+    "packages/contracts/generated/api.ts",
+    "docs/engineering/architecture-decisions/ADR-050-grounding-publication-gate.md",
+    "docs/engineering/runbooks/grounding-gate.md"
+   ],
+   "decisions": [
+    "ADR-050: fail-closed grounding gate; numeric/claim/abstention rules; frozen 60-case fixture suite"
+   ],
+   "checks_evidence": [
+    "docs/engineering/evidence/grounding-gate.json: 6 passed; frozen suite 20/20/20; gates 100pct numeric fidelity, zero critical prohibited, correct abstention; Ruff/mypy/migrations/contract drift PASS"
+   ],
    "known_failures": [],
    "blocked_on": [],
-   "next_action": "Execute in Phase 4 order; optional P1 prompts remain gated"
+   "next_action": "Continue COS-065 persistence/audit/cache/fallback; qualified review and SPEC-011 evaluation remain open"
   },
   {
    "id": "COS-065",

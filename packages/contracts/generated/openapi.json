@@ -7872,6 +7872,119 @@
         "title": "GroundedNoteAssertion",
         "type": "object"
       },
+      "GroundingCheckInput": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_context_hash": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Context Hash"
+          },
+          "interpretation_snapshot_id": {
+            "format": "uuid",
+            "title": "Interpretation Snapshot Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "interpretation_snapshot_id"
+        ],
+        "title": "GroundingCheckInput",
+        "type": "object"
+      },
+      "GroundingReport": {
+        "additionalProperties": false,
+        "properties": {
+          "context_snapshot_id": {
+            "format": "uuid",
+            "title": "Context Snapshot Id",
+            "type": "string"
+          },
+          "interpretation_snapshot_id": {
+            "format": "uuid",
+            "title": "Interpretation Snapshot Id",
+            "type": "string"
+          },
+          "next_action": {
+            "title": "Next Action",
+            "type": "string"
+          },
+          "numeric_matched": {
+            "minimum": 0.0,
+            "title": "Numeric Matched",
+            "type": "integer"
+          },
+          "numeric_statements": {
+            "minimum": 0.0,
+            "title": "Numeric Statements",
+            "type": "integer"
+          },
+          "prohibited_critical": {
+            "minimum": 0.0,
+            "title": "Prohibited Critical",
+            "type": "integer"
+          },
+          "reason_codes": {
+            "default": [],
+            "items": {
+              "enum": [
+                "SCHEMA_MISMATCH",
+                "CONTEXT_MISMATCH",
+                "UNRESOLVED_REFERENCE",
+                "STALE_SOURCE_RIGHTS",
+                "NUMERIC_MISMATCH",
+                "UNIT_MISMATCH",
+                "ORIGIN_MISMATCH",
+                "PROHIBITED_CLAIM",
+                "UNSUPPORTED_NOVEL_PROSE",
+                "ABSTAIN_CRITICAL_INSUFFICIENT"
+              ],
+              "type": "string"
+            },
+            "title": "Reason Codes",
+            "type": "array"
+          },
+          "supported_claims": {
+            "minimum": 0.0,
+            "title": "Supported Claims",
+            "type": "integer"
+          },
+          "unsupported_claims": {
+            "minimum": 0.0,
+            "title": "Unsupported Claims",
+            "type": "integer"
+          },
+          "verdict": {
+            "enum": [
+              "published",
+              "withheld_insufficient_evidence",
+              "failed_grounding"
+            ],
+            "title": "Verdict",
+            "type": "string"
+          }
+        },
+        "required": [
+          "interpretation_snapshot_id",
+          "context_snapshot_id",
+          "verdict",
+          "numeric_statements",
+          "numeric_matched",
+          "supported_claims",
+          "unsupported_claims",
+          "prohibited_critical",
+          "next_action"
+        ],
+        "title": "GroundingReport",
+        "type": "object"
+      },
       "GroupAssignment": {
         "additionalProperties": false,
         "properties": {
@@ -29326,6 +29439,102 @@
           }
         },
         "summary": "Interpretation Build"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/interpretations/{interpretation_id}/grounding": {
+      "post": {
+        "operationId": "grounding_check_api_v1_projects__project_id__patients__patient_id__states__state_id__interpretations__interpretation_id__grounding_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "state_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "State Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "interpretation_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Interpretation Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GroundingCheckInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroundingReport"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Grounding Check"
       }
     },
     "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/publications": {

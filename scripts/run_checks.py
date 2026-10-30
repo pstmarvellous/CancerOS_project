@@ -47,6 +47,13 @@ TARGETS = {
         ],
         [PY, "scripts/check_contract_drift.py"],
     ],
+    "grounding-gate": [
+        [PY, "scripts/migrate_test.py"],
+        [PY, "-m", "ruff", "check", "src/canceros", "tests/test_grounding_runs.py"],
+        [PY, "-m", "mypy"],
+        [PY, "-m", "pytest", "tests/test_grounding_runs.py", "--tb=line"],
+        [PY, "scripts/check_contract_drift.py"],
+    ],
     "evidence-corpus": [
         [PY, "scripts/migrate_test.py"],
         [
