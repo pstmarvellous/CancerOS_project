@@ -9135,6 +9135,28 @@
         "title": "InterpretationInput",
         "type": "object"
       },
+      "InterpretationPersistInput": {
+        "additionalProperties": false,
+        "properties": {
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "interpretation_snapshot_id": {
+            "format": "uuid",
+            "title": "Interpretation Snapshot Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "interpretation_snapshot_id",
+          "idempotency_key"
+        ],
+        "title": "InterpretationPersistInput",
+        "type": "object"
+      },
       "InterpretationReport": {
         "additionalProperties": false,
         "properties": {
@@ -11544,6 +11566,155 @@
           "origin"
         ],
         "title": "PatientIdentity",
+        "type": "object"
+      },
+      "PersistedInterpretation": {
+        "additionalProperties": false,
+        "properties": {
+          "context_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Context Hash",
+            "type": "string"
+          },
+          "context_snapshot_id": {
+            "format": "uuid",
+            "title": "Context Snapshot Id",
+            "type": "string"
+          },
+          "corpus_manifest": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Corpus Manifest",
+            "type": "string"
+          },
+          "execution_mode": {
+            "enum": [
+              "rule_based_summary",
+              "external_candidate_private"
+            ],
+            "title": "Execution Mode",
+            "type": "string"
+          },
+          "failure_stage": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Failure Stage"
+          },
+          "finding_count": {
+            "minimum": 0.0,
+            "title": "Finding Count",
+            "type": "integer"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "model_identifier": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Model Identifier",
+            "type": "string"
+          },
+          "model_revision": {
+            "const": "unresolved",
+            "default": "unresolved",
+            "title": "Model Revision",
+            "type": "string"
+          },
+          "next_action": {
+            "title": "Next Action",
+            "type": "string"
+          },
+          "patient_id": {
+            "format": "uuid",
+            "title": "Patient Id",
+            "type": "string"
+          },
+          "project_id": {
+            "format": "uuid",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "prompt_version": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Prompt Version",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "validated_ready",
+              "private_candidate",
+              "superseded",
+              "withdrawn"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "superseded_by_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Superseded By Id"
+          },
+          "usage_tokens": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Usage Tokens"
+          },
+          "validator_version": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Validator Version",
+            "type": "string"
+          },
+          "visibility": {
+            "enum": [
+              "visible_template",
+              "private_candidate"
+            ],
+            "title": "Visibility",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "patient_id",
+          "context_snapshot_id",
+          "context_hash",
+          "execution_mode",
+          "visibility",
+          "model_identifier",
+          "prompt_version",
+          "validator_version",
+          "corpus_manifest",
+          "finding_count",
+          "status",
+          "next_action"
+        ],
+        "title": "PersistedInterpretation",
         "type": "object"
       },
       "PersonLinkEvent": {
@@ -15519,6 +15690,33 @@
           "config"
         ],
         "title": "SaveConfigInput",
+        "type": "object"
+      },
+      "SavedResultQuery": {
+        "additionalProperties": false,
+        "properties": {
+          "context_snapshot_id": {
+            "format": "uuid",
+            "title": "Context Snapshot Id",
+            "type": "string"
+          },
+          "expected_context_hash": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Context Hash"
+          }
+        },
+        "required": [
+          "context_snapshot_id"
+        ],
+        "title": "SavedResultQuery",
         "type": "object"
       },
       "ScalarChange": {
@@ -28113,6 +28311,82 @@
         "summary": "Withdraw"
       }
     },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/saved-interpretations/{saved_id}": {
+      "get": {
+        "operationId": "saved_detail_api_v1_projects__project_id__patients__patient_id__saved_interpretations__saved_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "saved_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Saved Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersistedInterpretation"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Saved Detail"
+      }
+    },
     "/api/v1/projects/{project_id}/patients/{patient_id}/segmentation-qc-reports": {
       "post": {
         "operationId": "segmentation_qc_api_v1_projects__project_id__patients__patient_id__segmentation_qc_reports_post",
@@ -29537,6 +29811,114 @@
         "summary": "Grounding Check"
       }
     },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/interpretations/{interpretation_id}/saved-results": {
+      "post": {
+        "operationId": "saved_create_api_v1_projects__project_id__patients__patient_id__states__state_id__interpretations__interpretation_id__saved_results_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "state_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "State Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "interpretation_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Interpretation Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9._-]+$",
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InterpretationPersistInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersistedInterpretation"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Saved Create"
+      }
+    },
     "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/publications": {
       "post": {
         "operationId": "post_state_publication_api_v1_projects__project_id__patients__patient_id__states__state_id__publications_post",
@@ -29731,6 +30113,92 @@
           }
         },
         "summary": "Post State Review"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/saved-result-queries": {
+      "post": {
+        "operationId": "saved_reuse_api_v1_projects__project_id__patients__patient_id__states__state_id__saved_result_queries_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "state_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "State Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SavedResultQuery"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersistedInterpretation"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Saved Reuse"
       }
     },
     "/api/v1/projects/{project_id}/patients/{patient_id}/synthetic-geometry-results/{result_id}": {

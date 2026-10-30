@@ -25,6 +25,7 @@ from canceros.patient_api import patient_routes
 from canceros.provider_api import provider_routes
 from canceros.provider_gateway import ProviderFailure
 from canceros.readiness import dependencies_ready
+from canceros.saved_api import saved_routes
 from canceros.settings import Settings
 from canceros.source_api import source_routes
 from canceros.state_api import state_routes
@@ -184,4 +185,5 @@ def create_app(settings: Settings | None = None, membership_repository=None) -> 
     app.include_router(context_routes(config, memberships))
     app.include_router(interpretation_routes(config, memberships))
     app.include_router(grounding_routes(config, memberships))
+    app.include_router(saved_routes(config, memberships))
     return app

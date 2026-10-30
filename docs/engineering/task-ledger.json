@@ -20186,17 +20186,36 @@
     "TASK-COS-065"
    ],
    "allowed_scope": "Phase 4 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
-   "status": "planned",
+   "status": "implemented_unverified",
    "status_history": [
-    "planned"
+    "planned",
+    "in_progress",
+    "implemented_unverified"
    ],
    "owner_responsibility": "Primary agent; specialist self-review only",
-   "actual_touched_files": [],
-   "decisions": [],
-   "checks_evidence": [],
+   "actual_touched_files": [
+    "src/canceros/saved_runs_contracts.py",
+    "src/canceros/saved_runs.py",
+    "src/canceros/saved_api.py",
+    "src/canceros/api.py",
+    "migrations/versions/0048_saved_interpretations.py",
+    "tests/test_saved_runs.py",
+    "scripts/generate_contracts.py",
+    "scripts/run_checks.py",
+    "packages/contracts/generated/openapi.json",
+    "packages/contracts/generated/api.ts",
+    "docs/engineering/architecture-decisions/ADR-051-saved-validated-results.md",
+    "docs/engineering/runbooks/saved-results.md"
+   ],
+   "decisions": [
+    "ADR-051: exact-context persistence with revalidation; immutable supersede records; labeled fallback; no cross-patient reuse or URL caching"
+   ],
+   "checks_evidence": [
+    "docs/engineering/evidence/saved-results.json: 4 passed (idempotent persist/supersede, exact reuse/revalidation/isolation, fallback labels, HTTP persist/reuse/auth); Ruff/mypy/migrations/contract drift PASS"
+   ],
    "known_failures": [],
    "blocked_on": [],
-   "next_action": "Execute in Phase 4 order; optional P1 prompts remain gated"
+   "next_action": "Continue COS-066 patient/diagnosis/observation API closure; retention signoff and SPEC-011 evaluation remain open"
   },
   {
    "id": "COS-066",

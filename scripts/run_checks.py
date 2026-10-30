@@ -54,6 +54,13 @@ TARGETS = {
         [PY, "-m", "pytest", "tests/test_grounding_runs.py", "--tb=line"],
         [PY, "scripts/check_contract_drift.py"],
     ],
+    "saved-results": [
+        [PY, "scripts/migrate_test.py"],
+        [PY, "-m", "ruff", "check", "src/canceros", "tests/test_saved_runs.py"],
+        [PY, "-m", "mypy"],
+        [PY, "-m", "pytest", "tests/test_saved_runs.py", "--tb=line"],
+        [PY, "scripts/check_contract_drift.py"],
+    ],
     "evidence-corpus": [
         [PY, "scripts/migrate_test.py"],
         [

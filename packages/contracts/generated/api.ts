@@ -1655,6 +1655,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/saved-interpretations/{saved_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Saved Detail */
+        get: operations["saved_detail_api_v1_projects__project_id__patients__patient_id__saved_interpretations__saved_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/segmentation-qc-reports": {
         parameters: {
             query?: never;
@@ -1944,6 +1961,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/interpretations/{interpretation_id}/saved-results": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Saved Create */
+        post: operations["saved_create_api_v1_projects__project_id__patients__patient_id__states__state_id__interpretations__interpretation_id__saved_results_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/publications": {
         parameters: {
             query?: never;
@@ -1972,6 +2006,23 @@ export interface paths {
         put?: never;
         /** Post State Review */
         post: operations["post_state_review_api_v1_projects__project_id__patients__patient_id__states__state_id__reviews_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/saved-result-queries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Saved Reuse */
+        post: operations["saved_reuse_api_v1_projects__project_id__patients__patient_id__states__state_id__saved_result_queries_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -6329,6 +6380,16 @@ export interface components {
              */
             mode: "template" | "external_candidate";
         };
+        /** InterpretationPersistInput */
+        InterpretationPersistInput: {
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Interpretation Snapshot Id
+             * Format: uuid
+             */
+            interpretation_snapshot_id: string;
+        };
         /** InterpretationReport */
         InterpretationReport: {
             /** Context Hash */
@@ -7466,6 +7527,70 @@ export interface components {
              * Format: uuid
              */
             source_version_id: string;
+        };
+        /** PersistedInterpretation */
+        PersistedInterpretation: {
+            /** Context Hash */
+            context_hash: string;
+            /**
+             * Context Snapshot Id
+             * Format: uuid
+             */
+            context_snapshot_id: string;
+            /** Corpus Manifest */
+            corpus_manifest: string;
+            /**
+             * Execution Mode
+             * @enum {string}
+             */
+            execution_mode: "rule_based_summary" | "external_candidate_private";
+            /** Failure Stage */
+            failure_stage?: string | null;
+            /** Finding Count */
+            finding_count: number;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Model Identifier */
+            model_identifier: string;
+            /**
+             * Model Revision
+             * @default unresolved
+             * @constant
+             */
+            model_revision: "unresolved";
+            /** Next Action */
+            next_action: string;
+            /**
+             * Patient Id
+             * Format: uuid
+             */
+            patient_id: string;
+            /**
+             * Project Id
+             * Format: uuid
+             */
+            project_id: string;
+            /** Prompt Version */
+            prompt_version: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "validated_ready" | "private_candidate" | "superseded" | "withdrawn";
+            /** Superseded By Id */
+            superseded_by_id?: string | null;
+            /** Usage Tokens */
+            usage_tokens?: number | null;
+            /** Validator Version */
+            validator_version: string;
+            /**
+             * Visibility
+             * @enum {string}
+             */
+            visibility: "visible_template" | "private_candidate";
         };
         /** PersonLinkEvent */
         PersonLinkEvent: {
@@ -9124,6 +9249,16 @@ export interface components {
             config: components["schemas"]["SimulationConfig"];
             /** Expected Draft Revision */
             expected_draft_revision: number;
+        };
+        /** SavedResultQuery */
+        SavedResultQuery: {
+            /**
+             * Context Snapshot Id
+             * Format: uuid
+             */
+            context_snapshot_id: string;
+            /** Expected Context Hash */
+            expected_context_hash?: string | null;
         };
         /** ScalarChange */
         ScalarChange: {
@@ -14746,6 +14881,41 @@ export interface operations {
             };
         };
     };
+    saved_detail_api_v1_projects__project_id__patients__patient_id__saved_interpretations__saved_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                saved_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PersistedInterpretation"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     segmentation_qc_api_v1_projects__project_id__patients__patient_id__segmentation_qc_reports_post: {
         parameters: {
             query?: never;
@@ -15371,6 +15541,47 @@ export interface operations {
             };
         };
     };
+    saved_create_api_v1_projects__project_id__patients__patient_id__states__state_id__interpretations__interpretation_id__saved_results_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                state_id: string;
+                interpretation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InterpretationPersistInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PersistedInterpretation"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     post_state_publication_api_v1_projects__project_id__patients__patient_id__states__state_id__publications_post: {
         parameters: {
             query?: never;
@@ -15438,6 +15649,45 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ReviewEvent"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    saved_reuse_api_v1_projects__project_id__patients__patient_id__states__state_id__saved_result_queries_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                state_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SavedResultQuery"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PersistedInterpretation"];
                 };
             };
             /** @description Validation Error */

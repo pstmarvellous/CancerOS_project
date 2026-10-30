@@ -1,0 +1,52 @@
+{
+  "task": "COS-065",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "fallback",
+      "returncode": 0,
+      "output": "\n=== AI.FALLBACK AI outage tolerance ===\n Twin measurements and viewing continue when external model is unavailable. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "fallback",
+      "returncode": 0,
+      "output": "\nIMG.06 — Segmentation inference\nDesign: Use evaluated model and matched preprocessing; reference-mask fallback\nAcceptance: Held-out Dice/HD95 and empty mask rate\n  READ A01 MIT HST.582J — Lecture 14 — Introduction to medical image segmentation — https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/\n  READ A06 Guide to Medical Image Analysis — Klaus D. Toennies — Segmentation, registration, shape analysis, validation; inspect edition table of contents for exact chapter — https://link.springer.com/book/10.1007/978-1-4471-7320-5\n  REPO R01 MAMA-MIA — breast MRI expert masks / nnU-Net inference — https://github.com/LidiaGarrucho/MAMA-MIA\n  REPO R02 nnU-Net v2 — segmentation model preprocessing/inference — https://github.com/MIC-DKFZ/nnUNet\n  REPO R05 MONAI — image transforms and evaluation — https://github.com/Project-MONAI/MONAI\n  PAPER P01 MAMA-MIA multicenter DCE MRI tumor segmentation research —  — https://github.com/LidiaGarrucho/MAMA-MIA\n  PAPER P02 nnU-Net: self-configuring medical segmentation —  — https://www.nature.com/articles/s41592-020-01008-z\n\nOPS.01 — Reproducible image model deployment\nDesign: Pinned upstream version, licenses, model weights and scalable inference fallback\nAcceptance: Fresh install, no-cloud fallback and logs\n  READ A05 ITK Software Guide — Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition — https://itk.org/ITKSoftwareGuide/html/\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R02 nnU-Net v2 — segmentation model preprocessing/inference — https://github.com/MIC-DKFZ/nnUNet\n  REPO R05 MONAI — image transforms and evaluation — https://github.com/Project-MONAI/MONAI\n  REPO R01 MAMA-MIA — breast MRI expert masks / nnU-Net inference — https://github.com/LidiaGarrucho/MAMA-MIA\n  PAPER P02 nnU-Net: self-configuring medical segmentation —  — https://www.nature.com/articles/s41592-020-01008-z\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "fallback",
+      "returncode": 0,
+      "output": "\n== IMG.06 Segmentation inference ==\nIntent: Use evaluated model and matched preprocessing; reference-mask fallback \nTest: Held-out Dice/HD95 and empty mask rate\n BOOK/LECTURE A01 MIT HST.582J | Lecture 14 — Introduction to medical image segmentation | https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/ | verified section\n BOOK/LECTURE A06 Guide to Medical Image Analysis — Klaus D. Toennies | Segmentation, registration, shape analysis, validation; inspect edition table of contents for exact chapter | https://link.springer.com/book/10.1007/978-1-4471-7320-5 | topic verified; precise chapter pending\n PAPER P01 MAMA-MIA multicenter DCE MRI tumor segmentation research | https://github.com/LidiaGarrucho/MAMA-MIA\n PAPER P02 nnU-Net: self-configuring medical segmentation | https://www.nature.com/articles/s41592-020-01008-z\n REPOSITORY R01 MAMA-MIA | https://github.com/LidiaGarrucho/MAMA-MIA \n  Inspect: Read README, nnUNet subtree, download and checkpoint instructions; identify channels, transforms and mask meaning \n  Reuse: Use compatible vetted model inference or verified reference masks \n  Avoid: Do not assume checkpoint availability, licensing or external validity \n  Verify: Run one approved image, compare mask/physical measurements, record resource usage\n REPOSITORY R02 nnU-Net v2 | https://github.com/MIC-DKFZ/nnUNet \n  Inspect: Read dataset format, nnUNetv2_predict workflow, inference pre/postprocessing and tests \n  Reuse: Adopt supported nnU-Net v2 inference API in isolated worker \n  Avoid: Do not copy training engine or mix incompatible checkpoints \n  Verify: Bad-channel, missing-weight, source-affine and prediction tests\n REPOSITORY R05 MONAI | https://github.com/Project-MONAI/MONAI \n  Inspect: Inspect transforms, MetaTensor/affine behavior, data readers, metrics and tutorials \n  Reuse: Adopt supported transformations and segmentation metrics \n  Avoid: Do not use unrelated organ models as breast segmentation \n  Verify: Image-mask transforms, invertibility, geometry unit tests\n REPOSITORY R13 Cornerstone3D | https://github.com/cornerstonejs/cornerstone3D \n  Inspect: Inspect packages/tools, viewport, segmentation loaders and examples \n  Reuse: Evaluate direct library integration rather than all of OHIF \n  Avoid: Do not recode entire DICOM viewport layer \n  Verify: Render known DICOM and overlay matched segmentation\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n\n== OPS.01 Reproducible image model deployment ==\nIntent: Pinned upstream version, licenses, model weights and scalable inference fallback \nTest: Fresh install, no-cloud fallback and logs\n BOOK/LECTURE A05 ITK Software Guide | Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition | https://itk.org/ITKSoftwareGuide/html/ | verified topical volume; exact chapter pending\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P02 nnU-Net: self-configuring medical segmentation | https://www.nature.com/articles/s41592-020-01008-z\n REPOSITORY R02 nnU-Net v2 | https://github.com/MIC-DKFZ/nnUNet \n  Inspect: Read dataset format, nnUNetv2_predict workflow, inference pre/postprocessing and tests \n  Reuse: Adopt supported nnU-Net v2 inference API in isolated worker \n  Avoid: Do not copy training engine or mix incompatible checkpoints \n  Verify: Bad-channel, missing-weight, source-affine and prediction tests\n REPOSITORY R05 MONAI | https://github.com/Project-MONAI/MONAI \n  Inspect: Inspect transforms, MetaTensor/affine behavior, data readers, metrics and tutorials \n  Reuse: Adopt supported transformations and segmentation metrics \n  Avoid: Do not use unrelated organ models as breast segmentation \n  Verify: Image-mask transforms, invertibility, geometry unit tests\n REPOSITORY R01 MAMA-MIA | https://github.com/LidiaGarrucho/MAMA-MIA \n  Inspect: Read README, nnUNet subtree, download and checkpoint instructions; identify channels, transforms and mask meaning \n  Reuse: Use compatible vetted model inference or verified reference masks \n  Avoid: Do not assume checkpoint availability, licensing or external validity \n  Verify: Run one approved image, compare mask/physical measurements, record resource usage\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "AI.FALLBACK"
+  ],
+  "academic_behavior_ids": [
+    "IMG.06",
+    "OPS.01"
+  ],
+  "edges": [
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FALLBACK"
+    }
+  ],
+  "mapped_source_ids": [
+    "A01",
+    "A05",
+    "A06",
+    "A14",
+    "P01",
+    "P02",
+    "R01",
+    "R02",
+    "R05"
+  ],
+  "source_sections_inspected": "SPEC-008 intelligence schemas; SPEC-010 retention; SPEC-011 resilience"
+}
