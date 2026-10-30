@@ -29,6 +29,9 @@ class Settings(BaseSettings):
     model_api_key: SecretStr | None = None
     model_provider: str = "meta"
     model_identifier: str = "muse-spark-1.3"
+    model_endpoint: Literal["https://api.meta.ai/v1/responses"] = "https://api.meta.ai/v1/responses"
+    model_account_id: str | None = None
+    model_region: str | None = None
     export_policy_path: str | None = None
     request_limit_bytes: int = 1048576
     artifact_limit_bytes: int = 1048576

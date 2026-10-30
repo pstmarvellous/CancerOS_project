@@ -14,9 +14,13 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from canceros.clinical_api import clinical_routes
 from canceros.contracts import FoundationStatus, Health, Me, Problem, ProjectRole
 from canceros.evaluation_api import evaluation_routes
+from canceros.evidence_api import evidence_routes
 from canceros.identity import SQLMemberships, authenticate, authorize_project
 from canceros.imaging_api import imaging_routes
+from canceros.knowledge_api import knowledge_routes
 from canceros.patient_api import patient_routes
+from canceros.provider_api import provider_routes
+from canceros.provider_gateway import ProviderFailure
 from canceros.readiness import dependencies_ready
 from canceros.settings import Settings
 from canceros.source_api import source_routes
@@ -40,7 +44,8 @@ def create_app(settings: Settings | None = None, membership_repository=None) -> 
         CORSMiddleware,
         allow_origins=config.cors_origins,
         allow_methods=["GET", "POST"],
-        allow_headers=["Authorization", "Content-Type", "Idempotency-Key"],
+        allow_headers=["Authorization", "Content-Type", "Idempotency-Key", "If-Match"],
+        expose_headers=["ETag", "Location", "Retry-After", "X-Request-ID"],
     )
 
     @app.middleware("http")
@@ -88,6 +93,8 @@ def create_app(settings: Settings | None = None, membership_repository=None) -> 
             403: "FORBIDDEN",
             404: "NOT_FOUND",
             409: "CONFLICT",
+            412: "PRECONDITION_FAILED",
+            428: "PRECONDITION_REQUIRED",
             413: "PAYLOAD_TOO_LARGE",
             422: "FAILED_SCHEMA",
             503: "DEPENDENCY_UNAVAILABLE",
@@ -95,6 +102,15 @@ def create_app(settings: Settings | None = None, membership_repository=None) -> 
         return problem(
             request, exc.status_code, safe_codes.get(exc.status_code, "REQUEST_REJECTED")
         )
+
+    @app.exception_handler(ProviderFailure)
+    async def provider_error(request, exc):
+        # Only owned stable codes are public. Arbitrary provider messages stay private.
+        if exc.code == "EXTERNAL_PROCESSING_NOT_ALLOWED":
+            return problem(request, 403, exc.code)
+        if exc.code in ("FAILED_SCHEMA", "FAILED_GROUNDING"):
+            return problem(request, 422, exc.code)
+        return problem(request, 503, "PROVIDER_UNAVAILABLE")
 
     @app.exception_handler(RequestValidationError)
     async def validation_error(request, exc):
@@ -159,4 +175,7 @@ def create_app(settings: Settings | None = None, membership_repository=None) -> 
     app.include_router(evaluation_routes(config, memberships))
     app.include_router(imaging_routes(config, memberships))
     app.include_router(state_routes(config, memberships))
+    app.include_router(provider_routes(config, memberships))
+    app.include_router(knowledge_routes(config, memberships))
+    app.include_router(evidence_routes(config, memberships))
     return app

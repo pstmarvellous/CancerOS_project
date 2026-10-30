@@ -1,4 +1,4 @@
-"""Default-denied external export policy; no network/provider adapter in Phase1."""
+"""Legacy export/1 guard; runtime export/2 is checked by the provider gateway."""
 
 import hashlib
 import json
@@ -35,9 +35,12 @@ def verified_policy(config):
     ):
         raise PermissionError("EXTERNAL_EXPORT_DENIED")
     try:
-        policy = ExportPolicy.model_validate_json(
-            Path(config.export_policy_path).read_text(encoding="utf-8")
-        )
+        content = Path(config.export_policy_path).read_text(encoding="utf-8")
+        if json.loads(content).get("schema_version") == "export/2":
+            from canceros.provider_gateway import read_policy
+
+            return read_policy(config)
+        policy = ExportPolicy.model_validate_json(content)
         if (
             policy.provider != config.model_provider
             or policy.model_identifier != config.model_identifier
@@ -56,6 +59,8 @@ def verified_policy(config):
 
 def prepare_export(config, payload):
     policy = verified_policy(config)
+    if policy.schema_version != "export/1":
+        raise PermissionError("EXTERNAL_EXPORT_DENIED")
     if set(payload) - set(policy.allowed_fields):
         raise PermissionError("EXTERNAL_EXPORT_DENIED")
     content = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()

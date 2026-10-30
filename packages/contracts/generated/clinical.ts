@@ -130,6 +130,7 @@ export type DictionaryVersion5 = "canceros-local/1";
 export type Kind5 = "note";
 export type Language = string;
 export type Negation5 = "affirmed" | "negated" | "unspecified";
+export type NoteDocumentId = string | null;
 export type OriginalTerm5 = string;
 export type SourceLocatorId5 = string;
 export type VisitId5 = string | null;
@@ -305,6 +306,7 @@ export interface NoteInput {
   kind: Kind5;
   language: Language;
   negation: Negation5;
+  note_document_id?: NoteDocumentId;
   original_term: OriginalTerm5;
   source_locator_id: SourceLocatorId5;
   time: ClinicalTime;

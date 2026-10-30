@@ -450,6 +450,19 @@
           "title": "Negation",
           "type": "string"
         },
+        "note_document_id": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note Document Id"
+        },
         "original_term": {
           "maxLength": 300,
           "minLength": 1,

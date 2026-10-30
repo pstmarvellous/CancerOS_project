@@ -21,6 +21,7 @@ from canceros.lineage import (
     register_root,
     require_resource_action,
 )
+from canceros.note_observation_adapter import persist_note_pointer, validate_note_pointer
 from canceros.patient_linkage import audit, authorize_patient, release_for
 from canceros.persistence import capture_revision, load_revision, science_hash
 from canceros.source_registry import SourceAction, require_source_action
@@ -329,8 +330,7 @@ def validate_batch(connection, identity, project, patient, command: BatchCommand
                 if visit != "visit":
                     raise ValueError("Unresolved visit")
             if item.kind == "note":
-                # No approved private text-document adapter exists yet; do not accept arbitrary note claims.
-                raise ValueError("Private note adapter unavailable")
+                validate_note_pointer(connection, identity, project, patient, item)
             _, findings = semantic_validation(item, path)
             issues.extend(RuleIssue.model_validate(finding) for finding in findings)
             items.append(item)
@@ -413,7 +413,11 @@ def accept_batch(connection, identity, project, patient, command, key, storage):
     if previous:
         if previous.request_hash != fingerprint:
             raise HTTPException(409)
-        return BatchReport.model_validate(previous.report)
+        prior_report = BatchReport.model_validate(previous.report)
+        for identifier in prior_report.record_ids:
+            for action in (SourceAction.INTERNAL, SourceAction.DERIVATIVE):
+                require_resource_action(connection, identity, project, patient, identifier, action)
+        return prior_report
     report, items = validate_batch(connection, identity, project, patient, command, storage)
     if report.status == "quarantined":
         report = report.model_copy(update={"id": uuid4()})
@@ -475,6 +479,9 @@ def accept_batch(connection, identity, project, patient, command, key, storage):
         )
         persist_subtype(connection, project, patient, record_id, item, normalized)
         parents = [command.source_artifact_id] + ([head] if head else [])
+        if item.kind == "note":
+            assert item.note_document_id is not None
+            parents.append(item.note_document_id)
         derive_resource(
             connection,
             identity,
@@ -663,6 +670,8 @@ def persist_subtype(connection, project, patient, record_id, item, normalized=No
                 "version": item.instrument_version,
             },
         )
+    elif item.kind == "note":
+        persist_note_pointer(connection, project, patient, record_id, item)
     else:
         raise HTTPException(409)
 

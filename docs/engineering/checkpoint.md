@@ -1,18 +1,26 @@
 # Execution checkpoint
 
-COS-041–055: P0 implementation and engineering fixture verification finished.
-Task statuses remain implemented_unverified with fixture_verified_real_data_review_pending.
+Phase4 owner-authorized2026-10-30; prompt-by-prompt implementation continues.
+COS-057–061 implemented with synthetic engineering verification; task statuses
+remain implemented_unverified for real/live/scientific review.
 
-Final checks:798 backend tests;51 frontend tests; actual Chromium/WebGL workflow;
-seven governance checks; normal owned API/web startup and authenticated readiness.
-See phase-3-verification.md and evidence/phase3-verification.json for exact scope,
-commands, source fingerprints, prior failures/remediation and open evidence gates.
+- COS-057:76 provider/identity/settings checks; external inference/publication closed.
+- COS-058:122 parser/private-note SQL/S3/HTTP checks; no observation promotion.
+- COS-059:64 source-linked relationship/SQL/private-imaging/HTTP checks; no causality.
+- COS-060:100 metadata/private corpus/FTS/S3/HTTP checks; no genuine corpus ingested.
+- COS-061:35 real-PostgreSQL/HTTP retrieval/citation checks; lexical candidates
+  only, no semantic/patient/treatment support, offline resolution, no live fetch.
 
-Authentic baseline/source rights, qualified scientific-policy review, real longitudinal
-and independent clinical evaluation remain open. Forecast API estimates stay null.
-COS-056 is optional/deferred; no training/paid compute or Phase4 execution occurred.
-Owner requested committing and pushing Phase3 on 2026-10-30. Git history and the
-remote branch record the resulting code publication; scientific gates remain open.
-Normal local app: http://127.0.0.1:3000 . Ephemeral test API/token bundle removed.
-Next: capability enablement requires authentic authorized evidence/review; subsequent
-phase execution requires its separate owner-directed request.
+Ruff/mypy/generated contracts and seven governance checks passed for completed
+slices. The COS-060 stale generated enum failed drift once; regeneration and a
+focused retry passed, with the attempt preserved. COS-061's stale openapi/api.ts
+were regenerated to include implemented retrieval/citation routes, then green.
+Private original-object retention requires separate review; removing search text
+does not claim complete erasure. See phase-4-execution.md, ADR043–047 and
+task-specific evidence/runbooks.
+
+Current: COS-062 structured interpretation context, followed by COS-063–071.
+COS-056 optional/deferred. Phase3 code was committed/pushed at77eb4fe; Phase4 is
+local/uncommitted. No live provider, authentic notes, qualified scientific review,
+Phase4 browser verification or new publication performed. D01–D06 remain open;
+forecasts abstain and synthetic descendants remain synthetic.

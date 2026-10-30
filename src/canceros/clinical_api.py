@@ -33,6 +33,18 @@ from canceros.lineage import (
     withdraw_resource,
 )
 from canceros.metadata_adapters import AdapterInput, AdapterReport, run_adapter
+from canceros.note_runs import (
+    NoteDocument,
+    NoteExtractionCommand,
+    NoteExtractionView,
+    NoteRegistration,
+    ProtectedSpan,
+    extract_document,
+    read_extraction,
+    read_note,
+    read_protected_span,
+    register_note,
+)
 from canceros.patient_linkage import audit, authorize_patient
 from canceros.persistence import engine_for
 from canceros.quality import (
@@ -63,6 +75,110 @@ def clinical_routes(config, memberships):
                 yield connection, identity
         finally:
             engine.dispose()
+
+    @router.post("/note-documents", response_model=NoteDocument, status_code=201)
+    def create_note_document(
+        project_id: UUID,
+        patient_id: UUID,
+        value: NoteRegistration,
+        response: Response,
+        idempotency_key: str = Header(min_length=1, max_length=128, pattern=r"^[A-Za-z0-9._-]+$"),
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (connection, identity):
+            authorize_patient(connection, identity, project_id, patient_id, edit=True)
+            result = registry_command(
+                connection,
+                identity,
+                project_id,
+                "note-register:" + str(patient_id),
+                idempotency_key,
+                value,
+                lambda: register_note(
+                    connection, identity, project_id, patient_id, value, PrivateStorage(config)
+                ),
+            )
+            document = read_note(
+                connection, identity, project_id, patient_id, UUID(result["note_id"])
+            )
+            response.headers["Location"] = (
+                f"/api/v1/projects/{project_id}/patients/{patient_id}/note-documents/{document.note_id}"
+            )
+            return document
+
+    @router.get("/note-documents/{note_id}", response_model=NoteDocument)
+    def note_document(
+        project_id: UUID,
+        patient_id: UUID,
+        note_id: UUID,
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (connection, identity):
+            return read_note(connection, identity, project_id, patient_id, note_id)
+
+    @router.post("/note-extractions", response_model=NoteExtractionView, status_code=201)
+    def create_note_extraction(
+        project_id: UUID,
+        patient_id: UUID,
+        value: NoteExtractionCommand,
+        response: Response,
+        idempotency_key: str = Header(min_length=1, max_length=128, pattern=r"^[A-Za-z0-9._-]+$"),
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (connection, identity):
+            authorize_patient(connection, identity, project_id, patient_id, edit=True)
+            # Rights recheck before replay and again before returning the exact result.
+            read_note(connection, identity, project_id, patient_id, value.note_id)
+            result = registry_command(
+                connection,
+                identity,
+                project_id,
+                "note-extract:" + str(patient_id),
+                idempotency_key,
+                value,
+                lambda: extract_document(
+                    connection, identity, project_id, patient_id, value, PrivateStorage(config)
+                ),
+            )
+            view = read_extraction(
+                connection, identity, project_id, patient_id, UUID(result["extraction_id"])
+            )
+            response.headers["Location"] = (
+                f"/api/v1/projects/{project_id}/patients/{patient_id}/note-extractions/{view.extraction_id}"
+            )
+            return view
+
+    @router.get("/note-extractions/{extraction_id}", response_model=NoteExtractionView)
+    def note_extraction(
+        project_id: UUID,
+        patient_id: UUID,
+        extraction_id: UUID,
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (connection, identity):
+            return read_extraction(connection, identity, project_id, patient_id, extraction_id)
+
+    @router.get(
+        "/note-extractions/{extraction_id}/facts/{fact_index}/source-span",
+        response_model=ProtectedSpan,
+    )
+    def note_span(
+        project_id: UUID,
+        patient_id: UUID,
+        extraction_id: UUID,
+        fact_index: int,
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (connection, identity):
+            return read_protected_span(
+                connection,
+                identity,
+                project_id,
+                patient_id,
+                extraction_id,
+                fact_index,
+                PrivateStorage(config),
+            )
 
     @router.get("/evaluation-splits/{split_id}/assignment", response_model=InheritedAssignment)
     def assignment(

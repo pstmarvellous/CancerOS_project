@@ -1,0 +1,20 @@
+{
+  "status": "metadata_only_candidate_not_registered_or_indexed",
+  "inspected_on": "2026-10-30",
+  "title": "Breast Cancer Treatment (PDQ)–Health Professional Version",
+  "publisher": "National Cancer Institute",
+  "authors": null,
+  "canonical_url": "https://www.cancer.gov/types/breast/hp/breast-treatment-pdq",
+  "doi": null,
+  "pmid": "26389406",
+  "source_update_date_seen": "2025-04-25",
+  "topic": "adult breast cancer treatment reference; not an individualized recommendation",
+  "reuse_policy_url": "https://www.cancer.gov/policies/copyright-reuse",
+  "reuse_policy_review_date_seen": "2025-03-12",
+  "component_scope": "Candidate attributed text excerpts only; images, trademarks and linked journal articles excluded",
+  "local_source_rights_review": "not_recorded",
+  "external_processing": "denied",
+  "retraction_review": "No notice seen in inspected sections; underlying citation retractions not comprehensively checked",
+  "copied_source_text": false,
+  "limitations": "Metadata candidate does not constitute source-policy approval, clinical review or a functioning evidence corpus"
+}

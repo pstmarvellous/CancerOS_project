@@ -1,9 +1,9 @@
 {
-  "recorded_at": "2026-10-30T07:37:42.767025+00:00",
+  "recorded_at": "2026-10-30T12:02:49.809023+00:00",
   "platform": "Windows-11-10.0.22631-SP0",
   "python": "3.12.14",
   "scope": "governance engineering verification only; no real-data or qualified review claim",
-  "input_hash": "9b49c00add29ffed2d6fe340e03cdf55d41308524d3576c0ff4ec2bf06b75393",
+  "input_hash": "9a5238a6edea0bd022950eee3a01a3ac1e8d9e23174954b3c2854b7e189889de",
   "checks": [
     {
       "command": [
@@ -11,7 +11,7 @@
         "scripts/check_foundation_docs.py"
       ],
       "exit_code": 0,
-      "stdout": "PASS 155 governance Markdown files/links, readable JSON, 25 SAFE controls and 18 audit findings; no clinical/runtime verification implied\n",
+      "stdout": "PASS 169 governance Markdown files/links, readable JSON, 25 SAFE controls and 18 audit findings; no clinical/runtime verification implied\n",
       "stderr": ""
     },
     {
@@ -21,7 +21,7 @@
         "--self-test"
       ],
       "exit_code": 0,
-      "stdout": "PASS source hashes, 881 trace rows, CSV synchronization, ledger if present; negative fixtures=True\n",
+      "stdout": "PASS source hashes, 896 trace rows, CSV synchronization, ledger if present; negative fixtures=True\n",
       "stderr": ""
     },
     {
@@ -57,7 +57,7 @@
         "scripts/check_hygiene.py"
       ],
       "exit_code": 0,
-      "stdout": "PASS 656 Git-visible file paths, private-source ignores and known local secret scan; source/asset license review remains a release gate\n",
+      "stdout": "PASS 703 Git-visible file paths, private-source ignores and known local secret scan; source/asset license review remains a release gate\n",
       "stderr": ""
     },
     {

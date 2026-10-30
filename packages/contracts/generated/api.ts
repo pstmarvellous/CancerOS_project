@@ -21,6 +21,108 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/ai/capabilities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Capabilities */
+        get: operations["capabilities_api_v1_projects__project_id__ai_capabilities_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/clinical-concepts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Concept Create */
+        post: operations["concept_create_api_v1_projects__project_id__clinical_concepts_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/clinical-concepts/{concept_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Concept Detail */
+        get: operations["concept_detail_api_v1_projects__project_id__clinical_concepts__concept_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/concept-relationship-queries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Concept Relationship Query */
+        post: operations["concept_relationship_query_api_v1_projects__project_id__concept_relationship_queries_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/concept-relationships": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Concept Relationship Create */
+        post: operations["concept_relationship_create_api_v1_projects__project_id__concept_relationships_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/concept-relationships/{relationship_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Concept Relationship Detail */
+        get: operations["concept_relationship_detail_api_v1_projects__project_id__concept_relationships__relationship_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/dictionaries/clinical": {
         parameters: {
             query?: never;
@@ -100,6 +202,193 @@ export interface paths {
         put?: never;
         /** Audit */
         post: operations["audit_api_v1_projects__project_id__evaluation_splits__split_id__leakage_audits_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/evidence-citation-checks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Citation */
+        post: operations["citation_api_v1_projects__project_id__evidence_citation_checks_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/evidence-corpora": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Corpus Build */
+        post: operations["corpus_build_api_v1_projects__project_id__evidence_corpora_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/evidence-corpora/{corpus_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Corpus Detail */
+        get: operations["corpus_detail_api_v1_projects__project_id__evidence_corpora__corpus_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/evidence-corpora/{corpus_id}/passages/{passage_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Passage */
+        get: operations["passage_api_v1_projects__project_id__evidence_corpora__corpus_id__passages__passage_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/evidence-corpus-activations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Activation */
+        post: operations["activation_api_v1_projects__project_id__evidence_corpus_activations_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/evidence-corpus-current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Current */
+        get: operations["current_api_v1_projects__project_id__evidence_corpus_current_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/evidence-document-excerpts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Excerpt Import */
+        post: operations["excerpt_import_api_v1_projects__project_id__evidence_document_excerpts_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/evidence-document-metadata": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Metadata Import */
+        post: operations["metadata_import_api_v1_projects__project_id__evidence_document_metadata_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/evidence-documents/{document_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Document */
+        get: operations["document_api_v1_projects__project_id__evidence_documents__document_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/evidence-documents/{document_id}/restrictions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Restriction */
+        post: operations["restriction_api_v1_projects__project_id__evidence_documents__document_id__restrictions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/evidence-retrieval-queries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Retrieval */
+        post: operations["retrieval_api_v1_projects__project_id__evidence_retrieval_queries_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -958,6 +1247,91 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/note-documents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Note Document */
+        post: operations["create_note_document_api_v1_projects__project_id__patients__patient_id__note_documents_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/note-documents/{note_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Note Document */
+        get: operations["note_document_api_v1_projects__project_id__patients__patient_id__note_documents__note_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/note-extractions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Note Extraction */
+        post: operations["create_note_extraction_api_v1_projects__project_id__patients__patient_id__note_extractions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/note-extractions/{extraction_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Note Extraction */
+        get: operations["note_extraction_api_v1_projects__project_id__patients__patient_id__note_extractions__extraction_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/note-extractions/{extraction_id}/facts/{fact_index}/source-span": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Note Span */
+        get: operations["note_span_api_v1_projects__project_id__patients__patient_id__note_extractions__extraction_id__facts__fact_index__source_span_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/observation-batches": {
         parameters: {
             query?: never;
@@ -1154,6 +1528,57 @@ export interface paths {
         };
         /** Get Registration */
         get: operations["get_registration_api_v1_projects__project_id__patients__patient_id__registrations__report_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/relationship-queries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Patient Relationship Query */
+        post: operations["patient_relationship_query_api_v1_projects__project_id__patients__patient_id__relationship_queries_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/relationships": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Patient Relationship Create */
+        post: operations["patient_relationship_create_api_v1_projects__project_id__patients__patient_id__relationships_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/relationships/{relationship_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Patient Relationship Detail */
+        get: operations["patient_relationship_detail_api_v1_projects__project_id__patients__patient_id__relationships__relationship_id__get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2721,6 +3146,67 @@ export interface components {
             form: "censored";
             threshold: components["schemas"]["Quantity"];
         };
+        /** CitationCheck */
+        CitationCheck: {
+            /**
+             * Corpus Id
+             * Format: uuid
+             */
+            corpus_id: string;
+            /** Expected Text Sha256 */
+            expected_text_sha256?: string | null;
+            /**
+             * Intended Use
+             * @default general_background
+             * @enum {string}
+             */
+            intended_use: "general_background" | "patient_fact" | "individual_treatment_effect";
+            /**
+             * Passage Id
+             * Format: uuid
+             */
+            passage_id: string;
+        };
+        /** CitationReport */
+        CitationReport: {
+            /**
+             * Citation Status
+             * @default verified_offline_manifest
+             * @constant
+             */
+            citation_status: "verified_offline_manifest";
+            /**
+             * Corpus Status
+             * @enum {string}
+             */
+            corpus_status: "active" | "historical";
+            /**
+             * Limitations
+             * @default [
+             *       "A permitted exact passage and valid locator do not prove a clinical claim.",
+             *       "No external URL, DOI resolver or provider was contacted."
+             *     ]
+             */
+            limitations: string[];
+            /**
+             * Live Url Status
+             * @default not_checked
+             * @constant
+             */
+            live_url_status: "not_checked";
+            /**
+             * Meaningful Support
+             * @enum {string}
+             */
+            meaningful_support: "unreviewed" | "not_supported";
+            /**
+             * Next Action
+             * @enum {string}
+             */
+            next_action: "review_passage_to_claim_support" | "use_verified_patient_observations";
+            passage: components["schemas"]["EvidencePassageView"];
+            source: components["schemas"]["EvidenceSourceMetadata"];
+        };
         /** CleanupReport */
         CleanupReport: {
             /** Candidate Count */
@@ -3210,6 +3696,36 @@ export interface components {
             status: "ready" | "blocked";
             validation: components["schemas"]["CompleteValidationReport"] | null;
         };
+        /** ConceptInput */
+        ConceptInput: {
+            /** Code */
+            code: string;
+            /** Label */
+            label: string;
+            /** Supersedes Id */
+            supersedes_id?: string | null;
+        };
+        /** ConceptView */
+        ConceptView: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            input: components["schemas"]["ConceptInput"];
+            /**
+             * Project Id
+             * Format: uuid
+             */
+            project_id: string;
+            /**
+             * Status
+             * @default local_vocabulary_unreviewed
+             */
+            status: string;
+            /** Version */
+            version: number;
+        };
         /** ConfigSummary */
         ConfigSummary: {
             /** Available Actions */
@@ -3253,6 +3769,61 @@ export interface components {
          * @enum {string}
          */
         Context: "OBSERVED" | "SYNTHETIC";
+        /** CorpusActivation */
+        CorpusActivation: {
+            /**
+             * Corpus Id
+             * Format: uuid
+             */
+            corpus_id: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Prior Activation Id */
+            prior_activation_id: string | null;
+        };
+        /** CorpusActivationInput */
+        CorpusActivationInput: {
+            /**
+             * Corpus Id
+             * Format: uuid
+             */
+            corpus_id: string;
+            /** Expected Activation Id */
+            expected_activation_id?: string | null;
+        };
+        /** CorpusBuildInput */
+        CorpusBuildInput: {
+            /** Document Ids */
+            document_ids: string[];
+            /** Expected Activation Id */
+            expected_activation_id?: string | null;
+            /**
+             * Index Configuration
+             * @default english
+             * @constant
+             */
+            index_configuration: "english";
+        };
+        /** CorpusHeadView */
+        CorpusHeadView: {
+            /** Activation Id */
+            activation_id: string | null;
+            /** Corpus Id */
+            corpus_id: string | null;
+            /**
+             * Next Action
+             * @enum {string}
+             */
+            next_action: "inspect_permitted_evidence" | "curator_build_required" | "curator_rebuild_required";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "active" | "unconfigured" | "unavailable";
+        };
         /** CurrentRunView */
         CurrentRunView: {
             /**
@@ -3610,6 +4181,347 @@ export interface components {
              */
             status: "eligible" | "ineligible" | "insufficient_data";
         };
+        /** EntityRef */
+        EntityRef: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "patient" | "lesion_identity" | "clinical_observation" | "physical_measurement" | "twin_branch" | "twin_snapshot" | "note_document" | "note_extraction" | "clinical_concept" | "publication" | "evidence_statement" | "outcome";
+        };
+        /** EvidenceCorpus */
+        EvidenceCorpus: {
+            /** Content Hash */
+            content_hash: string;
+            /** Document Ids */
+            document_ids: string[];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Index Configuration
+             * @default english
+             * @constant
+             */
+            index_configuration: "english";
+            /**
+             * Index Version
+             * @default postgres-keyword/1
+             * @constant
+             */
+            index_version: "postgres-keyword/1";
+            /** Passage Hashes */
+            passage_hashes: [
+                string,
+                string
+            ][];
+        };
+        /** EvidenceDocument */
+        EvidenceDocument: {
+            /** Artifact Id */
+            artifact_id: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Limitations
+             * @default [
+             *       "Source eligibility is not evidence of clinical claim support.",
+             *       "External processing requires its independent denied-by-default policy."
+             *     ]
+             */
+            limitations: string[];
+            manifest: components["schemas"]["EvidenceManifest"];
+            /** Normalized Sha256 */
+            normalized_sha256: string | null;
+            /** Original Sha256 */
+            original_sha256: string | null;
+            /** Passage Ids */
+            passage_ids: string[];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "approved_excerpt" | "metadata_only" | "needs_review" | "excluded";
+        };
+        /** EvidenceManifest */
+        EvidenceManifest: {
+            /** Attribution */
+            attribution: string;
+            /** Authors */
+            authors?: string[] | null;
+            /** Canonical Url */
+            canonical_url: string;
+            /** Component License Reference */
+            component_license_reference: string;
+            /**
+             * Content Mode
+             * @enum {string}
+             */
+            content_mode: "metadata_only" | "approved_excerpt";
+            /** Document Version */
+            document_version: string;
+            /** Doi */
+            doi?: string | null;
+            /** Permission Review Reference */
+            permission_review_reference: string;
+            /** Publication Date */
+            publication_date?: string | null;
+            /** Publication Date Unknown Reason */
+            publication_date_unknown_reason?: ("not_available" | "not_applicable") | null;
+            /** Publisher */
+            publisher: string;
+            /**
+             * Retraction Status
+             * @enum {string}
+             */
+            retraction_status: "clear" | "unknown" | "retracted";
+            /**
+             * Retrieved At
+             * Format: date-time
+             */
+            retrieved_at: string;
+            /**
+             * Review Basis
+             * @enum {string}
+             */
+            review_basis: "synthetic_fixture" | "documented_review";
+            /**
+             * Schema Version
+             * @default evidence-source/1
+             * @constant
+             */
+            schema_version: "evidence-source/1";
+            /**
+             * Settings
+             * @default []
+             */
+            settings: string[];
+            /**
+             * Source Version Id
+             * Format: uuid
+             */
+            source_version_id: string;
+            /**
+             * Subtypes
+             * @default []
+             */
+            subtypes: string[];
+            /** Title */
+            title: string;
+            /** Topics */
+            topics: string[];
+            /** Update Date */
+            update_date?: string | null;
+            /** Update Date Unknown Reason */
+            update_date_unknown_reason?: ("not_available" | "not_applicable") | null;
+        };
+        /** EvidencePassageView */
+        EvidencePassageView: {
+            /** Attribution */
+            attribution: string;
+            /**
+             * Corpus Id
+             * Format: uuid
+             */
+            corpus_id: string;
+            descriptor: components["schemas"]["PassageDescriptor"];
+            /**
+             * Document Id
+             * Format: uuid
+             */
+            document_id: string;
+            /** Excerpt */
+            excerpt: string;
+            /**
+             * Support Status
+             * @default citation_resolves_meaningful_support_unreviewed
+             * @constant
+             */
+            support_status: "citation_resolves_meaningful_support_unreviewed";
+        };
+        /** EvidenceRetrievalQuery */
+        EvidenceRetrievalQuery: {
+            /**
+             * Concepts
+             * @default []
+             */
+            concepts: string[];
+            /**
+             * Corpus Id
+             * Format: uuid
+             */
+            corpus_id: string;
+            /** Expected Active Activation Id */
+            expected_active_activation_id?: string | null;
+            /** Publication Not Before */
+            publication_not_before?: string | null;
+            /** Query */
+            query: string;
+            /** Setting */
+            setting?: string | null;
+            /** Subtype */
+            subtype?: string | null;
+            /**
+             * Top K
+             * @default 5
+             */
+            top_k: number;
+            /**
+             * Topics
+             * @default []
+             */
+            topics: string[];
+            /** Updated Not Before */
+            updated_not_before?: string | null;
+        };
+        /** EvidenceRetrievalReport */
+        EvidenceRetrievalReport: {
+            /**
+             * Activation Id
+             * Format: uuid
+             */
+            activation_id: string;
+            /**
+             * Corpus Id
+             * Format: uuid
+             */
+            corpus_id: string;
+            /** Items */
+            items: components["schemas"]["RetrievalHit"][];
+            /**
+             * Limitations
+             * @default [
+             *       "Keyword rank measures lexical relevance, not clinical confidence or claim support.",
+             *       "Conflicting passages remain candidates; no semantic conflict adjudication is performed.",
+             *       "Unknown subtype and setting use only generic context evidence."
+             *     ]
+             */
+            limitations: string[];
+            /**
+             * Next Action
+             * @enum {string}
+             */
+            next_action: "review_candidate_passages" | "narrow_question_or_request_curator_review";
+            /**
+             * Settings Version
+             * @default postgres-curated-retrieval/1
+             * @constant
+             */
+            settings_version: "postgres-curated-retrieval/1";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "matched" | "no_suitable_evidence";
+        };
+        /** EvidenceSourceMetadata */
+        EvidenceSourceMetadata: {
+            /** Attribution */
+            attribution: string;
+            /** Authors */
+            authors: string[] | null;
+            /** Canonical Url */
+            canonical_url: string;
+            /** Document Version */
+            document_version: string;
+            /** Doi */
+            doi: string | null;
+            /** Publication Date */
+            publication_date: string | null;
+            /** Publisher */
+            publisher: string;
+            /**
+             * Retraction Status
+             * @enum {string}
+             */
+            retraction_status: "clear" | "unknown" | "retracted";
+            /**
+             * Retrieved At
+             * Format: date-time
+             */
+            retrieved_at: string;
+            /**
+             * Review Basis
+             * @enum {string}
+             */
+            review_basis: "synthetic_fixture" | "documented_review";
+            /** Settings */
+            settings: string[];
+            /** Subtypes */
+            subtypes: string[];
+            /** Title */
+            title: string;
+            /** Topics */
+            topics: string[];
+            /** Update Date */
+            update_date: string | null;
+        };
+        /** EvidenceSpan */
+        EvidenceSpan: {
+            /** End */
+            end: number;
+            /** Start */
+            start: number;
+        };
+        /** EvidenceStatusInput */
+        EvidenceStatusInput: {
+            /**
+             * Action
+             * @enum {string}
+             */
+            action: "retracted" | "withdrawn" | "retention_review_required";
+            /**
+             * Reason
+             * @enum {string}
+             */
+            reason: "publisher_notice" | "source_rights" | "extraction_error" | "curator_review";
+        };
+        /** EvidenceStatusReceipt */
+        EvidenceStatusReceipt: {
+            /**
+             * Document Id
+             * Format: uuid
+             */
+            document_id: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Original Private Object Retention
+             * @default review_required_no_complete_deletion_claim
+             * @constant
+             */
+            original_private_object_retention: "review_required_no_complete_deletion_claim";
+            /** Search Content Removed */
+            search_content_removed: boolean;
+        };
+        /** EvidenceTextInput */
+        EvidenceTextInput: {
+            manifest: components["schemas"]["EvidenceManifest"];
+            /**
+             * Media Type
+             * @default text/plain
+             * @constant
+             */
+            media_type: "text/plain";
+            /**
+             * Text
+             * Format: password
+             */
+            text: string;
+        };
         /** ExactResult */
         ExactResult: {
             /**
@@ -3644,6 +4556,147 @@ export interface components {
              * @default []
              */
             points: components["schemas"]["NoisePoint"][];
+        };
+        /** ExtractedFact */
+        ExtractedFact: {
+            assertion_span: components["schemas"]["TextSpan"];
+            /** Branch Id */
+            branch_id: string | null;
+            /**
+             * Certainty
+             * @enum {string}
+             */
+            certainty: "affirmed" | "possible" | "not_asserted";
+            /**
+             * Concept
+             * @enum {string}
+             */
+            concept: "fatigue" | "pain" | "nausea" | "swelling";
+            context: components["schemas"]["Context"];
+            /**
+             * Experiencer
+             * @enum {string}
+             */
+            experiencer: "patient" | "family";
+            /**
+             * Extractor Version
+             * @default scoped-symptom-grammar/1
+             * @constant
+             */
+            extractor_version: "scoped-symptom-grammar/1";
+            /**
+             * Fact Id
+             * Format: uuid
+             */
+            fact_id: string;
+            mention_span: components["schemas"]["TextSpan"];
+            /** Negated */
+            negated: boolean;
+            /** Normalized Text Sha256 */
+            normalized_text_sha256: string;
+            /**
+             * Note Id
+             * Format: uuid
+             */
+            note_id: string;
+            /** Note Version */
+            note_version: number;
+            /**
+             * Patient Id
+             * Format: uuid
+             */
+            patient_id: string;
+            /**
+             * Project Id
+             * Format: uuid
+             */
+            project_id: string;
+            provenance: components["schemas"]["Provenance"];
+            /** Relative Days */
+            relative_days?: number | null;
+            resolved_time?: components["schemas"]["ClinicalTime"] | null;
+            /**
+             * Temporal Expression
+             * @enum {string}
+             */
+            temporal_expression: "absent" | "today" | "yesterday" | "days_ago" | "last_visit";
+            /**
+             * Temporality
+             * @enum {string}
+             */
+            temporality: "current" | "historical" | "planned" | "assessment";
+            /**
+             * Time Status
+             * @enum {string}
+             */
+            time_status: "resolved_from_verified_anchor" | "unresolved";
+            /**
+             * Validation Status
+             * @default unverified_extracted_assertion
+             * @constant
+             */
+            validation_status: "unverified_extracted_assertion";
+        };
+        /** ExtractionReport */
+        ExtractionReport: {
+            /** Branch Id */
+            branch_id: string | null;
+            /**
+             * Execution Mode
+             * @default deterministic_scoped_parser
+             * @constant
+             */
+            execution_mode: "deterministic_scoped_parser";
+            /**
+             * Extractor Version
+             * @default scoped-symptom-grammar/1
+             * @constant
+             */
+            extractor_version: "scoped-symptom-grammar/1";
+            /** Facts */
+            facts: components["schemas"]["ExtractedFact"][];
+            /**
+             * Limitations
+             * @default [
+             *       "Four symptom concepts and explicit clause templates only; no general clinical NLP.",
+             *       "No numerical severity, laboratory, receptor, diagnosis or therapy extraction.",
+             *       "Assertions require source review and never replace canonical observations."
+             *     ]
+             */
+            limitations: string[];
+            /**
+             * Normalization Version
+             * @default unicode-nfc/1
+             * @constant
+             */
+            normalization_version: "unicode-nfc/1";
+            /** Normalized Text Sha256 */
+            normalized_text_sha256: string;
+            /**
+             * Note Id
+             * Format: uuid
+             */
+            note_id: string;
+            /** Note Version */
+            note_version: number;
+            /**
+             * Patient Id
+             * Format: uuid
+             */
+            patient_id: string;
+            /**
+             * Project Id
+             * Format: uuid
+             */
+            project_id: string;
+            /**
+             * Schema Version
+             * @default note-extraction/1
+             * @constant
+             */
+            schema_version: "note-extraction/1";
+            /** Unsupported Clause Spans */
+            unsupported_clause_spans: components["schemas"]["TextSpan"][];
         };
         /** FeatureSeries */
         FeatureSeries: {
@@ -4914,6 +5967,34 @@ export interface components {
              */
             split_id: string;
         };
+        /** KnowledgeTraversal */
+        KnowledgeTraversal: {
+            /** Branch Id */
+            branch_id?: string | null;
+            /**
+             * Depth
+             * @default 1
+             */
+            depth: number;
+            /** Expected Snapshot Hash */
+            expected_snapshot_hash?: string | null;
+            /**
+             * Limit
+             * @default 25
+             */
+            limit: number;
+            /**
+             * Offset
+             * @default 0
+             */
+            offset: number;
+            /**
+             * Relation Kinds
+             * @default []
+             */
+            relation_kinds: ("HAS_OBSERVATION" | "HAS_LESION" | "HAS_MEASUREMENT" | "ABOUT_CONCEPT" | "RELATED_TO" | "ASSOCIATED_WITH" | "GENERATED_FROM_BASELINE" | "SUPPORTED_BY_PUBLICATION" | "EXPOSED_TO_TREATMENT")[];
+            start: components["schemas"]["EntityRef"];
+        };
         /** LODComparison */
         LODComparison: {
             /** Accepted */
@@ -5606,6 +6687,77 @@ export interface components {
             /** Slot Id */
             slot_id: string;
         };
+        /** NoteDocument */
+        NoteDocument: {
+            anchor: components["schemas"]["ClinicalTime"] | null;
+            /**
+             * Artifact Id
+             * Format: uuid
+             */
+            artifact_id: string;
+            /** Branch Id */
+            branch_id: string | null;
+            context: components["schemas"]["Context"];
+            /**
+             * Language
+             * @default en
+             * @constant
+             */
+            language: "en";
+            /**
+             * Normalization Version
+             * @default unicode-nfc/1
+             * @constant
+             */
+            normalization_version: "unicode-nfc/1";
+            /** Normalized Text Sha256 */
+            normalized_text_sha256: string;
+            /**
+             * Note Id
+             * Format: uuid
+             */
+            note_id: string;
+            /**
+             * Patient Id
+             * Format: uuid
+             */
+            patient_id: string;
+            /**
+             * Project Id
+             * Format: uuid
+             */
+            project_id: string;
+            provenance: components["schemas"]["Provenance"];
+            /** Source Sha256 */
+            source_sha256: string;
+            /** Supersedes Id */
+            supersedes_id: string | null;
+            /** Version */
+            version: number;
+        };
+        /** NoteExtractionCommand */
+        NoteExtractionCommand: {
+            /**
+             * Note Id
+             * Format: uuid
+             */
+            note_id: string;
+        };
+        /** NoteExtractionView */
+        NoteExtractionView: {
+            /**
+             * Extraction Id
+             * Format: uuid
+             */
+            extraction_id: string;
+            /**
+             * Publication Status
+             * @default unpromoted_assertions
+             * @constant
+             */
+            publication_status: "unpromoted_assertions";
+            report: components["schemas"]["ExtractionReport"];
+        };
         /** NoteInput */
         NoteInput: {
             /**
@@ -5645,6 +6797,8 @@ export interface components {
              * @enum {string}
              */
             negation: "affirmed" | "negated" | "unspecified";
+            /** Note Document Id */
+            note_document_id?: string | null;
             /** Original Term */
             original_term: string;
             /**
@@ -5655,6 +6809,19 @@ export interface components {
             time: components["schemas"]["ClinicalTime"];
             /** Visit Id */
             visit_id?: string | null;
+        };
+        /** NoteRegistration */
+        NoteRegistration: {
+            anchor?: components["schemas"]["ClinicalTime"] | null;
+            /**
+             * Artifact Id
+             * Format: uuid
+             */
+            artifact_id: string;
+            /** Branch Id */
+            branch_id?: string | null;
+            /** Supersedes Id */
+            supersedes_id?: string | null;
         };
         /** NumericInput */
         NumericInput: {
@@ -5809,6 +6976,37 @@ export interface components {
              * @enum {string}
              */
             relation: "derived_from" | "supersedes";
+        };
+        /** PassageDescriptor */
+        PassageDescriptor: {
+            /** Document Fingerprint */
+            document_fingerprint: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Index Configuration
+             * @default english
+             * @constant
+             */
+            index_configuration: "english";
+            /**
+             * Locator Kind
+             * @default normalized_text_codepoints
+             * @constant
+             */
+            locator_kind: "normalized_text_codepoints";
+            /**
+             * Normalization Version
+             * @default unicode-nfc/1
+             * @constant
+             */
+            normalization_version: "unicode-nfc/1";
+            span: components["schemas"]["EvidenceSpan"];
+            /** Text Sha256 */
+            text_sha256: string;
         };
         /** PatientAssignment */
         PatientAssignment: {
@@ -6265,11 +7463,105 @@ export interface components {
              */
             role: "viewer" | "editor" | "admin";
         };
+        /** ProtectedSpan */
+        ProtectedSpan: {
+            /**
+             * Access Scope
+             * @default authorized_note_source
+             * @constant
+             */
+            access_scope: "authorized_note_source";
+            /** Assertion */
+            assertion: string;
+            /** Mention */
+            mention: string;
+            /** Normalized Text Sha256 */
+            normalized_text_sha256: string;
+            /**
+             * Note Id
+             * Format: uuid
+             */
+            note_id: string;
+        };
         /**
          * Provenance
          * @enum {string}
          */
         Provenance: "REAL_OBSERVED" | "REAL_DERIVED" | "SYNTHETIC_GENERATED" | "INTERPOLATED" | "MODEL_PREDICTED";
+        /** ProviderCapabilities */
+        ProviderCapabilities: {
+            /**
+             * Candidate Publication Available
+             * @default false
+             * @constant
+             */
+            candidate_publication_available: false;
+            /**
+             * External Model Available
+             * @default false
+             * @constant
+             */
+            external_model_available: false;
+            /**
+             * External Status
+             * @default policy_access_and_grounding_review_required
+             * @constant
+             */
+            external_status: "policy_access_and_grounding_review_required";
+            /**
+             * Local Note Extraction Available
+             * @default true
+             * @constant
+             */
+            local_note_extraction_available: true;
+            /**
+             * Local Note Extraction Scope
+             * @default four_symptom_templates_synthetic_fixture_only
+             * @constant
+             */
+            local_note_extraction_scope: "four_symptom_templates_synthetic_fixture_only";
+            /**
+             * Local Summary Available
+             * @default true
+             * @constant
+             */
+            local_summary_available: true;
+            /**
+             * Next Action
+             * @default use_local_mode
+             * @constant
+             */
+            next_action: "use_local_mode";
+            /**
+             * Note Extraction Available
+             * @default false
+             * @constant
+             */
+            note_extraction_available: false;
+            /**
+             * Schema Version
+             * @default provider-capabilities/1
+             * @constant
+             */
+            schema_version: "provider-capabilities/1";
+        };
+        /** PublicEvidenceDocument */
+        PublicEvidenceDocument: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Limitations */
+            limitations: string[];
+            /** Normalized Sha256 */
+            normalized_sha256: string | null;
+            /** Passage Ids */
+            passage_ids: string[];
+            source: components["schemas"]["EvidenceSourceMetadata"];
+            /** Status */
+            status: string;
+        };
         /** PublishInput */
         PublishInput: {
             /** Expected Association Head */
@@ -6650,6 +7942,93 @@ export interface components {
              */
             time_basis: "engineering_relative_not_observed_examination_times";
         };
+        /** RelationshipCommand */
+        RelationshipCommand: {
+            /** Branch Id */
+            branch_id?: string | null;
+            input: components["schemas"]["RelationshipInput"];
+        };
+        /** RelationshipInput */
+        RelationshipInput: {
+            /**
+             * Assertion Kind
+             * @enum {string}
+             */
+            assertion_kind: "recorded_association" | "extracted_assertion" | "hypothetical_simulation" | "general_research" | "model_proposal";
+            /** Extraction Id */
+            extraction_id?: string | null;
+            /** Fact Id */
+            fact_id?: string | null;
+            /**
+             * Relation
+             * @enum {string}
+             */
+            relation: "HAS_OBSERVATION" | "HAS_LESION" | "HAS_MEASUREMENT" | "ABOUT_CONCEPT" | "RELATED_TO" | "ASSOCIATED_WITH" | "GENERATED_FROM_BASELINE" | "SUPPORTED_BY_PUBLICATION" | "EXPOSED_TO_TREATMENT";
+            source: components["schemas"]["EntityRef"];
+            /** Supersedes Id */
+            supersedes_id?: string | null;
+            /**
+             * Supporting Resource Ids
+             * @default []
+             */
+            supporting_resource_ids: string[];
+            target: components["schemas"]["EntityRef"];
+            time?: components["schemas"]["ClinicalTime"] | null;
+        };
+        /** RelationshipPage */
+        RelationshipPage: {
+            /**
+             * Budget Exhausted
+             * @default false
+             */
+            budget_exhausted: boolean;
+            /** Items */
+            items: components["schemas"]["RelationshipView"][];
+            /** Next Offset */
+            next_offset: number | null;
+            /** Snapshot Hash */
+            snapshot_hash: string;
+        };
+        /** RelationshipView */
+        RelationshipView: {
+            /** Branch Id */
+            branch_id: string | null;
+            /** Display Status */
+            display_status: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            input: components["schemas"]["RelationshipInput"];
+            /**
+             * Limitations
+             * @default [
+             *       "A relationship is not causation or an accepted clinical finding.",
+             *       "Scientific and source review remain separate from structural checks."
+             *     ]
+             */
+            limitations: string[];
+            /** Patient Id */
+            patient_id: string | null;
+            /**
+             * Project Id
+             * Format: uuid
+             */
+            project_id: string;
+            provenance: components["schemas"]["Provenance"] | null;
+            /**
+             * Root Id
+             * Format: uuid
+             */
+            root_id: string;
+            /** Statement */
+            statement: string;
+            /** Validation Status */
+            validation_status: string;
+            /** Version */
+            version: number;
+        };
         /** RelativeTime */
         RelativeTime: {
             /** Anchor State Id */
@@ -6728,6 +8107,33 @@ export interface components {
             record_id: string;
             /** Revision */
             revision: number;
+        };
+        /** RetrievalHit */
+        RetrievalHit: {
+            /**
+             * Individual Treatment Effect Support
+             * @default false
+             * @constant
+             */
+            individual_treatment_effect_support: false;
+            passage: components["schemas"]["EvidencePassageView"];
+            /**
+             * Patient Fact Support
+             * @default false
+             * @constant
+             */
+            patient_fact_support: false;
+            /** Rank */
+            rank: number;
+            /** Rationales */
+            rationales: string[];
+            /**
+             * Semantic Support
+             * @default unreviewed_general_research
+             * @constant
+             */
+            semantic_support: "unreviewed_general_research";
+            source: components["schemas"]["EvidenceSourceMetadata"];
         };
         /** ReviewEvent */
         ReviewEvent: {
@@ -8668,6 +10074,13 @@ export interface components {
              */
             version: "temporal-features/1";
         };
+        /** TextSpan */
+        TextSpan: {
+            /** End */
+            end: number;
+            /** Start */
+            start: number;
+        };
         /** TimelineOrigin */
         TimelineOrigin: {
             /**
@@ -9354,6 +10767,220 @@ export interface operations {
             };
         };
     };
+    capabilities_api_v1_projects__project_id__ai_capabilities_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProviderCapabilities"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    concept_create_api_v1_projects__project_id__clinical_concepts_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConceptInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConceptView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    concept_detail_api_v1_projects__project_id__clinical_concepts__concept_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                concept_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConceptView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    concept_relationship_query_api_v1_projects__project_id__concept_relationship_queries_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["KnowledgeTraversal"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RelationshipPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    concept_relationship_create_api_v1_projects__project_id__concept_relationships_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RelationshipCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RelationshipView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    concept_relationship_detail_api_v1_projects__project_id__concept_relationships__relationship_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                relationship_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RelationshipView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     dictionary_api_v1_projects__project_id__dictionaries_clinical_get: {
         parameters: {
             query?: never;
@@ -9514,6 +11141,408 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LeakageAudit"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    citation_api_v1_projects__project_id__evidence_citation_checks_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CitationCheck"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CitationReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    corpus_build_api_v1_projects__project_id__evidence_corpora_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CorpusBuildInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EvidenceCorpus"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    corpus_detail_api_v1_projects__project_id__evidence_corpora__corpus_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                corpus_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EvidenceCorpus"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    passage_api_v1_projects__project_id__evidence_corpora__corpus_id__passages__passage_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                corpus_id: string;
+                passage_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EvidencePassageView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    activation_api_v1_projects__project_id__evidence_corpus_activations_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+                "if-match"?: string | null;
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CorpusActivationInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CorpusActivation"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    current_api_v1_projects__project_id__evidence_corpus_current_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CorpusHeadView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    excerpt_import_api_v1_projects__project_id__evidence_document_excerpts_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EvidenceTextInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EvidenceDocument"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    metadata_import_api_v1_projects__project_id__evidence_document_metadata_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EvidenceManifest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EvidenceDocument"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    document_api_v1_projects__project_id__evidence_documents__document_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicEvidenceDocument"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    restriction_api_v1_projects__project_id__evidence_documents__document_id__restrictions_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EvidenceStatusInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EvidenceStatusReceipt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    retrieval_api_v1_projects__project_id__evidence_retrieval_queries_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EvidenceRetrievalQuery"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EvidenceRetrievalReport"];
                 };
             };
             /** @description Validation Error */
@@ -11410,6 +13439,190 @@ export interface operations {
             };
         };
     };
+    create_note_document_api_v1_projects__project_id__patients__patient_id__note_documents_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NoteRegistration"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoteDocument"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    note_document_api_v1_projects__project_id__patients__patient_id__note_documents__note_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                note_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoteDocument"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_note_extraction_api_v1_projects__project_id__patients__patient_id__note_extractions_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NoteExtractionCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoteExtractionView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    note_extraction_api_v1_projects__project_id__patients__patient_id__note_extractions__extraction_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                extraction_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoteExtractionView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    note_span_api_v1_projects__project_id__patients__patient_id__note_extractions__extraction_id__facts__fact_index__source_span_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                extraction_id: string;
+                fact_index: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProtectedSpan"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     accept_api_v1_projects__project_id__patients__patient_id__observation_batches_post: {
         parameters: {
             query?: never;
@@ -11844,6 +14057,118 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["RegistrationReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    patient_relationship_query_api_v1_projects__project_id__patients__patient_id__relationship_queries_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["KnowledgeTraversal"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RelationshipPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    patient_relationship_create_api_v1_projects__project_id__patients__patient_id__relationships_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RelationshipCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RelationshipView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    patient_relationship_detail_api_v1_projects__project_id__patients__patient_id__relationships__relationship_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                relationship_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RelationshipView"];
                 };
             };
             /** @description Validation Error */

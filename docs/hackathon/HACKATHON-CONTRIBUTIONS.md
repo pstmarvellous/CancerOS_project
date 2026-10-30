@@ -127,3 +127,22 @@ is used. COS-056 remains optional and deferred.
 On 2026-10-30 the owner requested committing and pushing the Phase3 implementation
 to the configured GitHub repository. This code publication does not establish
 hackathon submission, scientific validation or closure of the recorded evidence gates.
+
+COS-057 (2026-10-30): provider-neutral private boundary, Meta Responses adapter,
+strict candidate parsing, per-attempt policy checks and local inventory template.
+76 synthetic/identity/settings tests plus Ruff/mypy/contract drift passed. Both
+production live calls and real test-mode networking are closed; no genuine model
+identity, access, source rights or clinical performance is claimed. No new push.
+
+COS-058/059 (2026-10-30): private immutable note versions, scoped deterministic
+symptom assertions and source-linked relational relationships. Focused targets
+passed122 and64 tests respectively, including actual private storage/SQL and
+HTTP replay/withdrawal checks. No authentic-note/model performance, clinical
+review, causal inference or new repository publication is claimed.
+
+COS-060 (2026-10-30): licensed-evidence metadata boundary, immutable document/
+passage/corpus hashes, private original bytes, removable English full-text index
+and atomic current-corpus activation.100 fixture/SQL/S3/HTTP checks passed plus
+Ruff/mypy and corrected contract drift. NCI source metadata/reuse policy inspected
+as a candidate; no NCI text imported. Complete object-retention and real curation
+remain unverified. No provider call, external export or new code publication.

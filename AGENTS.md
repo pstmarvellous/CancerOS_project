@@ -12,6 +12,10 @@ COS prompt series or publication of the project.
 
 ## Phase 1 execution authority and required reading
 
+The owner authorized Phase 4 implementation on 2026-10-30. Execute COS-057–071
+sequentially, preserving live-provider, source-rights, scientific-review and
+publication gates. Phase execution alone never authorizes external transmission.
+
 The owner authorized Phase 3 execution in the current session. Execute COS-041–055
 sequentially; COS-056 remains optional and evidence/compute gated. Keep authentic
 baseline, scientific-policy, longitudinal-evaluation and publication gates explicit.

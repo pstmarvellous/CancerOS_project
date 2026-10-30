@@ -2107,6 +2107,116 @@
         "title": "CensoredResult",
         "type": "object"
       },
+      "CitationCheck": {
+        "additionalProperties": false,
+        "properties": {
+          "corpus_id": {
+            "format": "uuid",
+            "title": "Corpus Id",
+            "type": "string"
+          },
+          "expected_text_sha256": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Text Sha256"
+          },
+          "intended_use": {
+            "default": "general_background",
+            "enum": [
+              "general_background",
+              "patient_fact",
+              "individual_treatment_effect"
+            ],
+            "title": "Intended Use",
+            "type": "string"
+          },
+          "passage_id": {
+            "format": "uuid",
+            "title": "Passage Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "corpus_id",
+          "passage_id"
+        ],
+        "title": "CitationCheck",
+        "type": "object"
+      },
+      "CitationReport": {
+        "additionalProperties": false,
+        "properties": {
+          "citation_status": {
+            "const": "verified_offline_manifest",
+            "default": "verified_offline_manifest",
+            "title": "Citation Status",
+            "type": "string"
+          },
+          "corpus_status": {
+            "enum": [
+              "active",
+              "historical"
+            ],
+            "title": "Corpus Status",
+            "type": "string"
+          },
+          "limitations": {
+            "default": [
+              "A permitted exact passage and valid locator do not prove a clinical claim.",
+              "No external URL, DOI resolver or provider was contacted."
+            ],
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "live_url_status": {
+            "const": "not_checked",
+            "default": "not_checked",
+            "title": "Live Url Status",
+            "type": "string"
+          },
+          "meaningful_support": {
+            "enum": [
+              "unreviewed",
+              "not_supported"
+            ],
+            "title": "Meaningful Support",
+            "type": "string"
+          },
+          "next_action": {
+            "enum": [
+              "review_passage_to_claim_support",
+              "use_verified_patient_observations"
+            ],
+            "title": "Next Action",
+            "type": "string"
+          },
+          "passage": {
+            "$ref": "#/components/schemas/EvidencePassageView"
+          },
+          "source": {
+            "$ref": "#/components/schemas/EvidenceSourceMetadata"
+          }
+        },
+        "required": [
+          "passage",
+          "source",
+          "corpus_status",
+          "meaningful_support",
+          "next_action"
+        ],
+        "title": "CitationReport",
+        "type": "object"
+      },
       "CleanupReport": {
         "additionalProperties": false,
         "properties": {
@@ -3092,6 +3202,75 @@
         "title": "CompletionReport",
         "type": "object"
       },
+      "ConceptInput": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "pattern": "^[a-z][a-z0-9_.-]{0,63}$",
+            "title": "Code",
+            "type": "string"
+          },
+          "label": {
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Label",
+            "type": "string"
+          },
+          "supersedes_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supersedes Id"
+          }
+        },
+        "required": [
+          "code",
+          "label"
+        ],
+        "title": "ConceptInput",
+        "type": "object"
+      },
+      "ConceptView": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "input": {
+            "$ref": "#/components/schemas/ConceptInput"
+          },
+          "project_id": {
+            "format": "uuid",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "status": {
+            "default": "local_vocabulary_unreviewed",
+            "title": "Status",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "input",
+          "version"
+        ],
+        "title": "ConceptView",
+        "type": "object"
+      },
       "ConfigSummary": {
         "additionalProperties": false,
         "properties": {
@@ -3182,6 +3361,160 @@
         ],
         "title": "Context",
         "type": "string"
+      },
+      "CorpusActivation": {
+        "additionalProperties": false,
+        "properties": {
+          "corpus_id": {
+            "format": "uuid",
+            "title": "Corpus Id",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "prior_activation_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prior Activation Id"
+          }
+        },
+        "required": [
+          "id",
+          "corpus_id",
+          "prior_activation_id"
+        ],
+        "title": "CorpusActivation",
+        "type": "object"
+      },
+      "CorpusActivationInput": {
+        "additionalProperties": false,
+        "properties": {
+          "corpus_id": {
+            "format": "uuid",
+            "title": "Corpus Id",
+            "type": "string"
+          },
+          "expected_activation_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Activation Id"
+          }
+        },
+        "required": [
+          "corpus_id"
+        ],
+        "title": "CorpusActivationInput",
+        "type": "object"
+      },
+      "CorpusBuildInput": {
+        "additionalProperties": false,
+        "properties": {
+          "document_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "maxItems": 50,
+            "minItems": 1,
+            "title": "Document Ids",
+            "type": "array"
+          },
+          "expected_activation_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Activation Id"
+          },
+          "index_configuration": {
+            "const": "english",
+            "default": "english",
+            "title": "Index Configuration",
+            "type": "string"
+          }
+        },
+        "required": [
+          "document_ids"
+        ],
+        "title": "CorpusBuildInput",
+        "type": "object"
+      },
+      "CorpusHeadView": {
+        "additionalProperties": false,
+        "properties": {
+          "activation_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activation Id"
+          },
+          "corpus_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Corpus Id"
+          },
+          "next_action": {
+            "enum": [
+              "inspect_permitted_evidence",
+              "curator_build_required",
+              "curator_rebuild_required"
+            ],
+            "title": "Next Action",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "unconfigured",
+              "unavailable"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "activation_id",
+          "corpus_id",
+          "status",
+          "next_action"
+        ],
+        "title": "CorpusHeadView",
+        "type": "object"
       },
       "CurrentRunView": {
         "additionalProperties": false,
@@ -4007,6 +4340,872 @@
         "title": "EligibilityResult",
         "type": "object"
       },
+      "EntityRef": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "patient",
+              "lesion_identity",
+              "clinical_observation",
+              "physical_measurement",
+              "twin_branch",
+              "twin_snapshot",
+              "note_document",
+              "note_extraction",
+              "clinical_concept",
+              "publication",
+              "evidence_statement",
+              "outcome"
+            ],
+            "title": "Kind",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "id"
+        ],
+        "title": "EntityRef",
+        "type": "object"
+      },
+      "EvidenceCorpus": {
+        "additionalProperties": false,
+        "properties": {
+          "content_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Content Hash",
+            "type": "string"
+          },
+          "document_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Document Ids",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "index_configuration": {
+            "const": "english",
+            "default": "english",
+            "title": "Index Configuration",
+            "type": "string"
+          },
+          "index_version": {
+            "const": "postgres-keyword/1",
+            "default": "postgres-keyword/1",
+            "title": "Index Version",
+            "type": "string"
+          },
+          "passage_hashes": {
+            "items": {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                }
+              ],
+              "type": "array"
+            },
+            "title": "Passage Hashes",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "document_ids",
+          "passage_hashes",
+          "content_hash"
+        ],
+        "title": "EvidenceCorpus",
+        "type": "object"
+      },
+      "EvidenceDocument": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Artifact Id"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "limitations": {
+            "default": [
+              "Source eligibility is not evidence of clinical claim support.",
+              "External processing requires its independent denied-by-default policy."
+            ],
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "manifest": {
+            "$ref": "#/components/schemas/EvidenceManifest"
+          },
+          "normalized_sha256": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Normalized Sha256"
+          },
+          "original_sha256": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Sha256"
+          },
+          "passage_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Passage Ids",
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "approved_excerpt",
+              "metadata_only",
+              "needs_review",
+              "excluded"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "manifest",
+          "original_sha256",
+          "normalized_sha256",
+          "artifact_id",
+          "passage_ids",
+          "status"
+        ],
+        "title": "EvidenceDocument",
+        "type": "object"
+      },
+      "EvidenceManifest": {
+        "additionalProperties": false,
+        "properties": {
+          "attribution": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Attribution",
+            "type": "string"
+          },
+          "authors": {
+            "anyOf": [
+              {
+                "items": {
+                  "maxLength": 500,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "maxItems": 50,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Authors"
+          },
+          "canonical_url": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Canonical Url",
+            "type": "string"
+          },
+          "component_license_reference": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Component License Reference",
+            "type": "string"
+          },
+          "content_mode": {
+            "enum": [
+              "metadata_only",
+              "approved_excerpt"
+            ],
+            "title": "Content Mode",
+            "type": "string"
+          },
+          "document_version": {
+            "pattern": "^[a-zA-Z0-9_.-]{1,64}$",
+            "title": "Document Version",
+            "type": "string"
+          },
+          "doi": {
+            "anyOf": [
+              {
+                "maxLength": 250,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Doi"
+          },
+          "permission_review_reference": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Permission Review Reference",
+            "type": "string"
+          },
+          "publication_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publication Date"
+          },
+          "publication_date_unknown_reason": {
+            "anyOf": [
+              {
+                "enum": [
+                  "not_available",
+                  "not_applicable"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publication Date Unknown Reason"
+          },
+          "publisher": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Publisher",
+            "type": "string"
+          },
+          "retraction_status": {
+            "enum": [
+              "clear",
+              "unknown",
+              "retracted"
+            ],
+            "title": "Retraction Status",
+            "type": "string"
+          },
+          "retrieved_at": {
+            "format": "date-time",
+            "title": "Retrieved At",
+            "type": "string"
+          },
+          "review_basis": {
+            "enum": [
+              "synthetic_fixture",
+              "documented_review"
+            ],
+            "title": "Review Basis",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "evidence-source/1",
+            "default": "evidence-source/1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "settings": {
+            "default": [],
+            "items": {
+              "pattern": "^[a-zA-Z0-9_.-]{1,64}$",
+              "type": "string"
+            },
+            "maxItems": 30,
+            "title": "Settings",
+            "type": "array"
+          },
+          "source_version_id": {
+            "format": "uuid",
+            "title": "Source Version Id",
+            "type": "string"
+          },
+          "subtypes": {
+            "default": [],
+            "items": {
+              "pattern": "^[a-zA-Z0-9_.-]{1,64}$",
+              "type": "string"
+            },
+            "maxItems": 30,
+            "title": "Subtypes",
+            "type": "array"
+          },
+          "title": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          },
+          "topics": {
+            "items": {
+              "pattern": "^[a-zA-Z0-9_.-]{1,64}$",
+              "type": "string"
+            },
+            "maxItems": 30,
+            "minItems": 1,
+            "title": "Topics",
+            "type": "array"
+          },
+          "update_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Update Date"
+          },
+          "update_date_unknown_reason": {
+            "anyOf": [
+              {
+                "enum": [
+                  "not_available",
+                  "not_applicable"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Update Date Unknown Reason"
+          }
+        },
+        "required": [
+          "source_version_id",
+          "title",
+          "publisher",
+          "canonical_url",
+          "retrieved_at",
+          "document_version",
+          "topics",
+          "component_license_reference",
+          "permission_review_reference",
+          "attribution",
+          "content_mode",
+          "review_basis",
+          "retraction_status"
+        ],
+        "title": "EvidenceManifest",
+        "type": "object"
+      },
+      "EvidencePassageView": {
+        "additionalProperties": false,
+        "properties": {
+          "attribution": {
+            "title": "Attribution",
+            "type": "string"
+          },
+          "corpus_id": {
+            "format": "uuid",
+            "title": "Corpus Id",
+            "type": "string"
+          },
+          "descriptor": {
+            "$ref": "#/components/schemas/PassageDescriptor"
+          },
+          "document_id": {
+            "format": "uuid",
+            "title": "Document Id",
+            "type": "string"
+          },
+          "excerpt": {
+            "title": "Excerpt",
+            "type": "string"
+          },
+          "support_status": {
+            "const": "citation_resolves_meaningful_support_unreviewed",
+            "default": "citation_resolves_meaningful_support_unreviewed",
+            "title": "Support Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "document_id",
+          "corpus_id",
+          "descriptor",
+          "excerpt",
+          "attribution"
+        ],
+        "title": "EvidencePassageView",
+        "type": "object"
+      },
+      "EvidenceRetrievalQuery": {
+        "additionalProperties": false,
+        "properties": {
+          "concepts": {
+            "default": [],
+            "items": {
+              "pattern": "^[a-zA-Z0-9_.-]{1,64}$",
+              "type": "string"
+            },
+            "maxItems": 10,
+            "title": "Concepts",
+            "type": "array"
+          },
+          "corpus_id": {
+            "format": "uuid",
+            "title": "Corpus Id",
+            "type": "string"
+          },
+          "expected_active_activation_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Active Activation Id"
+          },
+          "publication_not_before": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publication Not Before"
+          },
+          "query": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Query",
+            "type": "string"
+          },
+          "setting": {
+            "anyOf": [
+              {
+                "pattern": "^[a-zA-Z0-9_.-]{1,64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Setting"
+          },
+          "subtype": {
+            "anyOf": [
+              {
+                "pattern": "^[a-zA-Z0-9_.-]{1,64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subtype"
+          },
+          "top_k": {
+            "default": 5,
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Top K",
+            "type": "integer"
+          },
+          "topics": {
+            "default": [],
+            "items": {
+              "pattern": "^[a-zA-Z0-9_.-]{1,64}$",
+              "type": "string"
+            },
+            "maxItems": 10,
+            "title": "Topics",
+            "type": "array"
+          },
+          "updated_not_before": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated Not Before"
+          }
+        },
+        "required": [
+          "corpus_id",
+          "query"
+        ],
+        "title": "EvidenceRetrievalQuery",
+        "type": "object"
+      },
+      "EvidenceRetrievalReport": {
+        "additionalProperties": false,
+        "properties": {
+          "activation_id": {
+            "format": "uuid",
+            "title": "Activation Id",
+            "type": "string"
+          },
+          "corpus_id": {
+            "format": "uuid",
+            "title": "Corpus Id",
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RetrievalHit"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "limitations": {
+            "default": [
+              "Keyword rank measures lexical relevance, not clinical confidence or claim support.",
+              "Conflicting passages remain candidates; no semantic conflict adjudication is performed.",
+              "Unknown subtype and setting use only generic context evidence."
+            ],
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "next_action": {
+            "enum": [
+              "review_candidate_passages",
+              "narrow_question_or_request_curator_review"
+            ],
+            "title": "Next Action",
+            "type": "string"
+          },
+          "settings_version": {
+            "const": "postgres-curated-retrieval/1",
+            "default": "postgres-curated-retrieval/1",
+            "title": "Settings Version",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "matched",
+              "no_suitable_evidence"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "corpus_id",
+          "activation_id",
+          "items",
+          "status",
+          "next_action"
+        ],
+        "title": "EvidenceRetrievalReport",
+        "type": "object"
+      },
+      "EvidenceSourceMetadata": {
+        "additionalProperties": false,
+        "properties": {
+          "attribution": {
+            "title": "Attribution",
+            "type": "string"
+          },
+          "authors": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Authors"
+          },
+          "canonical_url": {
+            "title": "Canonical Url",
+            "type": "string"
+          },
+          "document_version": {
+            "title": "Document Version",
+            "type": "string"
+          },
+          "doi": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Doi"
+          },
+          "publication_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publication Date"
+          },
+          "publisher": {
+            "title": "Publisher",
+            "type": "string"
+          },
+          "retraction_status": {
+            "enum": [
+              "clear",
+              "unknown",
+              "retracted"
+            ],
+            "title": "Retraction Status",
+            "type": "string"
+          },
+          "retrieved_at": {
+            "format": "date-time",
+            "title": "Retrieved At",
+            "type": "string"
+          },
+          "review_basis": {
+            "enum": [
+              "synthetic_fixture",
+              "documented_review"
+            ],
+            "title": "Review Basis",
+            "type": "string"
+          },
+          "settings": {
+            "items": {
+              "pattern": "^[a-zA-Z0-9_.-]{1,64}$",
+              "type": "string"
+            },
+            "title": "Settings",
+            "type": "array"
+          },
+          "subtypes": {
+            "items": {
+              "pattern": "^[a-zA-Z0-9_.-]{1,64}$",
+              "type": "string"
+            },
+            "title": "Subtypes",
+            "type": "array"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "topics": {
+            "items": {
+              "pattern": "^[a-zA-Z0-9_.-]{1,64}$",
+              "type": "string"
+            },
+            "title": "Topics",
+            "type": "array"
+          },
+          "update_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Update Date"
+          }
+        },
+        "required": [
+          "title",
+          "publisher",
+          "authors",
+          "canonical_url",
+          "doi",
+          "publication_date",
+          "update_date",
+          "retrieved_at",
+          "document_version",
+          "topics",
+          "subtypes",
+          "settings",
+          "attribution",
+          "review_basis",
+          "retraction_status"
+        ],
+        "title": "EvidenceSourceMetadata",
+        "type": "object"
+      },
+      "EvidenceSpan": {
+        "additionalProperties": false,
+        "properties": {
+          "end": {
+            "minimum": 1.0,
+            "title": "End",
+            "type": "integer"
+          },
+          "start": {
+            "minimum": 0.0,
+            "title": "Start",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "start",
+          "end"
+        ],
+        "title": "EvidenceSpan",
+        "type": "object"
+      },
+      "EvidenceStatusInput": {
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "enum": [
+              "retracted",
+              "withdrawn",
+              "retention_review_required"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "reason": {
+            "enum": [
+              "publisher_notice",
+              "source_rights",
+              "extraction_error",
+              "curator_review"
+            ],
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "action",
+          "reason"
+        ],
+        "title": "EvidenceStatusInput",
+        "type": "object"
+      },
+      "EvidenceStatusReceipt": {
+        "additionalProperties": false,
+        "properties": {
+          "document_id": {
+            "format": "uuid",
+            "title": "Document Id",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "original_private_object_retention": {
+            "const": "review_required_no_complete_deletion_claim",
+            "default": "review_required_no_complete_deletion_claim",
+            "title": "Original Private Object Retention",
+            "type": "string"
+          },
+          "search_content_removed": {
+            "title": "Search Content Removed",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "document_id",
+          "search_content_removed"
+        ],
+        "title": "EvidenceStatusReceipt",
+        "type": "object"
+      },
+      "EvidenceTextInput": {
+        "additionalProperties": false,
+        "properties": {
+          "manifest": {
+            "$ref": "#/components/schemas/EvidenceManifest"
+          },
+          "media_type": {
+            "const": "text/plain",
+            "default": "text/plain",
+            "title": "Media Type",
+            "type": "string"
+          },
+          "text": {
+            "format": "password",
+            "maxLength": 65536,
+            "title": "Text",
+            "type": "string",
+            "writeOnly": true
+          }
+        },
+        "required": [
+          "manifest",
+          "text"
+        ],
+        "title": "EvidenceTextInput",
+        "type": "object"
+      },
       "ExactResult": {
         "additionalProperties": false,
         "properties": {
@@ -4078,6 +5277,283 @@
           "mode"
         ],
         "title": "ExplicitNoise",
+        "type": "object"
+      },
+      "ExtractedFact": {
+        "additionalProperties": false,
+        "properties": {
+          "assertion_span": {
+            "$ref": "#/components/schemas/TextSpan"
+          },
+          "branch_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Branch Id"
+          },
+          "certainty": {
+            "enum": [
+              "affirmed",
+              "possible",
+              "not_asserted"
+            ],
+            "title": "Certainty",
+            "type": "string"
+          },
+          "concept": {
+            "enum": [
+              "fatigue",
+              "pain",
+              "nausea",
+              "swelling"
+            ],
+            "title": "Concept",
+            "type": "string"
+          },
+          "context": {
+            "$ref": "#/components/schemas/Context"
+          },
+          "experiencer": {
+            "enum": [
+              "patient",
+              "family"
+            ],
+            "title": "Experiencer",
+            "type": "string"
+          },
+          "extractor_version": {
+            "const": "scoped-symptom-grammar/1",
+            "default": "scoped-symptom-grammar/1",
+            "title": "Extractor Version",
+            "type": "string"
+          },
+          "fact_id": {
+            "format": "uuid",
+            "title": "Fact Id",
+            "type": "string"
+          },
+          "mention_span": {
+            "$ref": "#/components/schemas/TextSpan"
+          },
+          "negated": {
+            "title": "Negated",
+            "type": "boolean"
+          },
+          "normalized_text_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Normalized Text Sha256",
+            "type": "string"
+          },
+          "note_id": {
+            "format": "uuid",
+            "title": "Note Id",
+            "type": "string"
+          },
+          "note_version": {
+            "minimum": 1.0,
+            "title": "Note Version",
+            "type": "integer"
+          },
+          "patient_id": {
+            "format": "uuid",
+            "title": "Patient Id",
+            "type": "string"
+          },
+          "project_id": {
+            "format": "uuid",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/Provenance"
+          },
+          "relative_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relative Days"
+          },
+          "resolved_time": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClinicalTime"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "temporal_expression": {
+            "enum": [
+              "absent",
+              "today",
+              "yesterday",
+              "days_ago",
+              "last_visit"
+            ],
+            "title": "Temporal Expression",
+            "type": "string"
+          },
+          "temporality": {
+            "enum": [
+              "current",
+              "historical",
+              "planned",
+              "assessment"
+            ],
+            "title": "Temporality",
+            "type": "string"
+          },
+          "time_status": {
+            "enum": [
+              "resolved_from_verified_anchor",
+              "unresolved"
+            ],
+            "title": "Time Status",
+            "type": "string"
+          },
+          "validation_status": {
+            "const": "unverified_extracted_assertion",
+            "default": "unverified_extracted_assertion",
+            "title": "Validation Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "fact_id",
+          "project_id",
+          "patient_id",
+          "branch_id",
+          "note_id",
+          "note_version",
+          "normalized_text_sha256",
+          "concept",
+          "mention_span",
+          "assertion_span",
+          "certainty",
+          "negated",
+          "experiencer",
+          "temporality",
+          "temporal_expression",
+          "time_status",
+          "context",
+          "provenance"
+        ],
+        "title": "ExtractedFact",
+        "type": "object"
+      },
+      "ExtractionReport": {
+        "additionalProperties": false,
+        "properties": {
+          "branch_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Branch Id"
+          },
+          "execution_mode": {
+            "const": "deterministic_scoped_parser",
+            "default": "deterministic_scoped_parser",
+            "title": "Execution Mode",
+            "type": "string"
+          },
+          "extractor_version": {
+            "const": "scoped-symptom-grammar/1",
+            "default": "scoped-symptom-grammar/1",
+            "title": "Extractor Version",
+            "type": "string"
+          },
+          "facts": {
+            "items": {
+              "$ref": "#/components/schemas/ExtractedFact"
+            },
+            "title": "Facts",
+            "type": "array"
+          },
+          "limitations": {
+            "default": [
+              "Four symptom concepts and explicit clause templates only; no general clinical NLP.",
+              "No numerical severity, laboratory, receptor, diagnosis or therapy extraction.",
+              "Assertions require source review and never replace canonical observations."
+            ],
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "normalization_version": {
+            "const": "unicode-nfc/1",
+            "default": "unicode-nfc/1",
+            "title": "Normalization Version",
+            "type": "string"
+          },
+          "normalized_text_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Normalized Text Sha256",
+            "type": "string"
+          },
+          "note_id": {
+            "format": "uuid",
+            "title": "Note Id",
+            "type": "string"
+          },
+          "note_version": {
+            "title": "Note Version",
+            "type": "integer"
+          },
+          "patient_id": {
+            "format": "uuid",
+            "title": "Patient Id",
+            "type": "string"
+          },
+          "project_id": {
+            "format": "uuid",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "note-extraction/1",
+            "default": "note-extraction/1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "unsupported_clause_spans": {
+            "items": {
+              "$ref": "#/components/schemas/TextSpan"
+            },
+            "title": "Unsupported Clause Spans",
+            "type": "array"
+          }
+        },
+        "required": [
+          "project_id",
+          "patient_id",
+          "branch_id",
+          "note_id",
+          "note_version",
+          "normalized_text_sha256",
+          "facts",
+          "unsupported_clause_spans"
+        ],
+        "title": "ExtractionReport",
         "type": "object"
       },
       "FeatureSeries": {
@@ -7008,6 +8484,84 @@
         "title": "InheritedAssignment",
         "type": "object"
       },
+      "KnowledgeTraversal": {
+        "additionalProperties": false,
+        "properties": {
+          "branch_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Branch Id"
+          },
+          "depth": {
+            "default": 1,
+            "maximum": 3.0,
+            "minimum": 1.0,
+            "title": "Depth",
+            "type": "integer"
+          },
+          "expected_snapshot_hash": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Snapshot Hash"
+          },
+          "limit": {
+            "default": 25,
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "default": 0,
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "title": "Offset",
+            "type": "integer"
+          },
+          "relation_kinds": {
+            "default": [],
+            "items": {
+              "enum": [
+                "HAS_OBSERVATION",
+                "HAS_LESION",
+                "HAS_MEASUREMENT",
+                "ABOUT_CONCEPT",
+                "RELATED_TO",
+                "ASSOCIATED_WITH",
+                "GENERATED_FROM_BASELINE",
+                "SUPPORTED_BY_PUBLICATION",
+                "EXPOSED_TO_TREATMENT"
+              ],
+              "type": "string"
+            },
+            "maxItems": 9,
+            "title": "Relation Kinds",
+            "type": "array"
+          },
+          "start": {
+            "$ref": "#/components/schemas/EntityRef"
+          }
+        },
+        "required": [
+          "start"
+        ],
+        "title": "KnowledgeTraversal",
+        "type": "object"
+      },
       "LODComparison": {
         "additionalProperties": false,
         "properties": {
@@ -8347,6 +9901,154 @@
         "title": "NoisePoint",
         "type": "object"
       },
+      "NoteDocument": {
+        "additionalProperties": false,
+        "properties": {
+          "anchor": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClinicalTime"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "artifact_id": {
+            "format": "uuid",
+            "title": "Artifact Id",
+            "type": "string"
+          },
+          "branch_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Branch Id"
+          },
+          "context": {
+            "$ref": "#/components/schemas/Context"
+          },
+          "language": {
+            "const": "en",
+            "default": "en",
+            "title": "Language",
+            "type": "string"
+          },
+          "normalization_version": {
+            "const": "unicode-nfc/1",
+            "default": "unicode-nfc/1",
+            "title": "Normalization Version",
+            "type": "string"
+          },
+          "normalized_text_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Normalized Text Sha256",
+            "type": "string"
+          },
+          "note_id": {
+            "format": "uuid",
+            "title": "Note Id",
+            "type": "string"
+          },
+          "patient_id": {
+            "format": "uuid",
+            "title": "Patient Id",
+            "type": "string"
+          },
+          "project_id": {
+            "format": "uuid",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/Provenance"
+          },
+          "source_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Source Sha256",
+            "type": "string"
+          },
+          "supersedes_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supersedes Id"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "note_id",
+          "project_id",
+          "patient_id",
+          "artifact_id",
+          "branch_id",
+          "version",
+          "supersedes_id",
+          "normalized_text_sha256",
+          "source_sha256",
+          "provenance",
+          "context",
+          "anchor"
+        ],
+        "title": "NoteDocument",
+        "type": "object"
+      },
+      "NoteExtractionCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "note_id": {
+            "format": "uuid",
+            "title": "Note Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "note_id"
+        ],
+        "title": "NoteExtractionCommand",
+        "type": "object"
+      },
+      "NoteExtractionView": {
+        "additionalProperties": false,
+        "properties": {
+          "extraction_id": {
+            "format": "uuid",
+            "title": "Extraction Id",
+            "type": "string"
+          },
+          "publication_status": {
+            "const": "unpromoted_assertions",
+            "default": "unpromoted_assertions",
+            "title": "Publication Status",
+            "type": "string"
+          },
+          "report": {
+            "$ref": "#/components/schemas/ExtractionReport"
+          }
+        },
+        "required": [
+          "extraction_id",
+          "report"
+        ],
+        "title": "NoteExtractionView",
+        "type": "object"
+      },
       "NoteInput": {
         "additionalProperties": false,
         "properties": {
@@ -8406,6 +10108,18 @@
             "title": "Negation",
             "type": "string"
           },
+          "note_document_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note Document Id"
+          },
           "original_term": {
             "maxLength": 300,
             "minLength": 1,
@@ -8447,6 +10161,55 @@
           "language"
         ],
         "title": "NoteInput",
+        "type": "object"
+      },
+      "NoteRegistration": {
+        "additionalProperties": false,
+        "properties": {
+          "anchor": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClinicalTime"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "artifact_id": {
+            "format": "uuid",
+            "title": "Artifact Id",
+            "type": "string"
+          },
+          "branch_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Branch Id"
+          },
+          "supersedes_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supersedes Id"
+          }
+        },
+        "required": [
+          "artifact_id"
+        ],
+        "title": "NoteRegistration",
         "type": "object"
       },
       "NumericInput": {
@@ -8911,6 +10674,55 @@
           "relation"
         ],
         "title": "ParentSummary",
+        "type": "object"
+      },
+      "PassageDescriptor": {
+        "additionalProperties": false,
+        "properties": {
+          "document_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Document Fingerprint",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "index_configuration": {
+            "const": "english",
+            "default": "english",
+            "title": "Index Configuration",
+            "type": "string"
+          },
+          "locator_kind": {
+            "const": "normalized_text_codepoints",
+            "default": "normalized_text_codepoints",
+            "title": "Locator Kind",
+            "type": "string"
+          },
+          "normalization_version": {
+            "const": "unicode-nfc/1",
+            "default": "unicode-nfc/1",
+            "title": "Normalization Version",
+            "type": "string"
+          },
+          "span": {
+            "$ref": "#/components/schemas/EvidenceSpan"
+          },
+          "text_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Text Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "document_fingerprint",
+          "span",
+          "text_sha256"
+        ],
+        "title": "PassageDescriptor",
         "type": "object"
       },
       "PatientAssignment": {
@@ -10022,6 +11834,43 @@
         "title": "ProjectRole",
         "type": "object"
       },
+      "ProtectedSpan": {
+        "additionalProperties": false,
+        "properties": {
+          "access_scope": {
+            "const": "authorized_note_source",
+            "default": "authorized_note_source",
+            "title": "Access Scope",
+            "type": "string"
+          },
+          "assertion": {
+            "title": "Assertion",
+            "type": "string"
+          },
+          "mention": {
+            "title": "Mention",
+            "type": "string"
+          },
+          "normalized_text_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Normalized Text Sha256",
+            "type": "string"
+          },
+          "note_id": {
+            "format": "uuid",
+            "title": "Note Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "note_id",
+          "normalized_text_sha256",
+          "mention",
+          "assertion"
+        ],
+        "title": "ProtectedSpan",
+        "type": "object"
+      },
       "Provenance": {
         "enum": [
           "REAL_OBSERVED",
@@ -10032,6 +11881,121 @@
         ],
         "title": "Provenance",
         "type": "string"
+      },
+      "ProviderCapabilities": {
+        "additionalProperties": false,
+        "properties": {
+          "candidate_publication_available": {
+            "const": false,
+            "default": false,
+            "title": "Candidate Publication Available",
+            "type": "boolean"
+          },
+          "external_model_available": {
+            "const": false,
+            "default": false,
+            "title": "External Model Available",
+            "type": "boolean"
+          },
+          "external_status": {
+            "const": "policy_access_and_grounding_review_required",
+            "default": "policy_access_and_grounding_review_required",
+            "title": "External Status",
+            "type": "string"
+          },
+          "local_note_extraction_available": {
+            "const": true,
+            "default": true,
+            "title": "Local Note Extraction Available",
+            "type": "boolean"
+          },
+          "local_note_extraction_scope": {
+            "const": "four_symptom_templates_synthetic_fixture_only",
+            "default": "four_symptom_templates_synthetic_fixture_only",
+            "title": "Local Note Extraction Scope",
+            "type": "string"
+          },
+          "local_summary_available": {
+            "const": true,
+            "default": true,
+            "title": "Local Summary Available",
+            "type": "boolean"
+          },
+          "next_action": {
+            "const": "use_local_mode",
+            "default": "use_local_mode",
+            "title": "Next Action",
+            "type": "string"
+          },
+          "note_extraction_available": {
+            "const": false,
+            "default": false,
+            "title": "Note Extraction Available",
+            "type": "boolean"
+          },
+          "schema_version": {
+            "const": "provider-capabilities/1",
+            "default": "provider-capabilities/1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "title": "ProviderCapabilities",
+        "type": "object"
+      },
+      "PublicEvidenceDocument": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "normalized_sha256": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Normalized Sha256"
+          },
+          "passage_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Passage Ids",
+            "type": "array"
+          },
+          "source": {
+            "$ref": "#/components/schemas/EvidenceSourceMetadata"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "source",
+          "normalized_sha256",
+          "passage_ids",
+          "status",
+          "limitations"
+        ],
+        "title": "PublicEvidenceDocument",
+        "type": "object"
       },
       "PublishInput": {
         "additionalProperties": false,
@@ -10993,6 +12957,271 @@
         "title": "RegistrationReport",
         "type": "object"
       },
+      "RelationshipCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "branch_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Branch Id"
+          },
+          "input": {
+            "$ref": "#/components/schemas/RelationshipInput"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "title": "RelationshipCommand",
+        "type": "object"
+      },
+      "RelationshipInput": {
+        "additionalProperties": false,
+        "properties": {
+          "assertion_kind": {
+            "enum": [
+              "recorded_association",
+              "extracted_assertion",
+              "hypothetical_simulation",
+              "general_research",
+              "model_proposal"
+            ],
+            "title": "Assertion Kind",
+            "type": "string"
+          },
+          "extraction_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extraction Id"
+          },
+          "fact_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fact Id"
+          },
+          "relation": {
+            "enum": [
+              "HAS_OBSERVATION",
+              "HAS_LESION",
+              "HAS_MEASUREMENT",
+              "ABOUT_CONCEPT",
+              "RELATED_TO",
+              "ASSOCIATED_WITH",
+              "GENERATED_FROM_BASELINE",
+              "SUPPORTED_BY_PUBLICATION",
+              "EXPOSED_TO_TREATMENT"
+            ],
+            "title": "Relation",
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/EntityRef"
+          },
+          "supersedes_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supersedes Id"
+          },
+          "supporting_resource_ids": {
+            "default": [],
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Supporting Resource Ids",
+            "type": "array"
+          },
+          "target": {
+            "$ref": "#/components/schemas/EntityRef"
+          },
+          "time": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClinicalTime"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "relation",
+          "source",
+          "target",
+          "assertion_kind"
+        ],
+        "title": "RelationshipInput",
+        "type": "object"
+      },
+      "RelationshipPage": {
+        "additionalProperties": false,
+        "properties": {
+          "budget_exhausted": {
+            "default": false,
+            "title": "Budget Exhausted",
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RelationshipView"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_offset": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Offset"
+          },
+          "snapshot_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Snapshot Hash",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "snapshot_hash",
+          "next_offset"
+        ],
+        "title": "RelationshipPage",
+        "type": "object"
+      },
+      "RelationshipView": {
+        "additionalProperties": false,
+        "properties": {
+          "branch_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Branch Id"
+          },
+          "display_status": {
+            "title": "Display Status",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "input": {
+            "$ref": "#/components/schemas/RelationshipInput"
+          },
+          "limitations": {
+            "default": [
+              "A relationship is not causation or an accepted clinical finding.",
+              "Scientific and source review remain separate from structural checks."
+            ],
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "patient_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Patient Id"
+          },
+          "project_id": {
+            "format": "uuid",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "provenance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Provenance"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "root_id": {
+            "format": "uuid",
+            "title": "Root Id",
+            "type": "string"
+          },
+          "statement": {
+            "title": "Statement",
+            "type": "string"
+          },
+          "validation_status": {
+            "title": "Validation Status",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "patient_id",
+          "branch_id",
+          "root_id",
+          "version",
+          "input",
+          "provenance",
+          "validation_status",
+          "display_status",
+          "statement"
+        ],
+        "title": "RelationshipView",
+        "type": "object"
+      },
       "RelativeTime": {
         "additionalProperties": false,
         "properties": {
@@ -11190,6 +13419,56 @@
           "revision"
         ],
         "title": "RetractionReceipt",
+        "type": "object"
+      },
+      "RetrievalHit": {
+        "additionalProperties": false,
+        "properties": {
+          "individual_treatment_effect_support": {
+            "const": false,
+            "default": false,
+            "title": "Individual Treatment Effect Support",
+            "type": "boolean"
+          },
+          "passage": {
+            "$ref": "#/components/schemas/EvidencePassageView"
+          },
+          "patient_fact_support": {
+            "const": false,
+            "default": false,
+            "title": "Patient Fact Support",
+            "type": "boolean"
+          },
+          "rank": {
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Rank",
+            "type": "integer"
+          },
+          "rationales": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Rationales",
+            "type": "array"
+          },
+          "semantic_support": {
+            "const": "unreviewed_general_research",
+            "default": "unreviewed_general_research",
+            "title": "Semantic Support",
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/EvidenceSourceMetadata"
+          }
+        },
+        "required": [
+          "rank",
+          "passage",
+          "source",
+          "rationales"
+        ],
+        "title": "RetrievalHit",
         "type": "object"
       },
       "ReviewEvent": {
@@ -15736,6 +18015,27 @@
         "title": "TemporalFeatures",
         "type": "object"
       },
+      "TextSpan": {
+        "additionalProperties": false,
+        "properties": {
+          "end": {
+            "minimum": 1.0,
+            "title": "End",
+            "type": "integer"
+          },
+          "start": {
+            "minimum": 0.0,
+            "title": "Start",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "start",
+          "end"
+        ],
+        "title": "TextSpan",
+        "type": "object"
+      },
       "TimelineOrigin": {
         "additionalProperties": false,
         "properties": {
@@ -17555,6 +19855,416 @@
         "summary": "Me"
       }
     },
+    "/api/v1/projects/{project_id}/ai/capabilities": {
+      "get": {
+        "operationId": "capabilities_api_v1_projects__project_id__ai_capabilities_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderCapabilities"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Capabilities"
+      }
+    },
+    "/api/v1/projects/{project_id}/clinical-concepts": {
+      "post": {
+        "operationId": "concept_create_api_v1_projects__project_id__clinical_concepts_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9._-]+$",
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConceptInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConceptView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Concept Create"
+      }
+    },
+    "/api/v1/projects/{project_id}/clinical-concepts/{concept_id}": {
+      "get": {
+        "operationId": "concept_detail_api_v1_projects__project_id__clinical_concepts__concept_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "concept_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Concept Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConceptView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Concept Detail"
+      }
+    },
+    "/api/v1/projects/{project_id}/concept-relationship-queries": {
+      "post": {
+        "operationId": "concept_relationship_query_api_v1_projects__project_id__concept_relationship_queries_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KnowledgeTraversal"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelationshipPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Concept Relationship Query"
+      }
+    },
+    "/api/v1/projects/{project_id}/concept-relationships": {
+      "post": {
+        "operationId": "concept_relationship_create_api_v1_projects__project_id__concept_relationships_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9._-]+$",
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RelationshipCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelationshipView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Concept Relationship Create"
+      }
+    },
+    "/api/v1/projects/{project_id}/concept-relationships/{relationship_id}": {
+      "get": {
+        "operationId": "concept_relationship_detail_api_v1_projects__project_id__concept_relationships__relationship_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "relationship_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Relationship Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelationshipView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Concept Relationship Detail"
+      }
+    },
     "/api/v1/projects/{project_id}/dictionaries/clinical": {
       "get": {
         "operationId": "dictionary_api_v1_projects__project_id__dictionaries_clinical_get",
@@ -17885,6 +20595,818 @@
           }
         },
         "summary": "Audit"
+      }
+    },
+    "/api/v1/projects/{project_id}/evidence-citation-checks": {
+      "post": {
+        "operationId": "citation_api_v1_projects__project_id__evidence_citation_checks_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CitationCheck"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CitationReport"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Citation"
+      }
+    },
+    "/api/v1/projects/{project_id}/evidence-corpora": {
+      "post": {
+        "operationId": "corpus_build_api_v1_projects__project_id__evidence_corpora_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9._-]+$",
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CorpusBuildInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceCorpus"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Corpus Build"
+      }
+    },
+    "/api/v1/projects/{project_id}/evidence-corpora/{corpus_id}": {
+      "get": {
+        "operationId": "corpus_detail_api_v1_projects__project_id__evidence_corpora__corpus_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "corpus_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Corpus Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceCorpus"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Corpus Detail"
+      }
+    },
+    "/api/v1/projects/{project_id}/evidence-corpora/{corpus_id}/passages/{passage_id}": {
+      "get": {
+        "operationId": "passage_api_v1_projects__project_id__evidence_corpora__corpus_id__passages__passage_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "corpus_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Corpus Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "passage_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Passage Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidencePassageView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Passage"
+      }
+    },
+    "/api/v1/projects/{project_id}/evidence-corpus-activations": {
+      "post": {
+        "operationId": "activation_api_v1_projects__project_id__evidence_corpus_activations_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9._-]+$",
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "if-match",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "If-Match"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CorpusActivationInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CorpusActivation"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Activation"
+      }
+    },
+    "/api/v1/projects/{project_id}/evidence-corpus-current": {
+      "get": {
+        "operationId": "current_api_v1_projects__project_id__evidence_corpus_current_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CorpusHeadView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Current"
+      }
+    },
+    "/api/v1/projects/{project_id}/evidence-document-excerpts": {
+      "post": {
+        "operationId": "excerpt_import_api_v1_projects__project_id__evidence_document_excerpts_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9._-]+$",
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceTextInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceDocument"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Excerpt Import"
+      }
+    },
+    "/api/v1/projects/{project_id}/evidence-document-metadata": {
+      "post": {
+        "operationId": "metadata_import_api_v1_projects__project_id__evidence_document_metadata_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9._-]+$",
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceManifest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceDocument"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Metadata Import"
+      }
+    },
+    "/api/v1/projects/{project_id}/evidence-documents/{document_id}": {
+      "get": {
+        "operationId": "document_api_v1_projects__project_id__evidence_documents__document_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicEvidenceDocument"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Document"
+      }
+    },
+    "/api/v1/projects/{project_id}/evidence-documents/{document_id}/restrictions": {
+      "post": {
+        "operationId": "restriction_api_v1_projects__project_id__evidence_documents__document_id__restrictions_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9._-]+$",
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceStatusInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceStatusReceipt"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Restriction"
+      }
+    },
+    "/api/v1/projects/{project_id}/evidence-retrieval-queries": {
+      "post": {
+        "operationId": "retrieval_api_v1_projects__project_id__evidence_retrieval_queries_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceRetrievalQuery"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceRetrievalReport"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Retrieval"
       }
     },
     "/api/v1/projects/{project_id}/foundation/status": {
@@ -21886,6 +25408,419 @@
         "summary": "Adapter Detail"
       }
     },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/note-documents": {
+      "post": {
+        "operationId": "create_note_document_api_v1_projects__project_id__patients__patient_id__note_documents_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9._-]+$",
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NoteRegistration"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoteDocument"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Note Document"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/note-documents/{note_id}": {
+      "get": {
+        "operationId": "note_document_api_v1_projects__project_id__patients__patient_id__note_documents__note_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "note_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Note Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoteDocument"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Note Document"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/note-extractions": {
+      "post": {
+        "operationId": "create_note_extraction_api_v1_projects__project_id__patients__patient_id__note_extractions_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9._-]+$",
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NoteExtractionCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoteExtractionView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Note Extraction"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/note-extractions/{extraction_id}": {
+      "get": {
+        "operationId": "note_extraction_api_v1_projects__project_id__patients__patient_id__note_extractions__extraction_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "extraction_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Extraction Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoteExtractionView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Note Extraction"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/note-extractions/{extraction_id}/facts/{fact_index}/source-span": {
+      "get": {
+        "operationId": "note_span_api_v1_projects__project_id__patients__patient_id__note_extractions__extraction_id__facts__fact_index__source_span_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "extraction_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Extraction Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "fact_index",
+            "required": true,
+            "schema": {
+              "title": "Fact Index",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProtectedSpan"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Note Span"
+      }
+    },
     "/api/v1/projects/{project_id}/patients/{patient_id}/observation-batches": {
       "post": {
         "operationId": "accept_api_v1_projects__project_id__patients__patient_id__observation_batches_post",
@@ -22866,6 +26801,246 @@
           }
         },
         "summary": "Get Registration"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/relationship-queries": {
+      "post": {
+        "operationId": "patient_relationship_query_api_v1_projects__project_id__patients__patient_id__relationship_queries_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KnowledgeTraversal"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelationshipPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Patient Relationship Query"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/relationships": {
+      "post": {
+        "operationId": "patient_relationship_create_api_v1_projects__project_id__patients__patient_id__relationships_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9._-]+$",
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RelationshipCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelationshipView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Patient Relationship Create"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/relationships/{relationship_id}": {
+      "get": {
+        "operationId": "patient_relationship_detail_api_v1_projects__project_id__patients__patient_id__relationships__relationship_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "relationship_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Relationship Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelationshipView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Patient Relationship Detail"
       }
     },
     "/api/v1/projects/{project_id}/patients/{patient_id}/resources/{resource_id}/provenance": {

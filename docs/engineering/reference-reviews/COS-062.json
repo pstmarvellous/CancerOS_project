@@ -1,0 +1,140 @@
+{
+  "task": "COS-062",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "fusion",
+      "returncode": 0,
+      "output": "\n=== AI.FUSE Late multimodal fusion ===\n Combine imaging, labs, vitals, symptoms, notes, treatment and missingness with provenance, conflict status. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- PRECEDES AI.NLP Clinical note extraction\n  <-- PRECEDES AI.FEAT Deterministic multimodal features\n  --> PRECEDES AI.LLM Grounded explanation\n  <-- HAS_STEP WF.AI Evidence linked interpretation\n  <-- WORKFLOW_PRECEDES AI.FEAT Deterministic multimodal features\n  --> WORKFLOW_PRECEDES AI.RETR Evidence retrieval\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "fusion",
+      "returncode": 0,
+      "output": "\nAI.04 — Multimodal fusion\nDesign: Combine observed imaging, labs, notes, symptoms and treatments with conflict/provenance markers\nAcceptance: Cross-source conflicts surfaced\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  PAPER P03 TRIPOD-LLM reporting guideline —  — https://www.nature.com/articles/s41591-024-03425-5\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "fusion",
+      "returncode": 0,
+      "output": "\n== AI.04 Multimodal fusion ==\nIntent: Combine observed imaging, labs, notes, symptoms and treatments with conflict/provenance markers \nTest: Cross-source conflicts surfaced\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n PAPER P03 TRIPOD-LLM reporting guideline | https://www.nature.com/articles/s41591-024-03425-5\n REPOSITORY R15 MONAI Deploy App SDK | https://github.com/Project-MONAI/monai-deploy-app-sdk \n  Inspect: Inspect examples/apps and operator contracts \n  Reuse: Study preprocessing/inference/postprocessing pipeline pattern \n  Avoid: Do not require heavyweight SDK on local laptop \n  Verify: CPU sample chain smoke test\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "context",
+      "returncode": 0,
+      "output": "\n=== DATA.STUDY ImagingStudy ===\n Study with modality, source UID, scan date and acquisition context. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- RELATES_TO DATA.PATIENT ResearchPatient\n  --> RELATES_TO DATA.SERIES ImagingSeries\n  --> RELATES_TO DATA.SEG SegmentationArtifact\n\n=== DATA.NOTE ClinicalNote ===\n Source text or synthetic note with context, negation and evidence spans. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- RELATES_TO DATA.VISIT ClinicalVisit\n\n=== UX.PROFILE Patient context ===\n Known subtype/receptor, available studies, visits, uncertainty and source. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "context",
+      "returncode": 0,
+      "output": "\nSIM.08 — Simulation credibility tests\nDesign: Distinguish program verification, fit/calibration, external validation and context of use\nAcceptance: Report independent synthetic and real-case metrics\n  READ A09 Stan User’s Guide — Posterior and Prior Predictive Checks — https://mc-stan.org/docs/stan-users-guide/ppcs.html\n  READ A15 FDA Computational Model Credibility Guidance — Context of use; model verification, validation and credibility assessment — https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions\n  REPO R10 Stan — probabilistic model reference — https://github.com/stan-dev/stan\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n\nEVAL.03 — Scientific model documentation\nDesign: Document context, assumption, version, calibration, applicability and failure\nAcceptance: Limitations report per model\n  READ A15 FDA Computational Model Credibility Guidance — Context of use; model verification, validation and credibility assessment — https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  PAPER P03 TRIPOD-LLM reporting guideline —  — https://www.nature.com/articles/s41591-024-03425-5\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "context",
+      "returncode": 0,
+      "output": "\n== SIM.08 Simulation credibility tests ==\nIntent: Distinguish program verification, fit/calibration, external validation and context of use \nTest: Report independent synthetic and real-case metrics\n BOOK/LECTURE A09 Stan User’s Guide | Posterior and Prior Predictive Checks | https://mc-stan.org/docs/stan-users-guide/ppcs.html | verified section\n BOOK/LECTURE A15 FDA Computational Model Credibility Guidance | Context of use; model verification, validation and credibility assessment | https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions | applicability limited to intended guidance scope\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n\n== EVAL.03 Scientific model documentation ==\nIntent: Document context, assumption, version, calibration, applicability and failure \nTest: Limitations report per model\n BOOK/LECTURE A15 FDA Computational Model Credibility Guidance | Context of use; model verification, validation and credibility assessment | https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions | applicability limited to intended guidance scope\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P03 TRIPOD-LLM reporting guideline | https://www.nature.com/articles/s41591-024-03425-5\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "AI.FUSE",
+    "DATA.NOTE",
+    "DATA.STUDY",
+    "UX.PROFILE"
+  ],
+  "academic_behavior_ids": [
+    "SIM.08",
+    "AI.04",
+    "EVAL.03"
+  ],
+  "edges": [
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.STUDY"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.NOTE"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.STUDY"
+    },
+    {
+      "from_id": "DATA.STUDY",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.SERIES"
+    },
+    {
+      "from_id": "DATA.STUDY",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.SEG"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.NOTE"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.NLP",
+      "relation": "PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.PROFILE"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.RETR"
+    }
+  ],
+  "mapped_source_ids": [
+    "A09",
+    "A11",
+    "A14",
+    "A15",
+    "P03",
+    "P05",
+    "R10"
+  ],
+  "source_sections_inspected": "SPEC-006 sections4/11-14; SPEC-008 InterpretationRequest/freshness and exact note versions; SPEC-010; COS-062"
+}

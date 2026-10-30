@@ -266,6 +266,7 @@ class NoteInput(ClinicalItemInput):
     kind: Literal["note"]
     concept: Literal["source_note"]
     artifact_id: UUID
+    note_document_id: UUID | None = None
     content_sha256: Hash
     language: Annotated[str, Field(min_length=2, max_length=20)]
 
