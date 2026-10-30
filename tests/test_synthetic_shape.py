@@ -16,6 +16,17 @@ def baseline():
     return mask
 
 
+def test_growth_transform_zeros_have_stable_jsonb_representation():
+    mask = np.zeros((3, 3, 2), dtype=np.uint8)
+    mask[1, 1, 0] = 1
+    affine = np.eye(4)
+    affine[:3, 3] = (-1, -1, 0)
+    result = generate_shape(mask, canonical_geometry(mask.shape, affine), "2", ShapeConfig(seed=1))
+    transform = np.asarray(result.report.baseline_to_synthetic_world)
+    assert not np.signbit(transform[transform == 0]).any()
+    assert result.report.status == "blocked" and result.array is None
+
+
 @pytest.mark.parametrize("target,scale,count", [("512", 2, 512), ("8", 0.5, 8), ("64", 1, 64)])
 def test_cuboid_growth_shrinkage_and_identity(target, scale, count):
     mask = baseline()

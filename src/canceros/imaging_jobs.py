@@ -16,7 +16,9 @@ from pydantic import Field
 from sqlalchemy import text
 
 from canceros.alignment_runs import AlignmentInput, run_alignment
+from canceros.clinical_generation_runs import ClinicalGenerationInput, materialize_clinical
 from canceros.contracts import Contract, Hash
+from canceros.dependent_updates import DependentUpdateInput, execute_update, freeze_update_inputs
 from canceros.identity import Identity, authorize_project
 from canceros.imaging_ingestion import read_import, store_artifact
 from canceros.imaging_volumes import GeometryValidationInput, validate_volume
@@ -35,6 +37,7 @@ from canceros.persistence import canonical_bytes, load_revision, science_hash
 from canceros.preprocessing_runs import PreprocessInput, run_preprocessing
 from canceros.registration_runs import RegistrationInput, run_registration
 from canceros.segmentation_reviews import SegmentationQCInput, run_segmentation_qc
+from canceros.simulation_execution import CompleteRunInput, complete_run
 from canceros.source_registry import SourceAction
 from canceros.synthetic_geometry import GeometryInput, generate_geometry
 from canceros.twin_states import StateBuildInput, build_state, freeze_state_inputs
@@ -94,6 +97,21 @@ class SyntheticGeometryCommand(Contract):
     input: GeometryInput
 
 
+class ClinicalGenerationCommand(Contract):
+    operation: Literal["clinical_generation"]
+    input: ClinicalGenerationInput
+
+
+class SimulationCompleteCommand(Contract):
+    operation: Literal["simulation_complete"]
+    input: CompleteRunInput
+
+
+class DependentUpdateCommand(Contract):
+    operation: Literal["dependent_update"]
+    input: DependentUpdateInput
+
+
 Command = Annotated[
     GeometryCommand
     | PreprocessingCommand
@@ -103,7 +121,10 @@ Command = Annotated[
     | MeshQCCommand
     | RegistrationCommand
     | StateCommand
-    | SyntheticGeometryCommand,
+    | SyntheticGeometryCommand
+    | ClinicalGenerationCommand
+    | SimulationCompleteCommand
+    | DependentUpdateCommand,
     Field(discriminator="operation"),
 ]
 
@@ -127,6 +148,9 @@ class ImagingJobRecord(Contract):
         "registration",
         "state_assembly",
         "synthetic_geometry",
+        "clinical_generation",
+        "simulation_complete",
+        "dependent_update",
     ]
     input_hash: Hash
     status: Literal["queued", "running", "succeeded", "failed", "cancelled"]
@@ -149,6 +173,12 @@ def _code_hash():
     root = Path(__file__).parent
     names = (
         "imaging_jobs.py",
+        "dependent_updates.py",
+        "temporal_timeline.py",
+        "temporal_trends.py",
+        "timeline_runs.py",
+        "timeline_source.py",
+        "state_fusion.py",
         "imaging_volumes.py",
         "imaging_geometry.py",
         "imaging_formats.py",
@@ -175,6 +205,18 @@ def _code_hash():
         "synthetic_shape.py",
         "synthetic_geometry.py",
         "synthetic_contracts.py",
+        "simulation_contracts.py",
+        "clinical_generation.py",
+        "clinical_generation_runs.py",
+        "clinical_validation.py",
+        "sampling.py",
+        "simulation_execution.py",
+        "simulation_validation.py",
+        "simulation_plugins.py",
+        "simulation_runs.py",
+        "simulation_eligibility.py",
+        "eligibility_checks.py",
+        "scenario_families.py",
         "lineage.py",
         "source_registry.py",
         "patient_linkage.py",
@@ -196,7 +238,9 @@ def _identity(connection, actor, project):
 
 
 def _resource_ids(connection, identity, project, patient, command, storage=None):
-    if command.operation == "synthetic_geometry":
+    if command.operation == "dependent_update":
+        return freeze_update_inputs(connection, identity, project, patient, command.input, storage)
+    if command.operation in ("synthetic_geometry", "clinical_generation", "simulation_complete"):
         authorize_project(identity, project, "admin")
         return [command.input.run_id]
     if command.operation == "state_assembly":
@@ -267,9 +311,21 @@ def _pins(connection, identity, project, patient, ids):
 
 
 def enqueue_imaging(
-    connection, identity, project, patient, value: ImagingJobInput, command_key, storage=None
+    connection,
+    identity,
+    project,
+    patient,
+    value: ImagingJobInput,
+    command_key,
+    storage=None,
+    *,
+    allow_dependent=False,
 ):
     authorize_patient(connection, identity, project, patient, edit=True)
+    if value.command.operation == "dependent_update" and not allow_dependent:
+        raise HTTPException(
+            409, detail="dependent_update_requires_transactional_domain_event_dispatch"
+        )
     lock_lineage(connection, project, patient)
     if (
         not isinstance(command_key, str)
@@ -542,6 +598,32 @@ def _execute(connection, identity, project, patient, manifest, storage, job_id, 
         {"expected_revision": manifest["data_revision"], "command": manifest["command"]}
     )
     command = value.command
+    if command.operation == "dependent_update":
+        return execute_update(
+            connection, identity, project, patient, command.input, storage, job_id
+        )
+    if command.operation == "simulation_complete":
+        return complete_run(
+            connection,
+            identity,
+            project,
+            patient,
+            command.input,
+            storage,
+            "job-" + str(job_id),
+            config,
+        )
+    if command.operation == "clinical_generation":
+        return materialize_clinical(
+            connection,
+            identity,
+            project,
+            patient,
+            command.input,
+            storage,
+            "job-" + str(job_id),
+            config,
+        )
     if command.operation == "synthetic_geometry":
         return generate_geometry(
             connection,
@@ -685,6 +767,14 @@ def _process_locked(engine, queue, storage, config):
             connection.execute(text("SET LOCAL lock_timeout='10s'"))
             identity = _identity(connection, UUID(manifest["actor_id"]), project)
             authorize_patient(connection, identity, project, patient, edit=True)
+            if manifest["command"]["operation"] == "dependent_update":
+                # Clinical corrections lock patient then lineage; preserve that order.
+                connection.execute(
+                    text(
+                        "SELECT data_revision FROM source.research_patients WHERE project_id=:p AND id=:u FOR UPDATE"
+                    ),
+                    {"p": project, "u": patient},
+                ).scalar_one()
             lock_lineage(connection, project, patient)
             if science_hash(manifest) != row["input_hash"] or manifest["code_hash"] != _code_hash():
                 raise HTTPException(409)
@@ -709,6 +799,9 @@ def _process_locked(engine, queue, storage, config):
                 "registration",
                 "state_assembly",
                 "synthetic_geometry",
+                "clinical_generation",
+                "simulation_complete",
+                "dependent_update",
             ):
                 result_parents.append(result.id)
             derive_resource(

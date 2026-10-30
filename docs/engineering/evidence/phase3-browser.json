@@ -1,0 +1,26 @@
+{
+  "result": "passed",
+  "scope": "Actual Chromium/WebGL over explicitly synthetic private fixtures only",
+  "checks": [
+    {
+      "command": "Playwright phase3-timeline.spec.ts",
+      "exit_code": 0
+    }
+  ],
+  "assertions": {
+    "saved_scenario_review": true,
+    "published_three_followups": true,
+    "actual_webgl": true,
+    "camera": true,
+    "exact_state_fusion": true,
+    "full_window_trends": true,
+    "irregular_time_axis": true,
+    "selection_clears_old_geometry": true,
+    "unauthorized_recovery": true,
+    "mobile_overflow": false
+  },
+  "limitations": [
+    "No authentic observed baseline, clinical validity or browser-driven worker generation claim"
+  ],
+  "recorded_at": "2026-10-30T07:14:14.091Z"
+}

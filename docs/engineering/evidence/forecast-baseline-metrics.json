@@ -1,0 +1,2842 @@
+{
+  "cases": [
+    {
+      "case_id": "00000000-0000-0000-0000-0000000007d0",
+      "forecast": {
+        "estimate": "11",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "11",
+        "horizon_days": "3",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "locf",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000003e8"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-000000002329"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-000000000066",
+            "value": "0"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-000000000067",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000068"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000001",
+      "horizon_days": "3",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "reason_codes": [],
+      "signed_error": "-1",
+      "target_point_id": "00000000-0000-0000-0000-0000000003e9",
+      "target_value": "12"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-0000000007d0",
+      "forecast": {
+        "estimate": null,
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": null,
+        "horizon_days": "3",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "last_two_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000003e8"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [
+          "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_2"
+        ],
+        "source_ids": [
+          "00000000-0000-0000-0000-000000002329"
+        ],
+        "status": "abstained",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-000000000066",
+            "value": "0"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-000000000067",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000068"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000001",
+      "horizon_days": "3",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "reason_codes": [
+        "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_2"
+      ],
+      "signed_error": null,
+      "target_point_id": "00000000-0000-0000-0000-0000000003e9",
+      "target_value": "12"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-0000000007d0",
+      "forecast": {
+        "estimate": null,
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": null,
+        "horizon_days": "3",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "ols_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000003e8"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [
+          "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_3"
+        ],
+        "source_ids": [
+          "00000000-0000-0000-0000-000000002329"
+        ],
+        "status": "abstained",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-000000000066",
+            "value": "0"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-000000000067",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000068"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000001",
+      "horizon_days": "3",
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "reason_codes": [
+        "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_3"
+      ],
+      "signed_error": null,
+      "target_point_id": "00000000-0000-0000-0000-0000000003e9",
+      "target_value": "12"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-0000000007d1",
+      "forecast": {
+        "estimate": "12",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "12",
+        "horizon_days": "8",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "locf",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000003e9"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-000000002329"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-000000000066",
+            "value": "3"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-000000000067",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000068"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000001",
+      "horizon_days": "8",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "reason_codes": [],
+      "signed_error": "-1",
+      "target_point_id": "00000000-0000-0000-0000-0000000003ea",
+      "target_value": "13"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-0000000007d1",
+      "forecast": {
+        "estimate": "14.666666667",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "14.666666666666666666666666666666666666666666666666666666666666666666666666666667",
+        "horizon_days": "8",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "last_two_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000003e8",
+          "00000000-0000-0000-0000-0000000003e9"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-000000002329"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-000000000066",
+            "value": "3"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-000000000067",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000068"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000001",
+      "horizon_days": "8",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "reason_codes": [],
+      "signed_error": "1.666666666666666666666666666666666666666666666666666666666666666666666666666667",
+      "target_point_id": "00000000-0000-0000-0000-0000000003ea",
+      "target_value": "13"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-0000000007d1",
+      "forecast": {
+        "estimate": null,
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": null,
+        "horizon_days": "8",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "ols_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000003e8",
+          "00000000-0000-0000-0000-0000000003e9"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [
+          "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_3"
+        ],
+        "source_ids": [
+          "00000000-0000-0000-0000-000000002329"
+        ],
+        "status": "abstained",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-000000000066",
+            "value": "3"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-000000000067",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000068"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000001",
+      "horizon_days": "8",
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "reason_codes": [
+        "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_3"
+      ],
+      "signed_error": null,
+      "target_point_id": "00000000-0000-0000-0000-0000000003ea",
+      "target_value": "13"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-0000000007d2",
+      "forecast": {
+        "estimate": "13",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "13",
+        "horizon_days": "9",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "locf",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000003ea"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-000000002329"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-000000000066",
+            "value": "11"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-000000000067",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000068"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000001",
+      "horizon_days": "9",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "reason_codes": [],
+      "signed_error": "-1",
+      "target_point_id": "00000000-0000-0000-0000-0000000003eb",
+      "target_value": "14"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-0000000007d2",
+      "forecast": {
+        "estimate": "14.125",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "14.125",
+        "horizon_days": "9",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "last_two_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000003e9",
+          "00000000-0000-0000-0000-0000000003ea"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-000000002329"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-000000000066",
+            "value": "11"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-000000000067",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000068"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000001",
+      "horizon_days": "9",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "reason_codes": [],
+      "signed_error": "0.125",
+      "target_point_id": "00000000-0000-0000-0000-0000000003eb",
+      "target_value": "14"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-0000000007d2",
+      "forecast": {
+        "estimate": "14.608247423",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "14.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+        "horizon_days": "9",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "ols_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000003e8",
+          "00000000-0000-0000-0000-0000000003e9",
+          "00000000-0000-0000-0000-0000000003ea"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-000000002329"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-000000000066",
+            "value": "11"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-000000000067",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000068"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000001",
+      "horizon_days": "9",
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "reason_codes": [],
+      "signed_error": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "target_point_id": "00000000-0000-0000-0000-0000000003eb",
+      "target_value": "14"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000000fa0",
+      "forecast": {
+        "estimate": "12",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "12",
+        "horizon_days": "3",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "locf",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000007d0"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232a"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-0000000000ca",
+            "value": "0"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-0000000000cb",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-0000000000cc"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000002",
+      "horizon_days": "3",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "reason_codes": [],
+      "signed_error": "-1",
+      "target_point_id": "00000000-0000-0000-0000-0000000007d1",
+      "target_value": "13"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000000fa0",
+      "forecast": {
+        "estimate": null,
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": null,
+        "horizon_days": "3",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "last_two_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000007d0"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [
+          "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_2"
+        ],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232a"
+        ],
+        "status": "abstained",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-0000000000ca",
+            "value": "0"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-0000000000cb",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-0000000000cc"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000002",
+      "horizon_days": "3",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "reason_codes": [
+        "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_2"
+      ],
+      "signed_error": null,
+      "target_point_id": "00000000-0000-0000-0000-0000000007d1",
+      "target_value": "13"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000000fa0",
+      "forecast": {
+        "estimate": null,
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": null,
+        "horizon_days": "3",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "ols_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000007d0"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [
+          "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_3"
+        ],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232a"
+        ],
+        "status": "abstained",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-0000000000ca",
+            "value": "0"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-0000000000cb",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-0000000000cc"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000002",
+      "horizon_days": "3",
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "reason_codes": [
+        "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_3"
+      ],
+      "signed_error": null,
+      "target_point_id": "00000000-0000-0000-0000-0000000007d1",
+      "target_value": "13"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000000fa1",
+      "forecast": {
+        "estimate": "13",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "13",
+        "horizon_days": "8",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "locf",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000007d1"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232a"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-0000000000ca",
+            "value": "3"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-0000000000cb",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-0000000000cc"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000002",
+      "horizon_days": "8",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "reason_codes": [],
+      "signed_error": "-1",
+      "target_point_id": "00000000-0000-0000-0000-0000000007d2",
+      "target_value": "14"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000000fa1",
+      "forecast": {
+        "estimate": "15.666666667",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "15.666666666666666666666666666666666666666666666666666666666666666666666666666667",
+        "horizon_days": "8",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "last_two_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000007d0",
+          "00000000-0000-0000-0000-0000000007d1"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232a"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-0000000000ca",
+            "value": "3"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-0000000000cb",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-0000000000cc"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000002",
+      "horizon_days": "8",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "reason_codes": [],
+      "signed_error": "1.666666666666666666666666666666666666666666666666666666666666666666666666666667",
+      "target_point_id": "00000000-0000-0000-0000-0000000007d2",
+      "target_value": "14"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000000fa1",
+      "forecast": {
+        "estimate": null,
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": null,
+        "horizon_days": "8",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "ols_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000007d0",
+          "00000000-0000-0000-0000-0000000007d1"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [
+          "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_3"
+        ],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232a"
+        ],
+        "status": "abstained",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-0000000000ca",
+            "value": "3"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-0000000000cb",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-0000000000cc"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000002",
+      "horizon_days": "8",
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "reason_codes": [
+        "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_3"
+      ],
+      "signed_error": null,
+      "target_point_id": "00000000-0000-0000-0000-0000000007d2",
+      "target_value": "14"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000000fa2",
+      "forecast": {
+        "estimate": "14",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "14",
+        "horizon_days": "9",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "locf",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000007d2"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232a"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-0000000000ca",
+            "value": "11"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-0000000000cb",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-0000000000cc"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000002",
+      "horizon_days": "9",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "reason_codes": [],
+      "signed_error": "-1",
+      "target_point_id": "00000000-0000-0000-0000-0000000007d3",
+      "target_value": "15"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000000fa2",
+      "forecast": {
+        "estimate": "15.125",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "15.125",
+        "horizon_days": "9",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "last_two_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000007d1",
+          "00000000-0000-0000-0000-0000000007d2"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232a"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-0000000000ca",
+            "value": "11"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-0000000000cb",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-0000000000cc"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000002",
+      "horizon_days": "9",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "reason_codes": [],
+      "signed_error": "0.125",
+      "target_point_id": "00000000-0000-0000-0000-0000000007d3",
+      "target_value": "15"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000000fa2",
+      "forecast": {
+        "estimate": "15.608247423",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "15.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+        "horizon_days": "9",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "ols_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-0000000007d0",
+          "00000000-0000-0000-0000-0000000007d1",
+          "00000000-0000-0000-0000-0000000007d2"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232a"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-0000000000ca",
+            "value": "11"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-0000000000cb",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-0000000000cc"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000002",
+      "horizon_days": "9",
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "reason_codes": [],
+      "signed_error": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "target_point_id": "00000000-0000-0000-0000-0000000007d3",
+      "target_value": "15"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000001770",
+      "forecast": {
+        "estimate": "13",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "13",
+        "horizon_days": "3",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "locf",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-000000000bb8"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232b"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-00000000012e",
+            "value": "0"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-00000000012f",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000130"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000003",
+      "horizon_days": "3",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "reason_codes": [],
+      "signed_error": "-1",
+      "target_point_id": "00000000-0000-0000-0000-000000000bb9",
+      "target_value": "14"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000001770",
+      "forecast": {
+        "estimate": null,
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": null,
+        "horizon_days": "3",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "last_two_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-000000000bb8"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [
+          "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_2"
+        ],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232b"
+        ],
+        "status": "abstained",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-00000000012e",
+            "value": "0"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-00000000012f",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000130"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000003",
+      "horizon_days": "3",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "reason_codes": [
+        "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_2"
+      ],
+      "signed_error": null,
+      "target_point_id": "00000000-0000-0000-0000-000000000bb9",
+      "target_value": "14"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000001770",
+      "forecast": {
+        "estimate": null,
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": null,
+        "horizon_days": "3",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "ols_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-000000000bb8"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [
+          "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_3"
+        ],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232b"
+        ],
+        "status": "abstained",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-00000000012e",
+            "value": "0"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-00000000012f",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000130"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000003",
+      "horizon_days": "3",
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "reason_codes": [
+        "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_3"
+      ],
+      "signed_error": null,
+      "target_point_id": "00000000-0000-0000-0000-000000000bb9",
+      "target_value": "14"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000001771",
+      "forecast": {
+        "estimate": "14",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "14",
+        "horizon_days": "8",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "locf",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-000000000bb9"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232b"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-00000000012e",
+            "value": "3"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-00000000012f",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000130"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000003",
+      "horizon_days": "8",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "reason_codes": [],
+      "signed_error": "-1",
+      "target_point_id": "00000000-0000-0000-0000-000000000bba",
+      "target_value": "15"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000001771",
+      "forecast": {
+        "estimate": "16.666666667",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "16.666666666666666666666666666666666666666666666666666666666666666666666666666667",
+        "horizon_days": "8",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "last_two_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-000000000bb8",
+          "00000000-0000-0000-0000-000000000bb9"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232b"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-00000000012e",
+            "value": "3"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-00000000012f",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000130"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000003",
+      "horizon_days": "8",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "reason_codes": [],
+      "signed_error": "1.666666666666666666666666666666666666666666666666666666666666666666666666666667",
+      "target_point_id": "00000000-0000-0000-0000-000000000bba",
+      "target_value": "15"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000001771",
+      "forecast": {
+        "estimate": null,
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": null,
+        "horizon_days": "8",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "ols_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-000000000bb8",
+          "00000000-0000-0000-0000-000000000bb9"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [
+          "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_3"
+        ],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232b"
+        ],
+        "status": "abstained",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-00000000012e",
+            "value": "3"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-00000000012f",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000130"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000003",
+      "horizon_days": "8",
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "reason_codes": [
+        "INSUFFICIENT_DISTINCT_HISTORY_REQUIRES_3"
+      ],
+      "signed_error": null,
+      "target_point_id": "00000000-0000-0000-0000-000000000bba",
+      "target_value": "15"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000001772",
+      "forecast": {
+        "estimate": "15",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "15",
+        "horizon_days": "9",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "locf",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-000000000bba"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232b"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-00000000012e",
+            "value": "11"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-00000000012f",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000130"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000003",
+      "horizon_days": "9",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "reason_codes": [],
+      "signed_error": "-1",
+      "target_point_id": "00000000-0000-0000-0000-000000000bbb",
+      "target_value": "16"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000001772",
+      "forecast": {
+        "estimate": "16.125",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "16.125",
+        "horizon_days": "9",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "last_two_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-000000000bb9",
+          "00000000-0000-0000-0000-000000000bba"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232b"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-00000000012e",
+            "value": "11"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-00000000012f",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000130"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000003",
+      "horizon_days": "9",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "reason_codes": [],
+      "signed_error": "0.125",
+      "target_point_id": "00000000-0000-0000-0000-000000000bbb",
+      "target_value": "16"
+    },
+    {
+      "case_id": "00000000-0000-0000-0000-000000001772",
+      "forecast": {
+        "estimate": "16.608247423",
+        "evaluation_status": "synthetic_engineering_only_real_evaluation_unavailable",
+        "exact_estimate": "16.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+        "horizon_days": "9",
+        "limitations": [
+          "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+          "No prediction intervals or causal treatment interpretation are available."
+        ],
+        "method": "ols_linear",
+        "method_version": "earlier-only-decimal-baselines/1",
+        "next_action": "Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.",
+        "patient_facing_enabled": false,
+        "point_ids": [
+          "00000000-0000-0000-0000-000000000bb8",
+          "00000000-0000-0000-0000-000000000bb9",
+          "00000000-0000-0000-0000-000000000bba"
+        ],
+        "protocol": {
+          "lesion_id": null,
+          "method_version": "local-units/1",
+          "metric_code": "hemoglobin",
+          "metric_definition": null,
+          "nonnegative": true,
+          "population": "synthetic_engineering_fixture_only",
+          "supported_horizons": [
+            "3",
+            "8",
+            "9"
+          ],
+          "unit": "g/dL",
+          "version": "forecast-protocol/1"
+        },
+        "reason_codes": [],
+        "source_ids": [
+          "00000000-0000-0000-0000-00000000232b"
+        ],
+        "status": "estimate",
+        "version": "baseline-forecast/1",
+        "window": {
+          "event_cutoff": {
+            "anchor_state_id": null,
+            "basis": "relative_day",
+            "time_domain": "simulation",
+            "timeline_origin_id": "00000000-0000-0000-0000-00000000012e",
+            "value": "11"
+          },
+          "event_cutoff_shift_basis": null,
+          "knowledge_as_of": "2026-10-01T00:00:00Z",
+          "scope": {
+            "branch_id": "00000000-0000-0000-0000-00000000012f",
+            "data_revision": 1,
+            "mode": "simulation",
+            "run_id": "00000000-0000-0000-0000-000000000130"
+          }
+        }
+      },
+      "group_id": "00000000-0000-0000-0000-000000000003",
+      "horizon_days": "9",
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "reason_codes": [],
+      "signed_error": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "target_point_id": "00000000-0000-0000-0000-000000000bbb",
+      "target_value": "16"
+    }
+  ],
+  "grouping_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "metrics": [
+    {
+      "abstained": 0,
+      "attempted": 3,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": "1",
+      "method": "locf",
+      "patient_id": null,
+      "rmse": "1",
+      "sample": "method_eligible",
+      "scored": 3
+    },
+    {
+      "abstained": 0,
+      "attempted": 3,
+      "coverage": "0",
+      "excluded": 3,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "locf",
+      "patient_id": null,
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": "1",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": "1",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 1,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": "1",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": "1",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 1,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": "1",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": "1",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 1,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 0,
+      "attempted": 3,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "8",
+      "mae": "1",
+      "method": "locf",
+      "patient_id": null,
+      "rmse": "1",
+      "sample": "method_eligible",
+      "scored": 3
+    },
+    {
+      "abstained": 0,
+      "attempted": 3,
+      "coverage": "0",
+      "excluded": 3,
+      "horizon_days": "8",
+      "mae": null,
+      "method": "locf",
+      "patient_id": null,
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "8",
+      "mae": "1",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": "1",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 1,
+      "horizon_days": "8",
+      "mae": null,
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "8",
+      "mae": "1",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": "1",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 1,
+      "horizon_days": "8",
+      "mae": null,
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "8",
+      "mae": "1",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": "1",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 1,
+      "horizon_days": "8",
+      "mae": null,
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 0,
+      "attempted": 3,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "1",
+      "method": "locf",
+      "patient_id": null,
+      "rmse": "1",
+      "sample": "method_eligible",
+      "scored": 3
+    },
+    {
+      "abstained": 0,
+      "attempted": 3,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "1",
+      "method": "locf",
+      "patient_id": null,
+      "rmse": "1",
+      "sample": "common_eligible",
+      "scored": 3
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "1",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": "1",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "1",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": "1",
+      "sample": "common_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "1",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": "1",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "1",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": "1",
+      "sample": "common_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "1",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": "1",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "1",
+      "method": "locf",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": "1",
+      "sample": "common_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 3,
+      "attempted": 3,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "last_two_linear",
+      "patient_id": null,
+      "rmse": null,
+      "sample": "method_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 3,
+      "attempted": 3,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "last_two_linear",
+      "patient_id": null,
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": null,
+      "sample": "method_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": null,
+      "sample": "method_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": null,
+      "sample": "method_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 0,
+      "attempted": 3,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "8",
+      "mae": "1.666666666666666666666666666666666666666666666666666666666666666666666666666667",
+      "method": "last_two_linear",
+      "patient_id": null,
+      "rmse": "1.666666666666666666666666666666666666666666666666666666666666666666666666666667",
+      "sample": "method_eligible",
+      "scored": 3
+    },
+    {
+      "abstained": 0,
+      "attempted": 3,
+      "coverage": "0",
+      "excluded": 3,
+      "horizon_days": "8",
+      "mae": null,
+      "method": "last_two_linear",
+      "patient_id": null,
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "8",
+      "mae": "1.666666666666666666666666666666666666666666666666666666666666666666666666666667",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": "1.666666666666666666666666666666666666666666666666666666666666666666666666666667",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 1,
+      "horizon_days": "8",
+      "mae": null,
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "8",
+      "mae": "1.666666666666666666666666666666666666666666666666666666666666666666666666666667",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": "1.666666666666666666666666666666666666666666666666666666666666666666666666666667",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 1,
+      "horizon_days": "8",
+      "mae": null,
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "8",
+      "mae": "1.666666666666666666666666666666666666666666666666666666666666666666666666666667",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": "1.666666666666666666666666666666666666666666666666666666666666666666666666666667",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 1,
+      "horizon_days": "8",
+      "mae": null,
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 0,
+      "attempted": 3,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "0.125",
+      "method": "last_two_linear",
+      "patient_id": null,
+      "rmse": "0.125",
+      "sample": "method_eligible",
+      "scored": 3
+    },
+    {
+      "abstained": 0,
+      "attempted": 3,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "0.125",
+      "method": "last_two_linear",
+      "patient_id": null,
+      "rmse": "0.125",
+      "sample": "common_eligible",
+      "scored": 3
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "0.125",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": "0.125",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "0.125",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": "0.125",
+      "sample": "common_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "0.125",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": "0.125",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "0.125",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": "0.125",
+      "sample": "common_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "0.125",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": "0.125",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "0.125",
+      "method": "last_two_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": "0.125",
+      "sample": "common_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 3,
+      "attempted": 3,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "ols_linear",
+      "patient_id": null,
+      "rmse": null,
+      "sample": "method_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 3,
+      "attempted": 3,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "ols_linear",
+      "patient_id": null,
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": null,
+      "sample": "method_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": null,
+      "sample": "method_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": null,
+      "sample": "method_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "3",
+      "mae": null,
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 3,
+      "attempted": 3,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "8",
+      "mae": null,
+      "method": "ols_linear",
+      "patient_id": null,
+      "rmse": null,
+      "sample": "method_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 3,
+      "attempted": 3,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "8",
+      "mae": null,
+      "method": "ols_linear",
+      "patient_id": null,
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "8",
+      "mae": null,
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": null,
+      "sample": "method_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "8",
+      "mae": null,
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "8",
+      "mae": null,
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": null,
+      "sample": "method_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "8",
+      "mae": null,
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "8",
+      "mae": null,
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": null,
+      "sample": "method_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 1,
+      "attempted": 1,
+      "coverage": "0",
+      "excluded": 0,
+      "horizon_days": "8",
+      "mae": null,
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": null,
+      "sample": "common_eligible",
+      "scored": 0
+    },
+    {
+      "abstained": 0,
+      "attempted": 3,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "method": "ols_linear",
+      "patient_id": null,
+      "rmse": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "sample": "method_eligible",
+      "scored": 3
+    },
+    {
+      "abstained": 0,
+      "attempted": 3,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "method": "ols_linear",
+      "patient_id": null,
+      "rmse": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "sample": "common_eligible",
+      "scored": 3
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-000000000065",
+      "rmse": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "sample": "common_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-0000000000c9",
+      "rmse": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "sample": "common_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "sample": "method_eligible",
+      "scored": 1
+    },
+    {
+      "abstained": 0,
+      "attempted": 1,
+      "coverage": "1",
+      "excluded": 0,
+      "horizon_days": "9",
+      "mae": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "method": "ols_linear",
+      "patient_id": "00000000-0000-0000-0000-00000000012d",
+      "rmse": "0.608247422680412371134020618556701030927835051546391752577319587628865979381443",
+      "sample": "common_eligible",
+      "scored": 1
+    }
+  ],
+  "patient_facing_enabled": false,
+  "protocol": {
+    "lesion_id": null,
+    "method_version": "local-units/1",
+    "metric_code": "hemoglobin",
+    "metric_definition": null,
+    "nonnegative": true,
+    "population": "synthetic_engineering_fixture_only",
+    "supported_horizons": [
+      "3",
+      "8",
+      "9"
+    ],
+    "unit": "g/dL",
+    "version": "forecast-protocol/1"
+  },
+  "real_evaluation": "unavailable",
+  "role": "test",
+  "split_id": "00000000-0000-0000-0000-00000000c350",
+  "split_manifest": {
+    "fixture_verification_only": true,
+    "frozen_root_resource_ids": [],
+    "grouping_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "groups": [
+      {
+        "demo_exposed": false,
+        "exclusions": [],
+        "group_id": "00000000-0000-0000-0000-000000000001",
+        "held_out_group_eligible": true,
+        "patient_ids": [
+          "00000000-0000-0000-0000-000000000065"
+        ],
+        "role": "test"
+      },
+      {
+        "demo_exposed": false,
+        "exclusions": [],
+        "group_id": "00000000-0000-0000-0000-000000000002",
+        "held_out_group_eligible": true,
+        "patient_ids": [
+          "00000000-0000-0000-0000-0000000000c9"
+        ],
+        "role": "test"
+      },
+      {
+        "demo_exposed": false,
+        "exclusions": [],
+        "group_id": "00000000-0000-0000-0000-000000000003",
+        "held_out_group_eligible": true,
+        "patient_ids": [
+          "00000000-0000-0000-0000-00000000012d"
+        ],
+        "role": "test"
+      }
+    ],
+    "id": "00000000-0000-0000-0000-00000000c350",
+    "identity_evidence_ids": [],
+    "independent_real_evaluation_cleared": false,
+    "input_revisions": {},
+    "next_action": "Audit frozen grouping before use; real cohort/reference independence remains D05 pending",
+    "seed": 0,
+    "source_version_ids": [],
+    "version": "patient-groups/1"
+  },
+  "uncertainty": "not_estimated_tiny_synthetic_cohort",
+  "version": "forecast-evaluation/1"
+}

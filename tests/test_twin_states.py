@@ -456,9 +456,11 @@ def test_previous_state_schema_hash_and_command_replay_remain_stable(imaging_db)
     source_snapshot = build_state(c, i, p, u, value, storage, "modern-shape")
     old_input = value.model_dump(mode="json")
     old_input.pop("generated_geometry_members")
+    old_input.pop("generated_clinical_members")
     legacy_id = uuid4()
     legacy_report = source_snapshot.model_dump(mode="json")
     legacy_report.pop("generated_geometry_members")
+    legacy_report.pop("generated_clinical_members")
     legacy_report.update(id=str(legacy_id), request_manifest_hash=science_hash(old_input))
     persisted_hash = science_hash(legacy_report)
     c.execute(
@@ -495,5 +497,6 @@ def test_previous_state_schema_hash_and_command_replay_remain_stable(imaging_db)
     view = read_state(c, i, p, u, legacy_id)
     assert view.snapshot_hash == persisted_hash
     assert view.snapshot.generated_geometry_members == []
+    assert view.snapshot.generated_clinical_members == []
     replay = build_state(c, i, p, u, value, storage, "legacy-shape")
     assert replay.id == legacy_id and replay.request_manifest_hash == science_hash(old_input)

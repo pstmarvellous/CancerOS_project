@@ -1,4 +1,4 @@
-"""Authorized test-run geometry only; no clinical trajectory or genuine simulation engine."""
+"""Private fixed-grid geometry for isolated engineering runs; no clinical validation."""
 
 import io
 from decimal import Decimal
@@ -78,7 +78,11 @@ class GeometryResult(Contract):
     status: Literal["ready", "zero", "blocked"]
     publication: Literal["draft"] = "draft"
     scientific_review: Literal["pending"] = "pending"
-    simulation_engine_integration: Literal["blocked_not_implemented"] = "blocked_not_implemented"
+    simulation_engine_integration: Literal[
+        "blocked_not_implemented",
+        "partial_common_run_adapter_full_orchestration_pending",
+        "common_run_workflow_available_explicit_completion_required",
+    ] = "blocked_not_implemented"
     five_scenario_families: Literal["not_completed_by_geometry_component"] = (
         "not_completed_by_geometry_component"
     )
@@ -221,6 +225,38 @@ def read_fixture_run(c, i, p, u, identifier):
     return _read(c, i, p, u, "simulation_fixture_runs", identifier, FixtureRun)
 
 
+def resolve_geometry_run(c, i, p, u, identifier):
+    """Normalize a frozen common test run; legacy fixture authorization stays isolated."""
+    common_exists = c.execute(
+        text(
+            "SELECT id FROM imaging.simulation_runs WHERE project_id=:p AND patient_id=:u AND id=:id"
+        ),
+        {"p": p, "u": u, "id": identifier},
+    ).scalar_one_or_none()
+    if common_exists is None:
+        return read_fixture_run(c, i, p, u, identifier)
+    from canceros.simulation_runs import read_run, read_run_geometry_targets
+
+    common = read_run(c, i, p, u, identifier)
+    _use(c, i, p, u, identifier)
+    if common.association_head is None or common.config.geometry_policy != "isotropic-fixed-grid/1":
+        raise HTTPException(409, detail="frozen_geometry_policy_and_association_head_required")
+    targets = read_run_geometry_targets(c, i, p, u, identifier)
+    return FixtureRun(
+        id=common.id,
+        input=FixtureRunInput(
+            branch_id=common.branch_id,
+            baseline_hash=common.config.baseline_hash,
+            targets=[
+                TargetPoint(relative_day=t.relative_day, target_mm3=t.target_mm3) for t in targets
+            ],
+            shape_config=ShapeConfig(seed=common.config.seed),
+        ),
+        input_revision=common.input_revision,
+        association_head=common.association_head,
+    )
+
+
 def read_geometry_result(c, i, p, u, identifier):
     return _read(c, i, p, u, "synthetic_geometry_results", identifier, GeometryResult)
 
@@ -241,7 +277,7 @@ def generate_geometry(c, i, p, u, value: GeometryInput, storage, key, config):
     )
     if prior:
         return prior
-    run = read_fixture_run(c, i, p, u, value.run_id)
+    run = resolve_geometry_run(c, i, p, u, value.run_id)
     _use(c, i, p, u, run.id)
     branch = read_branch(c, i, p, u, run.input.branch_id)
     if (
@@ -365,7 +401,20 @@ def generate_geometry(c, i, p, u, value: GeometryInput, storage, key, config):
             "synthetic-state-" + str(identifier),
         )
     result = GeometryResult(
-        id=uuid4(), geometry=report, state_id=state.id if state else None, status=status
+        id=uuid4(),
+        geometry=report,
+        state_id=state.id if state else None,
+        status=status,
+        simulation_engine_integration=(
+            "common_run_workflow_available_explicit_completion_required"
+            if c.execute(
+                text(
+                    "SELECT id FROM imaging.simulation_runs WHERE project_id=:p AND patient_id=:u AND id=:id"
+                ),
+                {"p": p, "u": u, "id": run.id},
+            ).scalar_one_or_none()
+            else "blocked_not_implemented"
+        ),
     )
     _store(
         c,

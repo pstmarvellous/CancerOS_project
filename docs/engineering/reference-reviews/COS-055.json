@@ -1,0 +1,330 @@
+{
+  "task": "COS-055",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "forecast",
+      "returncode": 0,
+      "output": "\n=== AI.FORECAST Optional future-state forecasts ===\n Only with qualified independent real-data evaluation; abstain otherwise. Synthetic simulator is not predictive validation. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- CONSTRAINS GOV.ABSTAIN Disclose unknowns\n  <-- VERIFIES EVAL.REAL Authentic longitudinal case evaluation\n\n=== EVAL.REAL Authentic longitudinal case evaluation ===\n Track genuine repeat scans separately; error against actual holdout outcomes if forecasting used. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  <-- HAS_STEP WF.REALVAL Actual longitudinal evaluation\n  <-- WORKFLOW_PRECEDES TWIN.REAL Genuine longitudinal viewing\n  --> WORKFLOW_PRECEDES EVAL.REPORT Scientific limitations report\n  --> VERIFIES AI.FORECAST Optional future-state forecasts\n\n=== GOV.ABSTAIN Disclose unknowns ===\n Missing values, poor registration, lack of calibrated forecast or uncertain evidence yield caveat/abstention. \nSources: SAF,PRD\n  <-- ENFORCES D.GOV Safety and provenance\n  --> CONSTRAINS AI.FORECAST Optional future-state forecasts\n  --> CONSTRAINS IMG.REG Longitudinal registration\n  --> CONSTRAINS AI.GUARD Output safety validation\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "forecast",
+      "returncode": 0,
+      "output": "\nAI.05 — Temporal forecasting eligibility\nDesign: Use simple comparator first; abstain on insufficient real follow-up; synthetic not real proof\nAcceptance: Held-out simple baselines; no fabricated confidence\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A09 Stan User’s Guide — Posterior and Prior Predictive Checks — https://mc-stan.org/docs/stan-users-guide/ppcs.html\n  READ A15 FDA Computational Model Credibility Guidance — Context of use; model verification, validation and credibility assessment — https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions\n  REPO R10 Stan — probabilistic model reference — https://github.com/stan-dev/stan\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n\nUX.01 — Provenance-labeled scenario comparison\nDesign: Real observed / real derived / synthetic / interpolation / forecast never conflated\nAcceptance: Visible labels in screenshots and E2E tests\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  READ A15 FDA Computational Model Credibility Guidance — Context of use; model verification, validation and credibility assessment — https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions\n  REPO R04 OHIF Viewer — DICOM viewer, longitudinal measurement tracking — https://github.com/OHIF/Viewers\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "forecast",
+      "returncode": 0,
+      "output": "\n== AI.05 Temporal forecasting eligibility ==\nIntent: Use simple comparator first; abstain on insufficient real follow-up; synthetic not real proof \nTest: Held-out simple baselines; no fabricated confidence\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A09 Stan User’s Guide | Posterior and Prior Predictive Checks | https://mc-stan.org/docs/stan-users-guide/ppcs.html | verified section\n BOOK/LECTURE A15 FDA Computational Model Credibility Guidance | Context of use; model verification, validation and credibility assessment | https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions | applicability limited to intended guidance scope\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n REPOSITORY R15 MONAI Deploy App SDK | https://github.com/Project-MONAI/monai-deploy-app-sdk \n  Inspect: Inspect examples/apps and operator contracts \n  Reuse: Study preprocessing/inference/postprocessing pipeline pattern \n  Avoid: Do not require heavyweight SDK on local laptop \n  Verify: CPU sample chain smoke test\n\n== UX.01 Provenance-labeled scenario comparison ==\nIntent: Real observed / real derived / synthetic / interpolation / forecast never conflated \nTest: Visible labels in screenshots and E2E tests\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n BOOK/LECTURE A15 FDA Computational Model Credibility Guidance | Context of use; model verification, validation and credibility assessment | https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions | applicability limited to intended guidance scope\n REPOSITORY R04 OHIF Viewer | https://github.com/OHIF/Viewers \n  Inspect: Inspect modes/longitudinal, extensions/measurement-tracking, extensions/cornerstone, platform/core \n  Reuse: Prototype OHIF integration versus Cornerstone3D standalone \n  Avoid: Do not assume original longitudinal mode understands synthetic branching \n  Verify: Browser MRI overlay, state switch, correct patient/time, performance\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "evaluation",
+      "returncode": 0,
+      "output": "\n=== D.EVAL Scientific evaluation ===\n Technical correctness and honest real-data evaluation separate from simulation tests. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> TESTS EVAL.PHANTOM Geometry phantom tests\n  --> TESTS EVAL.SEG Imaging segmentation metrics\n  --> TESTS EVAL.REAL Authentic longitudinal case evaluation\n  --> TESTS EVAL.SIM Simulation integrity evaluation\n  --> TESTS EVAL.AI NLP/LLM grounding evaluation\n  --> TESTS EVAL.E2E End-to-end demo\n  --> TESTS EVAL.REPORT Scientific limitations report\n\n=== AI.FORECAST Optional future-state forecasts ===\n Only with qualified independent real-data evaluation; abstain otherwise. Synthetic simulator is not predictive validation. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- CONSTRAINS GOV.ABSTAIN Disclose unknowns\n  <-- VERIFIES EVAL.REAL Authentic longitudinal case evaluation\n\n=== UX.EVAL Evaluation/limitations view ===\n What was tested, real versus synthetic metrics, cohort size, unknowns and known failures. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n\n=== EVAL.REAL Authentic longitudinal case evaluation ===\n Track genuine repeat scans separately; error against actual holdout outcomes if forecasting used. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  <-- HAS_STEP WF.REALVAL Actual longitudinal evaluation\n  <-- WORKFLOW_PRECEDES TWIN.REAL Genuine longitudinal viewing\n  --> WORKFLOW_PRECEDES EVAL.REPORT Scientific limitations report\n  --> VERIFIES AI.FORECAST Optional future-state forecasts\n\n=== EVAL.SIM Simulation integrity evaluation ===\n Plausibility review, parameter assumptions, correlations, chronology, reproducibility and missingness. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  --> VERIFIES SIM.VALID Simulation validation\n\n=== EVAL.AI NLP/LLM grounding evaluation ===\n Extraction, negation, citation validity, numerical fidelity, clinical abstention and adversarial notes. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  <-- WORKFLOW_PRECEDES EVAL.E2E End-to-end demo\n  --> WORKFLOW_PRECEDES GOV.PROV Five provenance classes\n  --> VERIFIES AI.GUARD Output safety validation\n\n=== REF.MONAI MONAI ===\n Medical image transforms, evaluation, optional annotation/inference. \nSources: REF\n  <-- REFERENCES ROOT CancerOS breast cancer digital twin\n\n=== WF.REALVAL Actual longitudinal evaluation ===\n Ordered sequence; inspect dependent nodes before implementation. \nSources: PRD,ROAD\n  <-- HAS_WORKFLOW ROOT CancerOS breast cancer digital twin\n  --> HAS_STEP IMG.INGEST DICOM and NIfTI ingestion\n  --> HAS_STEP IMG.REG Longitudinal registration\n  --> HAS_STEP IMG.TRACK Cross-visit lesion identity\n  --> HAS_STEP TWIN.REAL Genuine longitudinal viewing\n  --> HAS_STEP EVAL.REAL Authentic longitudinal case evaluation\n  --> HAS_STEP EVAL.REPORT Scientific limitations report\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "evaluation",
+      "returncode": 0,
+      "output": "\nDAT.04 — Patient-level split and duplicate detection\nDesign: Keep source patient and synthetic descendants in same evaluation partition\nAcceptance: No split leakage or duplicated derivative patient\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R07 IDC Index — reproducible dataset collection and download — https://github.com/ImagingDataCommons/idc-index\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "evaluation",
+      "returncode": 0,
+      "output": "\n== DAT.04 Patient-level split and duplicate detection ==\nIntent: Keep source patient and synthetic descendants in same evaluation partition \nTest: No split leakage or duplicated derivative patient\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R07 IDC Index | https://github.com/ImagingDataCommons/idc-index \n  Inspect: Inspect IDCClient metadata hierarchy, SQL querying, download manifests \n  Reuse: Adopt maintained package to download authorized selected studies \n  Avoid: Do not bulk-download entire datasets or assume every cohort is in IDC \n  Verify: Download one approved series, SHA-256 and patient/study linkage\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "abstention",
+      "returncode": 0,
+      "output": "\n=== D.GOV Safety and provenance ===\n Licensing, patient de-identification, traceable origin, abstention and research-only boundary. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> ENFORCES GOV.REAL Immutable source truth\n  --> ENFORCES GOV.PROV Five provenance classes\n  --> ENFORCES GOV.PRIV Privacy and access\n  --> ENFORCES GOV.LIC License separation\n  --> ENFORCES GOV.NOCLIN No autonomous care\n  --> ENFORCES GOV.RECIST Formal response boundary\n  --> ENFORCES GOV.CTCAE Adverse-event grading boundary\n  --> ENFORCES GOV.ABSTAIN Disclose unknowns\n\n=== AI.GUARD Output safety validation ===\n Numerical grounding, citation validity, hallucination/unsafe claims, prompt-injection defense, abstention. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- PRECEDES AI.LLM Grounded explanation\n  <-- HAS_STEP WF.AI Evidence linked interpretation\n  <-- WORKFLOW_PRECEDES AI.LLM Grounded explanation\n  --> WORKFLOW_PRECEDES UX.INSIGHT AI insights with evidence\n  <-- CONSTRAINS GOV.NOCLIN No autonomous care\n  <-- CONSTRAINS GOV.ABSTAIN Disclose unknowns\n  <-- VERIFIES EVAL.AI NLP/LLM grounding evaluation\n\n=== EVAL.AI NLP/LLM grounding evaluation ===\n Extraction, negation, citation validity, numerical fidelity, clinical abstention and adversarial notes. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  <-- WORKFLOW_PRECEDES EVAL.E2E End-to-end demo\n  --> WORKFLOW_PRECEDES GOV.PROV Five provenance classes\n  --> VERIFIES AI.GUARD Output safety validation\n\n=== GOV.ABSTAIN Disclose unknowns ===\n Missing values, poor registration, lack of calibrated forecast or uncertain evidence yield caveat/abstention. \nSources: SAF,PRD\n  <-- ENFORCES D.GOV Safety and provenance\n  --> CONSTRAINS AI.FORECAST Optional future-state forecasts\n  --> CONSTRAINS IMG.REG Longitudinal registration\n  --> CONSTRAINS AI.GUARD Output safety validation\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "abstention",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "abstention",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "AI.FORECAST",
+    "AI.GUARD",
+    "D.EVAL",
+    "D.GOV",
+    "EVAL.AI",
+    "EVAL.REAL",
+    "EVAL.SIM",
+    "GOV.ABSTAIN",
+    "IMG.MODEL",
+    "REF.MONAI",
+    "UX.EVAL",
+    "WF.REALVAL"
+  ],
+  "academic_behavior_ids": [
+    "DAT.04",
+    "AI.05",
+    "UX.01"
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.EVAL"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.GOV"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MODEL"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "AI.LLM",
+      "relation": "PRECEDES",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.EVAL"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.SEG"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.REAL"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.SIM"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.REAL"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.LIC"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.NOCLIN"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.RECIST"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.CTCAE"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.ABSTAIN"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.MONAI"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "AI.LLM",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "AI.GUARD",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REALVAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.REAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "TWIN.REAL",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.REAL"
+    },
+    {
+      "from_id": "EVAL.REAL",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "EVAL.AI",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "GOV.NOCLIN",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "GOV.ABSTAIN",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "GOV.ABSTAIN",
+      "relation": "CONSTRAINS",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "GOV.ABSTAIN",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "EVAL.SEG",
+      "relation": "VERIFIES",
+      "to_id": "IMG.MODEL"
+    },
+    {
+      "from_id": "EVAL.REAL",
+      "relation": "VERIFIES",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "EVAL.SIM",
+      "relation": "VERIFIES",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "EVAL.AI",
+      "relation": "VERIFIES",
+      "to_id": "AI.GUARD"
+    }
+  ],
+  "mapped_source_ids": [
+    "A09",
+    "A11",
+    "A14",
+    "A15",
+    "P05",
+    "R04",
+    "R07",
+    "R10"
+  ],
+  "source_sections_inspected": "SPEC-006 sections8.1-8.10; SPEC-011 sections10-11 forecasting protocol and statistical reporting; COS-055 prompt; gates D02/D05 remain open"
+}

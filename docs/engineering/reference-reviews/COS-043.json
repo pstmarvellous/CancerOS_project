@@ -1,0 +1,486 @@
+{
+  "task": "COS-043",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "shrinkage",
+      "returncode": 0,
+      "output": "\n=== SIM.RESPONSE Family 1: strong response ===\n Hypothetical sustained tumor shrinkage, independent adverse effects. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n  <-- GUARDS SIM.ELIG Treatment and scenario eligibility\n  --> PRODUCES TWIN.BRANCH Scenario branch isolation\n  <-- CONSTRAINS GOV.RECIST Formal response boundary\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "shrinkage",
+      "returncode": 0,
+      "output": "\nSIM.04 — Discrete surgery and radiotherapy events\nDesign: Model intervention as dated event not generic geometric shrinkage\nAcceptance: Surgical transition has explicit status and rationale\n  READ A12 NCI Breast Cancer Treatment PDQ — Stage-specific treatment, receptor status and neoadjuvant therapy sections — https://www.cancer.gov/types/breast/hp/breast-treatment-pdq\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "shrinkage",
+      "returncode": 0,
+      "output": "\n== SIM.04 Discrete surgery and radiotherapy events ==\nIntent: Model intervention as dated event not generic geometric shrinkage \nTest: Surgical transition has explicit status and rationale\n BOOK/LECTURE A12 NCI Breast Cancer Treatment PDQ | Stage-specific treatment, receptor status and neoadjuvant therapy sections | https://www.cancer.gov/types/breast/hp/breast-treatment-pdq | verified document; topic-specific revision required\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "trajectory",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "trajectory",
+      "returncode": 0,
+      "output": "\nSIM.01 — Five trajectory scenario patterns\nDesign: Strong response, partial/stable, growth, regrowth, toxicity/deterioration\nAcceptance: Shape constraints on all five families\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A09 Stan User’s Guide — Posterior and Prior Predictive Checks — https://mc-stan.org/docs/stan-users-guide/ppcs.html\n  READ A12 NCI Breast Cancer Treatment PDQ — Stage-specific treatment, receptor status and neoadjuvant therapy sections — https://www.cancer.gov/types/breast/hp/breast-treatment-pdq\n  REPO R10 Stan — probabilistic model reference — https://github.com/stan-dev/stan\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n\nSIM.02 — Within/between patient heterogeneity\nDesign: Separate individual latent state, scenario trajectory, observation noise and patient variability\nAcceptance: Between/within variance diagnostics\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A10 Stan User’s Guide — Hierarchical models and mixed replication; navigate from current official guide — https://mc-stan.org/docs/stan-users-guide/\n  READ A09 Stan User’s Guide — Posterior and Prior Predictive Checks — https://mc-stan.org/docs/stan-users-guide/ppcs.html\n  REPO R10 Stan — probabilistic model reference — https://github.com/stan-dev/stan\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "trajectory",
+      "returncode": 0,
+      "output": "\n== SIM.01 Five trajectory scenario patterns ==\nIntent: Strong response, partial/stable, growth, regrowth, toxicity/deterioration \nTest: Shape constraints on all five families\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A09 Stan User’s Guide | Posterior and Prior Predictive Checks | https://mc-stan.org/docs/stan-users-guide/ppcs.html | verified section\n BOOK/LECTURE A12 NCI Breast Cancer Treatment PDQ | Stage-specific treatment, receptor status and neoadjuvant therapy sections | https://www.cancer.gov/types/breast/hp/breast-treatment-pdq | verified document; topic-specific revision required\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n\n== SIM.02 Within/between patient heterogeneity ==\nIntent: Separate individual latent state, scenario trajectory, observation noise and patient variability \nTest: Between/within variance diagnostics\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A10 Stan User’s Guide | Hierarchical models and mixed replication; navigate from current official guide | https://mc-stan.org/docs/stan-users-guide/ | topical location; subsection pending\n BOOK/LECTURE A09 Stan User’s Guide | Posterior and Prior Predictive Checks | https://mc-stan.org/docs/stan-users-guide/ppcs.html | verified section\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "geometry",
+      "returncode": 0,
+      "output": "\n=== IMG.INGEST DICOM and NIfTI ingestion ===\n Validate study, series, sequence, privacy, slice sorting, pixel geometry and checksums. \nSources: IMG,REF\n  <-- IMPLEMENTS D.IMG Medical imaging\n  --> PRECEDES IMG.PRE MRI preprocessing\n  <-- HAS_STEP WF.REAL Real imaging vertical slice\n  <-- WORKFLOW_PRECEDES DATA.PATIENT ResearchPatient\n  --> WORKFLOW_PRECEDES IMG.PRE MRI preprocessing\n  <-- HAS_STEP WF.REALVAL Actual longitudinal evaluation\n  --> WORKFLOW_PRECEDES IMG.REG Longitudinal registration\n\n=== IMG.VOL Quantitative measurement ===\n Compute mask volume using physical voxel geometry; derive only supported dimensions. \nSources: IMG,REF\n  <-- IMPLEMENTS D.IMG Medical imaging\n  <-- PRECEDES IMG.MASK Mask classification and import\n  --> PRECEDES IMG.SYNMESH Synthetic lesion geometry\n  <-- HAS_STEP WF.REAL Real imaging vertical slice\n  <-- WORKFLOW_PRECEDES IMG.MASK Mask classification and import\n  --> WORKFLOW_PRECEDES IMG.MESH Mask-to-mesh conversion\n  <-- VERIFIES EVAL.PHANTOM Geometry phantom tests\n\n=== IMG.SYNMESH Synthetic lesion geometry ===\n Transform baseline mask to target volume with validated geometry, label synthetic; no fabricated follow-up MRI. \nSources: IMG,REF\n  <-- IMPLEMENTS D.IMG Medical imaging\n  <-- PRECEDES IMG.VOL Quantitative measurement\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES SIM.OBS Observation simulation\n  --> WORKFLOW_PRECEDES SIM.VALID Simulation validation\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n\n=== TWIN.STATE Time-indexed state ===\n State binds patient, timestamp, geometry, clinical observations, treatment events, quality, missingness and provenance. \nSources: PRD,IMG,SIM\n  <-- IMPLEMENTS D.TWIN Digital twin\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n\n=== SIM.OBS Observation simulation ===\n Timestamped labs, vitals, symptoms, imaging geometry, notes, irregular sampling and missingness. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES SIM.LATENT Latent evolution state\n  --> WORKFLOW_PRECEDES IMG.SYNMESH Synthetic lesion geometry\n\n=== SIM.VALID Simulation validation ===\n Reject structural, temporal, unit, cross-modal, geometry, provenance and unsafe interpretation failures. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES IMG.SYNMESH Synthetic lesion geometry\n  --> WORKFLOW_PRECEDES TWIN.BRANCH Scenario branch isolation\n  <-- CONSTRAINS GOV.CTCAE Adverse-event grading boundary\n  <-- VERIFIES EVAL.SIM Simulation integrity evaluation\n\n=== UX.3D Interactive lesion viewport ===\n Rotate, pan, zoom, reset; clearly distinguish observed/synthetic/illustrative geometry. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n  <-- HAS_STEP WF.REAL Real imaging vertical slice\n  <-- WORKFLOW_PRECEDES IMG.MESH Mask-to-mesh conversion\n  --> WORKFLOW_PRECEDES EVAL.PHANTOM Geometry phantom tests\n\n=== EVAL.PHANTOM Geometry phantom tests ===\n Known millimeter cubes/ellipsoids to verify units, transforms, mask volume and mesh. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  <-- HAS_STEP WF.REAL Real imaging vertical slice\n  <-- WORKFLOW_PRECEDES UX.3D Interactive lesion viewport\n  --> VERIFIES IMG.VOL Quantitative measurement\n  --> VERIFIES IMG.MESH Mask-to-mesh conversion\n\n=== REF.SLICER 3D Slicer ===\n Cross-check source-space geometry and surface/volume calculations. \nSources: REF\n  <-- REFERENCES ROOT CancerOS breast cancer digital twin\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "geometry",
+      "returncode": 0,
+      "output": "\nIMG.08 — Lesion volume and diameter\nDesign: Compute volume from voxel geometry; do not treat box diameter as RECIST\nAcceptance: Known 3D phantom volume and dimensional accuracy\n  READ A05 ITK Software Guide — Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition — https://itk.org/ITKSoftwareGuide/html/\n  READ A08 IBSI Reference Manuals — IBSI 1 reference manual — image preprocessing and biomarker feature definitions; select benchmark in documentation — https://theibsi.github.io/documentation/\n  READ A18 RECIST 1.1 — Definitions of tumor measurement and formal response categories — https://recist.eortc.org/recist-1-1/\n  REPO R03 3D Slicer — reference geometry/segmentation/measurement — https://github.com/Slicer/Slicer\n  REPO R11 SlicerRT — segment comparison metrics — https://github.com/SlicerRt/SlicerRT\n  PAPER P04 IBSI image biomarker standardisation —  — https://theibsi.github.io/documentation/\n\nIMG.13 — Synthetic shape generation\nDesign: Derive simulated mesh from original mask; label geometry simulated; constrain target volume\nAcceptance: Target-vs-produced mask volume tolerance\n  READ A07 Insight into Images — Terry S. Yoo (ed.) — Isosurfaces, medical segmentation, deformable models, registration; inspect chapter headings in accessible edition — https://www.routledge.com/Insight-into-Images/Yooah2/p/book/9781568812175\n  READ A08 IBSI Reference Manuals — IBSI 1 reference manual — image preprocessing and biomarker feature definitions; select benchmark in documentation — https://theibsi.github.io/documentation/\n  READ A17 MIT Computer Graphics OpenCourseWare — Transforms and 3D geometry; select exact lecture in course notes — https://ocw.mit.edu/courses/6-837-computer-graphics-fall-2012/pages/lecture-notes/\n  REPO R03 3D Slicer — reference geometry/segmentation/measurement — https://github.com/Slicer/Slicer\n  PAPER P04 IBSI image biomarker standardisation —  — https://theibsi.github.io/documentation/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "geometry",
+      "returncode": 0,
+      "output": "\n== IMG.08 Lesion volume and diameter ==\nIntent: Compute volume from voxel geometry; do not treat box diameter as RECIST \nTest: Known 3D phantom volume and dimensional accuracy\n BOOK/LECTURE A05 ITK Software Guide | Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition | https://itk.org/ITKSoftwareGuide/html/ | verified topical volume; exact chapter pending\n BOOK/LECTURE A08 IBSI Reference Manuals | IBSI 1 reference manual — image preprocessing and biomarker feature definitions; select benchmark in documentation | https://theibsi.github.io/documentation/ | reference manual verified\n BOOK/LECTURE A18 RECIST 1.1 | Definitions of tumor measurement and formal response categories | https://recist.eortc.org/recist-1-1/ | verified topical reference\n PAPER P04 IBSI image biomarker standardisation | https://theibsi.github.io/documentation/\n REPOSITORY R03 3D Slicer | https://github.com/Slicer/Slicer \n  Inspect: Inspect MRML, Segmentations, Segment Editor, transformations, model/segment statistics \n  Reuse: Use as independent geometry reference; leverage VTK/SimpleITK libraries \n  Avoid: Do not transplant desktop application to web \n  Verify: Compare exported mesh dimensions and mask-derived volume\n REPOSITORY R11 SlicerRT | https://github.com/SlicerRt/SlicerRT \n  Inspect: Inspect segment comparison and volume/morphology workflow \n  Reuse: Study measurement comparison implementation \n  Avoid: Do not add radiotherapy treatment planner \n  Verify: Dice and physical distance checks against reference\n REPOSITORY R13 Cornerstone3D | https://github.com/cornerstonejs/cornerstone3D \n  Inspect: Inspect packages/tools, viewport, segmentation loaders and examples \n  Reuse: Evaluate direct library integration rather than all of OHIF \n  Avoid: Do not recode entire DICOM viewport layer \n  Verify: Render known DICOM and overlay matched segmentation\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n\n== IMG.13 Synthetic shape generation ==\nIntent: Derive simulated mesh from original mask; label geometry simulated; constrain target volume \nTest: Target-vs-produced mask volume tolerance\n BOOK/LECTURE A07 Insight into Images — Terry S. Yoo (ed.) | Isosurfaces, medical segmentation, deformable models, registration; inspect chapter headings in accessible edition | https://www.routledge.com/Insight-into-Images/Yooah2/p/book/9781568812175 | topic indicated; precise chapter pending\n BOOK/LECTURE A08 IBSI Reference Manuals | IBSI 1 reference manual — image preprocessing and biomarker feature definitions; select benchmark in documentation | https://theibsi.github.io/documentation/ | reference manual verified\n BOOK/LECTURE A17 MIT Computer Graphics OpenCourseWare | Transforms and 3D geometry; select exact lecture in course notes | https://ocw.mit.edu/courses/6-837-computer-graphics-fall-2012/pages/lecture-notes/ | exact lecture pending\n PAPER P04 IBSI image biomarker standardisation | https://theibsi.github.io/documentation/\n REPOSITORY R03 3D Slicer | https://github.com/Slicer/Slicer \n  Inspect: Inspect MRML, Segmentations, Segment Editor, transformations, model/segment statistics \n  Reuse: Use as independent geometry reference; leverage VTK/SimpleITK libraries \n  Avoid: Do not transplant desktop application to web \n  Verify: Compare exported mesh dimensions and mask-derived volume\n REPOSITORY R13 Cornerstone3D | https://github.com/cornerstonejs/cornerstone3D \n  Inspect: Inspect packages/tools, viewport, segmentation loaders and examples \n  Reuse: Evaluate direct library integration rather than all of OHIF \n  Avoid: Do not recode entire DICOM viewport layer \n  Verify: Render known DICOM and overlay matched segmentation\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "EVAL.PHANTOM",
+    "IMG.INGEST",
+    "IMG.PRE",
+    "IMG.SYNMESH",
+    "IMG.VOL",
+    "REF.SLICER",
+    "ROOT",
+    "SIM.OBS",
+    "SIM.RESPONSE",
+    "SIM.VALID",
+    "TWIN.STATE",
+    "UX.3D"
+  ],
+  "academic_behavior_ids": [
+    "IMG.04",
+    "IMG.08",
+    "IMG.13",
+    "SIM.01",
+    "SIM.02",
+    "SIM.04"
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.DATA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.IMG"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.TWIN"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.SIM"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.AI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.UX"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.EVAL"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.INFRA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.GOV"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "PRECEDES",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "IMG.PRE",
+      "relation": "PRECEDES",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "IMG.MASK",
+      "relation": "PRECEDES",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "IMG.VOL",
+      "relation": "PRECEDES",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.RESPONSE"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.RESPONSE"
+    },
+    {
+      "from_id": "SIM.RESPONSE",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.WHOLE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.MULTI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.CARE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.SURV"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.GENOME"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.HOSP"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.DRUG"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.PHOTOMRI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.MAMA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.NNUNET"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.SLICER"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.OHIF"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.MONAI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.IDC"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.DCMQI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.LIT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "IMG.PRE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "IMG.MASK",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "IMG.VOL",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "IMG.MESH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "UX.3D",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.SIM"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "SIM.LATENT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "SIM.OBS",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "IMG.SYNMESH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "SIM.VALID",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.NEW"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.AI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REALVAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.RELEASE"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "GOV.RECIST",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.RESPONSE"
+    },
+    {
+      "from_id": "GOV.CTCAE",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "EVAL.PHANTOM",
+      "relation": "VERIFIES",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "EVAL.PHANTOM",
+      "relation": "VERIFIES",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "EVAL.SIM",
+      "relation": "VERIFIES",
+      "to_id": "SIM.VALID"
+    }
+  ],
+  "mapped_source_ids": [
+    "A05",
+    "A07",
+    "A08",
+    "A09",
+    "A10",
+    "A11",
+    "A12",
+    "A16",
+    "A17",
+    "A18",
+    "P04",
+    "P05",
+    "R03",
+    "R06",
+    "R10",
+    "R11"
+  ],
+  "source_sections_inspected": "SPEC-004 SC-01 sections4.1,5,8; SPEC-010 synthetic/clinical-claim boundaries; SPEC-011 simulation/geometry validation; COS041 plugin contract"
+}

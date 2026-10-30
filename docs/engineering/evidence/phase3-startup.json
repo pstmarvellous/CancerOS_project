@@ -1,0 +1,30 @@
+{
+  "result": "passed",
+  "scope": "Owned normal local development services and fixture credential cleanup; no clinical capability claim",
+  "mode": "development",
+  "checks": [
+    {
+      "command": "GET http://127.0.0.1:8000/health/live",
+      "exit_code": 0
+    },
+    {
+      "command": "GET http://127.0.0.1:3000/",
+      "exit_code": 0
+    },
+    {
+      "command": "GET http://127.0.0.1:3000/simulation",
+      "exit_code": 0
+    },
+    {
+      "command": "GET http://127.0.0.1:3000/timeline",
+      "exit_code": 0
+    },
+    {
+      "command": "Authenticated local readiness check (credential omitted)",
+      "exit_code": 0
+    }
+  ],
+  "private_dependencies_ready": true,
+  "ephemeral_fixture_removed": true,
+  "recorded_at": "2026-10-30T07:17:30.879172+00:00"
+}

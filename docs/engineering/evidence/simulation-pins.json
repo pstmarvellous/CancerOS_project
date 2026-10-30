@@ -1,0 +1,32 @@
+{
+  "recorded_at": "2026-10-29T03:35:50.890067+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "python": "3.12.14",
+  "scope": "simulation-pins engineering verification only; no real-data or qualified review claim",
+  "input_hash": "9b49c00add29ffed2d6fe340e03cdf55d41308524d3576c0ff4ec2bf06b75393",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests/test_runtime_identity.py",
+        "--tb=line"
+      ],
+      "exit_code": 0,
+      "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.12.14, pytest-9.1.1, pluggy-1.7.0\nrootdir: C:\\Users\\HomePC\\Desktop\\cancerOs_project\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollected 7 items\n\ntests\\test_runtime_identity.py .......                                   [100%]\n\n============================== 7 passed in 3.55s ==============================\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\HomePC\\Desktop\\cancerOs_project\\.venv\\Scripts\\python.exe",
+        "-m",
+        "mypy"
+      ],
+      "exit_code": 0,
+      "stdout": "Success: no issues found in 66 source files\n",
+      "stderr": ""
+    }
+  ],
+  "result": "passed"
+}

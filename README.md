@@ -27,6 +27,14 @@ of this implementation to https://github.com/pstmarvellous/CancerOS_project.
 Current verification and limitations: [Phase 1 report](docs/engineering/phase-1-verification-report.md).
 Phase 2 implementation coverage and open evidence gates:
 [Phase 2 report](docs/engineering/phase-2-verification.md).
+Phase 3 implementation and fixture verification:
+[execution record](docs/engineering/phase-3-execution.md). The private `/simulation`
+and `/timeline` screens expose hypothetical runs, exact observation history,
+deterministic trends and state context. See the [simulation](docs/engineering/runbooks/simulation-complete.md),
+[revision update](docs/engineering/runbooks/dependent-updates.md) and
+[forecast baseline](docs/engineering/runbooks/forecast-baselines.md) runbooks.
+Authentic observed baselines and qualified scientific review remain gated; public
+forecast requests abstain. Synthetic fixtures do not establish clinical validation.
 Native startup and service profiles: [development runbook](infrastructure/README.md).
 After locked installation and a frontend build, use `uv run python scripts/dev.py start foundation`.
 The local shell is at http://127.0.0.1:3000. Run `uv run python scripts/dev.py stop foundation`

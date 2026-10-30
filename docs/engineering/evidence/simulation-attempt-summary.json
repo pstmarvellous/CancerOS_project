@@ -1,0 +1,11 @@
+{
+  "scope": "COS-050 engineering fixtures; no authentic evaluation or clinical realism claim",
+  "tabular_suite": {"families": 5, "seeds_per_family": 10, "attempts": 50, "engineering_passed": 50, "blocked": 0},
+  "tabular_replay": {"pairs": 5, "executions": 10, "matching_pairs": 5},
+  "curated_anatomical_set": {"families": 5, "shared_baseline_mm3": "216", "followups_per_family": 3, "engineering_passed": 5, "blocked": 0, "evidence": "simulation-complete.json; simulation-publication-scope.json"},
+  "preliminary_larger_grid_attempts": {"shared_baseline_mm3": "512", "complete_runs_attempted": 3, "ready": 2, "blocked": 1, "blocked_family": "SC-03", "subsequent_direct_growth_component_attempts": 1, "direct_component_blocked": 1, "reason": "Existing exact mesh support certificate work budget exceeded; mask volume was correct. No QC limit or tolerance was weakened."},
+  "deliberate_pipeline_faults": {"stages": ["eligibility", "sampling", "clinical", "geometry", "states", "validation"], "attempts": 6, "expected_blocked": 6, "previous_publication_preserved": 6},
+  "publication": {"transaction_rollback_verified": true, "competing_attempts": 2, "published": 1, "expected_cas_rejection": 1},
+  "open_gates": ["D01", "D02", "D03", "D04 if external inference used", "D05", "D06", "C06"],
+  "unsupported": {"SLRE-T21": "Positive surgery transition deferred; unsupported surgery is disabled"}
+}

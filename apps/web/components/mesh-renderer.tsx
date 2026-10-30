@@ -7,7 +7,8 @@ import type { MeshAsset } from './mesh-types';
 import styles from './mesh-preview.module.css';
 
 type CameraAction = 'left' | 'right' | 'up' | 'down' | 'pan-left' | 'pan-right' | 'pan-up' | 'pan-down' | 'in' | 'out' | 'fit' | 'reset';
-export default function MeshRenderer({asset, selected, onFailure}: {asset: MeshAsset; selected: string; onFailure: () => void}) {
+export type RenderableMesh = {objects: Pick<MeshAsset['objects'][number], 'segmentation_id' | 'surface'>[]};
+export default function MeshRenderer({asset, selected, onFailure}: {asset: RenderableMesh; selected: string; onFailure: () => void}) {
   const host = useRef<HTMLDivElement>(null);
   const actions = useRef<((action: CameraAction) => void) | null>(null);
   const interaction = useRef<(() => void) | null>(null);

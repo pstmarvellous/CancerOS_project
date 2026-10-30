@@ -1,0 +1,200 @@
+{
+  "task": "COS-053",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "fusion",
+      "returncode": 0,
+      "output": "\n=== AI.FUSE Late multimodal fusion ===\n Combine imaging, labs, vitals, symptoms, notes, treatment and missingness with provenance, conflict status. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- PRECEDES AI.NLP Clinical note extraction\n  <-- PRECEDES AI.FEAT Deterministic multimodal features\n  --> PRECEDES AI.LLM Grounded explanation\n  <-- HAS_STEP WF.AI Evidence linked interpretation\n  <-- WORKFLOW_PRECEDES AI.FEAT Deterministic multimodal features\n  --> WORKFLOW_PRECEDES AI.RETR Evidence retrieval\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "fusion",
+      "returncode": 0,
+      "output": "\nAI.04 — Multimodal fusion\nDesign: Combine observed imaging, labs, notes, symptoms and treatments with conflict/provenance markers\nAcceptance: Cross-source conflicts surfaced\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  PAPER P03 TRIPOD-LLM reporting guideline —  — https://www.nature.com/articles/s41591-024-03425-5\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "fusion",
+      "returncode": 0,
+      "output": "\n== AI.04 Multimodal fusion ==\nIntent: Combine observed imaging, labs, notes, symptoms and treatments with conflict/provenance markers \nTest: Cross-source conflicts surfaced\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n PAPER P03 TRIPOD-LLM reporting guideline | https://www.nature.com/articles/s41591-024-03425-5\n REPOSITORY R15 MONAI Deploy App SDK | https://github.com/Project-MONAI/monai-deploy-app-sdk \n  Inspect: Inspect examples/apps and operator contracts \n  Reuse: Study preprocessing/inference/postprocessing pipeline pattern \n  Avoid: Do not require heavyweight SDK on local laptop \n  Verify: CPU sample chain smoke test\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "conflict",
+      "returncode": 0,
+      "output": "\n=== AI.FUSE Late multimodal fusion ===\n Combine imaging, labs, vitals, symptoms, notes, treatment and missingness with provenance, conflict status. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- PRECEDES AI.NLP Clinical note extraction\n  <-- PRECEDES AI.FEAT Deterministic multimodal features\n  --> PRECEDES AI.LLM Grounded explanation\n  <-- HAS_STEP WF.AI Evidence linked interpretation\n  <-- WORKFLOW_PRECEDES AI.FEAT Deterministic multimodal features\n  --> WORKFLOW_PRECEDES AI.RETR Evidence retrieval\n\n=== UX.INSIGHT AI insights with evidence ===\n Findings with source links, uncertainties, conflicts and research-only limitation. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n  <-- HAS_STEP WF.NEW Add observation\n  <-- WORKFLOW_PRECEDES AI.FEAT Deterministic multimodal features\n  <-- HAS_STEP WF.AI Evidence linked interpretation\n  <-- WORKFLOW_PRECEDES AI.GUARD Output safety validation\n  <-- CONSTRAINS GOV.NOCLIN No autonomous care\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "conflict",
+      "returncode": 0,
+      "output": "\nAI.04 — Multimodal fusion\nDesign: Combine observed imaging, labs, notes, symptoms and treatments with conflict/provenance markers\nAcceptance: Cross-source conflicts surfaced\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  PAPER P03 TRIPOD-LLM reporting guideline —  — https://www.nature.com/articles/s41591-024-03425-5\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "conflict",
+      "returncode": 0,
+      "output": "\n== AI.04 Multimodal fusion ==\nIntent: Combine observed imaging, labs, notes, symptoms and treatments with conflict/provenance markers \nTest: Cross-source conflicts surfaced\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n PAPER P03 TRIPOD-LLM reporting guideline | https://www.nature.com/articles/s41591-024-03425-5\n REPOSITORY R15 MONAI Deploy App SDK | https://github.com/Project-MONAI/monai-deploy-app-sdk \n  Inspect: Inspect examples/apps and operator contracts \n  Reuse: Study preprocessing/inference/postprocessing pipeline pattern \n  Avoid: Do not require heavyweight SDK on local laptop \n  Verify: CPU sample chain smoke test\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "missingness",
+      "returncode": 0,
+      "output": "\n=== TWIN.STATE Time-indexed state ===\n State binds patient, timestamp, geometry, clinical observations, treatment events, quality, missingness and provenance. \nSources: PRD,IMG,SIM\n  <-- IMPLEMENTS D.TWIN Digital twin\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n\n=== SIM.OBS Observation simulation ===\n Timestamped labs, vitals, symptoms, imaging geometry, notes, irregular sampling and missingness. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES SIM.LATENT Latent evolution state\n  --> WORKFLOW_PRECEDES IMG.SYNMESH Synthetic lesion geometry\n\n=== AI.FUSE Late multimodal fusion ===\n Combine imaging, labs, vitals, symptoms, notes, treatment and missingness with provenance, conflict status. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- PRECEDES AI.NLP Clinical note extraction\n  <-- PRECEDES AI.FEAT Deterministic multimodal features\n  --> PRECEDES AI.LLM Grounded explanation\n  <-- HAS_STEP WF.AI Evidence linked interpretation\n  <-- WORKFLOW_PRECEDES AI.FEAT Deterministic multimodal features\n  --> WORKFLOW_PRECEDES AI.RETR Evidence retrieval\n\n=== EVAL.SIM Simulation integrity evaluation ===\n Plausibility review, parameter assumptions, correlations, chronology, reproducibility and missingness. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  --> VERIFIES SIM.VALID Simulation validation\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "missingness",
+      "returncode": 0,
+      "output": "\nDAT.03 — Data quality and missingness\nDesign: Do not impute absent labs or tumor labels without explicit derived/synthetic markers\nAcceptance: Missingness and unit validation fixtures\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R07 IDC Index — reproducible dataset collection and download — https://github.com/ImagingDataCommons/idc-index\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n\nSIM.05 — Laboratory and symptom generation\nDesign: Generate observed variables by timestamp, unit, dependency, missingness and patient state\nAcceptance: Cross-modal range, covariance and timing checks\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A09 Stan User’s Guide — Posterior and Prior Predictive Checks — https://mc-stan.org/docs/stan-users-guide/ppcs.html\n  READ A13 NCI CTCAE version 6.0 — Adverse-event definitions, laboratory abnormalities and grading criteria — https://dctd.cancer.gov/research/ctep-trials/for-sites/adverse-events/ctcae-v6.pdf\n  REPO R10 Stan — probabilistic model reference — https://github.com/stan-dev/stan\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "missingness",
+      "returncode": 0,
+      "output": "\n== DAT.03 Data quality and missingness ==\nIntent: Do not impute absent labs or tumor labels without explicit derived/synthetic markers \nTest: Missingness and unit validation fixtures\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R07 IDC Index | https://github.com/ImagingDataCommons/idc-index \n  Inspect: Inspect IDCClient metadata hierarchy, SQL querying, download manifests \n  Reuse: Adopt maintained package to download authorized selected studies \n  Avoid: Do not bulk-download entire datasets or assume every cohort is in IDC \n  Verify: Download one approved series, SHA-256 and patient/study linkage\n\n== SIM.05 Laboratory and symptom generation ==\nIntent: Generate observed variables by timestamp, unit, dependency, missingness and patient state \nTest: Cross-modal range, covariance and timing checks\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A09 Stan User’s Guide | Posterior and Prior Predictive Checks | https://mc-stan.org/docs/stan-users-guide/ppcs.html | verified section\n BOOK/LECTURE A13 NCI CTCAE version 6.0 | Adverse-event definitions, laboratory abnormalities and grading criteria | https://dctd.cancer.gov/research/ctep-trials/for-sites/adverse-events/ctcae-v6.pdf | verified edition\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "AI.FUSE",
+    "EVAL.SIM",
+    "SIM.OBS",
+    "TWIN.STATE",
+    "UX.INSIGHT"
+  ],
+  "academic_behavior_ids": [
+    "DAT.03",
+    "SIM.05",
+    "AI.04",
+    "EVAL.02"
+  ],
+  "edges": [
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.NLP",
+      "relation": "PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.SIM"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "SIM.LATENT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "SIM.OBS",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.RETR"
+    },
+    {
+      "from_id": "AI.GUARD",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "GOV.NOCLIN",
+      "relation": "CONSTRAINS",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "EVAL.SIM",
+      "relation": "VERIFIES",
+      "to_id": "SIM.VALID"
+    }
+  ],
+  "mapped_source_ids": [
+    "A09",
+    "A10",
+    "A11",
+    "A13",
+    "A14",
+    "P03",
+    "P05",
+    "R07",
+    "R10"
+  ],
+  "source_sections_inspected": "SPEC-006 sections11.1-11.6; SPEC-008 section13.2 exact state membership; COS-AUD-001 C04; COS-010 provenance and unsupported assertions; COS-053 prompt"
+}

@@ -1,0 +1,263 @@
+{
+  "task": "COS-051",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "timeline",
+      "returncode": 0,
+      "output": "\n=== D.TWIN Digital twin ===\n Patient-specific observation states, meshes, timelines and branch isolation. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS TWIN.BASELINE Immutable real baseline\n  --> IMPLEMENTS TWIN.STATE Time-indexed state\n  --> IMPLEMENTS TWIN.HISTORY Append-only historical updates\n  --> IMPLEMENTS TWIN.BRANCH Scenario branch isolation\n  --> IMPLEMENTS TWIN.TIME Timeline alignment\n  --> IMPLEMENTS TWIN.COMPARE Change analysis\n  --> IMPLEMENTS TWIN.REAL Genuine longitudinal viewing\n\n=== D.UX Researcher experience ===\n Case browser, image views, 3D tumor, timeline, scenario and AI evidence panels. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS UX.CASE Research case browser\n  --> IMPLEMENTS UX.PROFILE Patient context\n  --> IMPLEMENTS UX.3D Interactive lesion viewport\n  --> IMPLEMENTS UX.TIMELINE Observation/date selector\n  --> IMPLEMENTS UX.SCENARIO Scenario generation/exploration\n  --> IMPLEMENTS UX.CHART Clinical charts\n  --> IMPLEMENTS UX.INSIGHT AI insights with evidence\n  --> IMPLEMENTS UX.IMPORT New observation workflow\n  --> IMPLEMENTS UX.EVAL Evaluation/limitations view\n  --> IMPLEMENTS UX.FAIL Graceful empty/error states\n\n=== TWIN.TIME Timeline alignment ===\n Different scan, lab, symptoms and intervention dates are retained even in a selected visit summary. \nSources: PRD,IMG,SIM\n  <-- IMPLEMENTS D.TWIN Digital twin\n\n=== UX.TIMELINE Observation/date selector ===\n Synchronize 3D, clinical charts, date, treatment markers and state provenance. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES TWIN.BRANCH Scenario branch isolation\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n\n=== EVAL.E2E End-to-end demo ===\n One MRI → mask → measurable mesh → five synthetic scenarios → timeline → AI interpretation. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  --> WORKFLOW_PRECEDES EVAL.AI NLP/LLM grounding evaluation\n  --> VERIFIES WF.REAL Real imaging vertical slice\n  --> VERIFIES WF.SIM Synthetic scenario vertical slice\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "timeline",
+      "returncode": 0,
+      "output": "\nTWIN.02 — Timeline synchronization\nDesign: Selecting visit synchronizes imagery, tumor metrics, labs, treatments and provenance\nAcceptance: E2E multi-date state consistency\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R04 OHIF Viewer — DICOM viewer, longitudinal measurement tracking — https://github.com/OHIF/Viewers\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "timeline",
+      "returncode": 0,
+      "output": "\n== TWIN.02 Timeline synchronization ==\nIntent: Selecting visit synchronizes imagery, tumor metrics, labs, treatments and provenance \nTest: E2E multi-date state consistency\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R04 OHIF Viewer | https://github.com/OHIF/Viewers \n  Inspect: Inspect modes/longitudinal, extensions/measurement-tracking, extensions/cornerstone, platform/core \n  Reuse: Prototype OHIF integration versus Cornerstone3D standalone \n  Avoid: Do not assume original longitudinal mode understands synthetic branching \n  Verify: Browser MRI overlay, state switch, correct patient/time, performance\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "temporal",
+      "returncode": 0,
+      "output": "\n=== SIM.VALID Simulation validation ===\n Reject structural, temporal, unit, cross-modal, geometry, provenance and unsafe interpretation failures. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES IMG.SYNMESH Synthetic lesion geometry\n  --> WORKFLOW_PRECEDES TWIN.BRANCH Scenario branch isolation\n  <-- CONSTRAINS GOV.CTCAE Adverse-event grading boundary\n  <-- VERIFIES EVAL.SIM Simulation integrity evaluation\n\n=== AI.TEMP Temporal analysis ===\n State history, trends and baselines, irregular intervals and known input scope. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "temporal",
+      "returncode": 0,
+      "output": "\nAI.05 — Temporal forecasting eligibility\nDesign: Use simple comparator first; abstain on insufficient real follow-up; synthetic not real proof\nAcceptance: Held-out simple baselines; no fabricated confidence\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A09 Stan User’s Guide — Posterior and Prior Predictive Checks — https://mc-stan.org/docs/stan-users-guide/ppcs.html\n  READ A15 FDA Computational Model Credibility Guidance — Context of use; model verification, validation and credibility assessment — https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions\n  REPO R10 Stan — probabilistic model reference — https://github.com/stan-dev/stan\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "temporal",
+      "returncode": 0,
+      "output": "\n== AI.05 Temporal forecasting eligibility ==\nIntent: Use simple comparator first; abstain on insufficient real follow-up; synthetic not real proof \nTest: Held-out simple baselines; no fabricated confidence\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A09 Stan User’s Guide | Posterior and Prior Predictive Checks | https://mc-stan.org/docs/stan-users-guide/ppcs.html | verified section\n BOOK/LECTURE A15 FDA Computational Model Credibility Guidance | Context of use; model verification, validation and credibility assessment | https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions | applicability limited to intended guidance scope\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n REPOSITORY R15 MONAI Deploy App SDK | https://github.com/Project-MONAI/monai-deploy-app-sdk \n  Inspect: Inspect examples/apps and operator contracts \n  Reuse: Study preprocessing/inference/postprocessing pipeline pattern \n  Avoid: Do not require heavyweight SDK on local laptop \n  Verify: CPU sample chain smoke test\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "correction",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "correction",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "correction",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "AI.TEMP",
+    "D.TWIN",
+    "D.UX",
+    "EVAL.E2E",
+    "SIM.VALID",
+    "TWIN.TIME",
+    "UX.TIMELINE"
+  ],
+  "academic_behavior_ids": [
+    "TWIN.02",
+    "AI.05"
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.TWIN"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.UX"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.BASELINE"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.TIME"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.COMPARE"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.REAL"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.TEMP"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.CASE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.PROFILE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.SCENARIO"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.CHART"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.IMPORT"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.EVAL"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.FAIL"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "IMG.SYNMESH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "SIM.VALID",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "TWIN.BRANCH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "GOV.CTCAE",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "EVAL.SIM",
+      "relation": "VERIFIES",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.SIM"
+    }
+  ],
+  "mapped_source_ids": [
+    "A09",
+    "A11",
+    "A14",
+    "A15",
+    "P05",
+    "R04",
+    "R10"
+  ],
+  "source_sections_inspected": "SPEC-006 section8; SPEC-008 time/revision/correction contracts; SPEC-009 timeline selection; audit C02-C04/D02"
+}

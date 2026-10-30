@@ -37,7 +37,11 @@ def validate_rows(rows, documents):
         identity = row["requirement_id"]
         assert identity not in seen, f"Duplicate requirement {identity}"
         seen.add(identity)
-        assert row["source_document"] in documents | {"PHASE1-PROMPTS", "PHASE2-PROMPTS"}, identity
+        assert row["source_document"] in documents | {
+            "PHASE1-PROMPTS",
+            "PHASE2-PROMPTS",
+            "PHASE3-PROMPTS",
+        }, identity
         assert row["status"] in STATES, identity
         assert row["status"] != "verified" or row["evidence"], f"No evidence: {identity}"
         assert (ROOT / row["reference_review_record"]).is_file(), identity

@@ -12,6 +12,10 @@ COS prompt series or publication of the project.
 
 ## Phase 1 execution authority and required reading
 
+The owner authorized Phase 3 execution in the current session. Execute COS-041–055
+sequentially; COS-056 remains optional and evidence/compute gated. Keep authentic
+baseline, scientific-policy, longitudinal-evaluation and publication gates explicit.
+
 The owner also authorized Phase 2 on 2026-10-27. Execute COS-016–029 then
 COS-031–040 sequentially; COS-030 remains optional and gated as its prompt requires.
 Use the Phase 2 prompt series and retain evidence gaps for real source rights,

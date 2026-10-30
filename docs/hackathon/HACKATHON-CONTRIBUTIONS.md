@@ -65,3 +65,65 @@ five-family simulation engine. All generated descendants remain synthetic.
 See phase-2-verification.md and actual target evidence for scoped test outcomes.
 These changes make no Meta/provider call or public publication, and establish no
 organizer eligibility, authentic source permission or qualified scientific review.
+
+Phase3 execution begins with COS-041–043: common strict simulation configs, immutable
+pending run snapshots and isolated plugin callbacks; capability-specific eligibility
+with unreviewed exposure rules disabled; explicit SC-01 latent reduction and existing
+geometry worker/state integration. Actual fixture checks include concurrent edits,
+source corrections/withdrawal, clinical-profile independence and quantization-induced
+realized plateaus. These are original adapter/rule implementations over the existing
+pinned stack, with no new model/data/weights adopted. Complete-run orchestration,
+qualified rules, authentic baseline and real evaluation remain pending. No external
+inference or new public push/submission was performed as part of this phase work.
+
+COS-044–047 add explicit SC-02 mode bounds, SC-03 growth, continuous configured
+SC-04 decline/regrowth and SC-05 independent clinical-condition descriptors.
+Fixture checks separately inspect latent targets versus actual mask realization;
+coarse-grid plateaus and clipping block acceptance. Internal symptom ratings are
+ungraded engineering assumptions. COS-048 starts immutable clinical materialization
+using the existing dictionary and durable worker, with exact grounded templates.
+These changes do not close authentic source rights, qualified scientific review,
+clinical evaluation or external inference gates. Phase3 work has not been pushed.
+
+COS-049 adds explicit independently seeded timing/noise/missingness, preserving
+visible gaps and blocking required missing geometry. COS-050 adds complete private
+engineering run manifests, V1–V8 software checks, failure-stage evidence and explicit
+atomic publication through existing twin state history and worker fencing. A thin
+typed `/simulation` workflow preserves drafts and explains gated actions. Actual
+five-family mask/mesh checks use a shared artificial216mm³ baseline inside the
+existing mesh-QC CPU bound; preliminary larger-growth refusals remain documented.
+Fifty tabular trajectories and repeated-set semantic checks are separate from those
+geometry checks. No clinical effect/response classification, human review, authentic
+follow-up evaluation, Meta inference or new repository push/submission is claimed.
+
+COS-051/052 add revision/knowledge-time observation windows and deterministic
+descriptive trends with exact input references, supported unit conversion, gaps,
+censoring and ordinal safeguards. The typed `/timeline` screen selects exact
+observations and available geometry, displays actual elapsed intervals and cancels
+stale requests. Local checks use artificial source and mask fixtures. No patient
+forecast, response grading, source-note extraction or external inference is implied.
+
+COS-053 adds a compact exact-state context with Available/Historical/Missing/
+Conflicting sections, evidence references and explicit source priority. Original
+state payloads and published history are retained. Missing note extraction/retrieval
+stays unavailable; shifted times and sub-display decimal quantities retain their
+uncertainty/precision. The implementation remains a private synthetic engineering
+workflow without clinical review, provider inference or source-data export.
+
+COS-054 connects accepted clinical revision events to the existing durable worker,
+with independent source/branch receipts, frozen dependency hashes and explicit
+preview freshness. Laboratory-only updates reuse existing geometry and retain
+published state hashes. The UI keeps a selected timeline separate from pending or
+last-ready derived results. Execution remains synthetic-fixture-only; no provider
+call, authentic-source clearance or repository publication is introduced.
+
+COS-055 adds deterministic LOCF/linear/OLS engineering comparators, original-patient
+split and earlier-only evaluation guards, explicit abstention and reproducible
+synthetic coverage/error reports. Forecasts remain separate DTOs; public estimates
+are always null until independent real longitudinal evidence and qualified protocol
+review exist. No neural training, model weights, paid compute or inference provider
+is used. COS-056 remains optional and deferred.
+
+On 2026-10-30 the owner requested committing and pushing the Phase3 implementation
+to the configured GitHub repository. This code publication does not establish
+hackathon submission, scientific validation or closure of the recorded evidence gates.

@@ -1,0 +1,101 @@
+{
+  "task": "COS-044",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "SIM.01",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "SIM.01",
+      "returncode": 0,
+      "output": "\nSIM.01 — Five trajectory scenario patterns\nDesign: Strong response, partial/stable, growth, regrowth, toxicity/deterioration\nAcceptance: Shape constraints on all five families\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A09 Stan User’s Guide — Posterior and Prior Predictive Checks — https://mc-stan.org/docs/stan-users-guide/ppcs.html\n  READ A12 NCI Breast Cancer Treatment PDQ — Stage-specific treatment, receptor status and neoadjuvant therapy sections — https://www.cancer.gov/types/breast/hp/breast-treatment-pdq\n  REPO R10 Stan — probabilistic model reference — https://github.com/stan-dev/stan\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "SIM.01",
+      "returncode": 0,
+      "output": "\n== SIM.01 Five trajectory scenario patterns ==\nIntent: Strong response, partial/stable, growth, regrowth, toxicity/deterioration \nTest: Shape constraints on all five families\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A09 Stan User’s Guide | Posterior and Prior Predictive Checks | https://mc-stan.org/docs/stan-users-guide/ppcs.html | verified section\n BOOK/LECTURE A12 NCI Breast Cancer Treatment PDQ | Stage-specific treatment, receptor status and neoadjuvant therapy sections | https://www.cancer.gov/types/breast/hp/breast-treatment-pdq | verified document; topic-specific revision required\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "stability",
+      "returncode": 0,
+      "output": "\n=== SIM.STABLE Family 2: partial/stable ===\n Hypothetical small reduction or near stability, measurement noise separate. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n  <-- GUARDS SIM.ELIG Treatment and scenario eligibility\n  --> PRODUCES TWIN.BRANCH Scenario branch isolation\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "stability",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "stability",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "variability",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "variability",
+      "returncode": 0,
+      "output": "\nSIM.02 — Within/between patient heterogeneity\nDesign: Separate individual latent state, scenario trajectory, observation noise and patient variability\nAcceptance: Between/within variance diagnostics\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A10 Stan User’s Guide — Hierarchical models and mixed replication; navigate from current official guide — https://mc-stan.org/docs/stan-users-guide/\n  READ A09 Stan User’s Guide — Posterior and Prior Predictive Checks — https://mc-stan.org/docs/stan-users-guide/ppcs.html\n  REPO R10 Stan — probabilistic model reference — https://github.com/stan-dev/stan\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "variability",
+      "returncode": 0,
+      "output": "\n== SIM.02 Within/between patient heterogeneity ==\nIntent: Separate individual latent state, scenario trajectory, observation noise and patient variability \nTest: Between/within variance diagnostics\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A10 Stan User’s Guide | Hierarchical models and mixed replication; navigate from current official guide | https://mc-stan.org/docs/stan-users-guide/ | topical location; subsection pending\n BOOK/LECTURE A09 Stan User’s Guide | Posterior and Prior Predictive Checks | https://mc-stan.org/docs/stan-users-guide/ppcs.html | verified section\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "SIM.STABLE"
+  ],
+  "academic_behavior_ids": [
+    "SIM.01",
+    "SIM.02"
+  ],
+  "edges": [
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.STABLE"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.STABLE"
+    },
+    {
+      "from_id": "SIM.STABLE",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    }
+  ],
+  "mapped_source_ids": [
+    "A09",
+    "A10",
+    "A11",
+    "A12",
+    "P05",
+    "R10"
+  ],
+  "source_sections_inspected": "SPEC-004 SC-02 sections4.2,5,8; SPEC-010 provenance/unsupported response claims; SPEC-011 engineering tolerance rules"
+}

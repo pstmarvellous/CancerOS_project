@@ -1,0 +1,465 @@
+{
+  "task": "COS-041",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "simulation",
+      "returncode": 0,
+      "output": "\n=== ROOT CancerOS breast cancer digital twin ===\n Research-only, time-indexed, provenance-aware breast cancer imaging, simulation and interpretation prototype. NOT validated clinical decision support. \nSources: PRD\n  --> HAS_DOMAIN D.DATA Clinical research data\n  --> HAS_DOMAIN D.IMG Medical imaging\n  --> HAS_DOMAIN D.TWIN Digital twin\n  --> HAS_DOMAIN D.SIM Synthetic longitudinal engine\n  --> HAS_DOMAIN D.AI Multimodal intelligence\n  --> HAS_DOMAIN D.UX Researcher experience\n  --> HAS_DOMAIN D.EVAL Scientific evaluation\n  --> HAS_DOMAIN D.INFRA Platform infrastructure\n  --> HAS_DOMAIN D.GOV Safety and provenance\n  --> EXCLUDES X.WHOLE Whole-body digital twin\n  --> EXCLUDES X.MULTI Multiple cancers\n  --> EXCLUDES X.CARE Clinical diagnosis/prescription\n  --> EXCLUDES X.SURV Validated prognosis/survival prediction\n  --> EXCLUDES X.GENOME Whole-genome/cell-scale simulation\n  --> EXCLUDES X.HOSP Production EHR/hospital integrations\n  --> EXCLUDES X.DRUG Drug discovery or causal therapy optimization\n  --> EXCLUDES X.PHOTOMRI Synthetic follow-up scans represented as authentic MRI\n  --> REFERENCES REF.MAMA MAMA-MIA\n  --> REFERENCES REF.NNUNET nnU-Net\n  --> REFERENCES REF.SLICER 3D Slicer\n  --> REFERENCES REF.OHIF OHIF/Cornerstone3D\n  --> REFERENCES REF.MONAI MONAI\n  --> REFERENCES REF.IDC IDC Index\n  --> REFERENCES REF.DCMQI dcmqi\n  --> REFERENCES REF.LIT Textbook and clinical standards\n  --> HAS_WORKFLOW WF.REAL Real imaging vertical slice\n  --> HAS_WORKFLOW WF.SIM Synthetic scenario vertical slice\n  --> HAS_WORKFLOW WF.NEW Add observation\n  --> HAS_WORKFLOW WF.AI Evidence linked interpretation\n  --> HAS_WORKFLOW WF.REALVAL Actual longitudinal evaluation\n  --> HAS_WORKFLOW WF.RELEASE Demo readiness\n\n=== D.EVAL Scientific evaluation ===\n Technical correctness and honest real-data evaluation separate from simulation tests. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> TESTS EVAL.PHANTOM Geometry phantom tests\n  --> TESTS EVAL.SEG Imaging segmentation metrics\n  --> TESTS EVAL.REAL Authentic longitudinal case evaluation\n  --> TESTS EVAL.SIM Simulation integrity evaluation\n  --> TESTS EVAL.AI NLP/LLM grounding evaluation\n  --> TESTS EVAL.E2E End-to-end demo\n  --> TESTS EVAL.REPORT Scientific limitations report\n\n=== DATA.BRANCH SimulationBranch ===\n Immutable hypothesis path originating from real baseline; never overwrites actual history. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- RELATES_TO DATA.PATIENT ResearchPatient\n  --> RELATES_TO DATA.RUN SimulationRun\n\n=== DATA.RUN SimulationRun ===\n Versioned generator settings, seed, status, logs and validator outcomes. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- RELATES_TO DATA.BRANCH SimulationBranch\n\n=== SIM.OBS Observation simulation ===\n Timestamped labs, vitals, symptoms, imaging geometry, notes, irregular sampling and missingness. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES SIM.LATENT Latent evolution state\n  --> WORKFLOW_PRECEDES IMG.SYNMESH Synthetic lesion geometry\n\n=== SIM.VALID Simulation validation ===\n Reject structural, temporal, unit, cross-modal, geometry, provenance and unsafe interpretation failures. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES IMG.SYNMESH Synthetic lesion geometry\n  --> WORKFLOW_PRECEDES TWIN.BRANCH Scenario branch isolation\n  <-- CONSTRAINS GOV.CTCAE Adverse-event grading boundary\n  <-- VERIFIES EVAL.SIM Simulation integrity evaluation\n\n=== EVAL.SIM Simulation integrity evaluation ===\n Plausibility review, parameter assumptions, correlations, chronology, reproducibility and missingness. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  --> VERIFIES SIM.VALID Simulation validation\n\n=== X.GENOME Whole-genome/cell-scale simulation ===\n Explicitly outside the hackathon prototype scope. \nSources: PRD\n  <-- EXCLUDES ROOT CancerOS breast cancer digital twin\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "simulation",
+      "returncode": 0,
+      "output": "\nSIM.08 — Simulation credibility tests\nDesign: Distinguish program verification, fit/calibration, external validation and context of use\nAcceptance: Report independent synthetic and real-case metrics\n  READ A09 Stan User’s Guide — Posterior and Prior Predictive Checks — https://mc-stan.org/docs/stan-users-guide/ppcs.html\n  READ A15 FDA Computational Model Credibility Guidance — Context of use; model verification, validation and credibility assessment — https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions\n  REPO R10 Stan — probabilistic model reference — https://github.com/stan-dev/stan\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "simulation",
+      "returncode": 0,
+      "output": "\n== SIM.08 Simulation credibility tests ==\nIntent: Distinguish program verification, fit/calibration, external validation and context of use \nTest: Report independent synthetic and real-case metrics\n BOOK/LECTURE A09 Stan User’s Guide | Posterior and Prior Predictive Checks | https://mc-stan.org/docs/stan-users-guide/ppcs.html | verified section\n BOOK/LECTURE A15 FDA Computational Model Credibility Guidance | Context of use; model verification, validation and credibility assessment | https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions | applicability limited to intended guidance scope\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "branch",
+      "returncode": 0,
+      "output": "\n=== D.TWIN Digital twin ===\n Patient-specific observation states, meshes, timelines and branch isolation. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS TWIN.BASELINE Immutable real baseline\n  --> IMPLEMENTS TWIN.STATE Time-indexed state\n  --> IMPLEMENTS TWIN.HISTORY Append-only historical updates\n  --> IMPLEMENTS TWIN.BRANCH Scenario branch isolation\n  --> IMPLEMENTS TWIN.TIME Timeline alignment\n  --> IMPLEMENTS TWIN.COMPARE Change analysis\n  --> IMPLEMENTS TWIN.REAL Genuine longitudinal viewing\n\n=== DATA.BRANCH SimulationBranch ===\n Immutable hypothesis path originating from real baseline; never overwrites actual history. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- RELATES_TO DATA.PATIENT ResearchPatient\n  --> RELATES_TO DATA.RUN SimulationRun\n\n=== TWIN.BASELINE Immutable real baseline ===\n The source patient and measurements remain authentic, and untouched by any simulated branch. \nSources: PRD,IMG,SIM\n  <-- IMPLEMENTS D.TWIN Digital twin\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  --> WORKFLOW_PRECEDES SIM.ELIG Treatment and scenario eligibility\n  <-- CONSTRAINS GOV.REAL Immutable source truth\n\n=== TWIN.BRANCH Scenario branch isolation ===\n All branches share source baseline but maintain isolated descendant records. \nSources: PRD,IMG,SIM\n  <-- IMPLEMENTS D.TWIN Digital twin\n  <-- PRODUCES SIM.RESPONSE Family 1: strong response\n  <-- PRODUCES SIM.STABLE Family 2: partial/stable\n  <-- PRODUCES SIM.PROGRESS Family 3: progression\n  <-- PRODUCES SIM.REGROW Family 4: response then regrowth\n  <-- PRODUCES SIM.TOXIC Family 5: clinical deterioration\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES SIM.VALID Simulation validation\n  --> WORKFLOW_PRECEDES UX.TIMELINE Observation/date selector\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n\n=== SIM.BATCH Cohort branching target ===\n Initial planning up to 100 unique baseline patients, five branches each, four dated states; not independent real patients. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n\n=== UX.SCENARIO Scenario generation/exploration ===\n Select eligible case, treatment exposure and 5 families; show assumptions, progress, validation and branches. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "branch",
+      "returncode": 0,
+      "output": "\nTWIN.01 — Observed and synthetic twin states\nDesign: Maintain immutable actual states and independent simulated branches\nAcceptance: Branch isolation and history tests\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  READ A15 FDA Computational Model Credibility Guidance — Context of use; model verification, validation and credibility assessment — https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions\n  REPO R04 OHIF Viewer — DICOM viewer, longitudinal measurement tracking — https://github.com/OHIF/Viewers\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "branch",
+      "returncode": 0,
+      "output": "\n== TWIN.01 Observed and synthetic twin states ==\nIntent: Maintain immutable actual states and independent simulated branches \nTest: Branch isolation and history tests\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n BOOK/LECTURE A15 FDA Computational Model Credibility Guidance | Context of use; model verification, validation and credibility assessment | https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions | applicability limited to intended guidance scope\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R04 OHIF Viewer | https://github.com/OHIF/Viewers \n  Inspect: Inspect modes/longitudinal, extensions/measurement-tracking, extensions/cornerstone, platform/core \n  Reuse: Prototype OHIF integration versus Cornerstone3D standalone \n  Avoid: Do not assume original longitudinal mode understands synthetic branching \n  Verify: Browser MRI overlay, state switch, correct patient/time, performance\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "reproducibility",
+      "returncode": 0,
+      "output": "\n=== SIM.SEED Reproducibility ===\n Pinned simulator, parameters, seed, source baseline, configuration hash. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n\n=== EVAL.SIM Simulation integrity evaluation ===\n Plausibility review, parameter assumptions, correlations, chronology, reproducibility and missingness. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  --> VERIFIES SIM.VALID Simulation validation\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "reproducibility",
+      "returncode": 0,
+      "output": "\nSIM.07 — Reproducibility and parameter versioning\nDesign: Use seed, config hash, simulator version and independent lineage\nAcceptance: Byte/semantic reproducibility with controlled tolerance\n  READ A09 Stan User’s Guide — Posterior and Prior Predictive Checks — https://mc-stan.org/docs/stan-users-guide/ppcs.html\n  READ A15 FDA Computational Model Credibility Guidance — Context of use; model verification, validation and credibility assessment — https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions\n  REPO R10 Stan — probabilistic model reference — https://github.com/stan-dev/stan\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "reproducibility",
+      "returncode": 0,
+      "output": "\n== SIM.07 Reproducibility and parameter versioning ==\nIntent: Use seed, config hash, simulator version and independent lineage \nTest: Byte/semantic reproducibility with controlled tolerance\n BOOK/LECTURE A09 Stan User’s Guide | Posterior and Prior Predictive Checks | https://mc-stan.org/docs/stan-users-guide/ppcs.html | verified section\n BOOK/LECTURE A15 FDA Computational Model Credibility Guidance | Context of use; model verification, validation and credibility assessment | https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions | applicability limited to intended guidance scope\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "D.EVAL",
+    "D.TWIN",
+    "DATA.BRANCH",
+    "DATA.RUN",
+    "EVAL.SIM",
+    "ROOT",
+    "SIM.BATCH",
+    "SIM.OBS",
+    "SIM.SEED",
+    "SIM.VALID",
+    "TWIN.BASELINE",
+    "TWIN.BRANCH",
+    "UX.SCENARIO",
+    "X.GENOME"
+  ],
+  "academic_behavior_ids": [
+    "TWIN.01",
+    "SIM.07",
+    "SIM.08"
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.DATA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.IMG"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.TWIN"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.SIM"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.AI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.UX"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.EVAL"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.INFRA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.GOV"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.BRANCH"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.RUN"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.BRANCH"
+    },
+    {
+      "from_id": "DATA.BRANCH",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.RUN"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.BASELINE"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.TIME"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.COMPARE"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.REAL"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.SEED"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.BATCH"
+    },
+    {
+      "from_id": "SIM.RESPONSE",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "SIM.STABLE",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "SIM.PROGRESS",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "SIM.REGROW",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "SIM.TOXIC",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.SCENARIO"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.SEG"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.REAL"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.SIM"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.WHOLE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.MULTI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.CARE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.SURV"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.GENOME"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.HOSP"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.DRUG"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.PHOTOMRI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.MAMA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.NNUNET"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.SLICER"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.OHIF"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.MONAI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.IDC"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.DCMQI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.LIT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.SIM"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.BASELINE"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "TWIN.BASELINE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.ELIG"
+    },
+    {
+      "from_id": "SIM.LATENT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "SIM.OBS",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "IMG.SYNMESH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "SIM.VALID",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "TWIN.BRANCH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.NEW"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.AI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REALVAL"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.RELEASE"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "GOV.REAL",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.BASELINE"
+    },
+    {
+      "from_id": "GOV.CTCAE",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "EVAL.SIM",
+      "relation": "VERIFIES",
+      "to_id": "SIM.VALID"
+    }
+  ],
+  "mapped_source_ids": [
+    "A09",
+    "A14",
+    "A15",
+    "P05",
+    "R04",
+    "R10"
+  ],
+  "source_sections_inspected": "SPEC-004 sections 3,5,7,15-17; SPEC-008 section13 simulation branch/run contracts; audit A02/A03/A05 C02-C06"
+}

@@ -1,0 +1,108 @@
+{
+  "task": "COS-054",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "update",
+      "returncode": 0,
+      "output": "\n=== TWIN.HISTORY Append-only historical updates ===\n Adding new observation creates new data/version, triggers selective downstream reanalysis. \nSources: PRD,IMG,SIM\n  <-- IMPLEMENTS D.TWIN Digital twin\n  <-- HAS_STEP WF.NEW Add observation\n  <-- WORKFLOW_PRECEDES DATA.VISIT ClinicalVisit\n  --> WORKFLOW_PRECEDES TWIN.COMPARE Change analysis\n  <-- CONSTRAINS GOV.REAL Immutable source truth\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "update",
+      "returncode": 0,
+      "output": "\nTWIN.03 — New observation update\nDesign: Append new observation; recompute dependent measurements; retain old calculations\nAcceptance: No silent overwrite; stale interpretation invalidated\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R04 OHIF Viewer — DICOM viewer, longitudinal measurement tracking — https://github.com/OHIF/Viewers\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "update",
+      "returncode": 0,
+      "output": "\n== TWIN.03 New observation update ==\nIntent: Append new observation; recompute dependent measurements; retain old calculations \nTest: No silent overwrite; stale interpretation invalidated\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R04 OHIF Viewer | https://github.com/OHIF/Viewers \n  Inspect: Inspect modes/longitudinal, extensions/measurement-tracking, extensions/cornerstone, platform/core \n  Reuse: Prototype OHIF integration versus Cornerstone3D standalone \n  Avoid: Do not assume original longitudinal mode understands synthetic branching \n  Verify: Browser MRI overlay, state switch, correct patient/time, performance\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "outbox",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "outbox",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "outbox",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "revision",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "revision",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "revision",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "TWIN.HISTORY"
+  ],
+  "academic_behavior_ids": [
+    "TWIN.03"
+  ],
+  "edges": [
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "TWIN.HISTORY",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.COMPARE"
+    },
+    {
+      "from_id": "GOV.REAL",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.HISTORY"
+    }
+  ],
+  "mapped_source_ids": [
+    "A11",
+    "A14",
+    "P05",
+    "R04"
+  ],
+  "source_sections_inspected": "SPEC-008 sections16.1-16.4 incremental updates and races; COS-054 prompt; clinical revision/outbox implementation inspected"
+}

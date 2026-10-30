@@ -259,6 +259,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/branches/{branch_id}/current-simulation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Current Simulation */
+        get: operations["get_current_simulation_api_v1_projects__project_id__patients__patient_id__branches__branch_id__current_simulation_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/branches/{branch_id}/simulation-configs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Simulation Config */
+        post: operations["post_simulation_config_api_v1_projects__project_id__patients__patient_id__branches__branch_id__simulation_configs_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/branches/{branch_id}/simulation-runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Simulation Run */
+        post: operations["post_simulation_run_api_v1_projects__project_id__patients__patient_id__branches__branch_id__simulation_runs_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/clinical-source-artifacts": {
         parameters: {
             query?: never;
@@ -293,6 +344,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/dependent-updates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Dependent Update */
+        post: operations["post_dependent_update_api_v1_projects__project_id__patients__patient_id__dependent_updates_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/dependent-updates/latest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Dependent Update */
+        get: operations["get_dependent_update_api_v1_projects__project_id__patients__patient_id__dependent_updates_latest_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/eligibility-checks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Eligibility Check */
+        post: operations["post_eligibility_check_api_v1_projects__project_id__patients__patient_id__eligibility_checks_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/eligibility-checks/{check_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Eligibility Check */
+        get: operations["get_eligibility_check_api_v1_projects__project_id__patients__patient_id__eligibility_checks__check_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/evaluation-splits/{split_id}/assignment": {
         parameters: {
             query?: never;
@@ -302,6 +421,57 @@ export interface paths {
         };
         /** Assignment */
         get: operations["assignment_api_v1_projects__project_id__patients__patient_id__evaluation_splits__split_id__assignment_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/forecast-queries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Forecast Query */
+        post: operations["post_forecast_query_api_v1_projects__project_id__patients__patient_id__forecast_queries_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/fusion-queries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Fusion Query */
+        post: operations["post_fusion_query_api_v1_projects__project_id__patients__patient_id__fusion_queries_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/generated-clinical-batches/{batch_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Clinical Batch */
+        get: operations["get_clinical_batch_api_v1_projects__project_id__patients__patient_id__generated_clinical_batches__batch_id__get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1077,6 +1247,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/simulation-completions/{completion_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Completion */
+        get: operations["get_completion_api_v1_projects__project_id__patients__patient_id__simulation_completions__completion_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/simulation-completions/{completion_id}/publications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Complete Publication */
+        post: operations["post_complete_publication_api_v1_projects__project_id__patients__patient_id__simulation_completions__completion_id__publications_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/simulation-configs/{config_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Simulation Config */
+        get: operations["get_simulation_config_api_v1_projects__project_id__patients__patient_id__simulation_configs__config_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/simulation-configs/{config_id}/schedule-preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Schedule Preview */
+        get: operations["get_schedule_preview_api_v1_projects__project_id__patients__patient_id__simulation_configs__config_id__schedule_preview_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/simulation-fixture-runs": {
         parameters: {
             query?: never;
@@ -1103,6 +1341,74 @@ export interface paths {
         };
         /** Get Fixture Run */
         get: operations["get_fixture_run_api_v1_projects__project_id__patients__patient_id__simulation_fixture_runs__run_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/simulation-runs/{run_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Simulation Run */
+        get: operations["get_simulation_run_api_v1_projects__project_id__patients__patient_id__simulation_runs__run_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/simulation-runs/{run_id}/geometry-validation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Run Geometry Validation */
+        post: operations["post_run_geometry_validation_api_v1_projects__project_id__patients__patient_id__simulation_runs__run_id__geometry_validation_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/simulation-runs/{run_id}/sampling": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Run Sampling */
+        get: operations["get_run_sampling_api_v1_projects__project_id__patients__patient_id__simulation_runs__run_id__sampling_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/simulation-runs/{run_id}/targets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Run Targets */
+        get: operations["get_run_targets_api_v1_projects__project_id__patients__patient_id__simulation_runs__run_id__targets_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1241,6 +1547,40 @@ export interface paths {
         get: operations["origin_detail_api_v1_projects__project_id__patients__patient_id__timeline_origins__origin_id__get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/timeline-queries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Timeline Query */
+        post: operations["post_timeline_query_api_v1_projects__project_id__patients__patient_id__timeline_queries_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/trend-queries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Trend Query */
+        post: operations["post_trend_query_api_v1_projects__project_id__patients__patient_id__trend_queries_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1495,6 +1835,16 @@ export interface components {
              * @constant
              */
             verification_scope: "synthetic_engineering_fixture_only";
+        };
+        /** AffectedConcept */
+        AffectedConcept: {
+            /**
+             * Concept
+             * @enum {string}
+             */
+            concept: "hemoglobin" | "wbc" | "anc" | "platelets" | "creatinine" | "alt" | "ast" | "heart_rate" | "temperature" | "weight" | "systolic_bp" | "diastolic_bp" | "fatigue" | "pain" | "nausea" | "swelling";
+            /** Numeric Direction */
+            numeric_direction?: ("increasing" | "decreasing") | null;
         };
         /** AlignmentCommand */
         AlignmentCommand: {
@@ -2153,6 +2503,26 @@ export interface components {
              */
             verification_scope: "synthetic_engineering_fixture_only";
         };
+        /** BernoulliMissing */
+        BernoulliMissing: {
+            /** Channel */
+            channel: string;
+            /**
+             * Distribution
+             * @default bernoulli
+             * @constant
+             */
+            distribution: "bernoulli";
+            /** Probability */
+            probability: string;
+            /**
+             * Reason
+             * @enum {string}
+             */
+            reason: "unknown" | "not_recorded" | "not_collected" | "not_applicable" | "below_detection" | "withheld";
+            /** Slot Id */
+            slot_id: string;
+        };
         /** BranchInput */
         BranchInput: {
             /**
@@ -2394,6 +2764,58 @@ export interface components {
              */
             scope: "bounded_owned_engineering_fixture_versions_only";
         };
+        /** ClinicalBatch */
+        ClinicalBatch: {
+            /**
+             * Adverse Events
+             * @default []
+             */
+            adverse_events: components["schemas"]["SimulationAdverseEvent"][];
+            /**
+             * Baseline Clinical Values
+             * @default not_inferred_or_modified
+             * @constant
+             */
+            baseline_clinical_values: "not_inferred_or_modified";
+            /**
+             * Branch Id
+             * Format: uuid
+             */
+            branch_id: string;
+            /** Events */
+            events: components["schemas"]["GeneratedEvent"][];
+            /**
+             * Imaging Measurement Basis
+             * @default not_included
+             * @enum {string}
+             */
+            imaging_measurement_basis: "not_included" | "simulated_target_no_mask_realization";
+            /** Notes */
+            notes: components["schemas"]["GeneratedNote"][];
+            /**
+             * Origin
+             * @default SYNTHETIC_GENERATED
+             * @constant
+             */
+            origin: "SYNTHETIC_GENERATED";
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            sampling?: components["schemas"]["SampledObservations"] | null;
+            /**
+             * Unmaterialized Slot Ids
+             * @default []
+             */
+            unmaterialized_slot_ids: string[];
+            /**
+             * Version
+             * @default clinical-generation/1
+             * @constant
+             */
+            version: "clinical-generation/1";
+        };
         /** ClinicalDictionary */
         ClinicalDictionary: {
             /** Concepts */
@@ -2439,6 +2861,82 @@ export interface components {
              */
             version: "canceros-local/1";
         };
+        /** ClinicalGenerationCommand */
+        ClinicalGenerationCommand: {
+            input: components["schemas"]["ClinicalGenerationInput"];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            operation: "clinical_generation";
+        };
+        /** ClinicalGenerationInput */
+        ClinicalGenerationInput: {
+            /** Expected Config Hash */
+            expected_config_hash: string;
+            /**
+             * Include Tumor Observations
+             * @default false
+             */
+            include_tumor_observations: boolean;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+        };
+        /** ClinicalGenerationReport */
+        ClinicalGenerationReport: {
+            /**
+             * Baseline Values
+             * @default unchanged_unavailable_values_remain_unknown
+             * @constant
+             */
+            baseline_values: "unchanged_unavailable_values_remain_unknown";
+            batch: components["schemas"]["ClinicalBatch"];
+            /**
+             * Branch Id
+             * Format: uuid
+             */
+            branch_id: string;
+            /** Config Hash */
+            config_hash: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Input Revision */
+            input_revision: number;
+            /**
+             * Next Action
+             * @default Validate the complete run; generated records are hypothetical research observations
+             */
+            next_action: string;
+            /**
+             * Publication
+             * @default draft
+             * @constant
+             */
+            publication: "draft";
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /**
+             * Scientific Review
+             * @default pending
+             * @constant
+             */
+            scientific_review: "pending";
+            /**
+             * Status
+             * @default ready
+             * @constant
+             */
+            status: "ready";
+        };
         /** ClinicalMember */
         ClinicalMember: {
             /** Reason */
@@ -2454,6 +2952,30 @@ export interface components {
              * @enum {string}
              */
             role: "current" | "historical_context";
+        };
+        /** ClinicalProfile */
+        ClinicalProfile: {
+            /**
+             * Configuration
+             * @enum {string}
+             */
+            configuration: "stable" | "mild_deterioration" | "moderate_deterioration" | "severe_deterioration" | "recovery";
+            /**
+             * Points
+             * @default []
+             */
+            points: components["schemas"]["ClinicalProfilePoint"][];
+        };
+        /** ClinicalProfilePoint */
+        ClinicalProfilePoint: {
+            /** Code */
+            code: string;
+            /** Slot Id */
+            slot_id: string;
+            /** Unit */
+            unit: string;
+            /** Value */
+            value: string;
         };
         /** ClinicalRecord */
         ClinicalRecord: {
@@ -2561,11 +3083,191 @@ export interface components {
             /** Uncertainty Days */
             uncertainty_days?: string | null;
         };
+        /** CompleteRunInput */
+        CompleteRunInput: {
+            /** Expected Config Hash */
+            expected_config_hash: string;
+            /**
+             * Include Tumor Observations
+             * @default false
+             */
+            include_tumor_observations: boolean;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+        };
+        /** CompleteValidationReport */
+        CompleteValidationReport: {
+            /**
+             * External Gates
+             * @default [
+             *       "authentic_baseline_and_current_source_rights_rechecked_by_server",
+             *       "qualified_scientific_policy_review_pending",
+             *       "explicit_authorized_complete_run_publication_required"
+             *     ]
+             */
+            external_gates: string[];
+            /** Findings */
+            findings: components["schemas"]["ValidationFinding"][];
+            /**
+             * Scientific Review
+             * @default pending
+             * @constant
+             */
+            scientific_review: "pending";
+            /**
+             * Scope
+             * @enum {string}
+             */
+            scope: "anatomical_engineering" | "measurement_only";
+            /** Semantic Digest */
+            semantic_digest: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "engineering_passed" | "blocked";
+        };
+        /** CompletionReport */
+        CompletionReport: {
+            /** Association Head */
+            association_head: number;
+            /**
+             * Baseline Measurement Id
+             * Format: uuid
+             */
+            baseline_measurement_id: string;
+            /** Baseline State Id */
+            baseline_state_id: string | null;
+            /**
+             * Branch Id
+             * Format: uuid
+             */
+            branch_id: string;
+            /** Clinical Batch Id */
+            clinical_batch_id: string | null;
+            /**
+             * Completed At
+             * Format: date-time
+             */
+            completed_at: string;
+            /** Config Hash */
+            config_hash: string;
+            /** Failure Reason */
+            failure_reason: string | null;
+            /** Geometry Result Ids */
+            geometry_result_ids: string[];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Input Revision */
+            input_revision: number;
+            /** Next Action */
+            next_action: string;
+            /**
+             * Origin
+             * @default SYNTHETIC_GENERATED
+             * @constant
+             */
+            origin: "SYNTHETIC_GENERATED";
+            /**
+             * Publication
+             * @default draft
+             * @constant
+             */
+            publication: "draft";
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /**
+             * Scientific Review
+             * @default pending
+             * @constant
+             */
+            scientific_review: "pending";
+            /**
+             * Stage
+             * @enum {string}
+             */
+            stage: "eligibility" | "sampling" | "clinical" | "geometry" | "states" | "validation" | "complete";
+            /**
+             * Started At
+             * Format: date-time
+             */
+            started_at: string;
+            /** State Ids */
+            state_ids: string[];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ready" | "blocked";
+            validation: components["schemas"]["CompleteValidationReport"] | null;
+        };
+        /** ConfigSummary */
+        ConfigSummary: {
+            /** Available Actions */
+            available_actions: ("edit_draft" | "inspect_baseline" | "freeze_isolated_test_run")[];
+            /**
+             * Baseline
+             * @default unverified_engineering_baseline
+             * @constant
+             */
+            baseline: "unverified_engineering_baseline";
+            /** Blocking Reasons */
+            blocking_reasons: string[];
+            /**
+             * Disclosure
+             * @default Hypothetical simulation; not a patient-specific prediction
+             * @constant
+             */
+            disclosure: "Hypothetical simulation; not a patient-specific prediction";
+        };
+        /** ConfigVersion */
+        ConfigVersion: {
+            /**
+             * Branch Id
+             * Format: uuid
+             */
+            branch_id: string;
+            config: components["schemas"]["SimulationConfig"];
+            /** Config Hash */
+            config_hash: string;
+            /** Draft Revision */
+            draft_revision: number;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            summary: components["schemas"]["ConfigSummary"];
+        };
         /**
          * Context
          * @enum {string}
          */
         Context: "OBSERVED" | "SYNTHETIC";
+        /** CurrentRunView */
+        CurrentRunView: {
+            /**
+             * Branch Id
+             * Format: uuid
+             */
+            branch_id: string;
+            /** Current Use Allowed */
+            current_use_allowed: boolean;
+            /** Next Action */
+            next_action: string;
+            publication: components["schemas"]["RunPublication"] | null;
+            /** Restrictions */
+            restrictions: string[];
+        };
         /** DateTimeReference */
         DateTimeReference: {
             /**
@@ -2583,6 +3285,163 @@ export interface components {
              * Format: date
              */
             value: string;
+        };
+        /** DependentEvent */
+        DependentEvent: {
+            /**
+             * Event Id
+             * Format: uuid
+             */
+            event_id: string;
+            /** Revision */
+            revision: number;
+            /** Revision Hash */
+            revision_hash: string;
+        };
+        /** DependentUpdateCommand */
+        DependentUpdateCommand: {
+            input: components["schemas"]["DependentUpdateInput"];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            operation: "dependent_update";
+        };
+        /** DependentUpdateInput */
+        DependentUpdateInput: {
+            /**
+             * Event Id
+             * Format: uuid
+             */
+            event_id: string;
+            /** Expected Revision */
+            expected_revision: number;
+            /** Revision Hash */
+            revision_hash: string;
+            state_input?: components["schemas"]["StateBuildInput"] | null;
+            timeline: components["schemas"]["TimelineQuery"];
+        };
+        /** DependentUpdateReceipt */
+        DependentUpdateReceipt: {
+            /** Data Revision */
+            data_revision: number;
+            /**
+             * Event Id
+             * Format: uuid
+             */
+            event_id: string;
+            /**
+             * Job Id
+             * Format: uuid
+             */
+            job_id: string;
+            /**
+             * Next Action
+             * @default Dispatch and run the existing worker; refresh status explicitly
+             */
+            next_action: string;
+            /** Scope Key */
+            scope_key: string;
+            /**
+             * Status
+             * @default queued
+             * @constant
+             */
+            status: "queued";
+        };
+        /** DependentUpdateReport */
+        DependentUpdateReport: {
+            /** Data Revision */
+            data_revision: number;
+            /** Dependency Hashes */
+            dependency_hashes: {
+                [key: string]: string;
+            };
+            /**
+             * Event Id
+             * Format: uuid
+             */
+            event_id: string;
+            features: components["schemas"]["TemporalFeatures"];
+            fusion: components["schemas"]["FusionReport"] | null;
+            /**
+             * Geometry Recomputed
+             * @default false
+             * @constant
+             */
+            geometry_recomputed: false;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Input Dependency Hashes */
+            input_dependency_hashes: {
+                [key: string]: string;
+            };
+            /** Next Action */
+            next_action: string;
+            /**
+             * Publication
+             * @default draft
+             * @constant
+             */
+            publication: "draft";
+            /** Restrictions */
+            restrictions: string[];
+            /** Revision Hash */
+            revision_hash: string;
+            /**
+             * Scientific Review
+             * @default pending
+             * @constant
+             */
+            scientific_review: "pending";
+            /** Scope Key */
+            scope_key: string;
+            /** Source Ids */
+            source_ids: string[];
+            /** State Id */
+            state_id: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ready" | "quarantined";
+            trends: components["schemas"]["TrendReport"];
+            /**
+             * Version
+             * @default dependent-update/1
+             * @constant
+             */
+            version: "dependent-update/1";
+        };
+        /** DependentUpdateView */
+        DependentUpdateView: {
+            /**
+             * Baseline Superseded
+             * @default false
+             */
+            baseline_superseded: boolean;
+            /** Current Patient Revision */
+            current_patient_revision: number;
+            eligible_event?: components["schemas"]["DependentEvent"] | null;
+            /** Job Id */
+            job_id?: string | null;
+            /** Job Status */
+            job_status?: string | null;
+            last_ready?: components["schemas"]["DependentUpdateReport"] | null;
+            /** Next Action */
+            next_action: string;
+            /** Requested Revision */
+            requested_revision?: number | null;
+            /** Restrictions */
+            restrictions: string[];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "pending" | "current" | "stale" | "failed" | "unavailable";
         };
         /** DiagnosisInput */
         DiagnosisInput: {
@@ -2653,6 +3512,104 @@ export interface components {
             /** Visit Id */
             visit_id?: string | null;
         };
+        /** EligibilityCheckInput */
+        EligibilityCheckInput: {
+            /**
+             * Capability
+             * @default measurement
+             * @enum {string}
+             */
+            capability: "measurement" | "anatomical_mesh";
+            /**
+             * Config Id
+             * Format: uuid
+             */
+            config_id: string;
+        };
+        /** EligibilityReason */
+        EligibilityReason: {
+            /** Code */
+            code: string;
+            /**
+             * Disposition
+             * @enum {string}
+             */
+            disposition: "ineligible" | "insufficient_data" | "information";
+            /**
+             * Fields
+             * @default []
+             */
+            fields: string[];
+        };
+        /** EligibilityReport */
+        EligibilityReport: {
+            /** Baseline Hash */
+            baseline_hash: string;
+            /**
+             * Config Id
+             * Format: uuid
+             */
+            config_id: string;
+            /** Current Patient Revision */
+            current_patient_revision: number;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Input Revision */
+            input_revision: number;
+            result: components["schemas"]["EligibilityResult"];
+            /**
+             * Scope
+             * @default immutable_audit_snapshot_recheck_before_execution_or_publication
+             * @constant
+             */
+            scope: "immutable_audit_snapshot_recheck_before_execution_or_publication";
+        };
+        /** EligibilityResult */
+        EligibilityResult: {
+            /** Baseline Hash */
+            baseline_hash: string;
+            /**
+             * Clinical Appropriateness Established
+             * @default false
+             * @constant
+             */
+            clinical_appropriateness_established: false;
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** Missing Fields */
+            missing_fields: string[];
+            /** Next Actions */
+            next_actions: string[];
+            /** Permitted Capabilities */
+            permitted_capabilities: ("measurement" | "anatomical_mesh")[];
+            /** Reasons */
+            reasons: components["schemas"]["EligibilityReason"][];
+            /**
+             * Requested Capability
+             * @enum {string}
+             */
+            requested_capability: "measurement" | "anatomical_mesh";
+            /**
+             * Review Status
+             * @default unreviewed_demo
+             * @constant
+             */
+            review_status: "unreviewed_demo";
+            /**
+             * Ruleset Version
+             * @default simulation-eligibility/1
+             * @constant
+             */
+            ruleset_version: "simulation-eligibility/1";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "eligible" | "ineligible" | "insufficient_data";
+        };
         /** ExactResult */
         ExactResult: {
             /**
@@ -2661,6 +3618,73 @@ export interface components {
              */
             form: "exact";
             quantity: components["schemas"]["Quantity"];
+        };
+        /** ExplicitMissingness */
+        ExplicitMissingness: {
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "none" | "explicit";
+            /**
+             * Points
+             * @default []
+             */
+            points: components["schemas"]["MissingPoint"][];
+        };
+        /** ExplicitNoise */
+        ExplicitNoise: {
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "none" | "explicit";
+            /**
+             * Points
+             * @default []
+             */
+            points: components["schemas"]["NoisePoint"][];
+        };
+        /** FeatureSeries */
+        FeatureSeries: {
+            /** Age Days */
+            age_days: string | null;
+            /** Censored Count */
+            censored_count: number;
+            /** Concept */
+            concept: string;
+            /** Conflict Point Ids */
+            conflict_point_ids: string[];
+            /** Instrument */
+            instrument: string | null;
+            /** Instrument Version */
+            instrument_version: string | null;
+            /** Interval Days */
+            interval_days: string[];
+            /**
+             * Interval Semantics
+             * @default nominal_source_time_no_imputation
+             * @constant
+             */
+            interval_semantics: "nominal_source_time_no_imputation";
+            /** Latest Available Id */
+            latest_available_id: string | null;
+            /** Lesion Id */
+            lesion_id: string | null;
+            /** Method Version */
+            method_version: string;
+            /** Metric Definition */
+            metric_definition?: string | null;
+            /** Missing Count */
+            missing_count: number;
+            /** Ordered Point Ids */
+            ordered_point_ids: string[];
+            /** Time Partition */
+            time_partition: string;
+            /** Unit */
+            unit: string | null;
+            /** Usable Count */
+            usable_count: number;
         };
         /** FixtureRun */
         FixtureRun: {
@@ -2706,6 +3730,124 @@ export interface components {
             /** Targets */
             targets: components["schemas"]["TargetPoint"][];
         };
+        /** ForecastProtocol */
+        ForecastProtocol: {
+            /** Lesion Id */
+            lesion_id?: string | null;
+            /** Method Version */
+            method_version: string;
+            /** Metric Code */
+            metric_code: string;
+            /** Metric Definition */
+            metric_definition?: string | null;
+            /**
+             * Nonnegative
+             * @default true
+             * @constant
+             */
+            nonnegative: true;
+            /**
+             * Population
+             * @default synthetic_engineering_fixture_only
+             */
+            population: string;
+            /** Supported Horizons */
+            supported_horizons: string[];
+            /** Unit */
+            unit: string;
+            /**
+             * Version
+             * @default forecast-protocol/1
+             * @constant
+             */
+            version: "forecast-protocol/1";
+        };
+        /** ForecastQuery */
+        ForecastQuery: {
+            /** Horizon Days */
+            horizon_days: string;
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "locf" | "last_two_linear" | "ols_linear";
+            protocol: components["schemas"]["ForecastProtocol"];
+            /** Split Id */
+            split_id?: string | null;
+            timeline: components["schemas"]["TimelineQuery"];
+        };
+        /** ForecastReport */
+        ForecastReport: {
+            /** Estimate */
+            estimate?: string | null;
+            /**
+             * Evaluation Status
+             * @default synthetic_engineering_only_real_evaluation_unavailable
+             * @constant
+             */
+            evaluation_status: "synthetic_engineering_only_real_evaluation_unavailable";
+            /** Exact Estimate */
+            exact_estimate?: string | null;
+            /** Horizon Days */
+            horizon_days: string;
+            /**
+             * Limitations
+             * @default [
+             *       "Synthetic arithmetic fixtures do not establish clinical forecasting accuracy.",
+             *       "No prediction intervals or causal treatment interpretation are available."
+             *     ]
+             */
+            limitations: string[];
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "locf" | "last_two_linear" | "ols_linear";
+            /**
+             * Method Version
+             * @default earlier-only-decimal-baselines/1
+             */
+            method_version: string;
+            /**
+             * Next Action
+             * @default Obtain a reviewed real-data endpoint/horizon protocol and independent outcomes.
+             */
+            next_action: string;
+            /**
+             * Patient Facing Enabled
+             * @default false
+             * @constant
+             */
+            patient_facing_enabled: false;
+            /**
+             * Point Ids
+             * @default []
+             */
+            point_ids: string[];
+            protocol: components["schemas"]["ForecastProtocol"];
+            /**
+             * Reason Codes
+             * @default []
+             */
+            reason_codes: string[];
+            /**
+             * Source Ids
+             * @default []
+             */
+            source_ids: string[];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "estimate" | "abstained";
+            /**
+             * Version
+             * @default baseline-forecast/1
+             * @constant
+             */
+            version: "baseline-forecast/1";
+            window: components["schemas"]["TimelineWindow"];
+        };
         /** FoundationStatus */
         FoundationStatus: {
             /**
@@ -2720,6 +3862,223 @@ export interface components {
              * @constant
              */
             foundation: "available";
+        };
+        /** FusionBlock */
+        FusionBlock: {
+            /** Member Ids */
+            member_ids: string[];
+            /** Next Action */
+            next_action: string;
+            /** Reasons */
+            reasons: string[];
+            /**
+             * Title
+             * @enum {string}
+             */
+            title: "Available" | "Historical" | "Missing" | "Conflicting";
+        };
+        /** FusionConflict */
+        FusionConflict: {
+            /**
+             * Category
+             * @enum {string}
+             */
+            category: "NO_CONFLICT" | "INCONSISTENT_UNITS" | "INCONSISTENT_VALUES" | "DATE_MISMATCH" | "SOURCE_AMBIGUITY" | "INCOMPATIBLE_MODALITIES" | "INSUFFICIENT_DATA";
+            /** Member Ids */
+            member_ids: string[];
+            /** Next Action */
+            next_action: string;
+            /** Primary Member Id */
+            primary_member_id?: string | null;
+            /** Reason */
+            reason: string;
+        };
+        /** FusionMember */
+        FusionMember: {
+            /** @default available */
+            availability: components["schemas"]["Availability"];
+            /** Concept */
+            concept: string;
+            context: components["schemas"]["Context"];
+            /** Exact Value */
+            exact_value?: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Metric Definition */
+            metric_definition?: string | null;
+            /** Modality */
+            modality: string;
+            /** Numeric Result */
+            numeric_result?: (components["schemas"]["ExactResult"] | components["schemas"]["CensoredResult"] | components["schemas"]["MissingResult"]) | null;
+            /** Ordinal Value */
+            ordinal_value?: string | null;
+            origin: components["schemas"]["Provenance"];
+            /** Original Time */
+            original_time?: (components["schemas"]["TimestampTime"] | components["schemas"]["DateTimeReference"] | components["schemas"]["RelativeTime"] | components["schemas"]["UnknownTime"]) | null;
+            /**
+             * Primary For Display
+             * @default false
+             */
+            primary_for_display: boolean;
+            /**
+             * Role
+             * @enum {string}
+             */
+            role: "current" | "historical_context";
+            /** Source Hash */
+            source_hash: string;
+            /** Source Ids */
+            source_ids: string[];
+            time: components["schemas"]["ClinicalTime"] | null;
+            /** Uncertainty */
+            uncertainty?: string[];
+        };
+        /** FusionQuery */
+        FusionQuery: {
+            /**
+             * State Id
+             * Format: uuid
+             */
+            state_id: string;
+            timeline?: components["schemas"]["TimelineQuery"] | null;
+        };
+        /** FusionReport */
+        FusionReport: {
+            /** Available Modalities */
+            available_modalities: string[];
+            /** Blocks */
+            blocks: components["schemas"]["FusionBlock"][];
+            canonical_state: components["schemas"]["StateView"];
+            /** Clinical Indicators */
+            clinical_indicators: components["schemas"]["FusionMember"][];
+            /** Conflicts */
+            conflicts: components["schemas"]["FusionConflict"][];
+            /** Limitations */
+            limitations: string[];
+            /** Note Assertions */
+            note_assertions: components["schemas"]["GroundedNoteAssertion"][];
+            /**
+             * Source Priority Policy
+             * @default usable_structured_member_over_unverified_assertion_display_only/1
+             * @constant
+             */
+            source_priority_policy: "usable_structured_member_over_unverified_assertion_display_only/1";
+            /** Temporal Changes */
+            temporal_changes: components["schemas"]["PointComparison"][];
+            /** Treatment History */
+            treatment_history: components["schemas"]["FusionMember"][];
+            /** Tumor State */
+            tumor_state: components["schemas"]["FusionMember"][];
+            /**
+             * Version
+             * @default state-fusion/1
+             * @constant
+             */
+            version: "state-fusion/1";
+        };
+        /** GeneratedAdverseEvent */
+        GeneratedAdverseEvent: {
+            /**
+             * Affected Concept
+             * @enum {string}
+             */
+            affected_concept: "hemoglobin" | "wbc" | "anc" | "platelets" | "creatinine" | "alt" | "ast" | "heart_rate" | "temperature" | "weight" | "systolic_bp" | "diastolic_bp" | "fatigue" | "pain" | "nausea" | "swelling";
+            /**
+             * Attribution
+             * @default hypothetical_association_not_causal
+             * @constant
+             */
+            attribution: "hypothetical_association_not_causal";
+            /**
+             * Event Type
+             * @default configured_clinical_condition_change
+             * @constant
+             */
+            event_type: "configured_clinical_condition_change";
+            /** Evidence Slot Ids */
+            evidence_slot_ids: string[];
+            /**
+             * Grading
+             * @default ungraded
+             * @constant
+             */
+            grading: "ungraded";
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "adverse_event";
+            /** Onset Day */
+            onset_day: string;
+            /** Parameter Reference */
+            parameter_reference: string;
+            /** Resolution Day */
+            resolution_day: string | null;
+        };
+        /** GeneratedClinicalMember */
+        GeneratedClinicalMember: {
+            /**
+             * Batch Id
+             * Format: uuid
+             */
+            batch_id: string;
+            /** Event Ids */
+            event_ids: string[];
+        };
+        /** GeneratedClinicalSnapshotMember */
+        GeneratedClinicalSnapshotMember: {
+            /**
+             * Batch Id
+             * Format: uuid
+             */
+            batch_id: string;
+            /** Events */
+            events: components["schemas"]["GeneratedEvent"][];
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /** Source Hash */
+            source_hash: string;
+        };
+        /** GeneratedEvent */
+        GeneratedEvent: {
+            /**
+             * Branch Id
+             * Format: uuid
+             */
+            branch_id: string;
+            /**
+             * Event Id
+             * Format: uuid
+             */
+            event_id: string;
+            /**
+             * Modality
+             * @enum {string}
+             */
+            modality: "imaging" | "laboratory" | "vital" | "symptom" | "treatment" | "adverse_event" | "narrative";
+            /**
+             * Origin
+             * @default SYNTHETIC_GENERATED
+             * @constant
+             */
+            origin: "SYNTHETIC_GENERATED";
+            /** Relative Day */
+            relative_day: string;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /** Slot Id */
+            slot_id: string;
+            /** Value */
+            value: components["schemas"]["GeneratedQuantity"] | components["schemas"]["GeneratedText"] | components["schemas"]["GeneratedMissing"] | components["schemas"]["GeneratedSymptom"] | components["schemas"]["GeneratedTreatment"] | components["schemas"]["GeneratedAdverseEvent"];
         };
         /** GeneratedGeometryMember */
         GeneratedGeometryMember: {
@@ -2765,9 +4124,161 @@ export interface components {
             origin: "SYNTHETIC_GENERATED";
             surface: components["schemas"]["Surface"];
         };
+        /** GeneratedMissing */
+        GeneratedMissing: {
+            /** Channel */
+            channel?: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "missing";
+            /**
+             * Reason
+             * @enum {string}
+             */
+            reason: "unknown" | "not_recorded" | "not_collected" | "not_applicable" | "below_detection" | "withheld";
+        };
+        /** GeneratedNote */
+        GeneratedNote: {
+            /**
+             * Branch Id
+             * Format: uuid
+             */
+            branch_id: string;
+            /** Evidence Event Ids */
+            evidence_event_ids: string[];
+            /**
+             * Note Id
+             * Format: uuid
+             */
+            note_id: string;
+            /**
+             * Origin
+             * @default SYNTHETIC_GENERATED
+             * @constant
+             */
+            origin: "SYNTHETIC_GENERATED";
+            /** Relative Day */
+            relative_day: string;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /** Text */
+            text: string;
+        };
+        /** GeneratedQuantity */
+        GeneratedQuantity: {
+            /** Canonical Unit */
+            canonical_unit?: string | null;
+            /** Canonical Value */
+            canonical_value?: string | null;
+            /** Code */
+            code: string;
+            /** Definition Version */
+            definition_version?: "canceros-local/1" | null;
+            /** Generator Version */
+            generator_version?: "clinical-generation/1" | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "quantity";
+            /** Unit */
+            unit: string;
+            /** Value */
+            value: string;
+        };
+        /** GeneratedSymptom */
+        GeneratedSymptom: {
+            /**
+             * Concept
+             * @enum {string}
+             */
+            concept: "fatigue" | "pain" | "nausea" | "swelling";
+            /**
+             * Configured Scale
+             * @default simulation_0_10
+             * @constant
+             */
+            configured_scale: "simulation_0_10";
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "symptom";
+            /**
+             * Negation
+             * @enum {string}
+             */
+            negation: "affirmed" | "negated";
+            /**
+             * Presence
+             * @enum {string}
+             */
+            presence: "absent" | "present";
+            /** Rating */
+            rating: number;
+            /**
+             * Report Type
+             * @default hypothetical_self_report
+             * @constant
+             */
+            report_type: "hypothetical_self_report";
+            /**
+             * Resolution Status
+             * @enum {string}
+             */
+            resolution_status: "present" | "absent_no_previous_report" | "configured_resolution";
+            /**
+             * Scale
+             * @default engineering_ordinal/1
+             * @constant
+             */
+            scale: "engineering_ordinal/1";
+        };
+        /** GeneratedText */
+        GeneratedText: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "text";
+            /** Text */
+            text: string;
+        };
+        /** GeneratedTreatment */
+        GeneratedTreatment: {
+            /**
+             * Action
+             * @enum {string}
+             */
+            action: "hypothetical_exposure_start" | "hypothetical_exposure_stop";
+            /**
+             * Assumption
+             * @default hypothetical_not_prescription
+             * @constant
+             */
+            assumption: "hypothetical_not_prescription";
+            /**
+             * Category
+             * @default no_specific_assumption
+             * @constant
+             */
+            category: "no_specific_assumption";
+            /** Event Reference */
+            event_reference: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            kind: "treatment";
+        };
         /** GeometryCommand */
         GeometryCommand: {
-            input: components["schemas"]["GeometryValidationInput"];
+            input: components["schemas"]["canceros__imaging_volumes__GeometryValidationInput"];
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -2868,9 +4379,9 @@ export interface components {
             /**
              * Simulation Engine Integration
              * @default blocked_not_implemented
-             * @constant
+             * @enum {string}
              */
-            simulation_engine_integration: "blocked_not_implemented";
+            simulation_engine_integration: "blocked_not_implemented" | "partial_common_run_adapter_full_orchestration_pending" | "common_run_workflow_available_explicit_completion_required";
             /** State Id */
             state_id: string | null;
             /**
@@ -2972,19 +4483,57 @@ export interface components {
             target_metric: "numerical_region_volume";
             time: components["schemas"]["RelativeTime"];
         };
-        /** GeometryValidationInput */
-        GeometryValidationInput: {
+        /**
+         * GroundedNoteAssertion
+         * @description Internal adapter input only; an assertion never becomes a structured measurement.
+         */
+        GroundedNoteAssertion: {
             /**
-             * Import Id
+             * Branch Id
              * Format: uuid
              */
-            import_id: string;
+            branch_id: string;
+            /** Concept */
+            concept: string;
+            context: components["schemas"]["Context"];
+            /** Excerpt */
+            excerpt: string;
             /**
-             * Rule Version
-             * @default geometry/1
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Modality */
+            modality: string;
+            /** Note Content Sha256 */
+            note_content_sha256: string;
+            /**
+             * Note Record Id
+             * Format: uuid
+             */
+            note_record_id: string;
+            /** Note Source Hash */
+            note_source_hash: string;
+            origin: components["schemas"]["Provenance"];
+            /**
+             * Patient Id
+             * Format: uuid
+             */
+            patient_id: string;
+            /** Result */
+            result: components["schemas"]["ExactResult"] | components["schemas"]["CensoredResult"] | components["schemas"]["MissingResult"];
+            /**
+             * Target Member Id
+             * Format: uuid
+             */
+            target_member_id: string;
+            time: components["schemas"]["ClinicalTime"];
+            /**
+             * Verification
+             * @default unverified_extracted_assertion
              * @constant
              */
-            rule_version: "geometry/1";
+            verification: "unverified_extracted_assertion";
         };
         /** GroupAssignment */
         GroupAssignment: {
@@ -3165,7 +4714,7 @@ export interface components {
         /** ImagingJobInput */
         ImagingJobInput: {
             /** Command */
-            command: components["schemas"]["GeometryCommand"] | components["schemas"]["PreprocessingCommand"] | components["schemas"]["AlignmentCommand"] | components["schemas"]["SegmentationQCCommand"] | components["schemas"]["MeshCommand"] | components["schemas"]["MeshQCCommand"] | components["schemas"]["RegistrationCommand"] | components["schemas"]["StateCommand"] | components["schemas"]["SyntheticGeometryCommand"];
+            command: components["schemas"]["GeometryCommand"] | components["schemas"]["PreprocessingCommand"] | components["schemas"]["AlignmentCommand"] | components["schemas"]["SegmentationQCCommand"] | components["schemas"]["MeshCommand"] | components["schemas"]["MeshQCCommand"] | components["schemas"]["RegistrationCommand"] | components["schemas"]["StateCommand"] | components["schemas"]["SyntheticGeometryCommand"] | components["schemas"]["ClinicalGenerationCommand"] | components["schemas"]["SimulationCompleteCommand"] | components["schemas"]["DependentUpdateCommand"];
             /** Expected Revision */
             expected_revision: number;
         };
@@ -3192,7 +4741,7 @@ export interface components {
              * Operation
              * @enum {string}
              */
-            operation: "geometry" | "preprocessing" | "alignment" | "segmentation_qc" | "mesh" | "mesh_qc" | "registration" | "state_assembly" | "synthetic_geometry";
+            operation: "geometry" | "preprocessing" | "alignment" | "segmentation_qc" | "mesh" | "mesh_qc" | "registration" | "state_assembly" | "synthetic_geometry" | "clinical_generation" | "simulation_complete" | "dependent_update";
             /**
              * Patient Id
              * Format: uuid
@@ -3980,6 +5529,18 @@ export interface components {
             /** Vertex Count */
             vertex_count: number;
         };
+        /** MissingPoint */
+        MissingPoint: {
+            /** Channel */
+            channel: string;
+            /**
+             * Reason
+             * @enum {string}
+             */
+            reason: "unknown" | "not_recorded" | "not_collected" | "not_applicable" | "below_detection" | "withheld";
+            /** Slot Id */
+            slot_id: string;
+        };
         /** MissingResult */
         MissingResult: {
             /**
@@ -3992,6 +5553,58 @@ export interface components {
              * @enum {string}
              */
             missing_reason: "unknown" | "not_recorded" | "not_collected" | "not_applicable" | "below_detection" | "withheld";
+        };
+        /** ModelTurningPoint */
+        ModelTurningPoint: {
+            /** Configured Day */
+            configured_day: string;
+            /** Configured Nadir Mm3 */
+            configured_nadir_mm3: string;
+            /**
+             * Kind
+             * @default model_control_not_detected_biology
+             * @constant
+             */
+            kind: "model_control_not_detected_biology";
+            /** Latent Sampled Minimum Day */
+            latent_sampled_minimum_day: string;
+            /** Latent Sampled Minimum Mm3 */
+            latent_sampled_minimum_mm3: string;
+            /** Latent Sampled Minimum Slot Id */
+            latent_sampled_minimum_slot_id: string;
+        };
+        /** ModestReductionParameters */
+        ModestReductionParameters: {
+            /** Max Relative Decline */
+            max_relative_decline: string;
+            /** Min Relative Decline */
+            min_relative_decline: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            mode: "modest_reduction";
+        };
+        /** NearStableParameters */
+        NearStableParameters: {
+            /** Max Absolute Change Mm3 */
+            max_absolute_change_mm3: string;
+            /** Max Relative Change */
+            max_relative_change: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            mode: "near_stable";
+        };
+        /** NoisePoint */
+        NoisePoint: {
+            /** Additive Offset */
+            additive_offset: string;
+            /** Channel */
+            channel: string;
+            /** Slot Id */
+            slot_id: string;
         };
         /** NoteInput */
         NoteInput: {
@@ -4122,6 +5735,11 @@ export interface components {
              * Format: uuid
              */
             segmentation_id: string;
+        };
+        /** ObservationSchedule */
+        ObservationSchedule: {
+            /** Slots */
+            slots: components["schemas"]["ScheduleSlot"][];
         };
         /** OriginInput */
         OriginInput: {
@@ -4326,6 +5944,120 @@ export interface components {
              * @enum {string}
              */
             role: "precontrast" | "postcontrast" | "unknown";
+        };
+        /** PluginOutput */
+        PluginOutput: {
+            /**
+             * Assumptions
+             * @default unreviewed_demonstration_not_patient_prediction
+             * @constant
+             */
+            assumptions: "unreviewed_demonstration_not_patient_prediction";
+            clinical_condition?: components["schemas"]["SC05ClinicalCondition"] | null;
+            clinical_profile: components["schemas"]["ClinicalProfile"];
+            /** Family */
+            family?: ("SC-01" | "SC-02" | "SC-03" | "SC-04" | "SC-05") | null;
+            /**
+             * Measurement Uncertainty
+             * @default not_established
+             * @constant
+             */
+            measurement_uncertainty: "not_established";
+            /** Mode */
+            mode?: ("modest_reduction" | "near_stable") | null;
+            /**
+             * Origin
+             * @default SYNTHETIC_GENERATED
+             * @constant
+             */
+            origin: "SYNTHETIC_GENERATED";
+            /** Tumor Targets */
+            tumor_targets: components["schemas"]["TumorTarget"][];
+            turning_point?: components["schemas"]["ModelTurningPoint"] | null;
+        };
+        /** PointComparison */
+        PointComparison: {
+            /** Absolute Change */
+            absolute_change?: string | null;
+            /**
+             * Change
+             * @default unavailable
+             * @enum {string}
+             */
+            change: "increased" | "decreased" | "unchanged_within_tolerance" | "ordinal_direction" | "unavailable";
+            /**
+             * Comparison Context
+             * @enum {string}
+             */
+            comparison_context: "within_observed" | "within_simulation" | "source_fixture" | "hypothetical_vs_observed" | "incompatible_scopes";
+            /** Concept */
+            concept?: string | null;
+            context?: components["schemas"]["Context"] | null;
+            /** Description */
+            description: string;
+            /** Elapsed Days */
+            elapsed_days?: string | null;
+            /** Exact Absolute Change */
+            exact_absolute_change?: string | null;
+            /** Exact Slope Per Day */
+            exact_slope_per_day?: string | null;
+            /**
+             * From Measurement Ids
+             * @default []
+             */
+            from_measurement_ids: string[];
+            /**
+             * From State Ids
+             * @default []
+             */
+            from_state_ids: string[];
+            /** Left Point Id */
+            left_point_id: string | null;
+            /** Lesion Id */
+            lesion_id?: string | null;
+            /**
+             * Method
+             * @default later_minus_earlier/actual_elapsed_days
+             * @constant
+             */
+            method: "later_minus_earlier/actual_elapsed_days";
+            /** Metric Code */
+            metric_code?: string | null;
+            /** Metric Definition */
+            metric_definition?: string | null;
+            /** Ordinal Direction */
+            ordinal_direction?: ("increased" | "decreased" | "unchanged") | null;
+            origin?: components["schemas"]["Provenance"] | null;
+            /** Percentage Change */
+            percentage_change?: string | null;
+            /** Reason Codes */
+            reason_codes: string[];
+            /** Right Point Id */
+            right_point_id: string | null;
+            /** Slope Per Day */
+            slope_per_day?: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "comparable" | "not_comparable" | "insufficient_data";
+            /**
+             * To Measurement Ids
+             * @default []
+             */
+            to_measurement_ids: string[];
+            /**
+             * To State Ids
+             * @default []
+             */
+            to_state_ids: string[];
+            /** Unit */
+            unit?: string | null;
+            /**
+             * Usable Count
+             * @default 0
+             */
+            usable_count: number;
         };
         /** PreprocessInput */
         PreprocessInput: {
@@ -4552,6 +6284,19 @@ export interface components {
             /** Snapshot Hash */
             snapshot_hash: string;
         };
+        /** PublishRunInput */
+        PublishRunInput: {
+            /** Engineering Attestation Sha256 */
+            engineering_attestation_sha256: string;
+            /** Expected Association Head */
+            expected_association_head: number;
+            /** Expected Config Hash */
+            expected_config_hash: string;
+            /** Expected Current Run Id */
+            expected_current_run_id: string | null;
+            /** Expected Patient Revision */
+            expected_patient_revision: number;
+        };
         /**
          * Quality
          * @enum {string}
@@ -4612,6 +6357,18 @@ export interface components {
             unit: string;
             /** Value */
             value: string;
+        };
+        /** QueueRunInput */
+        QueueRunInput: {
+            /**
+             * Config Id
+             * Format: uuid
+             */
+            config_id: string;
+            /** Expected Config Hash */
+            expected_config_hash: string;
+            /** Expected Draft Revision */
+            expected_draft_revision: number;
         };
         /** RegionMeasurement */
         RegionMeasurement: {
@@ -5215,6 +6972,342 @@ export interface components {
              */
             severity: "error" | "warning";
         };
+        /** RunGeometryValidation */
+        RunGeometryValidation: {
+            clinical_condition: components["schemas"]["SC05ClinicalCondition"] | null;
+            configured_turning_point: components["schemas"]["ModelTurningPoint"] | null;
+            /**
+             * Family
+             * @enum {string}
+             */
+            family: "SC-01" | "SC-02" | "SC-03" | "SC-04" | "SC-05";
+            /**
+             * Measurement Uncertainty
+             * @default not_established
+             * @constant
+             */
+            measurement_uncertainty: "not_established";
+            /** Mode */
+            mode: ("modest_reduction" | "near_stable") | null;
+            /** Next Action */
+            next_action: string;
+            ordering: components["schemas"]["TrajectoryValidation"];
+            /**
+             * Origin
+             * @default SYNTHETIC_GENERATED
+             * @constant
+             */
+            origin: "SYNTHETIC_GENERATED";
+            /**
+             * Publication
+             * @default draft
+             * @constant
+             */
+            publication: "draft";
+            /** Realized Minimum Mm3 */
+            realized_minimum_mm3: string | null;
+            /** Realized Minimum Slot Ids */
+            realized_minimum_slot_ids: string[];
+            /** Realized Mm3 */
+            realized_mm3: (string | null)[];
+            /** Result Ids */
+            result_ids: string[];
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /**
+             * Scientific Review
+             * @default pending
+             * @constant
+             */
+            scientific_review: "pending";
+            /** Target Mm3 */
+            target_mm3: string[];
+        };
+        /** RunPublication */
+        RunPublication: {
+            /**
+             * Branch Id
+             * Format: uuid
+             */
+            branch_id: string;
+            /**
+             * Completion Id
+             * Format: uuid
+             */
+            completion_id: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            input: components["schemas"]["PublishRunInput"];
+            /**
+             * Recorded At
+             * Format: date-time
+             */
+            recorded_at: string;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /**
+             * Scientific Review
+             * @default pending
+             * @constant
+             */
+            scientific_review: "pending";
+            /**
+             * Scope
+             * @default private_engineering_fixture
+             * @constant
+             */
+            scope: "private_engineering_fixture";
+            /** State Publication Ids */
+            state_publication_ids: string[];
+        };
+        /** RunTargetSummary */
+        RunTargetSummary: {
+            /** Baseline Hash */
+            baseline_hash: string;
+            /**
+             * Baseline Measurement Id
+             * Format: uuid
+             */
+            baseline_measurement_id: string;
+            /**
+             * Geometry Policy
+             * @enum {string}
+             */
+            geometry_policy: "none" | "isotropic-fixed-grid/1";
+            /**
+             * Origin
+             * @default SYNTHETIC_GENERATED
+             * @constant
+             */
+            origin: "SYNTHETIC_GENERATED";
+            output: components["schemas"]["PluginOutput"];
+            /**
+             * Publication
+             * @default draft
+             * @constant
+             */
+            publication: "draft";
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+        };
+        /** RuntimeIdentity */
+        RuntimeIdentity: {
+            /** Code Hash */
+            code_hash: string;
+            /** Dependency Lock Hash */
+            dependency_lock_hash: string;
+            /** Machine */
+            machine: string;
+            /** Numpy */
+            numpy: string;
+            /** Pydantic */
+            pydantic: string;
+            /** Python */
+            python: string;
+            /** System */
+            system: string;
+        };
+        /** SC04Parameters */
+        SC04Parameters: {
+            /** Change Point Day */
+            change_point_day: string;
+            /** Nadir Mm3 */
+            nadir_mm3: string;
+        };
+        /** SC05ClinicalCondition */
+        SC05ClinicalCondition: {
+            /** Events */
+            events: components["schemas"]["SimulationAdverseEvent"][];
+            exposure_context: components["schemas"]["TreatmentAssumptions"];
+            /**
+             * Origin
+             * @default SYNTHETIC_GENERATED
+             * @constant
+             */
+            origin: "SYNTHETIC_GENERATED";
+            parameters: components["schemas"]["SC05Parameters"];
+            /**
+             * Severity Meaning
+             * @default internal_simulation_setting_not_ctcae
+             * @constant
+             */
+            severity_meaning: "internal_simulation_setting_not_ctcae";
+            /**
+             * Version
+             * @default clinical-condition/1
+             * @constant
+             */
+            version: "clinical-condition/1";
+        };
+        /** SC05Parameters */
+        SC05Parameters: {
+            /** Affected Concepts */
+            affected_concepts: components["schemas"]["AffectedConcept"][];
+            /**
+             * Internal Severity
+             * @enum {string}
+             */
+            internal_severity: "mild" | "moderate" | "severe";
+            /** Onset Day */
+            onset_day: string;
+            /**
+             * Profile Version
+             * @constant
+             */
+            profile_version: "clinical-condition/1";
+            /** Recovery Day */
+            recovery_day?: string | null;
+            /**
+             * Symptom Course
+             * @default []
+             */
+            symptom_course: components["schemas"]["SymptomCoursePoint"][];
+            /**
+             * Tumor Family
+             * @enum {string}
+             */
+            tumor_family: "SC-01" | "SC-02" | "SC-03";
+        };
+        /** SampledObservations */
+        SampledObservations: {
+            /** Clinical Values */
+            clinical_values: components["schemas"]["SampledValue"][];
+            /**
+             * Policy
+             * @default explicit_demo_distributions_not_real_care
+             * @constant
+             */
+            policy: "explicit_demo_distributions_not_real_care";
+            /**
+             * Prng Version
+             * @default sha256-counter/1
+             * @constant
+             */
+            prng_version: "sha256-counter/1";
+            /** Seed */
+            seed: number;
+            /**
+             * Seed Derivation
+             * @default framed_sha256_named_streams/1
+             * @constant
+             */
+            seed_derivation: "framed_sha256_named_streams/1";
+            /** Slots */
+            slots: components["schemas"]["SampledSlot"][];
+            /** Tumor Targets */
+            tumor_targets: components["schemas"]["SampledTumorTarget"][];
+            /**
+             * Version
+             * @default sampling/1
+             * @constant
+             */
+            version: "sampling/1";
+        };
+        /** SampledSlot */
+        SampledSlot: {
+            /** Configured Day */
+            configured_day: string;
+            /**
+             * Modality
+             * @enum {string}
+             */
+            modality: "imaging" | "laboratory" | "vital" | "symptom" | "treatment" | "adverse_event" | "narrative";
+            /** Relative Day */
+            relative_day: string;
+            /** Slot Id */
+            slot_id: string;
+        };
+        /** SampledTumorTarget */
+        SampledTumorTarget: {
+            /**
+             * Metric
+             * @default numerical_region_volume
+             * @constant
+             */
+            metric: "numerical_region_volume";
+            /** Missing Reason */
+            missing_reason: ("unknown" | "not_recorded" | "not_collected" | "not_applicable" | "below_detection" | "withheld") | null;
+            /** Relative Day */
+            relative_day: string;
+            /** Slot Id */
+            slot_id: string;
+            /** Target Mm3 */
+            target_mm3: string | null;
+            /**
+             * Unit
+             * @default mm3
+             * @constant
+             */
+            unit: "mm3";
+        };
+        /** SampledValue */
+        SampledValue: {
+            /** Channel */
+            channel: string;
+            /** Missing Reason */
+            missing_reason: ("unknown" | "not_recorded" | "not_collected" | "not_applicable" | "below_detection" | "withheld") | null;
+            /**
+             * Modality
+             * @enum {string}
+             */
+            modality: "imaging" | "laboratory" | "vital" | "symptom" | "treatment" | "adverse_event" | "narrative";
+            /** Relative Day */
+            relative_day: string;
+            /** Slot Id */
+            slot_id: string;
+            /** Unit */
+            unit: string;
+            /** Value */
+            value: string | null;
+        };
+        /** SamplingConfig */
+        SamplingConfig: {
+            /**
+             * Jitter Rules
+             * @default []
+             */
+            jitter_rules: components["schemas"]["SlotJitter"][];
+            /**
+             * Missingness Rules
+             * @default []
+             */
+            missingness_rules: components["schemas"]["BernoulliMissing"][];
+            /**
+             * Noise Rules
+             * @default []
+             */
+            noise_rules: components["schemas"]["UniformNoise"][];
+            /**
+             * Prng Version
+             * @default sha256-counter/1
+             * @constant
+             */
+            prng_version: "sha256-counter/1";
+            /**
+             * Version
+             * @default sampling/1
+             * @constant
+             */
+            version: "sampling/1";
+        };
+        /** SaveConfigInput */
+        SaveConfigInput: {
+            config: components["schemas"]["SimulationConfig"];
+            /** Expected Draft Revision */
+            expected_draft_revision: number;
+        };
         /** ScalarChange */
         ScalarChange: {
             /** Absolute Mm3 */
@@ -5273,6 +7366,28 @@ export interface components {
             unit: "mm3";
             /** Volume Mm3 */
             volume_mm3: string | null;
+        };
+        /** ScenarioDefinition */
+        ScenarioDefinition: {
+            /** Definition Version */
+            definition_version: string;
+            /**
+             * Family
+             * @enum {string}
+             */
+            family: "SC-01" | "SC-02" | "SC-03" | "SC-04" | "SC-05";
+        };
+        /** ScheduleSlot */
+        ScheduleSlot: {
+            /**
+             * Modality
+             * @enum {string}
+             */
+            modality: "imaging" | "laboratory" | "vital" | "symptom" | "treatment" | "adverse_event" | "narrative";
+            /** Relative Day */
+            relative_day: string;
+            /** Slot Id */
+            slot_id: string;
         };
         /** SegmentationAnnotation */
         SegmentationAnnotation: {
@@ -5596,6 +7711,206 @@ export interface components {
              */
             version: "isotropic-fixed-grid/1";
         };
+        /** SimulationAdverseEvent */
+        SimulationAdverseEvent: {
+            /**
+             * Affected Concept
+             * @enum {string}
+             */
+            affected_concept: "hemoglobin" | "wbc" | "anc" | "platelets" | "creatinine" | "alt" | "ast" | "heart_rate" | "temperature" | "weight" | "systolic_bp" | "diastolic_bp" | "fatigue" | "pain" | "nausea" | "swelling";
+            /**
+             * Attribution
+             * @default hypothetical_association_not_causal
+             * @constant
+             */
+            attribution: "hypothetical_association_not_causal";
+            /**
+             * Event Type
+             * @default configured_clinical_condition_change
+             * @constant
+             */
+            event_type: "configured_clinical_condition_change";
+            /** Evidence Slot Ids */
+            evidence_slot_ids: string[];
+            /**
+             * Grading
+             * @default ungraded
+             * @constant
+             */
+            grading: "ungraded";
+            /** Onset Day */
+            onset_day: string;
+            /** Parameter Reference */
+            parameter_reference: string;
+            /** Resolution Day */
+            resolution_day: string | null;
+        };
+        /** SimulationCompleteCommand */
+        SimulationCompleteCommand: {
+            input: components["schemas"]["CompleteRunInput"];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            operation: "simulation_complete";
+        };
+        /** SimulationConfig */
+        SimulationConfig: {
+            /** Baseline Hash */
+            baseline_hash: string;
+            /** Baseline State Id */
+            baseline_state_id: string | null;
+            /**
+             * Branch Id
+             * Format: uuid
+             */
+            branch_id: string;
+            clinical_profile: components["schemas"]["ClinicalProfile"];
+            /**
+             * Config Version
+             * @default simulation-config/1
+             * @constant
+             */
+            config_version: "simulation-config/1";
+            /**
+             * Geometry Policy
+             * @enum {string}
+             */
+            geometry_policy: "none" | "isotropic-fixed-grid/1";
+            /** Input Revision */
+            input_revision: number;
+            missingness: components["schemas"]["ExplicitMissingness"];
+            noise: components["schemas"]["ExplicitNoise"];
+            sampling?: components["schemas"]["SamplingConfig"] | null;
+            /** Sc02 Parameters */
+            sc02_parameters?: (components["schemas"]["ModestReductionParameters"] | components["schemas"]["NearStableParameters"]) | null;
+            sc04_parameters?: components["schemas"]["SC04Parameters"] | null;
+            sc05_parameters?: components["schemas"]["SC05Parameters"] | null;
+            scenario: components["schemas"]["ScenarioDefinition"];
+            schedule: components["schemas"]["ObservationSchedule"];
+            /**
+             * Schema Version
+             * @default simulation-config/1
+             * @constant
+             */
+            schema_version: "simulation-config/1";
+            /**
+             * Scientific Policy
+             * @default unreviewed_demo
+             * @constant
+             */
+            scientific_policy: "unreviewed_demo";
+            /** Seed */
+            seed: number;
+            /**
+             * Simulator Version
+             * @default slre/1
+             * @constant
+             */
+            simulator_version: "slre/1";
+            treatment: components["schemas"]["TreatmentAssumptions"];
+            tumor_profile: components["schemas"]["TumorProfile"];
+        };
+        /** SimulationRun */
+        SimulationRun: {
+            /** Association Head */
+            association_head?: number | null;
+            /**
+             * Authority
+             * @default isolated_test_mock
+             * @constant
+             */
+            authority: "isolated_test_mock";
+            /**
+             * Baseline Observed Verified
+             * @default false
+             * @constant
+             */
+            baseline_observed_verified: false;
+            /**
+             * Branch Id
+             * Format: uuid
+             */
+            branch_id: string;
+            /** Completed At */
+            completed_at?: null;
+            config: components["schemas"]["SimulationConfig"];
+            /** Config Hash */
+            config_hash: string;
+            /**
+             * Config Id
+             * Format: uuid
+             */
+            config_id: string;
+            eligibility?: components["schemas"]["EligibilityResult"] | null;
+            environment: components["schemas"]["RuntimeIdentity"];
+            /** Failure Reason */
+            failure_reason?: null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Input Manifest Hash */
+            input_manifest_hash: string;
+            /** Input Revision */
+            input_revision: number;
+            /** Job Id */
+            job_id?: null;
+            /**
+             * Next Action
+             * @default Queue complete-run engineering generation; inspect its completion before separate publication
+             */
+            next_action: string;
+            /**
+             * Origin
+             * @default SYNTHETIC_GENERATED
+             * @constant
+             */
+            origin: "SYNTHETIC_GENERATED";
+            /**
+             * Publication
+             * @default draft
+             * @constant
+             */
+            publication: "draft";
+            /**
+             * Queued At
+             * Format: date-time
+             */
+            queued_at: string;
+            /**
+             * Readiness
+             * @default isolated_engineering_execution_available
+             * @enum {string}
+             */
+            readiness: "blocked_pending_integration" | "isolated_engineering_execution_available";
+            /**
+             * Scientific Review
+             * @default pending
+             * @constant
+             */
+            scientific_review: "pending";
+            /** Started At */
+            started_at?: null;
+            /**
+             * Status
+             * @default queued
+             * @constant
+             */
+            status: "queued";
+            /** Validation Summary */
+            validation_summary?: null;
+        };
+        /** SlotJitter */
+        SlotJitter: {
+            /** Max Offset Days */
+            max_offset_days: string;
+            /** Min Offset Days */
+            min_offset_days: string;
+            /** Slot Id */
+            slot_id: string;
+        };
         /** SnapshotReport */
         SnapshotReport: {
             /**
@@ -5621,6 +7936,8 @@ export interface components {
              * @constant
              */
             context: "SYNTHETIC";
+            /** Generated Clinical Members */
+            generated_clinical_members?: components["schemas"]["GeneratedClinicalSnapshotMember"][];
             /** Generated Geometry Members */
             generated_geometry_members?: components["schemas"]["GeneratedGeometrySnapshotMember"][];
             /**
@@ -5975,6 +8292,8 @@ export interface components {
             clinical_members?: components["schemas"]["ClinicalMember"][];
             /** @default SYNTHETIC */
             context: components["schemas"]["Context"];
+            /** Generated Clinical Members */
+            generated_clinical_members?: components["schemas"]["GeneratedClinicalMember"][];
             /** Generated Geometry Members */
             generated_geometry_members?: components["schemas"]["GeneratedGeometryMember"][];
             /** Imaging Members */
@@ -6182,6 +8501,29 @@ export interface components {
             /** Watertight */
             watertight: boolean;
         };
+        /** SymptomCoursePoint */
+        SymptomCoursePoint: {
+            /**
+             * Concept
+             * @enum {string}
+             */
+            concept: "fatigue" | "pain" | "nausea" | "swelling";
+            /**
+             * Presence
+             * @enum {string}
+             */
+            presence: "absent" | "present";
+            /** Rating */
+            rating: number;
+            /**
+             * Scale
+             * @default simulation_0_10
+             * @constant
+             */
+            scale: "simulation_0_10";
+            /** Slot Id */
+            slot_id: string;
+        };
         /** SymptomInput */
         SymptomInput: {
             /**
@@ -6308,6 +8650,24 @@ export interface components {
             /** Warnings */
             warnings: string[];
         };
+        /** TemporalFeatures */
+        TemporalFeatures: {
+            scope: components["schemas"]["TimelineScope"];
+            /** Selected Point Ids */
+            selected_point_ids: string[];
+            /** Series */
+            series: components["schemas"]["FeatureSeries"][];
+            /** Treatment Point Ids */
+            treatment_point_ids: string[];
+            /** Unresolved Point Ids */
+            unresolved_point_ids: string[];
+            /**
+             * Version
+             * @default temporal-features/1
+             * @constant
+             */
+            version: "temporal-features/1";
+        };
         /** TimelineOrigin */
         TimelineOrigin: {
             /**
@@ -6333,6 +8693,158 @@ export interface components {
              */
             time_domain: "source_calendar" | "source_shifted" | "source_relative" | "simulation";
         };
+        /** TimelinePage */
+        TimelinePage: {
+            /** Completion Id */
+            completion_id: string | null;
+            /** Current Patient Revision */
+            current_patient_revision: number;
+            features: components["schemas"]["TemporalFeatures"];
+            /** Historical Revision */
+            historical_revision: boolean;
+            /** Items */
+            items: components["schemas"]["TimelinePoint"][];
+            /** Next Action */
+            next_action: string;
+            /** Next Cursor */
+            next_cursor: string | null;
+            /** Restrictions */
+            restrictions: string[];
+            /** Total Points */
+            total_points: number;
+            /**
+             * Version
+             * @default timeline-page/1
+             * @constant
+             */
+            version: "timeline-page/1";
+            window: components["schemas"]["TimelineWindow"];
+        };
+        /** TimelinePoint */
+        TimelinePoint: {
+            availability: components["schemas"]["Availability"];
+            /** Branch Id */
+            branch_id?: string | null;
+            /** Canonical Unit */
+            canonical_unit?: string | null;
+            /** Concept */
+            concept: string;
+            /**
+             * Conflicts
+             * @default []
+             */
+            conflicts: string[];
+            context: components["schemas"]["Context"];
+            /** Exact Value */
+            exact_value?: string | null;
+            /** Geometry Result Id */
+            geometry_result_id?: string | null;
+            /**
+             * Historical Context
+             * @default false
+             */
+            historical_context: boolean;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Instrument */
+            instrument?: string | null;
+            /** Instrument Version */
+            instrument_version?: string | null;
+            /** Lesion Id */
+            lesion_id?: string | null;
+            /**
+             * Measurement Basis
+             * @default source_record
+             * @enum {string}
+             */
+            measurement_basis: "source_record" | "mask_realized" | "simulated_target_no_mask_realization" | "baseline_reference";
+            /** Method Version */
+            method_version: string;
+            /** Metric Definition */
+            metric_definition?: string | null;
+            /** Missing Reason */
+            missing_reason?: ("unknown" | "not_recorded" | "not_collected" | "not_applicable" | "below_detection" | "withheld") | null;
+            /** Modality */
+            modality: string;
+            /** Numeric Result */
+            numeric_result?: (components["schemas"]["ExactResult"] | components["schemas"]["CensoredResult"] | components["schemas"]["MissingResult"]) | null;
+            /** Ordinal Value */
+            ordinal_value?: string | null;
+            origin: components["schemas"]["Provenance"];
+            /**
+             * Patient Id
+             * Format: uuid
+             */
+            patient_id: string;
+            /**
+             * Recorded At
+             * Format: date-time
+             */
+            recorded_at: string;
+            /** Revision */
+            revision: number;
+            /** Run Id */
+            run_id?: string | null;
+            /** Source Hash */
+            source_hash: string;
+            /** Source Ids */
+            source_ids: string[];
+            /**
+             * State Ids
+             * @default []
+             */
+            state_ids: string[];
+            /** Summary */
+            summary?: string | null;
+            /** Supersedes Id */
+            supersedes_id?: string | null;
+            /** Symptom Presence */
+            symptom_presence?: ("present" | "absent" | "unknown" | "not_assessed") | null;
+            time: components["schemas"]["ClinicalTime"];
+        };
+        /** TimelineQuery */
+        TimelineQuery: {
+            /** Completion Id */
+            completion_id?: string | null;
+            /** Cursor */
+            cursor?: string | null;
+            /**
+             * Limit
+             * @default 25
+             */
+            limit: number;
+            window: components["schemas"]["TimelineWindow"];
+        };
+        /** TimelineScope */
+        TimelineScope: {
+            /** Branch Id */
+            branch_id?: string | null;
+            /** Data Revision */
+            data_revision: number;
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "observed" | "source_fixture" | "simulation";
+            /** Run Id */
+            run_id?: string | null;
+        };
+        /** TimelineWindow */
+        TimelineWindow: {
+            /** Event Cutoff */
+            event_cutoff?: (components["schemas"]["TimestampTime"] | components["schemas"]["DateTimeReference"] | components["schemas"]["RelativeTime"] | components["schemas"]["UnknownTime"]) | null;
+            /** Event Cutoff Shift Basis */
+            event_cutoff_shift_basis?: string | null;
+            /**
+             * Knowledge As Of
+             * Format: date-time
+             */
+            knowledge_as_of: string;
+            scope: components["schemas"]["TimelineScope"];
+        };
         /** TimestampTime */
         TimestampTime: {
             /**
@@ -6350,6 +8862,67 @@ export interface components {
              * Format: date-time
              */
             value: string;
+        };
+        /** TrajectoryValidation */
+        TrajectoryValidation: {
+            /** Ordering Valid */
+            ordering_valid: boolean;
+            /**
+             * Publication Gate
+             * @default separate_review_and_complete_run_required
+             * @constant
+             */
+            publication_gate: "separate_review_and_complete_run_required";
+            /** Reasons */
+            reasons: string[];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ready" | "blocked";
+        };
+        /** TreatmentAssumptions */
+        TreatmentAssumptions: {
+            /**
+             * Category
+             * @default no_specific_assumption
+             * @enum {string}
+             */
+            category: "no_specific_assumption" | "chemotherapy" | "endocrine" | "her2_targeted" | "immunotherapy" | "surgery" | "radiotherapy";
+            /**
+             * Events
+             * @default []
+             */
+            events: components["schemas"]["TreatmentEvent"][];
+            /**
+             * Exposure
+             * @enum {string}
+             */
+            exposure: "none" | "hypothetical";
+            /**
+             * Intent
+             * @default not_recorded
+             * @enum {string}
+             */
+            intent: "not_recorded" | "curative" | "palliative" | "research_hypothetical";
+            /**
+             * Setting
+             * @default not_recorded
+             * @enum {string}
+             */
+            setting: "not_recorded" | "neoadjuvant" | "adjuvant" | "metastatic" | "other_documented";
+        };
+        /** TreatmentEvent */
+        TreatmentEvent: {
+            /**
+             * Category
+             * @enum {string}
+             */
+            category: "hypothetical_exposure_start" | "hypothetical_exposure_stop";
+            /** Event Id */
+            event_id: string;
+            /** Relative Day */
+            relative_day: string;
         };
         /** TreatmentInput */
         TreatmentInput: {
@@ -6405,6 +8978,159 @@ export interface components {
             /** Visit Id */
             visit_id?: string | null;
         };
+        /** TrendChartPoint */
+        TrendChartPoint: {
+            /** Censored Threshold */
+            censored_threshold?: string | null;
+            context: components["schemas"]["Context"];
+            /** Exact Value */
+            exact_value: string | null;
+            /** Label */
+            label: string;
+            origin: components["schemas"]["Provenance"];
+            /**
+             * Point Id
+             * Format: uuid
+             */
+            point_id: string;
+            /** Qualifier */
+            qualifier: string | null;
+            /** Reason Codes */
+            reason_codes: string[];
+            /** Source Ids */
+            source_ids: string[];
+            time: components["schemas"]["ClinicalTime"];
+            /** X Elapsed Days */
+            x_elapsed_days: string | null;
+            /** Y */
+            y: string | null;
+        };
+        /** TrendQuery */
+        TrendQuery: {
+            /** Left Point Id */
+            left_point_id?: string | null;
+            /** Right Point Id */
+            right_point_id?: string | null;
+            timeline: components["schemas"]["TimelineQuery"];
+            /**
+             * Tolerance
+             * @default 0
+             */
+            tolerance: string;
+        };
+        /** TrendReport */
+        TrendReport: {
+            comparison: components["schemas"]["PointComparison"] | null;
+            /**
+             * Interpretation
+             * @default descriptive_only_no_clinical_significance_or_response_class
+             * @constant
+             */
+            interpretation: "descriptive_only_no_clinical_significance_or_response_class";
+            /** Series */
+            series: components["schemas"]["TrendSeries"][];
+            /** Tolerance */
+            tolerance: string;
+            /**
+             * Version
+             * @default temporal-trends/1
+             * @constant
+             */
+            version: "temporal-trends/1";
+            window: components["schemas"]["TimelineWindow"];
+        };
+        /** TrendSeries */
+        TrendSeries: {
+            /** Concept */
+            concept: string;
+            context: components["schemas"]["Context"];
+            /** Description */
+            description: string;
+            endpoint: components["schemas"]["PointComparison"] | null;
+            /** Instrument */
+            instrument: string | null;
+            /** Instrument Version */
+            instrument_version: string | null;
+            /** Key */
+            key: string;
+            /** Lesion Id */
+            lesion_id: string | null;
+            /** Method Version */
+            method_version: string;
+            /** Metric Definition */
+            metric_definition: string | null;
+            origin: components["schemas"]["Provenance"];
+            /** Points */
+            points: components["schemas"]["TrendChartPoint"][];
+            /** Segments */
+            segments: components["schemas"]["PointComparison"][];
+            /** Unit */
+            unit: string | null;
+            /** Usable Count */
+            usable_count: number;
+        };
+        /** TumorProfile */
+        TumorProfile: {
+            /**
+             * Metric
+             * @default numerical_region_volume
+             * @constant
+             */
+            metric: "numerical_region_volume";
+            /** Points */
+            points: components["schemas"]["TumorProfilePoint"][];
+            /**
+             * Unit
+             * @default mm3
+             * @constant
+             */
+            unit: "mm3";
+        };
+        /** TumorProfilePoint */
+        TumorProfilePoint: {
+            /** Slot Id */
+            slot_id: string;
+            /** Target Mm3 */
+            target_mm3: string;
+        };
+        /** TumorTarget */
+        TumorTarget: {
+            /**
+             * Metric
+             * @default numerical_region_volume
+             * @constant
+             */
+            metric: "numerical_region_volume";
+            /** Relative Day */
+            relative_day: string;
+            /** Slot Id */
+            slot_id: string;
+            /** Target Mm3 */
+            target_mm3: string;
+            /**
+             * Unit
+             * @default mm3
+             * @constant
+             */
+            unit: "mm3";
+        };
+        /** UniformNoise */
+        UniformNoise: {
+            /** Channel */
+            channel: string;
+            /**
+             * Distribution
+             * @default uniform
+             * @constant
+             */
+            distribution: "uniform";
+            /** Max Offset */
+            max_offset: string;
+            /** Min Offset */
+            min_offset: string;
+            /** Slot Id */
+            slot_id: string;
+        };
         /** UnknownTime */
         UnknownTime: {
             /**
@@ -6435,6 +9161,21 @@ export interface components {
             msg: string;
             /** Error Type */
             type: string;
+        };
+        /** ValidationFinding */
+        ValidationFinding: {
+            /** Code */
+            code: string;
+            /**
+             * Level
+             * @enum {string}
+             */
+            level: "V1" | "V2" | "V3" | "V4" | "V5" | "V6" | "V7" | "V8";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "passed" | "failed" | "not_evaluated";
         };
         /** VisitInput */
         VisitInput: {
@@ -6518,6 +9259,25 @@ export interface components {
          * @enum {string}
          */
         canceros__contracts__Publication: "draft" | "validating" | "ready" | "published" | "rejected" | "withdrawn";
+        /** GeometryValidationInput */
+        canceros__imaging_volumes__GeometryValidationInput: {
+            /**
+             * Import Id
+             * Format: uuid
+             */
+            import_id: string;
+            /**
+             * Rule Version
+             * @default geometry/1
+             * @constant
+             */
+            rule_version: "geometry/1";
+        };
+        /** GeometryValidationInput */
+        canceros__scenario_geometry__GeometryValidationInput: {
+            /** Result Ids */
+            result_ids: string[];
+        };
         /** Publication */
         canceros__twin_states__Publication: {
             /**
@@ -7087,6 +9847,121 @@ export interface operations {
             };
         };
     };
+    get_current_simulation_api_v1_projects__project_id__patients__patient_id__branches__branch_id__current_simulation_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                branch_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurrentRunView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_simulation_config_api_v1_projects__project_id__patients__patient_id__branches__branch_id__simulation_configs_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                branch_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SaveConfigInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigVersion"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_simulation_run_api_v1_projects__project_id__patients__patient_id__branches__branch_id__simulation_runs_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                branch_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QueueRunInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SimulationRun"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     upload_api_v1_projects__project_id__patients__patient_id__clinical_source_artifacts_post: {
         parameters: {
             query?: never;
@@ -7160,6 +10035,154 @@ export interface operations {
             };
         };
     };
+    post_dependent_update_api_v1_projects__project_id__patients__patient_id__dependent_updates_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DependentUpdateInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DependentUpdateReceipt"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_dependent_update_api_v1_projects__project_id__patients__patient_id__dependent_updates_latest_get: {
+        parameters: {
+            query?: {
+                branch_id?: string | null;
+            };
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DependentUpdateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_eligibility_check_api_v1_projects__project_id__patients__patient_id__eligibility_checks_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EligibilityCheckInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EligibilityReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_eligibility_check_api_v1_projects__project_id__patients__patient_id__eligibility_checks__check_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                check_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EligibilityReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     assignment_api_v1_projects__project_id__patients__patient_id__evaluation_splits__split_id__assignment_get: {
         parameters: {
             query?: never;
@@ -7195,6 +10218,117 @@ export interface operations {
             };
         };
     };
+    post_forecast_query_api_v1_projects__project_id__patients__patient_id__forecast_queries_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ForecastQuery"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ForecastReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_fusion_query_api_v1_projects__project_id__patients__patient_id__fusion_queries_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FusionQuery"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FusionReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_clinical_batch_api_v1_projects__project_id__patients__patient_id__generated_clinical_batches__batch_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                batch_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClinicalGenerationReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     geometry_validation_api_v1_projects__project_id__patients__patient_id__geometry_validations_post: {
         parameters: {
             query?: never;
@@ -7209,7 +10343,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["GeometryValidationInput"];
+                "application/json": components["schemas"]["canceros__imaging_volumes__GeometryValidationInput"];
             };
         };
         responses: {
@@ -8907,6 +12041,151 @@ export interface operations {
             };
         };
     };
+    get_completion_api_v1_projects__project_id__patients__patient_id__simulation_completions__completion_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                completion_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CompletionReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_complete_publication_api_v1_projects__project_id__patients__patient_id__simulation_completions__completion_id__publications_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                completion_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PublishRunInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunPublication"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_simulation_config_api_v1_projects__project_id__patients__patient_id__simulation_configs__config_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                config_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigVersion"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_schedule_preview_api_v1_projects__project_id__patients__patient_id__simulation_configs__config_id__schedule_preview_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                config_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SampledObservations"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     post_fixture_run_api_v1_projects__project_id__patients__patient_id__simulation_fixture_runs_post: {
         parameters: {
             query?: never;
@@ -8968,6 +12247,150 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["FixtureRun"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_simulation_run_api_v1_projects__project_id__patients__patient_id__simulation_runs__run_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SimulationRun"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_run_geometry_validation_api_v1_projects__project_id__patients__patient_id__simulation_runs__run_id__geometry_validation_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["canceros__scenario_geometry__GeometryValidationInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunGeometryValidation"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_run_sampling_api_v1_projects__project_id__patients__patient_id__simulation_runs__run_id__sampling_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SampledObservations"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_run_targets_api_v1_projects__project_id__patients__patient_id__simulation_runs__run_id__targets_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunTargetSummary"];
                 };
             };
             /** @description Validation Error */
@@ -9266,6 +12689,82 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["TimelineOrigin"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_timeline_query_api_v1_projects__project_id__patients__patient_id__timeline_queries_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TimelineQuery"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TimelinePage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_trend_query_api_v1_projects__project_id__patients__patient_id__trend_queries_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TrendQuery"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrendReport"];
                 };
             };
             /** @description Validation Error */

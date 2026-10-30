@@ -130,7 +130,9 @@ def generate_shape(
     world_scale = np.eye(4)
     world_scale[:3, :3] *= scale
     world_scale[:3, 3] = (1 - scale) * center
-    transform = tuple(tuple(float(v) for v in row) for row in world_scale)
+    # PostgreSQL JSONB normalizes -0.0 to 0.0. Pin that same representation
+    # before hashing/persisting the transform; its physical mapping is unchanged.
+    transform = tuple(tuple(float(v) if v else 0.0 for v in row) for row in world_scale)
     # Scalar world scaling commutes with the complete affine. Check the selected
     # voxel CELLS, not centers, before nearest-neighbor sampling can hide clipping.
     low = center_index + scale * (indices.min(axis=0) - 0.5 - center_index)

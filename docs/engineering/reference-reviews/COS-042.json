@@ -1,0 +1,300 @@
+{
+  "task": "COS-042",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "eligibility",
+      "returncode": 0,
+      "output": "\n=== SIM.ELIG Treatment and scenario eligibility ===\n Known receptor status, setting and assumptions gate plausible exposures; unknown cannot silently pass. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n  --> GUARDS SIM.RESPONSE Family 1: strong response\n  --> GUARDS SIM.STABLE Family 2: partial/stable\n  --> GUARDS SIM.PROGRESS Family 3: progression\n  --> GUARDS SIM.REGROW Family 4: response then regrowth\n  --> GUARDS SIM.TOXIC Family 5: clinical deterioration\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES TWIN.BASELINE Immutable real baseline\n  --> WORKFLOW_PRECEDES SIM.LATENT Latent evolution state\n  <-- CONSTRAINS GOV.NOCLIN No autonomous care\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "eligibility",
+      "returncode": 0,
+      "output": "\nAI.05 — Temporal forecasting eligibility\nDesign: Use simple comparator first; abstain on insufficient real follow-up; synthetic not real proof\nAcceptance: Held-out simple baselines; no fabricated confidence\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A09 Stan User’s Guide — Posterior and Prior Predictive Checks — https://mc-stan.org/docs/stan-users-guide/ppcs.html\n  READ A15 FDA Computational Model Credibility Guidance — Context of use; model verification, validation and credibility assessment — https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions\n  REPO R10 Stan — probabilistic model reference — https://github.com/stan-dev/stan\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "eligibility",
+      "returncode": 0,
+      "output": "\n== AI.05 Temporal forecasting eligibility ==\nIntent: Use simple comparator first; abstain on insufficient real follow-up; synthetic not real proof \nTest: Held-out simple baselines; no fabricated confidence\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A09 Stan User’s Guide | Posterior and Prior Predictive Checks | https://mc-stan.org/docs/stan-users-guide/ppcs.html | verified section\n BOOK/LECTURE A15 FDA Computational Model Credibility Guidance | Context of use; model verification, validation and credibility assessment | https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions | applicability limited to intended guidance scope\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n REPOSITORY R15 MONAI Deploy App SDK | https://github.com/Project-MONAI/monai-deploy-app-sdk \n  Inspect: Inspect examples/apps and operator contracts \n  Reuse: Study preprocessing/inference/postprocessing pipeline pattern \n  Avoid: Do not require heavyweight SDK on local laptop \n  Verify: CPU sample chain smoke test\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "receptor",
+      "returncode": 0,
+      "output": "\n=== SIM.ELIG Treatment and scenario eligibility ===\n Known receptor status, setting and assumptions gate plausible exposures; unknown cannot silently pass. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n  --> GUARDS SIM.RESPONSE Family 1: strong response\n  --> GUARDS SIM.STABLE Family 2: partial/stable\n  --> GUARDS SIM.PROGRESS Family 3: progression\n  --> GUARDS SIM.REGROW Family 4: response then regrowth\n  --> GUARDS SIM.TOXIC Family 5: clinical deterioration\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES TWIN.BASELINE Immutable real baseline\n  --> WORKFLOW_PRECEDES SIM.LATENT Latent evolution state\n  <-- CONSTRAINS GOV.NOCLIN No autonomous care\n\n=== UX.PROFILE Patient context ===\n Known subtype/receptor, available studies, visits, uncertainty and source. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "receptor",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "receptor",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "treatment",
+      "returncode": 0,
+      "output": "\n=== D.SIM Synthetic longitudinal engine ===\n Five hypothetical trajectories with treatment events, clinical values and uncertainty. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS SIM.ELIG Treatment and scenario eligibility\n  --> IMPLEMENTS SIM.RESPONSE Family 1: strong response\n  --> IMPLEMENTS SIM.STABLE Family 2: partial/stable\n  --> IMPLEMENTS SIM.PROGRESS Family 3: progression\n  --> IMPLEMENTS SIM.REGROW Family 4: response then regrowth\n  --> IMPLEMENTS SIM.TOXIC Family 5: clinical deterioration\n  --> IMPLEMENTS SIM.EXPOSURE Treatment exposures\n  --> IMPLEMENTS SIM.LATENT Latent evolution state\n  --> IMPLEMENTS SIM.OBS Observation simulation\n  --> IMPLEMENTS SIM.SEED Reproducibility\n  --> IMPLEMENTS SIM.VALID Simulation validation\n  --> IMPLEMENTS SIM.BATCH Cohort branching target\n\n=== DATA.TREAT TreatmentEvent ===\n Time-indexed exposure category, known status, regimen/setting where available. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- RELATES_TO DATA.PATIENT ResearchPatient\n\n=== TWIN.STATE Time-indexed state ===\n State binds patient, timestamp, geometry, clinical observations, treatment events, quality, missingness and provenance. \nSources: PRD,IMG,SIM\n  <-- IMPLEMENTS D.TWIN Digital twin\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n\n=== SIM.ELIG Treatment and scenario eligibility ===\n Known receptor status, setting and assumptions gate plausible exposures; unknown cannot silently pass. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n  --> GUARDS SIM.RESPONSE Family 1: strong response\n  --> GUARDS SIM.STABLE Family 2: partial/stable\n  --> GUARDS SIM.PROGRESS Family 3: progression\n  --> GUARDS SIM.REGROW Family 4: response then regrowth\n  --> GUARDS SIM.TOXIC Family 5: clinical deterioration\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES TWIN.BASELINE Immutable real baseline\n  --> WORKFLOW_PRECEDES SIM.LATENT Latent evolution state\n  <-- CONSTRAINS GOV.NOCLIN No autonomous care\n\n=== SIM.EXPOSURE Treatment exposures ===\n Chemo, endocrine, HER2 targeted, selected immunotherapy, surgery/radiotherapy as time-indexed events. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n\n=== AI.FUSE Late multimodal fusion ===\n Combine imaging, labs, vitals, symptoms, notes, treatment and missingness with provenance, conflict status. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- PRECEDES AI.NLP Clinical note extraction\n  <-- PRECEDES AI.FEAT Deterministic multimodal features\n  --> PRECEDES AI.LLM Grounded explanation\n  <-- HAS_STEP WF.AI Evidence linked interpretation\n  <-- WORKFLOW_PRECEDES AI.FEAT Deterministic multimodal features\n  --> WORKFLOW_PRECEDES AI.RETR Evidence retrieval\n\n=== UX.TIMELINE Observation/date selector ===\n Synchronize 3D, clinical charts, date, treatment markers and state provenance. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES TWIN.BRANCH Scenario branch isolation\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n\n=== UX.SCENARIO Scenario generation/exploration ===\n Select eligible case, treatment exposure and 5 families; show assumptions, progress, validation and branches. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n\n=== UX.CHART Clinical charts ===\n Labs, vitals, symptoms, treatments with units and exact observation dates; no invented readings. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "treatment",
+      "returncode": 0,
+      "output": "\nTWIN.02 — Timeline synchronization\nDesign: Selecting visit synchronizes imagery, tumor metrics, labs, treatments and provenance\nAcceptance: E2E multi-date state consistency\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R04 OHIF Viewer — DICOM viewer, longitudinal measurement tracking — https://github.com/OHIF/Viewers\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n\nSIM.03 — Clinical treatment compatibility\nDesign: Guard endocrine/HER2/immunotherapy cases by documented subtype and setting\nAcceptance: Invalid eligibility blocked; unknown not invented\n  READ A12 NCI Breast Cancer Treatment PDQ — Stage-specific treatment, receptor status and neoadjuvant therapy sections — https://www.cancer.gov/types/breast/hp/breast-treatment-pdq\n\nAI.04 — Multimodal fusion\nDesign: Combine observed imaging, labs, notes, symptoms and treatments with conflict/provenance markers\nAcceptance: Cross-source conflicts surfaced\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  PAPER P03 TRIPOD-LLM reporting guideline —  — https://www.nature.com/articles/s41591-024-03425-5\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "treatment",
+      "returncode": 0,
+      "output": "\n== TWIN.02 Timeline synchronization ==\nIntent: Selecting visit synchronizes imagery, tumor metrics, labs, treatments and provenance \nTest: E2E multi-date state consistency\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R04 OHIF Viewer | https://github.com/OHIF/Viewers \n  Inspect: Inspect modes/longitudinal, extensions/measurement-tracking, extensions/cornerstone, platform/core \n  Reuse: Prototype OHIF integration versus Cornerstone3D standalone \n  Avoid: Do not assume original longitudinal mode understands synthetic branching \n  Verify: Browser MRI overlay, state switch, correct patient/time, performance\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n\n== SIM.03 Clinical treatment compatibility ==\nIntent: Guard endocrine/HER2/immunotherapy cases by documented subtype and setting \nTest: Invalid eligibility blocked; unknown not invented\n BOOK/LECTURE A12 NCI Breast Cancer Treatment PDQ | Stage-specific treatment, receptor status and neoadjuvant therapy sections | https://www.cancer.gov/types/breast/hp/breast-treatment-pdq | verified document; topic-specific revision required\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n\n== AI.04 Multimodal fusion ==\nIntent: Combine observed imaging, labs, notes, symptoms and treatments with conflict/provenance markers \nTest: Cross-source conflicts surfaced\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n PAPER P03 TRIPOD-LLM reporting guideline | https://www.nature.com/articles/s41591-024-03425-5\n REPOSITORY R15 MONAI Deploy App SDK | https://github.com/Project-MONAI/monai-deploy-app-sdk \n  Inspect: Inspect examples/apps and operator contracts \n  Reuse: Study preprocessing/inference/postprocessing pipeline pattern \n  Avoid: Do not require heavyweight SDK on local laptop \n  Verify: CPU sample chain smoke test\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "AI.FUSE",
+    "D.SIM",
+    "DATA.TREAT",
+    "SIM.ELIG",
+    "SIM.EXPOSURE",
+    "TWIN.STATE",
+    "UX.CHART",
+    "UX.PROFILE",
+    "UX.SCENARIO",
+    "UX.TIMELINE"
+  ],
+  "academic_behavior_ids": [
+    "TWIN.02",
+    "SIM.03",
+    "AI.04",
+    "AI.05"
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.SIM"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.TREAT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.TREAT"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.ELIG"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.RESPONSE"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.STABLE"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.PROGRESS"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.REGROW"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.TOXIC"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.EXPOSURE"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.LATENT"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.SEED"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.BATCH"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.RESPONSE"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.STABLE"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.PROGRESS"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.REGROW"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.TOXIC"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.NLP",
+      "relation": "PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.PROFILE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.SCENARIO"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.CHART"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.ELIG"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "TWIN.BASELINE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.ELIG"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.LATENT"
+    },
+    {
+      "from_id": "TWIN.BRANCH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.RETR"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "GOV.NOCLIN",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.ELIG"
+    }
+  ],
+  "mapped_source_ids": [
+    "A09",
+    "A11",
+    "A12",
+    "A14",
+    "A15",
+    "P03",
+    "P05",
+    "R04",
+    "R10"
+  ],
+  "source_sections_inspected": "SPEC-004 sections6,8; SPEC-008 section13.3 eligibility; SPEC-010 source/synthetic safety; audit A06 C06 D01 D03"
+}

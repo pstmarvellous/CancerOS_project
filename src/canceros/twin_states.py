@@ -28,6 +28,7 @@ from canceros.measurement_runs import MeasurementReport, load_usable_measurement
 from canceros.mesh_quality_runs import MeshQCReport, load_display_mesh
 from canceros.patient_linkage import audit, authorize_patient
 from canceros.persistence import canonical_bytes, load_revision, science_hash
+from canceros.simulation_contracts import GeneratedEvent
 from canceros.source_registry import SourceAction
 from canceros.synthetic_contracts import GeometrySummary
 
@@ -71,6 +72,17 @@ class GeneratedGeometryMember(Contract):
     geometry_id: UUID
 
 
+class GeneratedClinicalMember(Contract):
+    batch_id: UUID
+    event_ids: Annotated[list[UUID], Field(min_length=1, max_length=256)]
+
+    @model_validator(mode="after")
+    def unique_events(self):
+        if len(set(self.event_ids)) != len(self.event_ids):
+            raise ValueError("duplicate_generated_clinical_event")
+        return self
+
+
 class StateBuildInput(Contract):
     target_revision: Revision
     association_head: Annotated[int, Field(strict=True, ge=0)]
@@ -88,6 +100,9 @@ class StateBuildInput(Contract):
     generated_geometry_members: Annotated[list[GeneratedGeometryMember], Field(max_length=1)] = (
         Field(default_factory=list)
     )
+    generated_clinical_members: Annotated[list[GeneratedClinicalMember], Field(max_length=1)] = (
+        Field(default_factory=list)
+    )
 
     @model_validator(mode="after")
     def membership(self):
@@ -103,6 +118,7 @@ class StateBuildInput(Contract):
             not self.clinical_members
             and not self.imaging_members
             and not self.generated_geometry_members
+            and not self.generated_clinical_members
         ):
             raise ValueError("state_members_required")
         return self
@@ -127,6 +143,13 @@ class GeneratedGeometrySnapshotMember(Contract):
     geometry: GeometrySummary
 
 
+class GeneratedClinicalSnapshotMember(Contract):
+    batch_id: UUID
+    run_id: UUID
+    events: list[GeneratedEvent]
+    source_hash: Hash
+
+
 class SnapshotReport(Contract):
     id: UUID
     patient_id: UUID
@@ -143,6 +166,7 @@ class SnapshotReport(Contract):
     clinical_members: list[ClinicalSnapshotMember]
     imaging_members: list[ImagingSnapshotMember]
     generated_geometry_members: list[GeneratedGeometrySnapshotMember] = Field(default_factory=list)
+    generated_clinical_members: list[GeneratedClinicalSnapshotMember] = Field(default_factory=list)
     missing: list[str]
     conflicts: list[str]
     status: Literal["ready", "ready_partial", "blocked"]
@@ -255,13 +279,16 @@ def _prior(c, p, u, i, table, key, value, model):
         _params(p, u, actor=i.user_id, key=key),
     ).one_or_none()
     if row:
-        legacy_fingerprint = None
-        if table == "twin_snapshots" and not value.generated_geometry_members:
-            # COS-039 requests predate the optional generated membership category.
+        fingerprints = {fingerprint}
+        if table == "twin_snapshots" and not value.generated_clinical_members:
+            # Earlier schemas predate optional generated membership categories.
             legacy = value.model_dump(mode="json")
-            legacy.pop("generated_geometry_members")
-            legacy_fingerprint = science_hash(legacy)
-        if row.input_hash not in (fingerprint, legacy_fingerprint):
+            legacy.pop("generated_clinical_members")
+            fingerprints.add(science_hash(legacy))
+            if not value.generated_geometry_members:
+                legacy.pop("generated_geometry_members")
+                fingerprints.add(science_hash(legacy))
+        if row.input_hash not in fingerprints:
             raise HTTPException(409, detail="command_key_payload_conflict")
         return _read(c, i, p, u, table, row.id, model), fingerprint
     return None, fingerprint
@@ -390,6 +417,11 @@ def _assemble(c, i, p, u, value, storage):
     authorize_patient(c, i, p, u, edit=True)
     if len(value.generated_geometry_members) > 1:
         raise HTTPException(409, detail="one_generated_geometry_per_branch_state_required")
+    if len(value.generated_clinical_members) > 1 or any(
+        not member.event_ids or len(set(member.event_ids)) != len(member.event_ids)
+        for member in value.generated_clinical_members
+    ):
+        raise HTTPException(409, detail="unique_generated_clinical_members_required")
     if value.context != Context.SYNTHETIC:
         raise HTTPException(409, detail="genuine_observed_state_review_not_established")
     if value.branch_id is None:
@@ -409,7 +441,7 @@ def _assemble(c, i, p, u, value, storage):
     parents = [branch.id]
     for action in (SourceAction.INTERNAL, SourceAction.DERIVATIVE):
         require_resource_action(c, i, p, u, branch.id, action)
-    clinical, imaging, conflicts, generated = [], [], [], []
+    clinical, imaging, conflicts, generated, generated_clinical = [], [], [], [], []
     concepts: dict[tuple[str, str], list[str]] = {}
     for member in value.clinical_members:
         if str(member.record_id) not in revision.get("members", []):
@@ -482,9 +514,20 @@ def _assemble(c, i, p, u, value, storage):
 
         for member in value.generated_geometry_members:
             geometry = load_ready_geometry(c, i, p, u, member.geometry_id)
+            run_matches = geometry.run_id == branch.input.run_id
+            if not run_matches:
+                from canceros.simulation_runs import read_run
+
+                common = read_run(c, i, p, u, geometry.run_id)
+                run_matches = (
+                    common.branch_id == branch.id
+                    and common.config.baseline_hash == branch.baseline_hash
+                    and common.input_revision == geometry.input_revision
+                    and common.association_head == geometry.association_head
+                )
             if (
                 geometry.branch_id != branch.id
-                or geometry.run_id != branch.input.run_id
+                or not run_matches
                 or geometry.baseline_hash != branch.baseline_hash
                 or geometry.baseline_measurement_id != branch.input.baseline_measurement_id
                 or geometry.time != value.time
@@ -494,6 +537,44 @@ def _assemble(c, i, p, u, value, storage):
                 raise HTTPException(409, detail="generated_geometry_state_membership_mismatch")
             generated.append(GeneratedGeometrySnapshotMember(geometry=geometry))
             parents.append(geometry.id)
+    if value.generated_clinical_members:
+        from canceros.clinical_generation_runs import read_clinical_batch
+        from canceros.simulation_runs import read_run
+
+        for member in value.generated_clinical_members:
+            batch = read_clinical_batch(c, i, p, u, member.batch_id)
+            run = read_run(c, i, p, u, batch.run_id)
+            if (
+                batch.branch_id != branch.id
+                or run.branch_id != branch.id
+                or run.config.baseline_hash != branch.baseline_hash
+                or batch.config_hash != run.config_hash
+                or batch.input_revision != value.target_revision
+                or run.input_revision != value.target_revision
+                or run.association_head != value.association_head
+                or any(m.geometry.run_id != run.id for m in generated)
+            ):
+                raise HTTPException(409, detail="generated_clinical_state_membership_mismatch")
+            events = {event.event_id: event for event in batch.batch.events}
+            if any(identifier not in events for identifier in member.event_ids):
+                raise HTTPException(409, detail="generated_clinical_event_not_in_batch")
+            selected = [events[identifier] for identifier in member.event_ids]
+            if any(
+                event.run_id != run.id
+                or event.branch_id != branch.id
+                or Decimal(event.relative_day) != Decimal(value.time.value)
+                for event in selected
+            ):
+                raise HTTPException(409, detail="generated_clinical_requires_exact_state_time")
+            generated_clinical.append(
+                GeneratedClinicalSnapshotMember(
+                    batch_id=batch.id,
+                    run_id=run.id,
+                    events=selected,
+                    source_hash=science_hash(batch.model_dump(mode="json")),
+                )
+            )
+            parents.append(batch.id)
     if len(set(parents)) > 256:
         raise HTTPException(422, detail="state_parent_resource_limit_exceeded")
     return (
@@ -504,6 +585,7 @@ def _assemble(c, i, p, u, value, storage):
         imaging,
         sorted(conflicts),
         generated,
+        generated_clinical,
     )
 
 
@@ -517,11 +599,13 @@ def build_state(c, i, p, u, value: StateBuildInput, storage, command_key):
     if prior:
         _usable_resource(c, i, p, u, prior.id)
         return prior
-    branch, revision, parents, clinical, imaging, conflicts, generated = _assemble(
-        c, i, p, u, value, storage
+    branch, revision, parents, clinical, imaging, conflicts, generated, generated_clinical = (
+        _assemble(c, i, p, u, value, storage)
     )
     missing = []
-    if not any(m.role == "current" for m in value.clinical_members):
+    if not any(m.role == "current" for m in value.clinical_members) and not any(
+        event.value.kind != "missing" for member in generated_clinical for event in member.events
+    ):
         missing.append("clinical_not_available_at_this_visit")
     if not any(m.role == "current" for m in value.imaging_members):
         missing.append("imaging_not_available_at_this_visit")
@@ -550,6 +634,7 @@ def build_state(c, i, p, u, value: StateBuildInput, storage, command_key):
         clinical_members=clinical,
         imaging_members=imaging,
         generated_geometry_members=generated,
+        generated_clinical_members=generated_clinical,
         missing=missing,
         conflicts=conflicts,
         status="blocked" if conflicts else "ready_partial" if missing else "ready",
@@ -621,9 +706,18 @@ def read_state(c, i, p, u, identifier):
     if review and review.input.decision == "rejected":
         restrictions.append("engineering_review_rejected")
     actions = ["inspect_history"]
+    common_run_member = bool(snapshot.generated_clinical_members) or any(
+        member.geometry.run_id != branch.input.run_id
+        for member in snapshot.generated_geometry_members
+    )
     if not restrictions:
         actions.append("review_engineering")
-        if review and review.input.decision == "accepted_engineering" and not publication:
+        if (
+            review
+            and review.input.decision == "accepted_engineering"
+            and not publication
+            and not common_run_member
+        ):
             actions.append("publish_private_fixture")
     return StateView(
         snapshot=snapshot,
@@ -636,6 +730,8 @@ def read_state(c, i, p, u, identifier):
         available_actions=actions,
         next_action="Inspect restrictions and rebuild from explicit corrected members"
         if restrictions
+        else "Complete and validate the common run before its separate explicit publication"
+        if common_run_member
         else "Review or explicitly publish this private engineering fixture; genuine scientific review remains pending",
     )
 
@@ -674,6 +770,10 @@ def review_state(c, i, p, u, identifier, value: ReviewInput, command_key):
 
 
 def publish_state(c, i, p, u, identifier, value: PublishInput, command_key):
+    return _publish_state(c, i, p, u, identifier, value, command_key)
+
+
+def _publish_state(c, i, p, u, identifier, value, command_key, completion_id=None):
     _write(c, i, p, u)
     fingerprint = science_hash(
         {"snapshot_id": str(identifier), "input": value.model_dump(mode="json")}
@@ -693,6 +793,17 @@ def publish_state(c, i, p, u, identifier, value: PublishInput, command_key):
         if view.publication.input == value:
             return view.publication
         raise HTTPException(409, detail="snapshot_already_published")
+    branch = read_branch(c, i, p, u, view.snapshot.branch_id)
+    if (
+        view.snapshot.generated_clinical_members
+        or any(
+            member.geometry.run_id != branch.input.run_id
+            for member in view.snapshot.generated_geometry_members
+        )
+    ) and completion_id is None:
+        raise HTTPException(
+            409, detail="common_run_requires_complete_validation_and_separate_publication"
+        )
     if (
         not view.current_use_allowed
         or view.snapshot_hash != value.snapshot_hash
@@ -724,6 +835,107 @@ def publish_state(c, i, p, u, identifier, value: PublishInput, command_key):
         {"snapshot_id": identifier, "review_id": view.review.id},
     )
     return report
+
+
+def publish_complete_run_states(
+    c, i, p, u, state_ids, run_id, expected_revision, expected_head, command_key, *, completion_id
+):
+    """Internal complete-run transaction participant; never commits or advances pointers."""
+    from canceros.simulation_runs import read_run
+
+    _write(c, i, p, u)
+    row = c.execute(
+        text(
+            "SELECT report,report_hash FROM imaging.simulation_completions "
+            "WHERE project_id=:p AND patient_id=:u AND id=:id AND run_id=:run"
+        ),
+        _params(p, u, id=completion_id, run=run_id),
+    ).one_or_none()
+    if row is None or science_hash(row.report) != row.report_hash:
+        raise HTTPException(409, detail="ready_completion_integrity_required")
+    report = row.report
+    run = read_run(c, i, p, u, run_id)
+    _usable_resource(c, i, p, u, completion_id)
+    if (
+        report.get("status") != "ready"
+        or report.get("stage") != "complete"
+        or report.get("validation", {}).get("status") != "engineering_passed"
+        or report.get("run_id") != str(run_id)
+        or report.get("branch_id") != str(run.branch_id)
+        or report.get("config_hash") != run.config_hash
+        or report.get("state_ids") != [str(identifier) for identifier in state_ids]
+        or not state_ids
+        or len(set(state_ids)) != len(state_ids)
+        or report.get("input_revision") != expected_revision
+        or report.get("association_head") != expected_head
+        or run.input_revision != expected_revision
+        or run.association_head != expected_head
+        or expected_revision != _head(c, p, u)
+        or expected_head != _events(c, p, u)
+    ):
+        raise HTTPException(409, detail="complete_run_publication_preconditions_changed")
+    branch = read_branch(c, i, p, u, run.branch_id)
+    views = [read_state(c, i, p, u, identifier) for identifier in state_ids]
+    for view in views:
+        snapshot = view.snapshot
+        run_ids = {
+            *(member.geometry.run_id for member in snapshot.generated_geometry_members),
+            *(member.run_id for member in snapshot.generated_clinical_members),
+        }
+        shared_baseline_reference = (
+            not run_ids
+            and Decimal(snapshot.time.value) == 0
+            and snapshot.time.time_domain == "simulation"
+            and snapshot.time.timeline_origin_id == branch.input.timeline_origin_id
+            and len(snapshot.imaging_members) == 1
+            and snapshot.imaging_members[0].measurement.id == branch.input.baseline_measurement_id
+            and not snapshot.clinical_members
+            and not snapshot.generated_geometry_members
+            and not snapshot.generated_clinical_members
+        )
+        if (
+            snapshot.branch_id != run.branch_id
+            or snapshot.baseline_hash != run.config.baseline_hash
+            or snapshot.input_revision != expected_revision
+            or snapshot.patient_event_head != expected_head
+            or (run_ids != {run_id} and not shared_baseline_reference)
+            or not view.current_use_allowed
+        ):
+            raise HTTPException(409, detail="complete_run_state_membership_mismatch")
+    publications = []
+    for view in views:
+        key = science_hash({"key": command_key, "state": str(view.snapshot.id)})
+        review = review_state(
+            c,
+            i,
+            p,
+            u,
+            view.snapshot.id,
+            ReviewInput(
+                snapshot_hash=view.snapshot_hash,
+                decision="accepted_engineering",
+                evidence_sha256=row.report_hash,
+            ),
+            "complete-review-" + key,
+        )
+        publications.append(
+            _publish_state(
+                c,
+                i,
+                p,
+                u,
+                view.snapshot.id,
+                PublishInput(
+                    snapshot_hash=view.snapshot_hash,
+                    expected_patient_revision=expected_revision,
+                    expected_association_head=expected_head,
+                    expected_review_id=review.id,
+                ),
+                "complete-publish-" + key,
+                completion_id=completion_id,
+            )
+        )
+    return publications
 
 
 def list_states(c, i, p, u, branch_id=None, published_only=False, cursor=None, limit=25):
