@@ -30,6 +30,12 @@ from canceros.scenario_geometry import (
     RunGeometryValidation,
     validate_run_geometry,
 )
+from canceros.simulation_discovery import (
+    BranchPage,
+    DiscoveryPage,
+    discovery_families,
+    list_branches,
+)
 from canceros.simulation_execution import (
     CompletionReport,
     CurrentRunView,
@@ -262,6 +268,27 @@ def state_routes(config, memberships):
                 f"/api/v1/projects/{project_id}/patients/{patient_id}/branches/{result.id}"
             )
             return result
+
+    @router.get("/branches", response_model=BranchPage)
+    def list_branch(
+        project_id: UUID,
+        patient_id: UUID,
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (c, i):
+            return list_branches(c, i, project_id, patient_id)
+
+    @router.get("/scenario-definitions", response_model=DiscoveryPage)
+    def scenario_definitions(
+        project_id: UUID,
+        patient_id: UUID,
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (c, i):
+            from canceros.patient_linkage import authorize_patient
+
+            authorize_patient(c, i, project_id, patient_id)
+            return discovery_families()
 
     @router.get("/branches/{branch_id}", response_model=BranchReport)
     def get_branch(

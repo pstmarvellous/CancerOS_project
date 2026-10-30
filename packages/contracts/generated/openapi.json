@@ -1745,6 +1745,23 @@
         "title": "BranchInput",
         "type": "object"
       },
+      "BranchPage": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/BranchSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "BranchPage",
+        "type": "object"
+      },
       "BranchReport": {
         "additionalProperties": false,
         "properties": {
@@ -1796,6 +1813,41 @@
           "baseline_hash"
         ],
         "title": "BranchReport",
+        "type": "object"
+      },
+      "BranchSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "baseline_hash": {
+            "title": "Baseline Hash",
+            "type": "string"
+          },
+          "branch_id": {
+            "format": "uuid",
+            "title": "Branch Id",
+            "type": "string"
+          },
+          "mode": {
+            "title": "Mode",
+            "type": "string"
+          },
+          "next_action": {
+            "default": "inspect_branch_before_running",
+            "title": "Next Action",
+            "type": "string"
+          },
+          "observed_baseline_verified": {
+            "title": "Observed Baseline Verified",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "branch_id",
+          "baseline_hash",
+          "mode",
+          "observed_baseline_verified"
+        ],
+        "title": "BranchSummary",
         "type": "object"
       },
       "CanonicalGeometry": {
@@ -4444,6 +4496,23 @@
           "her2_status"
         ],
         "title": "DiagnosisInput",
+        "type": "object"
+      },
+      "DiscoveryPage": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ScenarioDiscovery"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "DiscoveryPage",
         "type": "object"
       },
       "EligibilityCheckInput": {
@@ -16193,6 +16262,47 @@
         "title": "ScenarioDefinition",
         "type": "object"
       },
+      "ScenarioDiscovery": {
+        "additionalProperties": false,
+        "properties": {
+          "definition_version": {
+            "title": "Definition Version",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "family": {
+            "enum": [
+              "SC-01",
+              "SC-02",
+              "SC-03",
+              "SC-04",
+              "SC-05"
+            ],
+            "title": "Family",
+            "type": "string"
+          },
+          "next_action": {
+            "default": "check_eligibility_then_create_draft_branch",
+            "title": "Next Action",
+            "type": "string"
+          },
+          "synthetic_only": {
+            "default": true,
+            "title": "Synthetic Only",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "family",
+          "definition_version",
+          "description"
+        ],
+        "title": "ScenarioDiscovery",
+        "type": "object"
+      },
       "ScheduleSlot": {
         "additionalProperties": false,
         "properties": {
@@ -23450,6 +23560,70 @@
       }
     },
     "/api/v1/projects/{project_id}/patients/{patient_id}/branches": {
+      "get": {
+        "operationId": "list_branch_api_v1_projects__project_id__patients__patient_id__branches_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BranchPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Branch"
+      },
       "post": {
         "operationId": "post_branch_api_v1_projects__project_id__patients__patient_id__branches_post",
         "parameters": [
@@ -29157,6 +29331,72 @@
           }
         },
         "summary": "Saved Detail"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/scenario-definitions": {
+      "get": {
+        "operationId": "scenario_definitions_api_v1_projects__project_id__patients__patient_id__scenario_definitions_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiscoveryPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Scenario Definitions"
       }
     },
     "/api/v1/projects/{project_id}/patients/{patient_id}/segmentation-discoveries": {

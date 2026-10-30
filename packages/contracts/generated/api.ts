@@ -572,7 +572,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** List Branch */
+        get: operations["list_branch_api_v1_projects__project_id__patients__patient_id__branches_get"];
         put?: never;
         /** Post Branch */
         post: operations["post_branch_api_v1_projects__project_id__patients__patient_id__branches_post"];
@@ -1749,6 +1750,23 @@ export interface paths {
         };
         /** Saved Detail */
         get: operations["saved_detail_api_v1_projects__project_id__patients__patient_id__saved_interpretations__saved_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/scenario-definitions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Scenario Definitions */
+        get: operations["scenario_definitions_api_v1_projects__project_id__patients__patient_id__scenario_definitions_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -3249,6 +3267,11 @@ export interface components {
              */
             timeline_origin_id: string;
         };
+        /** BranchPage */
+        BranchPage: {
+            /** Items */
+            items: components["schemas"]["BranchSummary"][];
+        };
         /** BranchReport */
         BranchReport: {
             /** Baseline Hash */
@@ -3285,6 +3308,25 @@ export interface components {
              * @constant
              */
             scientific_review: "pending";
+        };
+        /** BranchSummary */
+        BranchSummary: {
+            /** Baseline Hash */
+            baseline_hash: string;
+            /**
+             * Branch Id
+             * Format: uuid
+             */
+            branch_id: string;
+            /** Mode */
+            mode: string;
+            /**
+             * Next Action
+             * @default inspect_branch_before_running
+             */
+            next_action: string;
+            /** Observed Baseline Verified */
+            observed_baseline_verified: boolean;
         };
         /** CanonicalGeometry */
         CanonicalGeometry: {
@@ -4482,6 +4524,11 @@ export interface components {
             time: components["schemas"]["ClinicalTime"];
             /** Visit Id */
             visit_id?: string | null;
+        };
+        /** DiscoveryPage */
+        DiscoveryPage: {
+            /** Items */
+            items: components["schemas"]["ScenarioDiscovery"][];
         };
         /** EligibilityCheckInput */
         EligibilityCheckInput: {
@@ -9580,6 +9627,28 @@ export interface components {
              */
             family: "SC-01" | "SC-02" | "SC-03" | "SC-04" | "SC-05";
         };
+        /** ScenarioDiscovery */
+        ScenarioDiscovery: {
+            /** Definition Version */
+            definition_version: string;
+            /** Description */
+            description: string;
+            /**
+             * Family
+             * @enum {string}
+             */
+            family: "SC-01" | "SC-02" | "SC-03" | "SC-04" | "SC-05";
+            /**
+             * Next Action
+             * @default check_eligibility_then_create_draft_branch
+             */
+            next_action: string;
+            /**
+             * Synthetic Only
+             * @default true
+             */
+            synthetic_only: boolean;
+        };
         /** ScheduleSlot */
         ScheduleSlot: {
             /**
@@ -12768,6 +12837,40 @@ export interface operations {
             };
         };
     };
+    list_branch_api_v1_projects__project_id__patients__patient_id__branches_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BranchPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     post_branch_api_v1_projects__project_id__patients__patient_id__branches_post: {
         parameters: {
             query?: never;
@@ -15398,6 +15501,40 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PersistedInterpretation"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    scenario_definitions_api_v1_projects__project_id__patients__patient_id__scenario_definitions_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiscoveryPage"];
                 };
             };
             /** @description Validation Error */

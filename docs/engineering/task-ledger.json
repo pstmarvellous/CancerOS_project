@@ -20328,17 +20328,34 @@
     "TASK-COS-068"
    ],
    "allowed_scope": "Phase 4 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
-   "status": "planned",
+   "status": "implemented_unverified",
    "status_history": [
-    "planned"
+    "planned",
+    "in_progress",
+    "implemented_unverified"
    ],
    "owner_responsibility": "Primary agent; specialist self-review only",
-   "actual_touched_files": [],
-   "decisions": [],
-   "checks_evidence": [],
+   "actual_touched_files": [
+    "src/canceros/simulation_discovery.py",
+    "src/canceros/state_api.py",
+    "src/canceros/api.py",
+    "tests/test_simulation_closure.py",
+    "scripts/generate_contracts.py",
+    "scripts/run_checks.py",
+    "packages/contracts/generated/openapi.json",
+    "packages/contracts/generated/api.ts",
+    "docs/engineering/architecture-decisions/ADR-054-simulation-branch-closure.md",
+    "docs/engineering/runbooks/simulation-closure.md"
+   ],
+   "decisions": [
+    "ADR-054: discovery reads over owned engine state; lifecycle keeps existing transactional semantics; no duplicated logic or destructive endpoints"
+   ],
+   "checks_evidence": [
+    "docs/engineering/evidence/simulation-closure.json: 3 passed (five-family discovery, owned branch listing with isolation, HTTP paths/auth); Ruff/mypy/migrations/contract drift PASS"
+   ],
    "known_failures": [],
    "blocked_on": [],
-   "next_action": "Execute in Phase 4 order; optional P1 prompts remain gated"
+   "next_action": "Continue COS-069 twin state timeline comparison API closure; COS-071 covers system test coverage"
   },
   {
    "id": "COS-069",
