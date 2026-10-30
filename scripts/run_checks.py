@@ -25,6 +25,28 @@ TARGETS = {
         [PY, "-m", "pytest", "tests/test_context_runs.py", "--tb=line"],
         [PY, "scripts/check_contract_drift.py"],
     ],
+    "interpretation-generation": [
+        [PY, "scripts/migrate_test.py"],
+        [
+            PY,
+            "-m",
+            "ruff",
+            "check",
+            "src/canceros",
+            "tests/test_interpretation_runs.py",
+            "tests/test_context_runs.py",
+        ],
+        [PY, "-m", "mypy"],
+        [
+            PY,
+            "-m",
+            "pytest",
+            "tests/test_interpretation_runs.py",
+            "tests/test_context_runs.py",
+            "--tb=line",
+        ],
+        [PY, "scripts/check_contract_drift.py"],
+    ],
     "evidence-corpus": [
         [PY, "scripts/migrate_test.py"],
         [

@@ -1910,6 +1910,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/interpretations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Interpretation Build */
+        post: operations["interpretation_build_api_v1_projects__project_id__patients__patient_id__states__state_id__interpretations_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/publications": {
         parameters: {
             query?: never;
@@ -6207,6 +6224,97 @@ export interface components {
              * @default []
              */
             treatment_history: string[];
+        };
+        /** InterpretationFinding */
+        InterpretationFinding: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "observed_measurement" | "synthetic_scenario" | "general_background" | "gap";
+            /**
+             * Measurement Refs
+             * @default []
+             */
+            measurement_refs: string[];
+            /** Metric Code */
+            metric_code?: string | null;
+            /** Metric Unit */
+            metric_unit?: string | null;
+            /** Metric Value */
+            metric_value?: string | null;
+            /**
+             * Passage Refs
+             * @default []
+             */
+            passage_refs: string[];
+            /** Text */
+            text: string;
+        };
+        /** InterpretationInput */
+        InterpretationInput: {
+            /**
+             * Context Snapshot Id
+             * Format: uuid
+             */
+            context_snapshot_id: string;
+            /** Expected Context Hash */
+            expected_context_hash?: string | null;
+            /**
+             * Mode
+             * @default template
+             * @enum {string}
+             */
+            mode: "template" | "external_candidate";
+        };
+        /** InterpretationReport */
+        InterpretationReport: {
+            /** Context Hash */
+            context_hash: string;
+            /**
+             * Context Snapshot Id
+             * Format: uuid
+             */
+            context_snapshot_id: string;
+            /**
+             * Execution Mode
+             * @default rule_based_summary
+             * @enum {string}
+             */
+            execution_mode: "rule_based_summary" | "external_candidate_private";
+            /** Findings */
+            findings: components["schemas"]["InterpretationFinding"][];
+            /**
+             * Limitations
+             * @default [
+             *       "Rule-based summary only; no clinical interpretation, diagnosis or advice.",
+             *       "External candidates remain private until grounding/safety validation passes."
+             *     ]
+             */
+            limitations: string[];
+            /** Next Action */
+            next_action: string;
+            /**
+             * Schema Version
+             * @default interpretation/1
+             * @constant
+             */
+            schema_version: "interpretation/1";
+            /** Snapshot Hash */
+            snapshot_hash: string;
+            /** Summary */
+            summary: string;
+            /**
+             * Uncertainties
+             * @default []
+             */
+            uncertainties: string[];
+            /**
+             * Visibility
+             * @default visible_template
+             * @enum {string}
+             */
+            visibility: "visible_template" | "private_candidate";
         };
         /** KnowledgeTraversal */
         KnowledgeTraversal: {
@@ -15109,6 +15217,45 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["StateView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    interpretation_build_api_v1_projects__project_id__patients__patient_id__states__state_id__interpretations_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                state_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InterpretationInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterpretationReport"];
                 };
             };
             /** @description Validation Error */

@@ -20088,17 +20088,38 @@
     "TASK-COS-063"
    ],
    "allowed_scope": "Phase 4 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
-   "status": "planned",
+   "status": "implemented_unverified",
    "status_history": [
-    "planned"
+    "planned",
+    "in_progress",
+    "implemented_unverified"
    ],
    "owner_responsibility": "Primary agent; specialist self-review only",
-   "actual_touched_files": [],
-   "decisions": [],
-   "checks_evidence": [],
+   "actual_touched_files": [
+    "src/canceros/interpretation_contracts.py",
+    "src/canceros/interpretation_runs.py",
+    "src/canceros/interpretation_api.py",
+    "src/canceros/api.py",
+    "migrations/versions/0046_interpretations.py",
+    "tests/test_interpretation_runs.py",
+    "apps/web/components/interpretation-panel.tsx",
+    "apps/web/components/interpretation-panel.test.tsx",
+    "scripts/generate_contracts.py",
+    "scripts/run_checks.py",
+    "packages/contracts/generated/openapi.json",
+    "packages/contracts/generated/api.ts",
+    "docs/engineering/architecture-decisions/ADR-049-template-interpretation.md",
+    "docs/engineering/runbooks/interpretation-generation.md"
+   ],
+   "decisions": [
+    "ADR-049: deterministic template interpretation; external candidates private until COS-064; no model arithmetic or publication"
+   ],
+   "checks_evidence": [
+    "docs/engineering/evidence/interpretation-generation.json: 11 passed (5 interpretation + 6 context); panel 2 passed; Ruff/mypy/migrations/contract drift PASS"
+   ],
    "known_failures": [],
    "blocked_on": [],
-   "next_action": "Execute in Phase 4 order; optional P1 prompts remain gated"
+   "next_action": "Continue COS-064 grounding and safety gate with 60-case suite; genuine curation and SPEC-011 evaluation remain open"
   },
   {
    "id": "COS-064",

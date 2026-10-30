@@ -1,0 +1,79 @@
+{
+  "task": "COS-063",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "explanation",
+      "returncode": 0,
+      "output": "\n=== AI.LLM Grounded explanation ===\n Structured interpretation referencing exact measurements, provenance, evidence, uncertainty and limits. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- PRECEDES AI.FUSE Late multimodal fusion\n  <-- PRECEDES AI.RETR Evidence retrieval\n  --> PRECEDES AI.GUARD Output safety validation\n  <-- HAS_STEP WF.AI Evidence linked interpretation\n  <-- WORKFLOW_PRECEDES AI.RETR Evidence retrieval\n  --> WORKFLOW_PRECEDES AI.GUARD Output safety validation\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n  <-- CONSTRAINS GOV.RECIST Formal response boundary\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "explanation",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "explanation",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "AI.LLM"
+  ],
+  "academic_behavior_ids": [],
+  "edges": [
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.RETR",
+      "relation": "PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.LLM",
+      "relation": "PRECEDES",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.RETR",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.LLM",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "GOV.RECIST",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.LLM"
+    }
+  ],
+  "mapped_source_ids": [],
+  "source_sections_inspected": "SPEC-006 section 12; SPEC-008 section 13.6; SPEC-010 SAFE-20/21"
+}

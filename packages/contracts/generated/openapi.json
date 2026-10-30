@@ -8905,6 +8905,214 @@
         "title": "InterpretationContext",
         "type": "object"
       },
+      "InterpretationFinding": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "observed_measurement",
+              "synthetic_scenario",
+              "general_background",
+              "gap"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "measurement_refs": {
+            "default": [],
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Measurement Refs",
+            "type": "array"
+          },
+          "metric_code": {
+            "anyOf": [
+              {
+                "pattern": "^[a-zA-Z0-9_.-]{1,64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metric Code"
+          },
+          "metric_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metric Unit"
+          },
+          "metric_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metric Value"
+          },
+          "passage_refs": {
+            "default": [],
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Passage Refs",
+            "type": "array"
+          },
+          "text": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "text"
+        ],
+        "title": "InterpretationFinding",
+        "type": "object"
+      },
+      "InterpretationInput": {
+        "additionalProperties": false,
+        "properties": {
+          "context_snapshot_id": {
+            "format": "uuid",
+            "title": "Context Snapshot Id",
+            "type": "string"
+          },
+          "expected_context_hash": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Context Hash"
+          },
+          "mode": {
+            "default": "template",
+            "enum": [
+              "template",
+              "external_candidate"
+            ],
+            "title": "Mode",
+            "type": "string"
+          }
+        },
+        "required": [
+          "context_snapshot_id"
+        ],
+        "title": "InterpretationInput",
+        "type": "object"
+      },
+      "InterpretationReport": {
+        "additionalProperties": false,
+        "properties": {
+          "context_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Context Hash",
+            "type": "string"
+          },
+          "context_snapshot_id": {
+            "format": "uuid",
+            "title": "Context Snapshot Id",
+            "type": "string"
+          },
+          "execution_mode": {
+            "default": "rule_based_summary",
+            "enum": [
+              "rule_based_summary",
+              "external_candidate_private"
+            ],
+            "title": "Execution Mode",
+            "type": "string"
+          },
+          "findings": {
+            "items": {
+              "$ref": "#/components/schemas/InterpretationFinding"
+            },
+            "maxItems": 20,
+            "title": "Findings",
+            "type": "array"
+          },
+          "limitations": {
+            "default": [
+              "Rule-based summary only; no clinical interpretation, diagnosis or advice.",
+              "External candidates remain private until grounding/safety validation passes."
+            ],
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "next_action": {
+            "title": "Next Action",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "interpretation/1",
+            "default": "interpretation/1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "snapshot_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Snapshot Hash",
+            "type": "string"
+          },
+          "summary": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Summary",
+            "type": "string"
+          },
+          "uncertainties": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Uncertainties",
+            "type": "array"
+          },
+          "visibility": {
+            "default": "visible_template",
+            "enum": [
+              "visible_template",
+              "private_candidate"
+            ],
+            "title": "Visibility",
+            "type": "string"
+          }
+        },
+        "required": [
+          "context_snapshot_id",
+          "context_hash",
+          "snapshot_hash",
+          "summary",
+          "findings",
+          "next_action"
+        ],
+        "title": "InterpretationReport",
+        "type": "object"
+      },
       "KnowledgeTraversal": {
         "additionalProperties": false,
         "properties": {
@@ -29032,6 +29240,92 @@
           }
         },
         "summary": "Get State"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/interpretations": {
+      "post": {
+        "operationId": "interpretation_build_api_v1_projects__project_id__patients__patient_id__states__state_id__interpretations_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "state_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "State Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InterpretationInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InterpretationReport"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Interpretation Build"
       }
     },
     "/api/v1/projects/{project_id}/patients/{patient_id}/states/{state_id}/publications": {

@@ -50,17 +50,19 @@ SNAPSHOT_ID = uuid4()
 def build(monkeypatch, value: ContextBuildInput, day="10", stale=False):
     view = state_view(day)
     view = view.model_copy(update={"stale": stale})
-    value = value.model_copy(update={"snapshot_id": SNAPSHOT_ID})
+    snapshot_id = value.snapshot_id
     monkeypatch.setattr("canceros.context_runs.read_state", lambda *a, **k: view)
     monkeypatch.setattr("canceros.context_runs.authorize_patient", lambda *a, **k: None)
     monkeypatch.setattr("canceros.context_runs.authorize_project", lambda *a, **k: None)
-    return build_context(None, Identity("u", {}), PROJECT, PATIENT, value)
+    built = build_context(None, Identity("u", {}), PROJECT, PATIENT, value)
+    assert built.snapshot_id == snapshot_id
+    return built
 
 
 def test_context_separates_measurements_and_preserves_snapshot_identity(monkeypatch):
     context = build(
         monkeypatch,
-        ContextBuildInput(patient_id=PATIENT, snapshot_id=uuid4()),
+        ContextBuildInput(patient_id=PATIENT, snapshot_id=SNAPSHOT_ID),
     )
     expected_hash = state_view().snapshot_hash
     assert context.snapshot_hash == expected_hash
@@ -71,7 +73,7 @@ def test_context_separates_measurements_and_preserves_snapshot_identity(monkeypa
     assert len({m.reference_id for m in context.measurements}) == 2
     again = build(
         monkeypatch,
-        ContextBuildInput(patient_id=PATIENT, snapshot_id=uuid4()),
+        ContextBuildInput(patient_id=PATIENT, snapshot_id=SNAPSHOT_ID),
     )
     assert again.context_hash == context.context_hash
     assert again.payload_hash == context.payload_hash
