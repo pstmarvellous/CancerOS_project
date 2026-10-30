@@ -20,6 +20,7 @@ from canceros.grounding_api import grounding_routes
 from canceros.identity import SQLMemberships, authenticate, authorize_project
 from canceros.imaging_api import imaging_routes
 from canceros.interpretation_api import interpretation_routes
+from canceros.interpretation_job_api import interpretation_job_routes
 from canceros.knowledge_api import knowledge_routes
 from canceros.patient_api import patient_routes
 from canceros.provider_api import provider_routes
@@ -186,4 +187,5 @@ def create_app(settings: Settings | None = None, membership_repository=None) -> 
     app.include_router(interpretation_routes(config, memberships))
     app.include_router(grounding_routes(config, memberships))
     app.include_router(saved_routes(config, memberships))
+    app.include_router(interpretation_job_routes(config, memberships))
     return app

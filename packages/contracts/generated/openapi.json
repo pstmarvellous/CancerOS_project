@@ -9254,6 +9254,179 @@
         "title": "InterpretationInput",
         "type": "object"
       },
+      "InterpretationJob": {
+        "additionalProperties": false,
+        "properties": {
+          "context_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Context Hash",
+            "type": "string"
+          },
+          "context_snapshot_id": {
+            "format": "uuid",
+            "title": "Context Snapshot Id",
+            "type": "string"
+          },
+          "execution_mode": {
+            "enum": [
+              "rule_based_summary",
+              "external_candidate_private"
+            ],
+            "title": "Execution Mode",
+            "type": "string"
+          },
+          "fallback_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fallback Label"
+          },
+          "finding_count": {
+            "minimum": 0.0,
+            "title": "Finding Count",
+            "type": "integer"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "next_action": {
+            "title": "Next Action",
+            "type": "string"
+          },
+          "reason_codes": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Reason Codes",
+            "type": "array"
+          },
+          "saved_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Saved Id"
+          },
+          "snapshot_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Snapshot Hash",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "validated_ready",
+              "failed_grounding",
+              "withheld_insufficient_evidence"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "visibility": {
+            "enum": [
+              "visible_template",
+              "private_candidate"
+            ],
+            "title": "Visibility",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "context_snapshot_id",
+          "context_hash",
+          "snapshot_hash",
+          "execution_mode",
+          "visibility",
+          "status",
+          "finding_count",
+          "next_action"
+        ],
+        "title": "InterpretationJob",
+        "type": "object"
+      },
+      "InterpretationJobInput": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_snapshot_hash": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Snapshot Hash"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9._-]+$",
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "mode": {
+            "default": "template",
+            "enum": [
+              "template",
+              "external_candidate"
+            ],
+            "title": "Mode",
+            "type": "string"
+          },
+          "purpose": {
+            "default": "research_summary",
+            "enum": [
+              "research_summary",
+              "fact_extraction"
+            ],
+            "title": "Purpose",
+            "type": "string"
+          },
+          "state_id": {
+            "format": "uuid",
+            "title": "State Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "state_id",
+          "idempotency_key"
+        ],
+        "title": "InterpretationJobInput",
+        "type": "object"
+      },
+      "InterpretationJobPage": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/InterpretationJob"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "InterpretationJobPage",
+        "type": "object"
+      },
       "InterpretationPersistInput": {
         "additionalProperties": false,
         "properties": {
@@ -25999,6 +26172,234 @@
           }
         },
         "summary": "Export View"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/interpretation-jobs": {
+      "get": {
+        "operationId": "job_list_api_v1_projects__project_id__patients__patient_id__interpretation_jobs_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InterpretationJobPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Job List"
+      },
+      "post": {
+        "operationId": "job_submit_api_v1_projects__project_id__patients__patient_id__interpretation_jobs_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9._-]+$",
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InterpretationJobInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InterpretationJob"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Job Submit"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/interpretation-jobs/{job_id}": {
+      "get": {
+        "operationId": "job_detail_api_v1_projects__project_id__patients__patient_id__interpretation_jobs__job_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Job Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InterpretationJob"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Job Detail"
       }
     },
     "/api/v1/projects/{project_id}/patients/{patient_id}/lesion-associations": {

@@ -89,6 +89,13 @@ TARGETS = {
         [PY, "-m", "pytest", "tests/test_twin_closure.py", "--tb=line"],
         [PY, "scripts/check_contract_drift.py"],
     ],
+    "ai-closure": [
+        [PY, "scripts/migrate_test.py"],
+        [PY, "-m", "ruff", "check", "src/canceros", "tests/test_ai_closure.py"],
+        [PY, "-m", "mypy"],
+        [PY, "-m", "pytest", "tests/test_ai_closure.py", "--tb=line"],
+        [PY, "scripts/check_contract_drift.py"],
+    ],
     "evidence-corpus": [
         [PY, "scripts/migrate_test.py"],
         [

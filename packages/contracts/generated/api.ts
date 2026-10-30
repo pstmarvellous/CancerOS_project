@@ -1059,6 +1059,41 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/interpretation-jobs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Job List */
+        get: operations["job_list_api_v1_projects__project_id__patients__patient_id__interpretation_jobs_get"];
+        put?: never;
+        /** Job Submit */
+        post: operations["job_submit_api_v1_projects__project_id__patients__patient_id__interpretation_jobs_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/interpretation-jobs/{job_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Job Detail */
+        get: operations["job_detail_api_v1_projects__project_id__patients__patient_id__interpretation_jobs__job_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/lesion-associations": {
         parameters: {
             query?: never;
@@ -6605,6 +6640,80 @@ export interface components {
              * @enum {string}
              */
             mode: "template" | "external_candidate";
+        };
+        /** InterpretationJob */
+        InterpretationJob: {
+            /** Context Hash */
+            context_hash: string;
+            /**
+             * Context Snapshot Id
+             * Format: uuid
+             */
+            context_snapshot_id: string;
+            /**
+             * Execution Mode
+             * @enum {string}
+             */
+            execution_mode: "rule_based_summary" | "external_candidate_private";
+            /** Fallback Label */
+            fallback_label?: string | null;
+            /** Finding Count */
+            finding_count: number;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Next Action */
+            next_action: string;
+            /**
+             * Reason Codes
+             * @default []
+             */
+            reason_codes: string[];
+            /** Saved Id */
+            saved_id?: string | null;
+            /** Snapshot Hash */
+            snapshot_hash: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "validated_ready" | "failed_grounding" | "withheld_insufficient_evidence";
+            /**
+             * Visibility
+             * @enum {string}
+             */
+            visibility: "visible_template" | "private_candidate";
+        };
+        /** InterpretationJobInput */
+        InterpretationJobInput: {
+            /** Expected Snapshot Hash */
+            expected_snapshot_hash?: string | null;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Mode
+             * @default template
+             * @enum {string}
+             */
+            mode: "template" | "external_candidate";
+            /**
+             * Purpose
+             * @default research_summary
+             * @enum {string}
+             */
+            purpose: "research_summary" | "fact_extraction";
+            /**
+             * State Id
+             * Format: uuid
+             */
+            state_id: string;
+        };
+        /** InterpretationJobPage */
+        InterpretationJobPage: {
+            /** Items */
+            items: components["schemas"]["InterpretationJob"][];
         };
         /** InterpretationPersistInput */
         InterpretationPersistInput: {
@@ -13979,6 +14088,114 @@ export interface operations {
                     "application/json": {
                         [key: string]: unknown;
                     };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    job_list_api_v1_projects__project_id__patients__patient_id__interpretation_jobs_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterpretationJobPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    job_submit_api_v1_projects__project_id__patients__patient_id__interpretation_jobs_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "idempotency-key": string;
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InterpretationJobInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterpretationJob"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    job_detail_api_v1_projects__project_id__patients__patient_id__interpretation_jobs__job_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterpretationJob"];
                 };
             };
             /** @description Validation Error */

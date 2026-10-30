@@ -20422,17 +20422,36 @@
     "TASK-COS-070"
    ],
    "allowed_scope": "Phase 4 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
-   "status": "planned",
+   "status": "implemented_unverified",
    "status_history": [
-    "planned"
+    "planned",
+    "in_progress",
+    "implemented_unverified"
    ],
    "owner_responsibility": "Primary agent; specialist self-review only",
-   "actual_touched_files": [],
-   "decisions": [],
-   "checks_evidence": [],
+   "actual_touched_files": [
+    "src/canceros/interpretation_jobs_contracts.py",
+    "src/canceros/interpretation_jobs.py",
+    "src/canceros/interpretation_job_api.py",
+    "src/canceros/api.py",
+    "migrations/versions/0049_interpretation_jobs.py",
+    "tests/test_ai_closure.py",
+    "scripts/generate_contracts.py",
+    "scripts/run_checks.py",
+    "packages/contracts/generated/openapi.json",
+    "packages/contracts/generated/api.ts",
+    "docs/engineering/architecture-decisions/ADR-056-interpretation-job-closure.md",
+    "docs/engineering/runbooks/ai-closure.md"
+   ],
+   "decisions": [
+    "ADR-056: job orchestration over context/template/gate/persist; external mode closed; no model proxy or tool gateway"
+   ],
+   "checks_evidence": [
+    "docs/engineering/evidence/ai-closure.json: 3 passed (job submit/validate/persist/replay with isolation, external/stale closure, HTTP job paths/auth); Ruff/mypy/migrations/contract drift PASS"
+   ],
    "known_failures": [],
    "blocked_on": [],
-   "next_action": "Execute in Phase 4 order; optional P1 prompts remain gated"
+   "next_action": "Continue COS-071 conformance gate; live behavior, genuine curation and SPEC-011 evaluation remain open"
   },
   {
    "id": "COS-071",
