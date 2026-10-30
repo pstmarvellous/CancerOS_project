@@ -1,6 +1,56 @@
 {
   "components": {
     "schemas": {
+      "AcquisitionSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "file_count": {
+            "title": "File Count",
+            "type": "integer"
+          },
+          "frame_shape": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Frame Shape",
+            "type": "array"
+          },
+          "import_id": {
+            "format": "uuid",
+            "title": "Import Id",
+            "type": "string"
+          },
+          "orientation": {
+            "title": "Orientation",
+            "type": "string"
+          },
+          "series_id": {
+            "format": "uuid",
+            "title": "Series Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "import_id",
+          "study_id",
+          "series_id",
+          "file_count",
+          "status",
+          "frame_shape",
+          "orientation"
+        ],
+        "title": "AcquisitionSummary",
+        "type": "object"
+      },
       "AdapterInput": {
         "additionalProperties": false,
         "properties": {
@@ -16284,6 +16334,47 @@
         "title": "SegmentationAnnotation",
         "type": "object"
       },
+      "SegmentationDiscovery": {
+        "additionalProperties": false,
+        "properties": {
+          "batch_id": {
+            "format": "uuid",
+            "title": "Batch Id",
+            "type": "string"
+          },
+          "label_value": {
+            "title": "Label Value",
+            "type": "integer"
+          },
+          "mask_type": {
+            "title": "Mask Type",
+            "type": "string"
+          },
+          "next_action": {
+            "default": "open_segmentation_qc_or_measurement_selection",
+            "title": "Next Action",
+            "type": "string"
+          },
+          "qc_status": {
+            "title": "Qc Status",
+            "type": "string"
+          },
+          "segmentation_id": {
+            "format": "uuid",
+            "title": "Segmentation Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "segmentation_id",
+          "batch_id",
+          "label_value",
+          "mask_type",
+          "qc_status"
+        ],
+        "title": "SegmentationDiscovery",
+        "type": "object"
+      },
       "SegmentationMetrics": {
         "additionalProperties": false,
         "properties": {
@@ -18458,6 +18549,57 @@
           "next_action"
         ],
         "title": "StateView",
+        "type": "object"
+      },
+      "StudyPage": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/StudySummary"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "StudyPage",
+        "type": "object"
+      },
+      "StudySummary": {
+        "additionalProperties": false,
+        "properties": {
+          "import_count": {
+            "title": "Import Count",
+            "type": "integer"
+          },
+          "next_action": {
+            "default": "select_study_for_geometry_or_segmentation_review",
+            "title": "Next Action",
+            "type": "string"
+          },
+          "series_count": {
+            "title": "Series Count",
+            "type": "integer"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "study_id": {
+            "title": "Study Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "study_id",
+          "import_count",
+          "series_count",
+          "status"
+        ],
+        "title": "StudySummary",
         "type": "object"
       },
       "Surface": {
@@ -22991,6 +23133,82 @@
           }
         },
         "summary": "Patient Detail View"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/acquisitions/{import_id}": {
+      "get": {
+        "operationId": "acquisition_detail_api_v1_projects__project_id__patients__patient_id__acquisitions__import_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "import_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Import Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcquisitionSummary"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Acquisition Detail"
       }
     },
     "/api/v1/projects/{project_id}/patients/{patient_id}/annotation-batches": {
@@ -28941,6 +29159,76 @@
         "summary": "Saved Detail"
       }
     },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/segmentation-discoveries": {
+      "get": {
+        "operationId": "segmentation_discovery_api_v1_projects__project_id__patients__patient_id__segmentation_discoveries_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SegmentationDiscovery"
+                  },
+                  "title": "Response Segmentation Discovery Api V1 Projects  Project Id  Patients  Patient Id  Segmentation Discoveries Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Segmentation Discovery"
+      }
+    },
     "/api/v1/projects/{project_id}/patients/{patient_id}/segmentation-qc-reports": {
       "post": {
         "operationId": "segmentation_qc_api_v1_projects__project_id__patients__patient_id__segmentation_qc_reports_post",
@@ -30753,6 +31041,72 @@
           }
         },
         "summary": "Saved Reuse"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/studies": {
+      "get": {
+        "operationId": "study_list_api_v1_projects__project_id__patients__patient_id__studies_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudyPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Study List"
       }
     },
     "/api/v1/projects/{project_id}/patients/{patient_id}/synthetic-geometry-results/{result_id}": {

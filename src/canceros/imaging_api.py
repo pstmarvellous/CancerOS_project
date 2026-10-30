@@ -22,6 +22,14 @@ from canceros.annotation_import import (
     read_annotation_batch,
 )
 from canceros.identity import authenticate
+from canceros.imaging_discovery import (
+    AcquisitionSummary,
+    SegmentationDiscovery,
+    StudyPage,
+    discovery_segmentations,
+    list_studies,
+    read_acquisition,
+)
 from canceros.imaging_ingestion import (
     ImagingImportReport,
     ImagingPreviewInput,
@@ -165,6 +173,36 @@ def imaging_routes(config, memberships):
     ):
         with session(authorization) as (connection, identity):
             return confirm_import(connection, identity, project_id, patient_id, import_id)
+
+    @router.get("/studies", response_model=StudyPage)
+    def study_list(
+        project_id: UUID,
+        patient_id: UUID,
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (connection, identity):
+            return list_studies(connection, identity, project_id, patient_id)
+
+    @router.get("/acquisitions/{import_id}", response_model=AcquisitionSummary)
+    def acquisition_detail(
+        project_id: UUID,
+        patient_id: UUID,
+        import_id: UUID,
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (connection, identity):
+            return read_acquisition(connection, identity, project_id, patient_id, import_id)
+
+    @router.get(
+        "/segmentation-discoveries", response_model=list[SegmentationDiscovery]
+    )
+    def segmentation_discovery(
+        project_id: UUID,
+        patient_id: UUID,
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (connection, identity):
+            return discovery_segmentations(connection, identity, project_id, patient_id)
 
     @router.post("/geometry-validations", response_model=GeometryReport, status_code=201)
     def geometry_validation(

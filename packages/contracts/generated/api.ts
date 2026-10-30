@@ -497,6 +497,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/acquisitions/{import_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Acquisition Detail */
+        get: operations["acquisition_detail_api_v1_projects__project_id__patients__patient_id__acquisitions__import_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/annotation-batches": {
         parameters: {
             query?: never;
@@ -1740,6 +1757,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/segmentation-discoveries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Segmentation Discovery */
+        get: operations["segmentation_discovery_api_v1_projects__project_id__patients__patient_id__segmentation_discoveries_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/segmentation-qc-reports": {
         parameters: {
             query?: never;
@@ -2097,6 +2131,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/studies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Study List */
+        get: operations["study_list_api_v1_projects__project_id__patients__patient_id__studies_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/synthetic-geometry-results/{result_id}": {
         parameters: {
             query?: never;
@@ -2373,6 +2424,32 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AcquisitionSummary */
+        AcquisitionSummary: {
+            /** File Count */
+            file_count: number;
+            /** Frame Shape */
+            frame_shape: number[];
+            /**
+             * Import Id
+             * Format: uuid
+             */
+            import_id: string;
+            /** Orientation */
+            orientation: string;
+            /**
+             * Series Id
+             * Format: uuid
+             */
+            series_id: string;
+            /** Status */
+            status: string;
+            /**
+             * Study Id
+             * Format: uuid
+             */
+            study_id: string;
+        };
         /** AdapterInput */
         AdapterInput: {
             /**
@@ -9588,6 +9665,30 @@ export interface components {
              */
             technical_qc: "pending" | "pass" | "fail";
         };
+        /** SegmentationDiscovery */
+        SegmentationDiscovery: {
+            /**
+             * Batch Id
+             * Format: uuid
+             */
+            batch_id: string;
+            /** Label Value */
+            label_value: number;
+            /** Mask Type */
+            mask_type: string;
+            /**
+             * Next Action
+             * @default open_segmentation_qc_or_measurement_selection
+             */
+            next_action: string;
+            /** Qc Status */
+            qc_status: string;
+            /**
+             * Segmentation Id
+             * Format: uuid
+             */
+            segmentation_id: string;
+        };
         /** SegmentationMetrics */
         SegmentationMetrics: {
             /** Absolute Volume Error Mm3 */
@@ -10463,6 +10564,27 @@ export interface components {
             snapshot_hash: string;
             /** Stale */
             stale: boolean;
+        };
+        /** StudyPage */
+        StudyPage: {
+            /** Items */
+            items: components["schemas"]["StudySummary"][];
+        };
+        /** StudySummary */
+        StudySummary: {
+            /** Import Count */
+            import_count: number;
+            /**
+             * Next Action
+             * @default select_study_for_geometry_or_segmentation_review
+             */
+            next_action: string;
+            /** Series Count */
+            series_count: number;
+            /** Status */
+            status: string;
+            /** Study Id */
+            study_id: string;
         };
         /** Surface */
         Surface: {
@@ -12486,6 +12608,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PatientDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    acquisition_detail_api_v1_projects__project_id__patients__patient_id__acquisitions__import_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                import_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AcquisitionSummary"];
                 };
             };
             /** @description Validation Error */
@@ -15254,6 +15411,40 @@ export interface operations {
             };
         };
     };
+    segmentation_discovery_api_v1_projects__project_id__patients__patient_id__segmentation_discoveries_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SegmentationDiscovery"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     segmentation_qc_api_v1_projects__project_id__patients__patient_id__segmentation_qc_reports_post: {
         parameters: {
             query?: never;
@@ -16026,6 +16217,40 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PersistedInterpretation"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    study_list_api_v1_projects__project_id__patients__patient_id__studies_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StudyPage"];
                 };
             };
             /** @description Validation Error */

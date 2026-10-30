@@ -20284,17 +20284,34 @@
     "TASK-COS-067"
    ],
    "allowed_scope": "Phase 4 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
-   "status": "planned",
+   "status": "implemented_unverified",
    "status_history": [
-    "planned"
+    "planned",
+    "in_progress",
+    "implemented_unverified"
    ],
    "owner_responsibility": "Primary agent; specialist self-review only",
-   "actual_touched_files": [],
-   "decisions": [],
-   "checks_evidence": [],
+   "actual_touched_files": [
+    "src/canceros/imaging_discovery.py",
+    "src/canceros/imaging_api.py",
+    "src/canceros/api.py",
+    "tests/test_imaging_closure.py",
+    "scripts/generate_contracts.py",
+    "scripts/run_checks.py",
+    "packages/contracts/generated/openapi.json",
+    "packages/contracts/generated/api.ts",
+    "docs/engineering/architecture-decisions/ADR-053-imaging-geometry-closure.md",
+    "docs/engineering/runbooks/imaging-closure.md"
+   ],
+   "decisions": [
+    "ADR-053: discovery reads over owned stores; honest grant/withdrawal semantics; failed QC never publishes; no new upload or model routes"
+   ],
+   "checks_evidence": [
+    "docs/engineering/evidence/imaging-closure.json: 4 passed (owned stable discovery, QC-visible segmentation discovery, grant expiry/withdrawal honesty, HTTP paths/auth); Ruff/mypy/migrations/contract drift PASS"
+   ],
    "known_failures": [],
    "blocked_on": [],
-   "next_action": "Execute in Phase 4 order; optional P1 prompts remain gated"
+   "next_action": "Continue COS-068 simulation/branch/status API closure; COS-071 covers system test coverage"
   },
   {
    "id": "COS-068",
