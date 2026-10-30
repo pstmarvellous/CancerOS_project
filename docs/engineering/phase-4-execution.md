@@ -47,3 +47,5 @@ plus migrations, Ruff, mypy and regenerated contract drift (stale openapi/api.ts
 regenerated, then green). See ADR-047, evidence-retrieval runbook and
 evidence/evidence-retrieval.json. No genuine corpus, reviewed labels, live fetch
 or SPEC-011 evaluation ran. Current: COS-062, then COS-063–071.
+
+COS-062 implemented: snapshot-bound immutable interpretation context with separate local/export views. 6 focused checks passed (identity/hash/stale, same-branch comparison, over-budget 409, omission records, active-corpus passage inclusion with rights recheck, HTTP auth boundary); plus migrations, Ruff, mypy and regenerated contract drift (new context routes allowlisted, then green). Migration 0045 adds append-only context build audit. See ADR-048, interpretation-context runbook and evidence/interpretation-context.json. No generation, export, genuine curation or SPEC-011 evaluation ran. Current: COS-063, then COS-064-071.

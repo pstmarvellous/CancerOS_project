@@ -956,6 +956,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/interpretation-contexts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Context Build */
+        post: operations["context_build_api_v1_projects__project_id__patients__patient_id__interpretation_contexts_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/interpretation-contexts/export-view": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Export View */
+        post: operations["export_view_api_v1_projects__project_id__patients__patient_id__interpretation_contexts_export_view_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/lesion-associations": {
         parameters: {
             query?: never;
@@ -3769,6 +3803,125 @@ export interface components {
          * @enum {string}
          */
         Context: "OBSERVED" | "SYNTHETIC";
+        /** ContextAssertion */
+        ContextAssertion: {
+            /** Certainty */
+            certainty: string;
+            /** Concept */
+            concept: string;
+            /** Excerpt */
+            excerpt: string;
+            /** Negated */
+            negated: boolean;
+            /**
+             * Reference Id
+             * Format: uuid
+             */
+            reference_id: string;
+            /** Source Hash */
+            source_hash: string;
+            /**
+             * Source Note Id
+             * Format: uuid
+             */
+            source_note_id: string;
+            /**
+             * Verification
+             * @default unverified_extracted_assertion
+             * @constant
+             */
+            verification: "unverified_extracted_assertion";
+        };
+        /** ContextBuildInput */
+        ContextBuildInput: {
+            /** Comparison Snapshot Id */
+            comparison_snapshot_id?: string | null;
+            /** Expected Snapshot Hash */
+            expected_snapshot_hash?: string | null;
+            /**
+             * Max Items
+             * @default 100
+             */
+            max_items: number;
+            /**
+             * Note Extraction Ids
+             * @default []
+             */
+            note_extraction_ids: string[];
+            /**
+             * Patient Id
+             * Format: uuid
+             */
+            patient_id: string;
+            /**
+             * Purpose
+             * @default research_summary
+             * @enum {string}
+             */
+            purpose: "research_summary" | "fact_extraction";
+            /** Retrieval Corpus Id */
+            retrieval_corpus_id?: string | null;
+            /**
+             * Retrieval Passage Ids
+             * @default []
+             */
+            retrieval_passage_ids: string[];
+            /** Retrieval Query */
+            retrieval_query?: string | null;
+            /**
+             * Snapshot Id
+             * Format: uuid
+             */
+            snapshot_id: string;
+        };
+        /** ContextMeasurement */
+        ContextMeasurement: {
+            /** Context */
+            context: string;
+            /** Member Time */
+            member_time: string;
+            /** Metric Code */
+            metric_code: string;
+            /** Origin */
+            origin: string;
+            /**
+             * Reference Id
+             * Format: uuid
+             */
+            reference_id: string;
+            /** Unit */
+            unit: string;
+            /** Value */
+            value: string;
+        };
+        /** ContextPassage */
+        ContextPassage: {
+            /**
+             * Corpus Id
+             * Format: uuid
+             */
+            corpus_id: string;
+            /**
+             * Document Id
+             * Format: uuid
+             */
+            document_id: string;
+            /** Excerpt */
+            excerpt: string;
+            /** Locator */
+            locator: string;
+            /**
+             * Passage Id
+             * Format: uuid
+             */
+            passage_id: string;
+            /**
+             * Semantic Support
+             * @default unreviewed_general_research
+             * @constant
+             */
+            semantic_support: "unreviewed_general_research";
+        };
         /** CorpusActivation */
         CorpusActivation: {
             /**
@@ -5966,6 +6119,94 @@ export interface components {
              * Format: uuid
              */
             split_id: string;
+        };
+        /** InterpretationContext */
+        InterpretationContext: {
+            /**
+             * Assertions
+             * @default []
+             */
+            assertions: components["schemas"]["ContextAssertion"][];
+            /**
+             * Branch Id
+             * Format: uuid
+             */
+            branch_id: string;
+            /** Comparison Snapshot Id */
+            comparison_snapshot_id?: string | null;
+            /** Comparison Stale */
+            comparison_stale?: boolean | null;
+            /**
+             * Conflicts
+             * @default []
+             */
+            conflicts: string[];
+            /** Context Hash */
+            context_hash: string;
+            /** Exportable */
+            exportable: boolean;
+            /**
+             * Limitations
+             * @default [
+             *       "Snapshot-bound research context only; no clinical interpretation or advice.",
+             *       "Extracted assertions are unverified; passages are unreviewed general research."
+             *     ]
+             */
+            limitations: string[];
+            /**
+             * Measurements
+             * @default []
+             */
+            measurements: components["schemas"]["ContextMeasurement"][];
+            /**
+             * Missing Modalities
+             * @default []
+             */
+            missing_modalities: string[];
+            /** Next Action */
+            next_action: string;
+            /**
+             * Omitted
+             * @default []
+             */
+            omitted: string[];
+            /**
+             * Passages
+             * @default []
+             */
+            passages: components["schemas"]["ContextPassage"][];
+            /**
+             * Patient Id
+             * Format: uuid
+             */
+            patient_id: string;
+            /** Payload Hash */
+            payload_hash: string;
+            /**
+             * Purpose
+             * @enum {string}
+             */
+            purpose: "research_summary" | "fact_extraction";
+            /**
+             * Schema Version
+             * @default interpretation-context/1
+             * @constant
+             */
+            schema_version: "interpretation-context/1";
+            /** Snapshot Hash */
+            snapshot_hash: string;
+            /**
+             * Snapshot Id
+             * Format: uuid
+             */
+            snapshot_id: string;
+            /** Stale */
+            stale: boolean;
+            /**
+             * Treatment History
+             * @default []
+             */
+            treatment_history: string[];
         };
         /** KnowledgeTraversal */
         KnowledgeTraversal: {
@@ -12742,6 +12983,84 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ImagingJobRecord"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    context_build_api_v1_projects__project_id__patients__patient_id__interpretation_contexts_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ContextBuildInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InterpretationContext"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    export_view_api_v1_projects__project_id__patients__patient_id__interpretation_contexts_export_view_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ContextBuildInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
                 };
             };
             /** @description Validation Error */

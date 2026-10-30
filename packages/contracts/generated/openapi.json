@@ -3362,6 +3362,262 @@
         "title": "Context",
         "type": "string"
       },
+      "ContextAssertion": {
+        "additionalProperties": false,
+        "properties": {
+          "certainty": {
+            "title": "Certainty",
+            "type": "string"
+          },
+          "concept": {
+            "pattern": "^[a-zA-Z0-9_.-]{1,64}$",
+            "title": "Concept",
+            "type": "string"
+          },
+          "excerpt": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Excerpt",
+            "type": "string"
+          },
+          "negated": {
+            "title": "Negated",
+            "type": "boolean"
+          },
+          "reference_id": {
+            "format": "uuid",
+            "title": "Reference Id",
+            "type": "string"
+          },
+          "source_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Source Hash",
+            "type": "string"
+          },
+          "source_note_id": {
+            "format": "uuid",
+            "title": "Source Note Id",
+            "type": "string"
+          },
+          "verification": {
+            "const": "unverified_extracted_assertion",
+            "default": "unverified_extracted_assertion",
+            "title": "Verification",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reference_id",
+          "concept",
+          "excerpt",
+          "certainty",
+          "negated",
+          "source_note_id",
+          "source_hash"
+        ],
+        "title": "ContextAssertion",
+        "type": "object"
+      },
+      "ContextBuildInput": {
+        "additionalProperties": false,
+        "properties": {
+          "comparison_snapshot_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comparison Snapshot Id"
+          },
+          "expected_snapshot_hash": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Snapshot Hash"
+          },
+          "max_items": {
+            "default": 100,
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Max Items",
+            "type": "integer"
+          },
+          "note_extraction_ids": {
+            "default": [],
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Note Extraction Ids",
+            "type": "array"
+          },
+          "patient_id": {
+            "format": "uuid",
+            "title": "Patient Id",
+            "type": "string"
+          },
+          "purpose": {
+            "default": "research_summary",
+            "enum": [
+              "research_summary",
+              "fact_extraction"
+            ],
+            "title": "Purpose",
+            "type": "string"
+          },
+          "retrieval_corpus_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retrieval Corpus Id"
+          },
+          "retrieval_passage_ids": {
+            "default": [],
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Retrieval Passage Ids",
+            "type": "array"
+          },
+          "retrieval_query": {
+            "anyOf": [
+              {
+                "maxLength": 256,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retrieval Query"
+          },
+          "snapshot_id": {
+            "format": "uuid",
+            "title": "Snapshot Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "patient_id",
+          "snapshot_id"
+        ],
+        "title": "ContextBuildInput",
+        "type": "object"
+      },
+      "ContextMeasurement": {
+        "additionalProperties": false,
+        "properties": {
+          "context": {
+            "title": "Context",
+            "type": "string"
+          },
+          "member_time": {
+            "title": "Member Time",
+            "type": "string"
+          },
+          "metric_code": {
+            "pattern": "^[a-zA-Z0-9_.-]{1,64}$",
+            "title": "Metric Code",
+            "type": "string"
+          },
+          "origin": {
+            "title": "Origin",
+            "type": "string"
+          },
+          "reference_id": {
+            "format": "uuid",
+            "title": "Reference Id",
+            "type": "string"
+          },
+          "unit": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Unit",
+            "type": "string"
+          },
+          "value": {
+            "pattern": "^-?(0|[1-9]\\d*)(\\.\\d{1,9})?$",
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reference_id",
+          "metric_code",
+          "value",
+          "unit",
+          "member_time",
+          "origin",
+          "context"
+        ],
+        "title": "ContextMeasurement",
+        "type": "object"
+      },
+      "ContextPassage": {
+        "additionalProperties": false,
+        "properties": {
+          "corpus_id": {
+            "format": "uuid",
+            "title": "Corpus Id",
+            "type": "string"
+          },
+          "document_id": {
+            "format": "uuid",
+            "title": "Document Id",
+            "type": "string"
+          },
+          "excerpt": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Excerpt",
+            "type": "string"
+          },
+          "locator": {
+            "title": "Locator",
+            "type": "string"
+          },
+          "passage_id": {
+            "format": "uuid",
+            "title": "Passage Id",
+            "type": "string"
+          },
+          "semantic_support": {
+            "const": "unreviewed_general_research",
+            "default": "unreviewed_general_research",
+            "title": "Semantic Support",
+            "type": "string"
+          }
+        },
+        "required": [
+          "passage_id",
+          "document_id",
+          "corpus_id",
+          "excerpt",
+          "locator"
+        ],
+        "title": "ContextPassage",
+        "type": "object"
+      },
       "CorpusActivation": {
         "additionalProperties": false,
         "properties": {
@@ -8482,6 +8738,171 @@
           "independent_evaluation_eligible"
         ],
         "title": "InheritedAssignment",
+        "type": "object"
+      },
+      "InterpretationContext": {
+        "additionalProperties": false,
+        "properties": {
+          "assertions": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ContextAssertion"
+            },
+            "title": "Assertions",
+            "type": "array"
+          },
+          "branch_id": {
+            "format": "uuid",
+            "title": "Branch Id",
+            "type": "string"
+          },
+          "comparison_snapshot_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comparison Snapshot Id"
+          },
+          "comparison_stale": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comparison Stale"
+          },
+          "conflicts": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Conflicts",
+            "type": "array"
+          },
+          "context_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Context Hash",
+            "type": "string"
+          },
+          "exportable": {
+            "title": "Exportable",
+            "type": "boolean"
+          },
+          "limitations": {
+            "default": [
+              "Snapshot-bound research context only; no clinical interpretation or advice.",
+              "Extracted assertions are unverified; passages are unreviewed general research."
+            ],
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "measurements": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ContextMeasurement"
+            },
+            "title": "Measurements",
+            "type": "array"
+          },
+          "missing_modalities": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing Modalities",
+            "type": "array"
+          },
+          "next_action": {
+            "title": "Next Action",
+            "type": "string"
+          },
+          "omitted": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Omitted",
+            "type": "array"
+          },
+          "passages": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ContextPassage"
+            },
+            "title": "Passages",
+            "type": "array"
+          },
+          "patient_id": {
+            "format": "uuid",
+            "title": "Patient Id",
+            "type": "string"
+          },
+          "payload_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Payload Hash",
+            "type": "string"
+          },
+          "purpose": {
+            "enum": [
+              "research_summary",
+              "fact_extraction"
+            ],
+            "title": "Purpose",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "interpretation-context/1",
+            "default": "interpretation-context/1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "snapshot_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Snapshot Hash",
+            "type": "string"
+          },
+          "snapshot_id": {
+            "format": "uuid",
+            "title": "Snapshot Id",
+            "type": "string"
+          },
+          "stale": {
+            "title": "Stale",
+            "type": "boolean"
+          },
+          "treatment_history": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Treatment History",
+            "type": "array"
+          }
+        },
+        "required": [
+          "patient_id",
+          "branch_id",
+          "snapshot_id",
+          "snapshot_hash",
+          "purpose",
+          "stale",
+          "context_hash",
+          "payload_hash",
+          "exportable",
+          "next_action"
+        ],
+        "title": "InterpretationContext",
         "type": "object"
       },
       "KnowledgeTraversal": {
@@ -23942,6 +24363,160 @@
           }
         },
         "summary": "Imaging Job Cancel"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/interpretation-contexts": {
+      "post": {
+        "operationId": "context_build_api_v1_projects__project_id__patients__patient_id__interpretation_contexts_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContextBuildInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InterpretationContext"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Context Build"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/interpretation-contexts/export-view": {
+      "post": {
+        "operationId": "export_view_api_v1_projects__project_id__patients__patient_id__interpretation_contexts_export_view_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContextBuildInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Export View Api V1 Projects  Project Id  Patients  Patient Id  Interpretation Contexts Export View Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Export View"
       }
     },
     "/api/v1/projects/{project_id}/patients/{patient_id}/lesion-associations": {

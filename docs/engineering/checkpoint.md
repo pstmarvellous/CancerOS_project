@@ -8,18 +8,18 @@ remain implemented_unverified for real/live/scientific review.
 - COS-058:122 parser/private-note SQL/S3/HTTP checks; no observation promotion.
 - COS-059:64 source-linked relationship/SQL/private-imaging/HTTP checks; no causality.
 - COS-060:100 metadata/private corpus/FTS/S3/HTTP checks; no genuine corpus ingested.
-- COS-061:35 real-PostgreSQL/HTTP retrieval/citation checks; lexical candidates
-  only, no semantic/patient/treatment support, offline resolution, no live fetch.
+- COS-062:6 snapshot-bound context checks; local/export views separate, no
+  generation or export, deterministic hashes.
 
 Ruff/mypy/generated contracts and seven governance checks passed for completed
 slices. The COS-060 stale generated enum failed drift once; regeneration and a
-focused retry passed, with the attempt preserved. COS-061's stale openapi/api.ts
-were regenerated to include implemented retrieval/citation routes, then green.
+focused retry passed, with the attempt preserved. COS-061/062 stale openapi/api.ts
+were regenerated to include implemented retrieval/context routes, then green.
 Private original-object retention requires separate review; removing search text
 does not claim complete erasure. See phase-4-execution.md, ADR043–047 and
 task-specific evidence/runbooks.
 
-Current: COS-062 structured interpretation context, followed by COS-063–071.
+Current: COS-063 bounded generation, followed by COS-064–071.
 COS-056 optional/deferred. Phase3 code was committed/pushed at77eb4fe; Phase4 is
 local/uncommitted. No live provider, authentic notes, qualified scientific review,
 Phase4 browser verification or new publication performed. D01–D06 remain open;

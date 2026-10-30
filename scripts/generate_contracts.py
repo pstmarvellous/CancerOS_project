@@ -163,6 +163,8 @@ def generate(check=False):
             "/api/v1/projects/{project_id}/patients/{patient_id}/simulation-fixture-runs/{run_id}",
             "/api/v1/projects/{project_id}/patients/{patient_id}/synthetic-geometry-results/{result_id}",
             "/api/v1/projects/{project_id}/patients/{patient_id}/synthetic-geometry-results/{result_id}/mesh",
+            "/api/v1/projects/{project_id}/patients/{patient_id}/interpretation-contexts",
+            "/api/v1/projects/{project_id}/patients/{patient_id}/interpretation-contexts/export-view",
         )
         for p in output["openapi.json"]["paths"]
     ), "Unreviewed runtime endpoint"

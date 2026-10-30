@@ -12,6 +12,7 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from canceros.clinical_api import clinical_routes
+from canceros.context_api import context_routes
 from canceros.contracts import FoundationStatus, Health, Me, Problem, ProjectRole
 from canceros.evaluation_api import evaluation_routes
 from canceros.evidence_api import evidence_routes
@@ -178,4 +179,5 @@ def create_app(settings: Settings | None = None, membership_repository=None) -> 
     app.include_router(provider_routes(config, memberships))
     app.include_router(knowledge_routes(config, memberships))
     app.include_router(evidence_routes(config, memberships))
+    app.include_router(context_routes(config, memberships))
     return app
