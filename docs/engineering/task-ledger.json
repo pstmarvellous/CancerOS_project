@@ -20519,6 +20519,327 @@
    ],
    "graph_neighbors": [],
    "sections_read": "SPEC-008 HTTP roles errors concurrency; SPEC-010; SPEC-011"
+  },
+  {
+   "id": "COS-072",
+   "purpose": "Global design system, navigation and responsive application shell",
+   "dependency_ids": [
+    "COS-011",
+    "COS-036",
+    "COS-050",
+    "COS-051",
+    "COS-052",
+    "COS-063",
+    "COS-066",
+    "COS-067",
+    "COS-068",
+    "COS-069",
+    "COS-070",
+    "COS-071"
+   ],
+   "requirement_links": [
+    "TASK-COS-072"
+   ],
+   "allowed_scope": "Phase 5 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
+   "status": "implemented_unverified",
+   "status_history": [
+    "planned",
+    "in_progress",
+    "implemented_unverified"
+   ],
+   "owner_responsibility": "Primary agent; specialist self-review only",
+   "actual_touched_files": [
+    "apps/web/app/activity/page.tsx",
+    "apps/web/app/admin/page.tsx",
+    "apps/web/app/cases/page.tsx",
+    "apps/web/app/evaluation/page.tsx",
+    "apps/web/app/globals.css",
+    "apps/web/app/guided-demo/page.tsx",
+    "apps/web/app/layout.tsx",
+    "apps/web/app/mesh-preview/page.tsx",
+    "apps/web/app/simulation/page.tsx",
+    "apps/web/app/timeline/page.tsx",
+    "apps/web/components/app-shell.test.tsx",
+    "apps/web/components/app-shell.tsx",
+    "docs/engineering/architecture-decisions/ADR-058-unified-research-shell.md",
+    "docs/engineering/phase-5-execution.md",
+    "docs/engineering/runbooks/research-shell.md",
+    "scripts/check_governance.py"
+   ],
+   "decisions": [],
+   "checks_evidence": [
+    "frontend shell: 55 component tests passed (4 new shell selection/navigation); npm lint/typecheck/build/contracts:check PASS; no backend changes"
+   ],
+   "known_failures": [],
+   "blocked_on": [],
+   "next_action": "Complete remaining acceptance checks; continue independent authorized foundation work",
+   "map_queries": [
+    {
+     "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+     "query": "design system shell navigation SPEC-009 routes",
+     "returncode": 1,
+     "output": "",
+     "error": "No matching nodes\n"
+    },
+    {
+     "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+     "query": "design system shell navigation SPEC-009 routes",
+     "returncode": 0,
+     "output": "No matching behavior. Try a shorter search term.\n",
+     "error": ""
+    },
+    {
+     "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+     "query": "design system shell navigation SPEC-009 routes",
+     "returncode": 1,
+     "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+     "error": ""
+    }
+   ],
+   "graph_neighbors": [],
+   "sections_read": "SPEC-009 sections 3-6, 11-14 and 16; SPEC-008; audit C01-C05"
+  },
+  {
+   "id": "COS-073",
+   "purpose": "Research case dashboard and patient selection",
+   "dependency_ids": [
+    "COS-066",
+    "COS-069",
+    "COS-071",
+    "COS-072"
+   ],
+   "requirement_links": [
+    "TASK-COS-073"
+   ],
+   "allowed_scope": "Phase 5 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
+   "status": "planned",
+   "status_history": [
+    "planned"
+   ],
+   "owner_responsibility": "Primary agent; specialist self-review only",
+   "actual_touched_files": [],
+   "decisions": [],
+   "checks_evidence": [],
+   "known_failures": [],
+   "blocked_on": [],
+   "next_action": "Execute in Phase 5 order; optional P1 prompts remain gated"
+  },
+  {
+   "id": "COS-074",
+   "purpose": "Patient profile, source information and record completeness",
+   "dependency_ids": [
+    "COS-018",
+    "COS-020",
+    "COS-023",
+    "COS-066",
+    "COS-067",
+    "COS-069",
+    "COS-071",
+    "COS-072",
+    "COS-073"
+   ],
+   "requirement_links": [
+    "TASK-COS-074"
+   ],
+   "allowed_scope": "Phase 5 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
+   "status": "planned",
+   "status_history": [
+    "planned"
+   ],
+   "owner_responsibility": "Primary agent; specialist self-review only",
+   "actual_touched_files": [],
+   "decisions": [],
+   "checks_evidence": [],
+   "known_failures": [],
+   "blocked_on": [],
+   "next_action": "Execute in Phase 5 order; optional P1 prompts remain gated"
+  },
+  {
+   "id": "COS-075",
+   "purpose": "Interactive 3D tumor viewer and camera controls",
+   "dependency_ids": [
+    "COS-026",
+    "COS-033",
+    "COS-034",
+    "COS-035",
+    "COS-036",
+    "COS-067",
+    "COS-069",
+    "COS-071",
+    "COS-072",
+    "COS-073"
+   ],
+   "requirement_links": [
+    "TASK-COS-075"
+   ],
+   "allowed_scope": "Phase 5 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
+   "status": "planned",
+   "status_history": [
+    "planned"
+   ],
+   "owner_responsibility": "Primary agent; specialist self-review only",
+   "actual_touched_files": [],
+   "decisions": [],
+   "checks_evidence": [],
+   "known_failures": [],
+   "blocked_on": [],
+   "next_action": "Execute in Phase 5 order; optional P1 prompts remain gated"
+  },
+  {
+   "id": "COS-076",
+   "purpose": "Imaging date selector, observed/synthetic state slider and tumor comparisons",
+   "dependency_ids": [
+    "COS-038",
+    "COS-051",
+    "COS-052",
+    "COS-054",
+    "COS-069",
+    "COS-071",
+    "COS-072",
+    "COS-075"
+   ],
+   "requirement_links": [
+    "TASK-COS-076"
+   ],
+   "allowed_scope": "Phase 5 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
+   "status": "planned",
+   "status_history": [
+    "planned"
+   ],
+   "owner_responsibility": "Primary agent; specialist self-review only",
+   "actual_touched_files": [],
+   "decisions": [],
+   "checks_evidence": [],
+   "known_failures": [],
+   "blocked_on": [],
+   "next_action": "Execute in Phase 5 order; optional P1 prompts remain gated"
+  },
+  {
+   "id": "COS-077",
+   "purpose": "Laboratory, vital-sign, symptom and treatment timeline charts",
+   "dependency_ids": [
+    "COS-018",
+    "COS-020",
+    "COS-051",
+    "COS-052",
+    "COS-053",
+    "COS-066",
+    "COS-069",
+    "COS-071",
+    "COS-072",
+    "COS-076"
+   ],
+   "requirement_links": [
+    "TASK-COS-077"
+   ],
+   "allowed_scope": "Phase 5 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
+   "status": "planned",
+   "status_history": [
+    "planned"
+   ],
+   "owner_responsibility": "Primary agent; specialist self-review only",
+   "actual_touched_files": [],
+   "decisions": [],
+   "checks_evidence": [],
+   "known_failures": [],
+   "blocked_on": [],
+   "next_action": "Execute in Phase 5 order; optional P1 prompts remain gated"
+  },
+  {
+   "id": "COS-078",
+   "purpose": "Simulation setup, generation progress and branch exploration",
+   "dependency_ids": [
+    "COS-041",
+    "COS-042",
+    "COS-049",
+    "COS-050",
+    "COS-068",
+    "COS-069",
+    "COS-071",
+    "COS-072",
+    "COS-074",
+    "COS-076",
+    "COS-077"
+   ],
+   "requirement_links": [
+    "TASK-COS-078"
+   ],
+   "allowed_scope": "Phase 5 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
+   "status": "planned",
+   "status_history": [
+    "planned"
+   ],
+   "owner_responsibility": "Primary agent; specialist self-review only",
+   "actual_touched_files": [],
+   "decisions": [],
+   "checks_evidence": [],
+   "known_failures": [],
+   "blocked_on": [],
+   "next_action": "Execute in Phase 5 order; optional P1 prompts remain gated"
+  },
+  {
+   "id": "COS-079",
+   "purpose": "Evidence-linked AI insights, uncertainties and provenance presentation",
+   "dependency_ids": [
+    "COS-058",
+    "COS-061",
+    "COS-062",
+    "COS-063",
+    "COS-064",
+    "COS-065",
+    "COS-070",
+    "COS-071",
+    "COS-072",
+    "COS-074",
+    "COS-076",
+    "COS-077",
+    "COS-078"
+   ],
+   "requirement_links": [
+    "TASK-COS-079"
+   ],
+   "allowed_scope": "Phase 5 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
+   "status": "planned",
+   "status_history": [
+    "planned"
+   ],
+   "owner_responsibility": "Primary agent; specialist self-review only",
+   "actual_touched_files": [],
+   "decisions": [],
+   "checks_evidence": [],
+   "known_failures": [],
+   "blocked_on": [],
+   "next_action": "Execute in Phase 5 order; optional P1 prompts remain gated"
+  },
+  {
+   "id": "COS-080",
+   "purpose": "Integrated UI states, accessibility, usability and failure handling",
+   "dependency_ids": [
+    "COS-071",
+    "COS-072",
+    "COS-073",
+    "COS-074",
+    "COS-075",
+    "COS-076",
+    "COS-077",
+    "COS-078",
+    "COS-079"
+   ],
+   "requirement_links": [
+    "TASK-COS-080"
+   ],
+   "allowed_scope": "Phase 5 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
+   "status": "planned",
+   "status_history": [
+    "planned"
+   ],
+   "owner_responsibility": "Primary agent; specialist self-review only",
+   "actual_touched_files": [],
+   "decisions": [],
+   "checks_evidence": [],
+   "known_failures": [],
+   "blocked_on": [],
+   "next_action": "Execute in Phase 5 order; optional P1 prompts remain gated"
   }
  ],
  "contract_closure": {

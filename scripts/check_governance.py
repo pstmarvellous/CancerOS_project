@@ -42,6 +42,7 @@ def validate_rows(rows, documents):
             "PHASE2-PROMPTS",
             "PHASE3-PROMPTS",
             "PHASE4-PROMPTS",
+            "PHASE5-PROMPTS",
         }, identity
         assert row["status"] in STATES, identity
         assert row["status"] != "verified" or row["evidence"], f"No evidence: {identity}"
