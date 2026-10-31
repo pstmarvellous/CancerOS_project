@@ -69229,8 +69229,11 @@
       "planned_test_type": "unit/integration/browser as applicable",
       "planned_test_path": null,
       "dependency_gate_ids": [],
-      "status": "planned",
-      "evidence": [],
+      "status": "implemented_unverified",
+      "evidence": [
+        "lint+typecheck+build green; 7 focused tests pass; missing=receptor-not-recorded, redaction=safe summaries, role-specific 401-403 states",
+        "lint+typecheck+build green; 7 focused tests pass; missing=receptor-not-recorded; safe summaries; 401-403 role states"
+      ],
       "capability_node_ids": [],
       "academic_behavior_ids": [],
       "academic_source_ids": [],

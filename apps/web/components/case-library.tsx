@@ -27,7 +27,7 @@ function explain(response: Response, body: string): string {
   return `The case list could not load (status ${response.status}). ${body.slice(0, 160)}`;
 }
 
-export function CaseLibrary({initialProject}: {initialProject?: string | null}) {
+export function CaseLibrary({initialProject, detailBase = '/cases/detail'}: {initialProject?: string | null; detailBase?: string}) {
   const [project] = useState<string | null>(() => {
     if (initialProject !== undefined) return initialProject;
     if (typeof window === 'undefined') return null;
@@ -94,7 +94,7 @@ export function CaseLibrary({initialProject}: {initialProject?: string | null}) 
           <div><dt>Data revision</dt><dd>{item.data_revision}</dd></div>
         </dl>
         <p>Examination, branch and modality availability appear after opening the case. The list never invents them.</p>
-        <p><Link href={`/cases?project=${encodeURIComponent(project ?? '')}&patient=${encodeURIComponent(item.patient_id)}`}>Open case</Link></p>
+        <p><Link href={`${detailBase}?project=${encodeURIComponent(project ?? '')}&patient=${encodeURIComponent(item.patient_id)}`}>Open case</Link></p>
       </article>)}
     </div>
   </>;

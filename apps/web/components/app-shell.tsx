@@ -28,6 +28,13 @@ const CASE_NAV = [
   {href: '/sources', label: 'Sources'},
 ];
 
+function caseBaseFor(selection: Selection): string {
+  if (selection.project && selection.patient) {
+    return `/cases/detail?project=${encodeURIComponent(selection.project)}&patient=${encodeURIComponent(selection.patient)}`;
+  }
+  return '/cases';
+}
+
 function readSelection(params: URLSearchParams): Selection {
   const pick = (key: keyof Selection) => params.get(key) ?? undefined;
   return {
@@ -49,9 +56,7 @@ function ShellInner() {
   const params = useSearchParams();
   const selection = readSelection(params);
   const label = selectionLabel(selection);
-  const caseBase = selection.project && selection.patient
-    ? `/cases?project=${encodeURIComponent(selection.project)}&patient=${encodeURIComponent(selection.patient)}`
-    : '/cases';
+  const caseBase = caseBaseFor(selection);
   return <>
     <a className="skip-link" href="#main">Skip to main content</a>
     <header className="header">
