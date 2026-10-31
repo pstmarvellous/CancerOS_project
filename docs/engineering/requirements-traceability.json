@@ -69199,8 +69199,10 @@
       "planned_test_type": "unit/integration/browser as applicable",
       "planned_test_path": null,
       "dependency_gate_ids": [],
-      "status": "planned",
-      "evidence": [],
+      "status": "implemented_unverified",
+      "evidence": [
+        "frontend: 58 component tests passed (3 new case-library tests); npm lint/typecheck/build/contracts:check PASS; no backend changes"
+      ],
       "capability_node_ids": [],
       "academic_behavior_ids": [],
       "academic_source_ids": [],

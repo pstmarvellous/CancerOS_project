@@ -20612,17 +20612,56 @@
     "TASK-COS-073"
    ],
    "allowed_scope": "Phase 5 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
-   "status": "planned",
+   "status": "implemented_unverified",
    "status_history": [
-    "planned"
+    "planned",
+    "in_progress",
+    "implemented_unverified"
    ],
    "owner_responsibility": "Primary agent; specialist self-review only",
-   "actual_touched_files": [],
-   "decisions": [],
-   "checks_evidence": [],
+   "actual_touched_files": [
+    "apps/web/app/api/cases/route.ts",
+    "apps/web/app/cases/page.tsx",
+    "apps/web/components/case-library.test.tsx",
+    "apps/web/components/case-library.tsx",
+    "docs/engineering/architecture-decisions/ADR-059-case-library.md",
+    "docs/engineering/phase-5-execution.md",
+    "docs/engineering/runbooks/case-library.md"
+   ],
+   "decisions": [
+    "ADR-059: real contract-bound case library; unsupported discovery semantics visibly absent"
+   ],
+   "checks_evidence": [
+    "frontend: 58 component tests passed (3 new case-library tests); npm lint/typecheck/build/contracts:check PASS; no backend changes"
+   ],
    "known_failures": [],
    "blocked_on": [],
-   "next_action": "Execute in Phase 5 order; optional P1 prompts remain gated"
+   "next_action": "Complete remaining acceptance checks; continue independent authorized foundation work",
+   "map_queries": [
+    {
+     "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+     "query": "case dashboard patient selection SPEC-009",
+     "returncode": 1,
+     "output": "",
+     "error": "No matching nodes\n"
+    },
+    {
+     "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+     "query": "case dashboard patient selection SPEC-009",
+     "returncode": 0,
+     "output": "No matching behavior. Try a shorter search term.\n",
+     "error": ""
+    },
+    {
+     "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+     "query": "case dashboard patient selection SPEC-009",
+     "returncode": 1,
+     "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+     "error": ""
+    }
+   ],
+   "graph_neighbors": [],
+   "sections_read": "SPEC-009 sections 4.1/4.2 and 11/12; SPEC-008 patient list/detail/cursors; audit D01-D03"
   },
   {
    "id": "COS-074",
