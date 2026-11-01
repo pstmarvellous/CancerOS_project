@@ -22432,6 +22432,52 @@
         "explicit submission authorization"
       ],
       "next_action": "Phase 6 complete; Phase 7 gated on evidence and authorization"
+    },
+    {
+      "id": "COS-099",
+      "purpose": "Full repository architecture and specification compliance audit",
+      "dependency_ids": [
+        "COS-002",
+        "COS-003",
+        "COS-008",
+        "COS-087",
+        "COS-097",
+        "COS-098"
+      ],
+      "requirement_links": [
+        "TASK-COS-099"
+      ],
+      "allowed_scope": "Phase 7 final_release audit; no silent refactor or spec rewrite",
+      "status": "implemented_unverified",
+      "status_history": [
+        "planned",
+        "implemented_unverified"
+      ],
+      "owner_responsibility": "Primary agent; self-review disclosed, no independent reviewer",
+      "actual_touched_files": [
+        "tests/test_audit_architecture.py",
+        "docs/engineering/evidence/audit-architecture.json",
+        "docs/engineering/reference-reviews/COS-099.md",
+        "docs/engineering/reference-reviews/COS-099.json"
+      ],
+      "decisions": [
+        "Final-release mode on audited commit; milestone omissions explicit",
+        "Boundaries verified by scripts; browser routes distinct from REST",
+        "Two major missing-evidence findings route to COS-102 without silent fix"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format audit",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_audit_architecture (4 tests incl boundaries+hygiene)",
+          "result": "pass"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "COS-100 integration isolation audit"
     }
   ],
   "contract_closure": {

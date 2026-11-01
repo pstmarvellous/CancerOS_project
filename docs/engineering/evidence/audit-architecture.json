@@ -1,0 +1,51 @@
+{
+  "audit_run_id": "cos099-a66baf2f384e",
+  "mode": "final_release",
+  "candidate_commit": "a66baf2f384e6a1ca3676eb9ee2f76ca54d3a290",
+  "dirty_worktree": "?? docs/engineering/evidence/audit-architecture.json\n?? docs/engineering/reference-reviews/COS-099.json\n?? docs/engineering/reference-reviews/COS-099.md\n?? tests/test_audit_architecture.py",
+  "tags_at_candidate": "",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "audit-architecture/1",
+  "recorded_at": "2026-11-01T14:32:02.354933+00:00",
+  "specification_adoption": "COS-AUD-001 baseline 1.0 adoption not_evidenced; domain authority per authority-and-scope.md",
+  "self_review_disclosure": "single agent self-review; no independent reviewer signatures",
+  "findings": [
+    {
+      "id": "AUD-001",
+      "category": "missing evidence",
+      "severity": "major",
+      "status": "open",
+      "title": "No deployed target or isolated restore run in this scope",
+      "requirement": "D06/COS-093/COS-089",
+      "path": "docs/engineering/evidence/smoke-rollback.json",
+      "detail": "Staging plan and rollback procedure exist; no authorized target, apply, or restore run.",
+      "remedy": "COS-103 on a named candidate with an authorized target; record achieved RPO/RTO."
+    },
+    {
+      "id": "AUD-002",
+      "category": "missing evidence",
+      "severity": "major",
+      "status": "open",
+      "title": "No genuine two-exam longitudinal case (D02)",
+      "requirement": "D02/COS-083/COS-095",
+      "path": "docs/engineering/evidence/longitudinal-gate.json",
+      "detail": "Frozen inclusion manifest records zero eligible real cases; forecast accuracy Not evaluated.",
+      "remedy": "Curate an approved two-exam case with rights, linkage, reviewer and demo use."
+    },
+    {
+      "id": "AUD-003",
+      "category": "accepted deviation",
+      "severity": "minor",
+      "status": "accepted",
+      "title": "Optional models disabled pending verified policy",
+      "requirement": "SAFE/D04",
+      "path": "src/canceros/provider_gateway.py",
+      "detail": "Denied-by-default gateway with zero-transport denial tests; no silent enablement.",
+      "remedy": "Keep disabled until a versioned policy with credentials and budget lands."
+    }
+  ],
+  "confirmed_defects": 0,
+  "scope": "architecture, C01-C06, claims; functional fixes route to COS-102 without silent refactor",
+  "result": "passed",
+  "manifest_sha256": "e5783fa0097e3e08c806f52c991dda0ebdd6e00ef5a6c929b910edc5b09856f8"
+}
