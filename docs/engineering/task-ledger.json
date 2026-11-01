@@ -21625,6 +21625,58 @@
       "known_failures": [],
       "blocked_on": [],
       "next_action": "COS-083 longitudinal evaluation"
+    },
+    {
+      "id": "COS-083",
+      "purpose": "Genuine longitudinal imaging and temporal baseline evaluation",
+      "dependency_ids": [
+        "COS-024",
+        "COS-037",
+        "COS-038",
+        "COS-051",
+        "COS-052",
+        "COS-055",
+        "COS-069",
+        "COS-076",
+        "COS-081",
+        "COS-082"
+      ],
+      "requirement_links": [
+        "TASK-COS-083"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
+      "status": "blocked",
+      "status_history": [
+        "planned",
+        "blocked"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "tests/test_longitudinal_gate.py",
+        "docs/engineering/evidence/longitudinal-gate.json",
+        "docs/engineering/reference-reviews/COS-083.md",
+        "docs/engineering/reference-reviews/COS-083.json"
+      ],
+      "decisions": [
+        "Frozen two-exam inclusion manifest; DCE phases and synthetic states never count",
+        "D02 blocked honestly with owner/evidence; no manufactured chronology",
+        "Forecast accuracy/calibration Not evaluated; descriptive comparison only when a case arrives"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format longitudinal gate",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_longitudinal_gate (5 tests)",
+          "result": "pass; gate result blocked by design"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [
+        "D02: curated real case with source rights, two-exam linkage, reviewer and permitted use"
+      ],
+      "next_action": "COS-084 synthetic plausibility"
     }
   ],
   "contract_closure": {
