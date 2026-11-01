@@ -22,17 +22,23 @@ const NAV = [
 ];
 
 const CASE_NAV = [
-  {href: '', label: 'Overview'},
+  {href: '/cases/detail', label: 'Overview'},
   {href: '/twin', label: 'Twin workspace'},
   {href: '/scenarios', label: 'Scenarios'},
   {href: '/sources', label: 'Sources'},
 ];
 
-function caseBaseFor(selection: Selection): string {
-  if (selection.project && selection.patient) {
-    return `/cases/detail?project=${encodeURIComponent(selection.project)}&patient=${encodeURIComponent(selection.patient)}`;
-  }
-  return '/cases';
+function preserveSelection(href: string, selection: Selection): string {
+  const params = new URLSearchParams();
+  if (selection.project) params.set('project', selection.project);
+  if (selection.patient) params.set('patient', selection.patient);
+  if (selection.branch) params.set('branch', selection.branch);
+  if (selection.run) params.set('run', selection.run);
+  if (selection.state) params.set('state', selection.state);
+  if (selection.lesion) params.set('lesion', selection.lesion);
+  const query = params.toString();
+  if (href === '/cases/detail') return `/cases/detail${query ? `?${query}` : ''}`;
+  return `${href}${query ? `?${query}` : ''}`;
 }
 
 function readSelection(params: URLSearchParams): Selection {
@@ -56,7 +62,6 @@ function ShellInner() {
   const params = useSearchParams();
   const selection = readSelection(params);
   const label = selectionLabel(selection);
-  const caseBase = caseBaseFor(selection);
   return <>
     <a className="skip-link" href="#main">Skip to main content</a>
     <header className="header">
@@ -73,10 +78,10 @@ function ShellInner() {
         </ul>
       </nav>
     </header>
-    {pathname.startsWith('/cases') && selection.patient ? <nav aria-label="Case" className="case-nav">
+    {(pathname.startsWith('/cases') || pathname.startsWith('/twin')) && selection.patient ? <nav aria-label="Case" className="case-nav">
       <ul className="nav-list">
         {CASE_NAV.map(item => {
-          const href = `${caseBase}${item.href}`;
+          const href = preserveSelection(item.href, selection);
           return <li key={item.label}><Link href={href}>{item.label}</Link></li>;
         })}
       </ul>
