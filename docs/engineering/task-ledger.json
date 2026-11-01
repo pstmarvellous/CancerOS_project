@@ -21352,17 +21352,45 @@
         "TASK-COS-078"
       ],
       "allowed_scope": "Phase 5 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
-      "status": "planned",
+      "status": "implemented_unverified",
       "status_history": [
-        "planned"
+        "planned",
+        "implemented_unverified"
       ],
       "owner_responsibility": "Primary agent; specialist self-review only",
-      "actual_touched_files": [],
-      "decisions": [],
-      "checks_evidence": [],
+      "actual_touched_files": [
+        "apps/web/components/simulation-workflow.tsx",
+        "apps/web/components/app-shell.tsx",
+        "apps/web/app/simulation/page.tsx",
+        "docs/engineering/reference-reviews/COS-078.md",
+        "docs/engineering/reference-reviews/COS-078.json"
+      ],
+      "decisions": [
+        "Existing four-step workflow retained; Phase 5 repair is nav, branch handoff and copy only",
+        "Broken /scenarios case-nav target repaired to /simulation; branch identity preserved into /states",
+        "No partially completed or unpublished run shown to judges; publication stays separate and explicit"
+      ],
+      "checks_evidence": [
+        {
+          "check": "tsc --noEmit -p apps/web/tsconfig.json",
+          "result": "pass"
+        },
+        {
+          "check": "eslint simulation-workflow/shell/simulation-page",
+          "result": "pass"
+        },
+        {
+          "check": "vitest simulation-workflow (5 tests)",
+          "result": "pass"
+        },
+        {
+          "check": "real-data operation / scientific review",
+          "result": "not_run; fixture evidence only"
+        }
+      ],
       "known_failures": [],
       "blocked_on": [],
-      "next_action": "Execute in Phase 5 order; optional P1 prompts remain gated"
+      "next_action": "COS-079 grounded insights"
     },
     {
       "id": "COS-079",
