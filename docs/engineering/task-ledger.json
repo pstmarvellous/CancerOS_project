@@ -22377,6 +22377,61 @@
       "known_failures": [],
       "blocked_on": [],
       "next_action": "COS-098 final rehearsal and readiness audit"
+    },
+    {
+      "id": "COS-098",
+      "purpose": "Execute final presentation flow, deployment rehearsal and submission readiness audit",
+      "dependency_ids": [
+        "COS-087",
+        "COS-088",
+        "COS-089",
+        "COS-090",
+        "COS-091",
+        "COS-092",
+        "COS-093",
+        "COS-094",
+        "COS-095",
+        "COS-096",
+        "COS-097"
+      ],
+      "requirement_links": [
+        "TASK-COS-098"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; rehearsal/readiness without external send",
+      "status": "blocked",
+      "status_history": [
+        "planned",
+        "blocked"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "tests/test_readiness_report.py",
+        "docs/engineering/evidence/readiness-report.json",
+        "docs/engineering/reference-reviews/COS-098.md",
+        "docs/engineering/reference-reviews/COS-098.json"
+      ],
+      "decisions": [
+        "Frozen commit reconciled to candidate and smoke evidence",
+        "Official event details unverified; assumptions stay assumptions",
+        "Release blocked; reviewable package complete; no external submission by this task"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format readiness audit",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_readiness_report (3 tests)",
+          "result": "pass; report result blocked by design"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [
+        "D02, real-data, deployment, review, performance, participant gates",
+        "authoritative event instructions",
+        "explicit submission authorization"
+      ],
+      "next_action": "Phase 6 complete; Phase 7 gated on evidence and authorization"
     }
   ],
   "contract_closure": {

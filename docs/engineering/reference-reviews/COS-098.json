@@ -1,0 +1,111 @@
+{
+  "task": "COS-098",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "readiness",
+      "returncode": 0,
+      "output": "\n=== WF.RELEASE Demo readiness ===\n Ordered sequence; inspect dependent nodes before implementation. \nSources: PRD,ROAD\n  <-- HAS_WORKFLOW ROOT CancerOS breast cancer digital twin\n  --> HAS_STEP EVAL.E2E End-to-end demo\n  --> HAS_STEP EVAL.AI NLP/LLM grounding evaluation\n  --> HAS_STEP GOV.PROV Five provenance classes\n  --> HAS_STEP GOV.PRIV Privacy and access\n  --> HAS_STEP INF.DEPLOY Deployment\n  --> HAS_STEP EVAL.REPORT Scientific limitations report\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "readiness",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "readiness",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "rehearsal",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "rehearsal",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "rehearsal",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "submission",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "submission",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "submission",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "WF.RELEASE"
+  ],
+  "academic_behavior_ids": [],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.RELEASE"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REPORT"
+    }
+  ],
+  "mapped_source_ids": [],
+  "source_sections_inspected": "COS-098 readiness audit"
+}
