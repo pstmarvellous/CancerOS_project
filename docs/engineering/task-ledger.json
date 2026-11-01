@@ -22326,6 +22326,57 @@
       "known_failures": [],
       "blocked_on": [],
       "next_action": "COS-097 documentation and evidence package"
+    },
+    {
+      "id": "COS-097",
+      "purpose": "Prepare technical documentation, architecture visuals and evaluation evidence",
+      "dependency_ids": [
+        "COS-087",
+        "COS-088",
+        "COS-089",
+        "COS-090",
+        "COS-091",
+        "COS-092",
+        "COS-093",
+        "COS-094",
+        "COS-095",
+        "COS-096"
+      ],
+      "requirement_links": [
+        "TASK-COS-097"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; reviewable package without external send",
+      "status": "implemented_unverified",
+      "status_history": [
+        "planned",
+        "implemented_unverified"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "docs/PHASE-6-EVIDENCE-PACKAGE.md",
+        "tests/test_evidence_package.py",
+        "docs/engineering/evidence/evidence-package.json",
+        "docs/engineering/reference-reviews/COS-097.md",
+        "docs/engineering/reference-reviews/COS-097.json"
+      ],
+      "decisions": [
+        "Package from actual code/deployment; original specs linked not rewritten",
+        "Logical modules distinguished from real services; lineage and export limits shown",
+        "Claim ledger with four states; public-safe manifest excludes secrets and restricted data"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format package gate",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_evidence_package (4 tests)",
+          "result": "pass"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "COS-098 final rehearsal and readiness audit"
     }
   ],
   "contract_closure": {

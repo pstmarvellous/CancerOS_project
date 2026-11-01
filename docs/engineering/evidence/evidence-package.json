@@ -1,0 +1,11 @@
+{
+  "recorded_at": "2026-11-01T14:11:21.544128+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "evidence-package/1",
+  "package": "docs/PHASE-6-EVIDENCE-PACKAGE.md",
+  "evidence_files": 16,
+  "checks": "pass: links/commands/diagram present; candidate reconciles to raw results; no restricted content in package",
+  "scope": "reviewable package prepared; nothing sent or submitted externally",
+  "result": "passed",
+  "manifest_sha256": "501c166297847e9579389e1f82856b6b2a34f6f9456ad7f60776e3ccd496bc45"
+}

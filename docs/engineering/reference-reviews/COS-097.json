@@ -1,0 +1,732 @@
+{
+  "task": "COS-097",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "documentation",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "documentation",
+      "returncode": 0,
+      "output": "\nEVAL.03 — Scientific model documentation\nDesign: Document context, assumption, version, calibration, applicability and failure\nAcceptance: Limitations report per model\n  READ A15 FDA Computational Model Credibility Guidance — Context of use; model verification, validation and credibility assessment — https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  PAPER P03 TRIPOD-LLM reporting guideline —  — https://www.nature.com/articles/s41591-024-03425-5\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "documentation",
+      "returncode": 0,
+      "output": "\n== EVAL.03 Scientific model documentation ==\nIntent: Document context, assumption, version, calibration, applicability and failure \nTest: Limitations report per model\n BOOK/LECTURE A15 FDA Computational Model Credibility Guidance | Context of use; model verification, validation and credibility assessment | https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions | applicability limited to intended guidance scope\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P03 TRIPOD-LLM reporting guideline | https://www.nature.com/articles/s41591-024-03425-5\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "evidence",
+      "returncode": 0,
+      "output": "\n=== D.DATA Clinical research data ===\n Authentic patient, imaging and clinical evidence, normalized but source-preserving. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> OWNS DATA.SOURCE Dataset and licensing registry\n  --> OWNS DATA.PATIENT ResearchPatient\n  --> OWNS DATA.DIAGNOSIS CancerDiagnosis\n  --> OWNS DATA.VISIT ClinicalVisit\n  --> OWNS DATA.STUDY ImagingStudy\n  --> OWNS DATA.SERIES ImagingSeries\n  --> OWNS DATA.SEG SegmentationArtifact\n  --> OWNS DATA.LESION Lesion\n  --> OWNS DATA.MEASURE TumorMeasurement\n  --> OWNS DATA.LABS LaboratoryResult\n  --> OWNS DATA.VITAL VitalSign\n  --> OWNS DATA.SYMPTOM SymptomObservation\n  --> OWNS DATA.TREAT TreatmentEvent\n  --> OWNS DATA.NOTE ClinicalNote\n  --> OWNS DATA.OUTCOME OutcomeObservation\n  --> OWNS DATA.PROV ProvenanceRecord\n  --> OWNS DATA.BRANCH SimulationBranch\n  --> OWNS DATA.RUN SimulationRun\n  --> OWNS DATA.ARTIFACT Artifact\n\n=== D.UX Researcher experience ===\n Case browser, image views, 3D tumor, timeline, scenario and AI evidence panels. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS UX.CASE Research case browser\n  --> IMPLEMENTS UX.PROFILE Patient context\n  --> IMPLEMENTS UX.3D Interactive lesion viewport\n  --> IMPLEMENTS UX.TIMELINE Observation/date selector\n  --> IMPLEMENTS UX.SCENARIO Scenario generation/exploration\n  --> IMPLEMENTS UX.CHART Clinical charts\n  --> IMPLEMENTS UX.INSIGHT AI insights with evidence\n  --> IMPLEMENTS UX.IMPORT New observation workflow\n  --> IMPLEMENTS UX.EVAL Evaluation/limitations view\n  --> IMPLEMENTS UX.FAIL Graceful empty/error states\n\n=== DATA.NOTE ClinicalNote ===\n Source text or synthetic note with context, negation and evidence spans. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- RELATES_TO DATA.VISIT ClinicalVisit\n\n=== AI.RETR Evidence retrieval ===\n Curated NCI/PubMed-type sources, verifiable passage IDs, publication version and permissions. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  --> PRECEDES AI.LLM Grounded explanation\n  <-- HAS_STEP WF.AI Evidence linked interpretation\n  <-- WORKFLOW_PRECEDES AI.FUSE Late multimodal fusion\n  --> WORKFLOW_PRECEDES AI.LLM Grounded explanation\n\n=== AI.LLM Grounded explanation ===\n Structured interpretation referencing exact measurements, provenance, evidence, uncertainty and limits. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- PRECEDES AI.FUSE Late multimodal fusion\n  <-- PRECEDES AI.RETR Evidence retrieval\n  --> PRECEDES AI.GUARD Output safety validation\n  <-- HAS_STEP WF.AI Evidence linked interpretation\n  <-- WORKFLOW_PRECEDES AI.RETR Evidence retrieval\n  --> WORKFLOW_PRECEDES AI.GUARD Output safety validation\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n  <-- CONSTRAINS GOV.RECIST Formal response boundary\n\n=== UX.INSIGHT AI insights with evidence ===\n Findings with source links, uncertainties, conflicts and research-only limitation. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n  <-- HAS_STEP WF.NEW Add observation\n  <-- WORKFLOW_PRECEDES AI.FEAT Deterministic multimodal features\n  <-- HAS_STEP WF.AI Evidence linked interpretation\n  <-- WORKFLOW_PRECEDES AI.GUARD Output safety validation\n  <-- CONSTRAINS GOV.NOCLIN No autonomous care\n\n=== GOV.CTCAE Adverse-event grading boundary ===\n CTCAE grade only when exact evidence and versioned rule requirements satisfied. \nSources: SAF,PRD\n  <-- ENFORCES D.GOV Safety and provenance\n  --> CONSTRAINS SIM.TOXIC Family 5: clinical deterioration\n  --> CONSTRAINS SIM.VALID Simulation validation\n\n=== GOV.ABSTAIN Disclose unknowns ===\n Missing values, poor registration, lack of calibrated forecast or uncertain evidence yield caveat/abstention. \nSources: SAF,PRD\n  <-- ENFORCES D.GOV Safety and provenance\n  --> CONSTRAINS AI.FORECAST Optional future-state forecasts\n  --> CONSTRAINS IMG.REG Longitudinal registration\n  --> CONSTRAINS AI.GUARD Output safety validation\n\n=== WF.AI Evidence linked interpretation ===\n Ordered sequence; inspect dependent nodes before implementation. \nSources: PRD,ROAD\n  <-- HAS_WORKFLOW ROOT CancerOS breast cancer digital twin\n  --> HAS_STEP AI.NLP Clinical note extraction\n  --> HAS_STEP AI.FEAT Deterministic multimodal features\n  --> HAS_STEP AI.FUSE Late multimodal fusion\n  --> HAS_STEP AI.RETR Evidence retrieval\n  --> HAS_STEP AI.LLM Grounded explanation\n  --> HAS_STEP AI.GUARD Output safety validation\n  --> HAS_STEP UX.INSIGHT AI insights with evidence\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "evidence",
+      "returncode": 0,
+      "output": "\nIMG.11 — Lesion correspondence\nDesign: Track lesion IDs only where evidence supports correspondence across visits\nAcceptance: Uncertain lesion match abstains\n  READ A02 MIT HST.582J — Lectures 15–16 — Image registration I and II — https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/\n  READ A06 Guide to Medical Image Analysis — Klaus D. Toennies — Segmentation, registration, shape analysis, validation; inspect edition table of contents for exact chapter — https://link.springer.com/book/10.1007/978-1-4471-7320-5\n  REPO R04 OHIF Viewer — DICOM viewer, longitudinal measurement tracking — https://github.com/OHIF/Viewers\n  REPO R03 3D Slicer — reference geometry/segmentation/measurement — https://github.com/Slicer/Slicer\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n\nSIM.06 — Toxicity/event grading\nDesign: Record abnormal observations and assign CTCAE grade only with defined evidence\nAcceptance: Without required evidence no formal grade\n  READ A13 NCI CTCAE version 6.0 — Adverse-event definitions, laboratory abnormalities and grading criteria — https://dctd.cancer.gov/research/ctep-trials/for-sites/adverse-events/ctcae-v6.pdf\n  READ A12 NCI Breast Cancer Treatment PDQ — Stage-specific treatment, receptor status and neoadjuvant therapy sections — https://www.cancer.gov/types/breast/hp/breast-treatment-pdq\n\nAI.03 — Evidence retrieval and citation checking\nDesign: Curate clinical sources, link exact evidence, avoid unverified generated links\nAcceptance: Every cited claim resolves to supporting source\n  READ A12 NCI Breast Cancer Treatment PDQ — Stage-specific treatment, receptor status and neoadjuvant therapy sections — https://www.cancer.gov/types/breast/hp/breast-treatment-pdq\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  PAPER P03 TRIPOD-LLM reporting guideline —  — https://www.nature.com/articles/s41591-024-03425-5\n\nAI.06 — Interpretation output guard\nDesign: Evidence-constrained summaries, validation, provenance and no individualized prescriptions\nAcceptance: Unsupported numeric and medical claims rejected\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  READ A12 NCI Breast Cancer Treatment PDQ — Stage-specific treatment, receptor status and neoadjuvant therapy sections — https://www.cancer.gov/types/breast/hp/breast-treatment-pdq\n  PAPER P03 TRIPOD-LLM reporting guideline —  — https://www.nature.com/articles/s41591-024-03425-5\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "evidence",
+      "returncode": 0,
+      "output": "\n== IMG.11 Lesion correspondence ==\nIntent: Track lesion IDs only where evidence supports correspondence across visits \nTest: Uncertain lesion match abstains\n BOOK/LECTURE A02 MIT HST.582J | Lectures 15–16 — Image registration I and II | https://ocw.mit.edu/courses/hst-582j-biomedical-signal-and-image-processing-spring-2007/pages/lecture-notes/ | verified section\n BOOK/LECTURE A06 Guide to Medical Image Analysis — Klaus D. Toennies | Segmentation, registration, shape analysis, validation; inspect edition table of contents for exact chapter | https://link.springer.com/book/10.1007/978-1-4471-7320-5 | topic verified; precise chapter pending\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R04 OHIF Viewer | https://github.com/OHIF/Viewers \n  Inspect: Inspect modes/longitudinal, extensions/measurement-tracking, extensions/cornerstone, platform/core \n  Reuse: Prototype OHIF integration versus Cornerstone3D standalone \n  Avoid: Do not assume original longitudinal mode understands synthetic branching \n  Verify: Browser MRI overlay, state switch, correct patient/time, performance\n REPOSITORY R03 3D Slicer | https://github.com/Slicer/Slicer \n  Inspect: Inspect MRML, Segmentations, Segment Editor, transformations, model/segment statistics \n  Reuse: Use as independent geometry reference; leverage VTK/SimpleITK libraries \n  Avoid: Do not transplant desktop application to web \n  Verify: Compare exported mesh dimensions and mask-derived volume\n REPOSITORY R13 Cornerstone3D | https://github.com/cornerstonejs/cornerstone3D \n  Inspect: Inspect packages/tools, viewport, segmentation loaders and examples \n  Reuse: Evaluate direct library integration rather than all of OHIF \n  Avoid: Do not recode entire DICOM viewport layer \n  Verify: Render known DICOM and overlay matched segmentation\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n\n== SIM.06 Toxicity/event grading ==\nIntent: Record abnormal observations and assign CTCAE grade only with defined evidence \nTest: Without required evidence no formal grade\n BOOK/LECTURE A13 NCI CTCAE version 6.0 | Adverse-event definitions, laboratory abnormalities and grading criteria | https://dctd.cancer.gov/research/ctep-trials/for-sites/adverse-events/ctcae-v6.pdf | verified edition\n BOOK/LECTURE A12 NCI Breast Cancer Treatment PDQ | Stage-specific treatment, receptor status and neoadjuvant therapy sections | https://www.cancer.gov/types/breast/hp/breast-treatment-pdq | verified document; topic-specific revision required\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n\n== AI.03 Evidence retrieval and citation checking ==\nIntent: Curate clinical sources, link exact evidence, avoid unverified generated links \nTest: Every cited claim resolves to supporting source\n BOOK/LECTURE A12 NCI Breast Cancer Treatment PDQ | Stage-specific treatment, receptor status and neoadjuvant therapy sections | https://www.cancer.gov/types/breast/hp/breast-treatment-pdq | verified document; topic-specific revision required\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P03 TRIPOD-LLM reporting guideline | https://www.nature.com/articles/s41591-024-03425-5\n REPOSITORY R15 MONAI Deploy App SDK | https://github.com/Project-MONAI/monai-deploy-app-sdk \n  Inspect: Inspect examples/apps and operator contracts \n  Reuse: Study preprocessing/inference/postprocessing pipeline pattern \n  Avoid: Do not require heavyweight SDK on local laptop \n  Verify: CPU sample chain smoke test\n\n== AI.06 Interpretation output guard ==\nIntent: Evidence-constrained summaries, validation, provenance and no individualized prescriptions \nTest: Unsupported numeric and medical claims rejected\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n BOOK/LECTURE A12 NCI Breast Cancer Treatment PDQ | Stage-specific treatment, receptor status and neoadjuvant therapy sections | https://www.cancer.gov/types/breast/hp/breast-treatment-pdq | verified document; topic-specific revision required\n PAPER P03 TRIPOD-LLM reporting guideline | https://www.nature.com/articles/s41591-024-03425-5\n REPOSITORY R15 MONAI Deploy App SDK | https://github.com/Project-MONAI/monai-deploy-app-sdk \n  Inspect: Inspect examples/apps and operator contracts \n  Reuse: Study preprocessing/inference/postprocessing pipeline pattern \n  Avoid: Do not require heavyweight SDK on local laptop \n  Verify: CPU sample chain smoke test\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "package",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "package",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "package",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "AI.LLM",
+    "AI.RETR",
+    "D.DATA",
+    "D.UX",
+    "DATA.NOTE",
+    "GOV.ABSTAIN",
+    "GOV.CTCAE",
+    "ROOT",
+    "UX.INSIGHT",
+    "WF.AI",
+    "WF.NEW",
+    "WF.REAL",
+    "WF.REALVAL",
+    "WF.RELEASE",
+    "WF.SIM"
+  ],
+  "academic_behavior_ids": [
+    "IMG.11",
+    "SIM.06",
+    "AI.03",
+    "AI.06",
+    "EVAL.03"
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.DATA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.IMG"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.TWIN"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.SIM"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.AI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.UX"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.EVAL"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.INFRA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.GOV"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SOURCE"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.DIAGNOSIS"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.STUDY"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SERIES"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SEG"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.LESION"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.MEASURE"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.LABS"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.VITAL"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SYMPTOM"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.TREAT"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.NOTE"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.OUTCOME"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.PROV"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.BRANCH"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.RUN"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.ARTIFACT"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.NOTE"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.RETR"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.RETR",
+      "relation": "PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.LLM",
+      "relation": "PRECEDES",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.CASE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.PROFILE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.SCENARIO"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.CHART"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.IMPORT"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.EVAL"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.FAIL"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.CTCAE"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.ABSTAIN"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.WHOLE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.MULTI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.CARE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.SURV"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.GENOME"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.HOSP"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.DRUG"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.PHOTOMRI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.MAMA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.NNUNET"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.SLICER"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.OHIF"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.MONAI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.IDC"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.DCMQI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.LIT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.SOURCE"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.SIM"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.BASELINE"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.ELIG"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.LATENT"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.NEW"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "UX.IMPORT"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.COMPARE"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FEAT"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.AI"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.NLP"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FEAT"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.RETR"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.RETR"
+    },
+    {
+      "from_id": "AI.RETR",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.LLM",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "AI.GUARD",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REALVAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.REAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.RELEASE"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "GOV.NOCLIN",
+      "relation": "CONSTRAINS",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "GOV.RECIST",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "GOV.CTCAE",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.TOXIC"
+    },
+    {
+      "from_id": "GOV.CTCAE",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "GOV.ABSTAIN",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "GOV.ABSTAIN",
+      "relation": "CONSTRAINS",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "GOV.ABSTAIN",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.SIM"
+    }
+  ],
+  "mapped_source_ids": [
+    "A02",
+    "A06",
+    "A12",
+    "A13",
+    "A14",
+    "A15",
+    "P03",
+    "P05",
+    "R03",
+    "R04"
+  ],
+  "source_sections_inspected": "COS-097 evidence package"
+}
