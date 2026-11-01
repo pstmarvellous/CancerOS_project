@@ -21726,6 +21726,59 @@
       "known_failures": [],
       "blocked_on": [],
       "next_action": "COS-085 NLP retrieval evaluation"
+    },
+    {
+      "id": "COS-085",
+      "purpose": "Clinical NLP extraction and evidence-retrieval evaluation",
+      "dependency_ids": [
+        "COS-024",
+        "COS-058",
+        "COS-060",
+        "COS-061",
+        "COS-062",
+        "COS-064",
+        "COS-070",
+        "COS-079",
+        "COS-081"
+      ],
+      "requirement_links": [
+        "TASK-COS-085"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
+      "status": "implemented_unverified",
+      "status_history": [
+        "planned",
+        "implemented_unverified"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "tests/test_nlp_retrieval_challenge.py",
+        "docs/engineering/evidence/nlp-retrieval-challenge.json",
+        "docs/engineering/reference-reviews/COS-085.md",
+        "docs/engineering/reference-reviews/COS-085.json"
+      ],
+      "decisions": [
+        "Frozen 60-case protocol with 30-case dev and 30-case frozen split",
+        "Deterministic parser baseline; no best-run selection",
+        "Span accounting explicit; extraction never becomes authoritative observation"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format challenge",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_nlp_retrieval_challenge (2 tests)",
+          "result": "pass"
+        },
+        {
+          "check": "real notes / live runs / specialist review",
+          "result": "Not evaluated/Blocked; owner and evidence recorded"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "COS-086 safety abstention tests"
     }
   ],
   "contract_closure": {

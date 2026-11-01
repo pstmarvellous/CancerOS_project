@@ -1,0 +1,23 @@
+{
+  "recorded_at": "2026-11-01T13:35:20.775302+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "nlp-retrieval-challenge/1",
+  "protocol": "20 grounded / 20 missing-conflicting-temporal-negation / 20 adversarial-prohibited; 30-case dev, 30-case frozen evaluation",
+  "frozen_cases": 30,
+  "extraction": {
+    "supported": 10,
+    "unsupported": 0,
+    "abstained": 20
+  },
+  "retrieval": {
+    "queries": 5,
+    "hits": 4
+  },
+  "span_accounting": "Unicode code-point offsets with explicit UTF-16 mapping; exact span support recorded per case",
+  "real_notes": "Not evaluated: no source-authorized real notes with annotators/adjudication",
+  "live_model_runs": "Not evaluated: no verified provider access; mock responses establish engineering behavior only",
+  "specialist_review": "Blocked: no specialist reference review; owner and review evidence pending",
+  "scope": "fixture parser/retrieval behavior; valid extraction never becomes an authoritative observation",
+  "result": "passed",
+  "manifest_sha256": "d4d9b8f14c9f45bcc8b5e55b4dce06638eee82213be162b4d693e3bb66fd33b5"
+}
