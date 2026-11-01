@@ -21474,17 +21474,51 @@
         "TASK-COS-080"
       ],
       "allowed_scope": "Phase 5 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
-      "status": "planned",
+      "status": "implemented_unverified",
       "status_history": [
-        "planned"
+        "planned",
+        "implemented_unverified"
       ],
       "owner_responsibility": "Primary agent; specialist self-review only",
-      "actual_touched_files": [],
-      "decisions": [],
-      "checks_evidence": [],
+      "actual_touched_files": [
+        "apps/web/components/guided-demo.tsx",
+        "apps/web/components/guided-demo.test.tsx",
+        "apps/web/components/evaluation-report.tsx",
+        "apps/web/components/evaluation-report.test.tsx",
+        "apps/web/components/ux-checklist.tsx",
+        "apps/web/components/ux-checklist.test.tsx",
+        "apps/web/app/guided-demo/page.tsx",
+        "apps/web/app/evaluation/page.tsx",
+        "apps/web/app/page.tsx",
+        "docs/engineering/reference-reviews/COS-080.md",
+        "docs/engineering/reference-reviews/COS-080.json"
+      ],
+      "decisions": [
+        "Read-only pinned demo sequence with preflight and safe reset; no model run or state change",
+        "Compact evaluation separates fixture-tested from Not evaluated and Blocked; no decorative percentages",
+        "UX-01-UX-18 mapped with honest manual/measured gaps; no conformance claim from scans"
+      ],
+      "checks_evidence": [
+        {
+          "check": "tsc --noEmit -p apps/web/tsconfig.json",
+          "result": "pass"
+        },
+        {
+          "check": "eslint guided-demo/evaluation/ux-checklist/pages",
+          "result": "pass"
+        },
+        {
+          "check": "vitest guided-demo+evaluation+ux (4 tests)",
+          "result": "pass"
+        },
+        {
+          "check": "real-data operation / participant review / measured performance",
+          "result": "not_run; explicitly Not evaluated/Blocked, hardware limits unrecorded"
+        }
+      ],
       "known_failures": [],
       "blocked_on": [],
-      "next_action": "Execute in Phase 5 order; optional P1 prompts remain gated"
+      "next_action": "Phase 5 complete; Phase 6 gated on real-data, review and publication approvals"
     }
   ],
   "contract_closure": {
