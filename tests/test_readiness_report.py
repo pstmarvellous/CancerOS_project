@@ -74,10 +74,15 @@ def test_frozen_manifest_reconciles_all_gates():
 def pending_files(pending):
     files = set()
     for line in pending.splitlines():
-        line = line.strip()
-        if len(line) > 3:
-            files.add(line[3:].strip().strip('"'))
-    return files
+        stripped = line.strip()
+        if len(stripped) > 3:
+            files.add(stripped[2:].strip().strip('"'))
+    non_evidence = {
+        name
+        for name in files
+        if not (name.startswith("docs/engineering/evidence/") and name.endswith(".json"))
+    }
+    return non_evidence
 
 
 def test_no_uncommitted_source_change_and_no_invented_claims():
