@@ -22184,6 +22184,54 @@
         "authorized staging target, spending authority and restore window"
       ],
       "next_action": "COS-094 synthetic demo cases"
+    },
+    {
+      "id": "COS-094",
+      "purpose": "Curate and verify five end-to-end synthetic scenario demonstration cases",
+      "dependency_ids": [
+        "COS-042",
+        "COS-050",
+        "COS-078",
+        "COS-084",
+        "COS-087",
+        "COS-093"
+      ],
+      "requirement_links": [
+        "TASK-COS-094"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; curation manifest without served demo",
+      "status": "blocked",
+      "status_history": [
+        "planned",
+        "blocked"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "tests/test_demo_cases_synthetic.py",
+        "docs/engineering/evidence/demo-cases-synthetic.json",
+        "docs/engineering/reference-reviews/COS-094.md",
+        "docs/engineering/reference-reviews/COS-094.json"
+      ],
+      "decisions": [
+        "One entry per family with research question; counts kept separate from real patients",
+        "Each entry needs baseline/rights/branch/validation artifacts before judges",
+        "Missing artifacts mark entries blocked; no illustrative-shape swap"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format demo curation",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_demo_cases_synthetic (2 tests)",
+          "result": "pass; manifest result blocked by design"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [
+        "approved baselines, source rights, branch/run identities, validation reports, deployed IDs"
+      ],
+      "next_action": "COS-095 authentic longitudinal demo"
     }
   ],
   "contract_closure": {

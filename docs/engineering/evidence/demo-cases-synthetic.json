@@ -1,0 +1,145 @@
+{
+  "recorded_at": "2026-11-01T14:01:45.741836+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "demo-cases-synthetic/1",
+  "entries": [
+    {
+      "family": "SC-01",
+      "research_question": "Does a strong simulated reduction stay consistent across tumor, clinical and event tracks?",
+      "required_artifacts": [
+        "approved baseline manifest",
+        "source rights evidence",
+        "branch/run identity",
+        "engine/config/seed/PRNG record",
+        "published state IDs",
+        "run-level validation report"
+      ],
+      "artifacts_present": [],
+      "missing_evidence": [
+        "approved baseline manifest",
+        "source rights evidence",
+        "branch/run identity",
+        "engine/config/seed/PRNG record",
+        "published state IDs",
+        "run-level validation report"
+      ],
+      "states": {
+        "observed_baseline": 0,
+        "synthetic_followups": 0
+      },
+      "status": "blocked"
+    },
+    {
+      "family": "SC-02",
+      "research_question": "Does a modest reduction or near-stable course keep tumor and clinical dimensions independent?",
+      "required_artifacts": [
+        "approved baseline manifest",
+        "source rights evidence",
+        "branch/run identity",
+        "engine/config/seed/PRNG record",
+        "published state IDs",
+        "run-level validation report"
+      ],
+      "artifacts_present": [],
+      "missing_evidence": [
+        "approved baseline manifest",
+        "source rights evidence",
+        "branch/run identity",
+        "engine/config/seed/PRNG record",
+        "published state IDs",
+        "run-level validation report"
+      ],
+      "states": {
+        "observed_baseline": 0,
+        "synthetic_followups": 0
+      },
+      "status": "blocked"
+    },
+    {
+      "family": "SC-03",
+      "research_question": "Does increasing simulated burden preserve timing, units and source links?",
+      "required_artifacts": [
+        "approved baseline manifest",
+        "source rights evidence",
+        "branch/run identity",
+        "engine/config/seed/PRNG record",
+        "published state IDs",
+        "run-level validation report"
+      ],
+      "artifacts_present": [],
+      "missing_evidence": [
+        "approved baseline manifest",
+        "source rights evidence",
+        "branch/run identity",
+        "engine/config/seed/PRNG record",
+        "published state IDs",
+        "run-level validation report"
+      ],
+      "states": {
+        "observed_baseline": 0,
+        "synthetic_followups": 0
+      },
+      "status": "blocked"
+    },
+    {
+      "family": "SC-04",
+      "research_question": "Does decline followed by regrowth show the configured change point without interpolation?",
+      "required_artifacts": [
+        "approved baseline manifest",
+        "source rights evidence",
+        "branch/run identity",
+        "engine/config/seed/PRNG record",
+        "published state IDs",
+        "run-level validation report"
+      ],
+      "artifacts_present": [],
+      "missing_evidence": [
+        "approved baseline manifest",
+        "source rights evidence",
+        "branch/run identity",
+        "engine/config/seed/PRNG record",
+        "published state IDs",
+        "run-level validation report"
+      ],
+      "states": {
+        "observed_baseline": 0,
+        "synthetic_followups": 0
+      },
+      "status": "blocked"
+    },
+    {
+      "family": "SC-05",
+      "research_question": "Does independent clinical deterioration show while a shrinking/stable tumor stays honest?",
+      "required_artifacts": [
+        "approved baseline manifest",
+        "source rights evidence",
+        "branch/run identity",
+        "engine/config/seed/PRNG record",
+        "published state IDs",
+        "run-level validation report"
+      ],
+      "artifacts_present": [],
+      "missing_evidence": [
+        "approved baseline manifest",
+        "source rights evidence",
+        "branch/run identity",
+        "engine/config/seed/PRNG record",
+        "published state IDs",
+        "run-level validation report"
+      ],
+      "states": {
+        "observed_baseline": 0,
+        "synthetic_followups": 0
+      },
+      "status": "blocked"
+    }
+  ],
+  "entry_count": 5,
+  "branch_count": 0,
+  "distinct_original_patients": 0,
+  "broader_evaluation_failures": "retained separately in COS-081..086 evidence; demo entries are intentionally selected, not a held-out set",
+  "judge_access": "blocked: no frozen deployed IDs with role-specific access verified in this scope",
+  "scope": "curation manifest with honest blocks; not a served demonstration",
+  "result": "blocked",
+  "manifest_sha256": "ef8c78de03032653d25f3da38e7bebd8595329a5548820a77817c2fe3a8dd73c"
+}
