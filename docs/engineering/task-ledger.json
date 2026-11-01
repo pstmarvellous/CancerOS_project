@@ -22135,6 +22135,55 @@
       "known_failures": [],
       "blocked_on": [],
       "next_action": "COS-093 smoke tests and rollback"
+    },
+    {
+      "id": "COS-093",
+      "purpose": "Production-like deployment smoke tests and rollback procedure",
+      "dependency_ids": [
+        "COS-087",
+        "COS-088",
+        "COS-089",
+        "COS-090",
+        "COS-091",
+        "COS-092"
+      ],
+      "requirement_links": [
+        "TASK-COS-093"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; reviewed procedure without deployed target",
+      "status": "blocked",
+      "status_history": [
+        "planned",
+        "blocked"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "docs/runbooks/smoke-rollback-restore.md",
+        "tests/test_smoke_rollback.py",
+        "docs/engineering/evidence/smoke-rollback.json",
+        "docs/engineering/reference-reviews/COS-093.md",
+        "docs/engineering/reference-reviews/COS-093.json"
+      ],
+      "decisions": [
+        "No untracked hotfix or latest-image promotion; pinned digest/config only",
+        "Rollback never blindly downgrades; expand/contract or explicit plan",
+        "Isolated restore inherits COS-089 block; backup job never passes recovery"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format smoke gate",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_smoke_rollback (3 tests)",
+          "result": "pass; gate result blocked by design"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [
+        "authorized staging target, spending authority and restore window"
+      ],
+      "next_action": "COS-094 synthetic demo cases"
     }
   ],
   "contract_closure": {

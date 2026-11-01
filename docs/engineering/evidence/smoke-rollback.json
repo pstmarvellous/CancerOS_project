@@ -1,0 +1,14 @@
+{
+  "recorded_at": "2026-11-01T14:00:29.889651+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "smoke-rollback/1",
+  "candidate_freeze": "procedure documented; no candidate deployed in this scope",
+  "smoke_journey": "blocked: no deployed target with a clean browser and account",
+  "rollback_rehearsal": "blocked: no staging apply; expand/contract rule asserted on fixtures",
+  "isolated_restore": "blocked: inherits COS-089; no isolated restore run",
+  "measured_latency_mesh_cost": "unmeasured on deployment connection; local checks are not deployment evidence",
+  "disposition": "blocked",
+  "scope": "reviewed procedure and fixture rules; not deployed-and-recovered",
+  "result": "blocked",
+  "manifest_sha256": "8d948734fe5a5f1aad11f8a6c78c080c16a263a02e97af2f55c5ae15c0fcdc73"
+}
