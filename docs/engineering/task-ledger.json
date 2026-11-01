@@ -21576,6 +21576,55 @@
       "known_failures": [],
       "blocked_on": [],
       "next_action": "COS-082 geometry benchmark"
+    },
+    {
+      "id": "COS-082",
+      "purpose": "Imaging geometry, segmentation and physical measurement benchmark",
+      "dependency_ids": [
+        "COS-026",
+        "COS-028",
+        "COS-029",
+        "COS-031",
+        "COS-033",
+        "COS-034",
+        "COS-035",
+        "COS-075",
+        "COS-081"
+      ],
+      "requirement_links": [
+        "TASK-COS-082"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
+      "status": "implemented_unverified",
+      "status_history": [
+        "planned",
+        "implemented_unverified"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "tests/test_geometry_benchmark.py",
+        "docs/engineering/evidence/geometry-benchmark.json",
+        "docs/engineering/reference-reviews/COS-082.md",
+        "docs/engineering/reference-reviews/COS-082.json"
+      ],
+      "decisions": [
+        "Independent voxel-count x det references, not production helper as oracle",
+        "Frozen tolerance engineering checks; technical correctness separate from clinical accuracy",
+        "Real cases and segmentation model honestly Not evaluated; no self-review approval claim"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format geometry benchmark",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_geometry_benchmark (6 tests)",
+          "result": "pass"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "COS-083 longitudinal evaluation"
     }
   ],
   "contract_closure": {

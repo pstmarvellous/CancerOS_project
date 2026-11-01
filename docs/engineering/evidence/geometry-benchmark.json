@@ -1,0 +1,83 @@
+{
+  "recorded_at": "2026-11-01T13:23:32.418518+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "geometry-benchmark/1",
+  "tolerances": {
+    "volume": "max(1e-6 mm3, 1e-9 x expected)",
+    "roundtrip_mm": "1e-5"
+  },
+  "cases": [
+    {
+      "case": "translated anisotropic cuboid",
+      "status": "scored",
+      "detail": "1440.000000 mm3 = 1.440000 cm3"
+    },
+    {
+      "case": "axis-swap cuboid",
+      "status": "scored",
+      "detail": "1440.000000 mm3 = 1.440000 cm3"
+    },
+    {
+      "case": "reflected cuboid",
+      "status": "scored",
+      "detail": "1440.000000 mm3 = 1.440000 cm3"
+    },
+    {
+      "case": "sheared cuboid",
+      "status": "scored",
+      "detail": "1440.000000 mm3 = 1.440000 cm3"
+    },
+    {
+      "case": "translated anisotropic round-trip",
+      "status": "scored",
+      "detail": "worst round-trip error 8.881784197001252E-16 mm over 25 samples"
+    },
+    {
+      "case": "oblique affine round-trip",
+      "status": "scored",
+      "detail": "worst round-trip error 1.7763568394002505E-15 mm over 25 samples"
+    },
+    {
+      "case": "sheared affine round-trip",
+      "status": "scored",
+      "detail": "worst round-trip error 4.440892098500626E-16 mm over 25 samples"
+    },
+    {
+      "case": "zero-determinant",
+      "status": "scored",
+      "detail": "rejected for intended reason"
+    },
+    {
+      "case": "non-affine-bottom-row",
+      "status": "scored",
+      "detail": "rejected for intended reason"
+    },
+    {
+      "case": "integer-label preservation",
+      "status": "scored",
+      "detail": "labels {0: 30, 1: 60, 2: 30} exact; nonzero voxels 90"
+    },
+    {
+      "case": "mm-to-m single conversion",
+      "status": "scored",
+      "detail": "1440 mm3 = 1.44 cm3 exactly once"
+    },
+    {
+      "case": "mesh bounds/scale/watertight",
+      "status": "scored",
+      "detail": "bounds [0.0, 0.0, 0.0]->[6.0, 12.0, 20.0]; watertight=True"
+    }
+  ],
+  "counts": {
+    "attempted": 12,
+    "eligible": 12,
+    "excluded": 0,
+    "failed": 0,
+    "scored": 12
+  },
+  "real_cases": "Not evaluated: no curated real case with source rights, linkage, reviewer and overlay evidence in this scope",
+  "segmentation_model": "Not evaluated: no eligible optional checkpoint; imported-mask self-overlap transfers consistency only",
+  "scope": "technical correctness only; not clinical accuracy",
+  "result": "passed",
+  "manifest_sha256": "c3fefda9dd2d219a8bc5246792d9b608996a7c349a97531668e24b5bb7589f98"
+}
