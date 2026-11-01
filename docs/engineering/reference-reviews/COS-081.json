@@ -1,0 +1,215 @@
+{
+  "task": "COS-081",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "evaluation",
+      "returncode": 0,
+      "output": "\n=== D.EVAL Scientific evaluation ===\n Technical correctness and honest real-data evaluation separate from simulation tests. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> TESTS EVAL.PHANTOM Geometry phantom tests\n  --> TESTS EVAL.SEG Imaging segmentation metrics\n  --> TESTS EVAL.REAL Authentic longitudinal case evaluation\n  --> TESTS EVAL.SIM Simulation integrity evaluation\n  --> TESTS EVAL.AI NLP/LLM grounding evaluation\n  --> TESTS EVAL.E2E End-to-end demo\n  --> TESTS EVAL.REPORT Scientific limitations report\n\n=== AI.FORECAST Optional future-state forecasts ===\n Only with qualified independent real-data evaluation; abstain otherwise. Synthetic simulator is not predictive validation. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- CONSTRAINS GOV.ABSTAIN Disclose unknowns\n  <-- VERIFIES EVAL.REAL Authentic longitudinal case evaluation\n\n=== UX.EVAL Evaluation/limitations view ===\n What was tested, real versus synthetic metrics, cohort size, unknowns and known failures. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n\n=== EVAL.REAL Authentic longitudinal case evaluation ===\n Track genuine repeat scans separately; error against actual holdout outcomes if forecasting used. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  <-- HAS_STEP WF.REALVAL Actual longitudinal evaluation\n  <-- WORKFLOW_PRECEDES TWIN.REAL Genuine longitudinal viewing\n  --> WORKFLOW_PRECEDES EVAL.REPORT Scientific limitations report\n  --> VERIFIES AI.FORECAST Optional future-state forecasts\n\n=== EVAL.SIM Simulation integrity evaluation ===\n Plausibility review, parameter assumptions, correlations, chronology, reproducibility and missingness. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  --> VERIFIES SIM.VALID Simulation validation\n\n=== EVAL.AI NLP/LLM grounding evaluation ===\n Extraction, negation, citation validity, numerical fidelity, clinical abstention and adversarial notes. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  <-- WORKFLOW_PRECEDES EVAL.E2E End-to-end demo\n  --> WORKFLOW_PRECEDES GOV.PROV Five provenance classes\n  --> VERIFIES AI.GUARD Output safety validation\n\n=== REF.MONAI MONAI ===\n Medical image transforms, evaluation, optional annotation/inference. \nSources: REF\n  <-- REFERENCES ROOT CancerOS breast cancer digital twin\n\n=== WF.REALVAL Actual longitudinal evaluation ===\n Ordered sequence; inspect dependent nodes before implementation. \nSources: PRD,ROAD\n  <-- HAS_WORKFLOW ROOT CancerOS breast cancer digital twin\n  --> HAS_STEP IMG.INGEST DICOM and NIfTI ingestion\n  --> HAS_STEP IMG.REG Longitudinal registration\n  --> HAS_STEP IMG.TRACK Cross-visit lesion identity\n  --> HAS_STEP TWIN.REAL Genuine longitudinal viewing\n  --> HAS_STEP EVAL.REAL Authentic longitudinal case evaluation\n  --> HAS_STEP EVAL.REPORT Scientific limitations report\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "evaluation",
+      "returncode": 0,
+      "output": "\nDAT.04 — Patient-level split and duplicate detection\nDesign: Keep source patient and synthetic descendants in same evaluation partition\nAcceptance: No split leakage or duplicated derivative patient\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R07 IDC Index — reproducible dataset collection and download — https://github.com/ImagingDataCommons/idc-index\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "evaluation",
+      "returncode": 0,
+      "output": "\n== DAT.04 Patient-level split and duplicate detection ==\nIntent: Keep source patient and synthetic descendants in same evaluation partition \nTest: No split leakage or duplicated derivative patient\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R07 IDC Index | https://github.com/ImagingDataCommons/idc-index \n  Inspect: Inspect IDCClient metadata hierarchy, SQL querying, download manifests \n  Reuse: Adopt maintained package to download authorized selected studies \n  Avoid: Do not bulk-download entire datasets or assume every cohort is in IDC \n  Verify: Download one approved series, SHA-256 and patient/study linkage\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "testing",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "testing",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "testing",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "AI.FORECAST",
+    "D.EVAL",
+    "EVAL.AI",
+    "EVAL.REAL",
+    "EVAL.SIM",
+    "IMG.MODEL",
+    "REF.MONAI",
+    "UX.EVAL",
+    "WF.REALVAL"
+  ],
+  "academic_behavior_ids": [
+    "DAT.04"
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.EVAL"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MODEL"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.EVAL"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.SEG"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.REAL"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.SIM"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.MONAI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REALVAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.REAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "TWIN.REAL",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.REAL"
+    },
+    {
+      "from_id": "EVAL.REAL",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "EVAL.AI",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "GOV.ABSTAIN",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "EVAL.SEG",
+      "relation": "VERIFIES",
+      "to_id": "IMG.MODEL"
+    },
+    {
+      "from_id": "EVAL.REAL",
+      "relation": "VERIFIES",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "EVAL.SIM",
+      "relation": "VERIFIES",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "EVAL.AI",
+      "relation": "VERIFIES",
+      "to_id": "AI.GUARD"
+    }
+  ],
+  "mapped_source_ids": [
+    "A11",
+    "A14",
+    "P05",
+    "R07"
+  ],
+  "source_sections_inspected": "phase 6 entry review"
+}

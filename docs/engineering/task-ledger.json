@@ -21519,6 +21519,63 @@
       "known_failures": [],
       "blocked_on": [],
       "next_action": "Phase 5 complete; Phase 6 gated on real-data, review and publication approvals"
+    },
+    {
+      "id": "COS-081",
+      "purpose": "Unit, schema, provenance and simulation integrity test suite",
+      "dependency_ids": [
+        "COS-007",
+        "COS-015",
+        "COS-022",
+        "COS-024",
+        "COS-050",
+        "COS-064",
+        "COS-071",
+        "COS-080"
+      ],
+      "requirement_links": [
+        "TASK-COS-081"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
+      "status": "implemented_unverified",
+      "status_history": [
+        "planned",
+        "implemented_unverified"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "tests/test_release_suite.py",
+        "tests/release_suite_manifest.json",
+        "docs/engineering/evidence/release-suite.json",
+        "docs/engineering/reference-reviews/COS-081.md",
+        "docs/engineering/reference-reviews/COS-081.json"
+      ],
+      "decisions": [
+        "Consolidated existing regression/tests into one release suite; no duplicate mirror tests",
+        "Frozen manifest with families/seeds/entrypoint/negative fixtures",
+        "Tiny synthetic fixtures only; real-data suites stay separate"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check test_release_suite",
+          "result": "pass"
+        },
+        {
+          "check": "ruff format --check",
+          "result": "pass"
+        },
+        {
+          "check": "mypy",
+          "result": "pass; 109 files"
+        },
+        {
+          "check": "pytest test_release_suite (2 tests: 50 attempts + repeat determinism)",
+          "result": "pass"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "COS-082 geometry benchmark"
     }
   ],
   "contract_closure": {

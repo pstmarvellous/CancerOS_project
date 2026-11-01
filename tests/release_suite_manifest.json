@@ -1,0 +1,32 @@
+{
+  "suite": "release-suite/1",
+  "families": [
+    "SC-01",
+    "SC-02",
+    "SC-03",
+    "SC-04",
+    "SC-05"
+  ],
+  "seeds_per_family": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "repeat_seed": 7,
+  "scope": "tiny synthetic fixtures only; authorized real-data suites remain separate",
+  "entrypoint": "uv run python -m pytest tests/test_release_suite.py --tb=line",
+  "negative_fixtures": [
+    "wrong units rejected by schema validation (test_clinical_validation)",
+    "nonfinite numbers rejected (test_clinical_validation)",
+    "DCE phases never create visits (test_annotation_contracts)",
+    "stale snapshot reuse denied (test_twin_states)",
+    "failed runs invisible to judges (test_simulation_runs)"
+  ]
+}

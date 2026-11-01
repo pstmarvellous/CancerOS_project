@@ -1,0 +1,263 @@
+{
+  "recorded_at": "2026-11-01T13:19:46.188568+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "release-suite/1",
+  "manifest_sha256": "1956d71d3584905372d4c6edba71740b22e9bcf9cce37135b915dd87acf94a92",
+  "attempts": [
+    {
+      "family": "SC-01",
+      "seed": 0,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-01",
+      "seed": 1,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-01",
+      "seed": 2,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-01",
+      "seed": 3,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-01",
+      "seed": 4,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-01",
+      "seed": 5,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-01",
+      "seed": 6,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-01",
+      "seed": 7,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-01",
+      "seed": 8,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-01",
+      "seed": 9,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-02",
+      "seed": 0,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-02",
+      "seed": 1,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-02",
+      "seed": 2,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-02",
+      "seed": 3,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-02",
+      "seed": 4,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-02",
+      "seed": 5,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-02",
+      "seed": 6,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-02",
+      "seed": 7,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-02",
+      "seed": 8,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-02",
+      "seed": 9,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-03",
+      "seed": 0,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-03",
+      "seed": 1,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-03",
+      "seed": 2,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-03",
+      "seed": 3,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-03",
+      "seed": 4,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-03",
+      "seed": 5,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-03",
+      "seed": 6,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-03",
+      "seed": 7,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-03",
+      "seed": 8,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-03",
+      "seed": 9,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-04",
+      "seed": 0,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-04",
+      "seed": 1,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-04",
+      "seed": 2,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-04",
+      "seed": 3,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-04",
+      "seed": 4,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-04",
+      "seed": 5,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-04",
+      "seed": 6,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-04",
+      "seed": 7,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-04",
+      "seed": 8,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-04",
+      "seed": 9,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-05",
+      "seed": 0,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-05",
+      "seed": 1,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-05",
+      "seed": 2,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-05",
+      "seed": 3,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-05",
+      "seed": 4,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-05",
+      "seed": 5,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-05",
+      "seed": 6,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-05",
+      "seed": 7,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-05",
+      "seed": 8,
+      "status": "engineering_passed"
+    },
+    {
+      "family": "SC-05",
+      "seed": 9,
+      "status": "engineering_passed"
+    }
+  ],
+  "attempted": 50,
+  "passed": 50,
+  "repeated_set_semantic_match": true,
+  "scope": "fixture verification only; no real-data or qualified review claim",
+  "result": "passed"
+}
