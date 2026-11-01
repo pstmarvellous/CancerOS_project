@@ -21414,17 +21414,47 @@
         "TASK-COS-079"
       ],
       "allowed_scope": "Phase 5 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
-      "status": "planned",
+      "status": "implemented_unverified",
       "status_history": [
-        "planned"
+        "planned",
+        "implemented_unverified"
       ],
       "owner_responsibility": "Primary agent; specialist self-review only",
-      "actual_touched_files": [],
-      "decisions": [],
-      "checks_evidence": [],
+      "actual_touched_files": [
+        "apps/web/components/insights-explorer.tsx",
+        "apps/web/components/insights-explorer.test.tsx",
+        "apps/web/components/app-shell.tsx",
+        "apps/web/app/insights/page.tsx",
+        "apps/web/app/api/insights/route.ts",
+        "docs/engineering/reference-reviews/COS-079.md",
+        "docs/engineering/reference-reviews/COS-079.json"
+      ],
+      "decisions": [
+        "Snapshot-bound context with exact hash; stale requests cancelled, previous result cleared",
+        "Rule-based summary labeled; private candidates never stream or auto-publish",
+        "Case evidence separate from background passages; unknown uncertainty never a confidence gauge"
+      ],
+      "checks_evidence": [
+        {
+          "check": "tsc --noEmit -p apps/web/tsconfig.json",
+          "result": "pass"
+        },
+        {
+          "check": "eslint insights/shell/route",
+          "result": "pass"
+        },
+        {
+          "check": "vitest insights+interpretation (4 tests)",
+          "result": "pass"
+        },
+        {
+          "check": "real-data operation / scientific review",
+          "result": "not_run; fixture evidence only"
+        }
+      ],
       "known_failures": [],
       "blocked_on": [],
-      "next_action": "Execute in Phase 5 order; optional P1 prompts remain gated"
+      "next_action": "COS-080 integrated completion"
     },
     {
       "id": "COS-080",
