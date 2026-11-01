@@ -1,10 +1,10 @@
 {
-  "audit_run_id": "cos101-de40b9a9137f",
+  "audit_run_id": "cos101-4f3cb96c3652",
   "mode": "final_release",
-  "candidate_commit": "de40b9a9137f7376b263951dbd5a5d81d3bb7170",
+  "candidate_commit": "4f3cb96c3652a19e7db8b95c3b91ca14da66bd17",
   "platform": "Windows-11-10.0.22631-SP0",
   "suite": "audit-functionality/1",
-  "recorded_at": "2026-11-01T15:16:25.329853+00:00",
+  "recorded_at": "2026-11-01T15:29:21.556034+00:00",
   "routes": [
     ".",
     "activity",
