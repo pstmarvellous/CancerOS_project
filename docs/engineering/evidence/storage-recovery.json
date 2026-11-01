@@ -1,0 +1,12 @@
+{
+  "recorded_at": "2026-11-01T13:47:52.624402+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "storage-recovery/1",
+  "retention": "temporary exports 24h; abandoned quarantine 7d; no orphan sweep of referenced versions",
+  "grant_rule": "1-300s expiry, renewable only by new authorized grant; no revocation-by-flag claim",
+  "isolated_restore": "blocked: no isolated restore target run; no key-recovery run in this scope",
+  "achieved_rpo_rto": "unmeasured: targets RPO<=24h, RTO<=4h remain targets until a restore lands",
+  "scope": "policy and fixture rules only; not recoverability proof",
+  "result": "blocked",
+  "manifest_sha256": "a22469d8d1dda63e81a6e6315fbc880eb3cec8b7a4c1de08ce44f71019db74ea"
+}

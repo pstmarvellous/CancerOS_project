@@ -21941,6 +21941,55 @@
       "known_failures": [],
       "blocked_on": [],
       "next_action": "COS-089 storage and backup policies"
+    },
+    {
+      "id": "COS-089",
+      "purpose": "Object storage, artifact access and database backup policies",
+      "dependency_ids": [
+        "COS-022",
+        "COS-032",
+        "COS-065",
+        "COS-067",
+        "COS-071",
+        "COS-088"
+      ],
+      "requirement_links": [
+        "TASK-COS-089"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; policy and fixture rules only",
+      "status": "blocked",
+      "status_history": [
+        "planned",
+        "blocked"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "docs/runbooks/storage-backup-policy.md",
+        "tests/test_storage_recovery.py",
+        "docs/engineering/evidence/storage-recovery.json",
+        "docs/engineering/reference-reviews/COS-089.md",
+        "docs/engineering/reference-reviews/COS-089.json"
+      ],
+      "decisions": [
+        "No orphan sweep of referenced versions; retention classes explicit",
+        "Grant 1-300s with renewal-by-new-grant; no revocation-by-flag",
+        "Restore stays Blocked; backup job never counts as recovery proof"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format recovery gate",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_storage_recovery (4 tests)",
+          "result": "pass; gate result blocked by design"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [
+        "isolated restore target run with byte/hash/lineage/revision/grant checks and key recovery"
+      ],
+      "next_action": "COS-090 worker orchestration"
     }
   ],
   "contract_closure": {
