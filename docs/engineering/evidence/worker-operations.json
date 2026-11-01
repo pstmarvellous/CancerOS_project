@@ -1,0 +1,17 @@
+{
+  "recorded_at": "2026-11-01T13:49:25.900183+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "worker-operations/1",
+  "limits": {
+    "digest_batch": 25,
+    "imaging_wall_seconds": 120,
+    "imaging_rss_bytes": 536870912,
+    "job_max_attempts": "1-3 enforced by settings validator"
+  },
+  "durability": "transactional outbox; idempotent finalization; stale-lease rejection; frozen manifests; publication separately guarded",
+  "measured_peaks": "unmeasured in this scope: representative job RSS/wall peaks, restart/drain behavior and throughput/cost per kind need a real run",
+  "fault_injection": "not run here: OOM/timeout, queue outage, duplicate delivery, expired lease, late result and cancel/finalize races need a live worker target",
+  "scope": "documented bounds and fixture rules; no autoscaling or exactly-once provider claim",
+  "result": "passed",
+  "manifest_sha256": "f7bce27cb15bb07a84d460b02bea963ffc0e457e152265ebc2f046b6faea61d6"
+}

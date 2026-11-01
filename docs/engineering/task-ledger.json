@@ -21990,6 +21990,53 @@
         "isolated restore target run with byte/hash/lineage/revision/grant checks and key recovery"
       ],
       "next_action": "COS-090 worker orchestration"
+    },
+    {
+      "id": "COS-090",
+      "purpose": "Inference-worker orchestration, resource limits and job processing",
+      "dependency_ids": [
+        "COS-032",
+        "COS-050",
+        "COS-057",
+        "COS-065",
+        "COS-088",
+        "COS-089"
+      ],
+      "requirement_links": [
+        "TASK-COS-090"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; documented bounds without live worker target",
+      "status": "implemented_unverified",
+      "status_history": [
+        "planned",
+        "implemented_unverified"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "docs/runbooks/worker-operations.md",
+        "tests/test_worker_operations.py",
+        "docs/engineering/evidence/worker-operations.json",
+        "docs/engineering/reference-reviews/COS-090.md",
+        "docs/engineering/reference-reviews/COS-090.json"
+      ],
+      "decisions": [
+        "Bounded CPU execution documented; deterministic paths need no GPU/live inference",
+        "Frozen manifests with no retry against mutable heads; publication separately guarded",
+        "Measured peaks and fault injection deferred to a live worker target"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format worker gate",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_worker_operations (3 tests)",
+          "result": "pass"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "COS-091 security hardening"
     }
   ],
   "contract_closure": {
