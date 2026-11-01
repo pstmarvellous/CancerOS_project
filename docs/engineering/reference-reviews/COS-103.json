@@ -1,0 +1,142 @@
+{
+  "task": "COS-103",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "deployment",
+      "returncode": 0,
+      "output": "\n=== D.INFRA Platform infrastructure ===\n Backend API, persistence, object storage, workers, jobs, deployment and security. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS INF.API Backend API contracts\n  --> IMPLEMENTS INF.DB Clinical database\n  --> IMPLEMENTS INF.OBJECT Imaging/object storage\n  --> IMPLEMENTS INF.JOBS Async imaging jobs\n  --> IMPLEMENTS INF.DEPLOY Deployment\n  --> IMPLEMENTS INF.CI Continuous verification\n\n=== INF.DEPLOY Deployment ===\n Reproducible build, health checks, secure secrets, cost and demo recovery. \nSources: ARCH,API,ROAD\n  <-- IMPLEMENTS D.INFRA Platform infrastructure\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  <-- WORKFLOW_PRECEDES GOV.PRIV Privacy and access\n  --> WORKFLOW_PRECEDES EVAL.REPORT Scientific limitations report\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "deployment",
+      "returncode": 0,
+      "output": "\nOPS.01 — Reproducible image model deployment\nDesign: Pinned upstream version, licenses, model weights and scalable inference fallback\nAcceptance: Fresh install, no-cloud fallback and logs\n  READ A05 ITK Software Guide — Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition — https://itk.org/ITKSoftwareGuide/html/\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R02 nnU-Net v2 — segmentation model preprocessing/inference — https://github.com/MIC-DKFZ/nnUNet\n  REPO R05 MONAI — image transforms and evaluation — https://github.com/Project-MONAI/MONAI\n  REPO R01 MAMA-MIA — breast MRI expert masks / nnU-Net inference — https://github.com/LidiaGarrucho/MAMA-MIA\n  PAPER P02 nnU-Net: self-configuring medical segmentation —  — https://www.nature.com/articles/s41592-020-01008-z\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "deployment",
+      "returncode": 0,
+      "output": "\n== OPS.01 Reproducible image model deployment ==\nIntent: Pinned upstream version, licenses, model weights and scalable inference fallback \nTest: Fresh install, no-cloud fallback and logs\n BOOK/LECTURE A05 ITK Software Guide | Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition | https://itk.org/ITKSoftwareGuide/html/ | verified topical volume; exact chapter pending\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P02 nnU-Net: self-configuring medical segmentation | https://www.nature.com/articles/s41592-020-01008-z\n REPOSITORY R02 nnU-Net v2 | https://github.com/MIC-DKFZ/nnUNet \n  Inspect: Read dataset format, nnUNetv2_predict workflow, inference pre/postprocessing and tests \n  Reuse: Adopt supported nnU-Net v2 inference API in isolated worker \n  Avoid: Do not copy training engine or mix incompatible checkpoints \n  Verify: Bad-channel, missing-weight, source-affine and prediction tests\n REPOSITORY R05 MONAI | https://github.com/Project-MONAI/MONAI \n  Inspect: Inspect transforms, MetaTensor/affine behavior, data readers, metrics and tutorials \n  Reuse: Adopt supported transformations and segmentation metrics \n  Avoid: Do not use unrelated organ models as breast segmentation \n  Verify: Image-mask transforms, invertibility, geometry unit tests\n REPOSITORY R01 MAMA-MIA | https://github.com/LidiaGarrucho/MAMA-MIA \n  Inspect: Read README, nnUNet subtree, download and checkpoint instructions; identify channels, transforms and mask meaning \n  Reuse: Use compatible vetted model inference or verified reference masks \n  Avoid: Do not assume checkpoint availability, licensing or external validity \n  Verify: Run one approved image, compare mask/physical measurements, record resource usage\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "recovery",
+      "returncode": 0,
+      "output": "\n=== INF.DEPLOY Deployment ===\n Reproducible build, health checks, secure secrets, cost and demo recovery. \nSources: ARCH,API,ROAD\n  <-- IMPLEMENTS D.INFRA Platform infrastructure\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  <-- WORKFLOW_PRECEDES GOV.PRIV Privacy and access\n  --> WORKFLOW_PRECEDES EVAL.REPORT Scientific limitations report\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "recovery",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "recovery",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "restore",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "restore",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "restore",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "D.INFRA",
+    "INF.DEPLOY"
+  ],
+  "academic_behavior_ids": [
+    "IMG.10",
+    "OPS.01"
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.INFRA"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.API"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.DB"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.OBJECT"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.JOBS"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.CI"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "INF.DEPLOY",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.REPORT"
+    }
+  ],
+  "mapped_source_ids": [
+    "A02",
+    "A04",
+    "A05",
+    "A14",
+    "P02",
+    "P05",
+    "R01",
+    "R02",
+    "R03",
+    "R05",
+    "R06"
+  ],
+  "source_sections_inspected": "COS-103 final release audit"
+}

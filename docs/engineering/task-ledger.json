@@ -22618,6 +22618,54 @@
       "known_failures": [],
       "blocked_on": [],
       "next_action": "COS-103 deployment verification"
+    },
+    {
+      "id": "COS-103",
+      "purpose": "Final deployment verification, service recovery and backup validation",
+      "dependency_ids": [
+        "COS-089",
+        "COS-090",
+        "COS-091",
+        "COS-092",
+        "COS-093",
+        "COS-102"
+      ],
+      "requirement_links": [
+        "TASK-COS-103"
+      ],
+      "allowed_scope": "Phase 7 final_release; candidate-bound record without live deployment",
+      "status": "blocked",
+      "status_history": [
+        "planned",
+        "blocked"
+      ],
+      "owner_responsibility": "Primary agent; self-review disclosed, no invented operator",
+      "actual_touched_files": [
+        "tests/test_operational_verification.py",
+        "docs/engineering/evidence/operational-verification.json",
+        "docs/engineering/reference-reviews/COS-103.md",
+        "docs/engineering/reference-reviews/COS-103.json"
+      ],
+      "decisions": [
+        "Handoff reconciled to blocked smoke/storage gates; no COS-102 invalidation",
+        "Candidate fingerprint unchanged; health and rollback contracts by source",
+        "Smoke/recovery/restore all blocked without a target; no blanket ready claim"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format verification",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_operational_verification (3 tests)",
+          "result": "pass; record result blocked by design"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [
+        "authorized staging target, apply, failure-injection window, isolated restore with key recovery and RPO/RTO"
+      ],
+      "next_action": "COS-104 freeze and tag"
     }
   ],
   "contract_closure": {
