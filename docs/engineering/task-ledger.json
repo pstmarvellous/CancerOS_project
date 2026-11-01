@@ -22281,6 +22281,51 @@
         "D02: verified original-patient case with two real exams, demo rights and reviewed meaning"
       ],
       "next_action": "COS-096 deterministic fixtures"
+    },
+    {
+      "id": "COS-096",
+      "purpose": "Implement deterministic demo fixtures, demo reset and graceful fallbacks",
+      "dependency_ids": [
+        "COS-065",
+        "COS-080",
+        "COS-093",
+        "COS-094",
+        "COS-095"
+      ],
+      "requirement_links": [
+        "TASK-COS-096"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; fixture and static checks without live reseed",
+      "status": "implemented_unverified",
+      "status_history": [
+        "planned",
+        "implemented_unverified"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "tests/test_demo_fixtures.py",
+        "docs/engineering/evidence/demo-fixtures.json",
+        "docs/engineering/reference-reviews/COS-096.md",
+        "docs/engineering/reference-reviews/COS-096.json"
+      ],
+      "decisions": [
+        "Restart is UI-only; reseeding is a separate isolated-namespace operation",
+        "Prepared/saved/static outputs labeled and permission-checked; no offline cache or invented mesh",
+        "Recovery path preserves presenter/observer roles; core needs no fresh checkpoint"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format fixtures gate",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_demo_fixtures (4 tests)",
+          "result": "pass"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "COS-097 documentation and evidence package"
     }
   ],
   "contract_closure": {

@@ -1,0 +1,243 @@
+{
+  "task": "COS-096",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "demo",
+      "returncode": 0,
+      "output": "\n=== INF.DEPLOY Deployment ===\n Reproducible build, health checks, secure secrets, cost and demo recovery. \nSources: ARCH,API,ROAD\n  <-- IMPLEMENTS D.INFRA Platform infrastructure\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  <-- WORKFLOW_PRECEDES GOV.PRIV Privacy and access\n  --> WORKFLOW_PRECEDES EVAL.REPORT Scientific limitations report\n\n=== EVAL.E2E End-to-end demo ===\n One MRI → mask → measurable mesh → five synthetic scenarios → timeline → AI interpretation. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  --> WORKFLOW_PRECEDES EVAL.AI NLP/LLM grounding evaluation\n  --> VERIFIES WF.REAL Real imaging vertical slice\n  --> VERIFIES WF.SIM Synthetic scenario vertical slice\n\n=== WF.RELEASE Demo readiness ===\n Ordered sequence; inspect dependent nodes before implementation. \nSources: PRD,ROAD\n  <-- HAS_WORKFLOW ROOT CancerOS breast cancer digital twin\n  --> HAS_STEP EVAL.E2E End-to-end demo\n  --> HAS_STEP EVAL.AI NLP/LLM grounding evaluation\n  --> HAS_STEP GOV.PROV Five provenance classes\n  --> HAS_STEP GOV.PRIV Privacy and access\n  --> HAS_STEP INF.DEPLOY Deployment\n  --> HAS_STEP EVAL.REPORT Scientific limitations report\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "demo",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "demo",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "fixtures",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "fixtures",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "fixtures",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "reset",
+      "returncode": 0,
+      "output": "\n=== UX.3D Interactive lesion viewport ===\n Rotate, pan, zoom, reset; clearly distinguish observed/synthetic/illustrative geometry. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n  <-- HAS_STEP WF.REAL Real imaging vertical slice\n  <-- WORKFLOW_PRECEDES IMG.MESH Mask-to-mesh conversion\n  --> WORKFLOW_PRECEDES EVAL.PHANTOM Geometry phantom tests\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "reset",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "reset",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "EVAL.E2E",
+    "INF.DEPLOY",
+    "UX.3D",
+    "WF.RELEASE"
+  ],
+  "academic_behavior_ids": [
+    "DAT.01",
+    "DAT.02",
+    "DAT.03",
+    "DAT.04",
+    "IMG.01",
+    "IMG.02",
+    "IMG.03",
+    "IMG.04",
+    "IMG.05",
+    "IMG.06",
+    "IMG.07",
+    "IMG.08",
+    "IMG.09",
+    "IMG.10",
+    "IMG.11",
+    "IMG.12",
+    "IMG.13",
+    "TWIN.01",
+    "TWIN.02",
+    "TWIN.03",
+    "SIM.01",
+    "SIM.02",
+    "SIM.03",
+    "SIM.04",
+    "SIM.05",
+    "SIM.06",
+    "SIM.07",
+    "SIM.08",
+    "SIM.09",
+    "AI.01",
+    "AI.02",
+    "AI.03",
+    "AI.04",
+    "AI.05",
+    "AI.06",
+    "EVAL.01",
+    "EVAL.02",
+    "EVAL.03",
+    "UX.01",
+    "OPS.01"
+  ],
+  "edges": [
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "IMG.MESH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "UX.3D",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.RELEASE"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "INF.DEPLOY",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.SIM"
+    }
+  ],
+  "mapped_source_ids": [
+    "A01",
+    "A02",
+    "A03",
+    "A04",
+    "A05",
+    "A06",
+    "A07",
+    "A08",
+    "A09",
+    "A10",
+    "A11",
+    "A12",
+    "A13",
+    "A14",
+    "A15",
+    "A16",
+    "A17",
+    "A18",
+    "P01",
+    "P02",
+    "P03",
+    "P04",
+    "P05",
+    "R01",
+    "R02",
+    "R03",
+    "R04",
+    "R05",
+    "R06",
+    "R07",
+    "R10",
+    "R11"
+  ],
+  "source_sections_inspected": "COS-096 demo fixtures"
+}

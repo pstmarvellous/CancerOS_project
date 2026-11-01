@@ -1,0 +1,13 @@
+{
+  "recorded_at": "2026-11-01T14:08:10.024328+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "demo-fixtures/1",
+  "restart": "pass: UI-only reset asserted in guided-demo component",
+  "manifest": "pass: idempotent validation with drift detection on fixtures",
+  "fallback_rules": "pass: labeled prepared/saved/static behavior; no offline cache or invented mesh",
+  "recovery": "Retry connection, Open saved result for this snapshot, Continue with measurements, Restart guide",
+  "live_reseed": "not run: no isolated demo namespace target in this scope",
+  "scope": "fixture and static checks; prepared core needs no fresh checkpoint or provider entitlement",
+  "result": "passed",
+  "manifest_sha256": "3182f5a016363a647f5094ec5b1842e3a83785fecb3f7330195916d762a35f2a"
+}
