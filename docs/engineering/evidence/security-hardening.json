@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-11-01T14:18:27.195330+00:00",
+  "recorded_at": "2026-11-01T14:24:28.362844+00:00",
   "platform": "Windows-11-10.0.22631-SP0",
   "suite": "security-hardening/1",
   "frontend_boundary": "pass: none of 4 forbidden patterns in web sources",

@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-11-01T14:18:31.269604+00:00",
+  "recorded_at": "2026-11-01T14:24:34.167716+00:00",
   "platform": "Windows-11-10.0.22631-SP0",
   "suite": "demo-fixtures/1",
   "restart": "pass: UI-only reset asserted in guided-demo component",
