@@ -1,0 +1,50 @@
+{
+  "audit_run_id": "cos100-af2260f89df4",
+  "mode": "final_release",
+  "candidate_commit": "af2260f89df490274ac78d7bc382cbd5ec411cb3",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "audit-integration/1",
+  "recorded_at": "2026-11-01T15:11:16.358313+00:00",
+  "chain": [
+    "source registry",
+    "patient linkage",
+    "clinical ingestion",
+    "imaging ingestion",
+    "measurement/mesh",
+    "twin states",
+    "simulation",
+    "fusion/context",
+    "interpretation",
+    "export boundary"
+  ],
+  "boundary_matrix": "pass: frozen conformance and lineage evidence (real disposable persistence at record time) plus evaluation-split suite presence",
+  "egress_grants": "pass: default-denial zero-transport test",
+  "findings": [
+    {
+      "id": "INT-001",
+      "category": "accepted deviation",
+      "severity": "minor",
+      "status": "accepted",
+      "title": "Live provider and third-party attack paths not exercised",
+      "requirement": "SPEC-010/COS-086",
+      "path": "docs/engineering/evidence/safety-adversary.json",
+      "detail": "Denied-by-default denial proven on fixtures; live export and external attack surfaces unevaluated.",
+      "remedy": "Keep disabled until a versioned policy with credentials and budget lands; never attack third parties."
+    },
+    {
+      "id": "INT-002",
+      "category": "missing evidence",
+      "severity": "major",
+      "status": "open",
+      "title": "Isolated restore of the exact candidate not run",
+      "requirement": "COS-089/COS-093",
+      "path": "docs/engineering/evidence/storage-recovery.json",
+      "detail": "Backup policy and grant rules verified; no isolated restore with byte/hash/lineage checks.",
+      "remedy": "COS-103 on the named candidate with an authorized target and key recovery."
+    }
+  ],
+  "self_review_disclosure": "single agent self-review; no independent reviewer signatures",
+  "scope": "module handoffs and provenance; fixes route to COS-102 without silent refactor",
+  "result": "passed",
+  "manifest_sha256": "df7aaa1f227804116535530d8519416563edcca69030a1d38d4a45b83d2e0462"
+}

@@ -22478,6 +22478,54 @@
       "known_failures": [],
       "blocked_on": [],
       "next_action": "COS-100 integration isolation audit"
+    },
+    {
+      "id": "COS-100",
+      "purpose": "Cross-module integration, identity isolation and provenance audit",
+      "dependency_ids": [
+        "COS-022",
+        "COS-024",
+        "COS-050",
+        "COS-064",
+        "COS-071",
+        "COS-081",
+        "COS-086",
+        "COS-099"
+      ],
+      "requirement_links": [
+        "TASK-COS-100"
+      ],
+      "allowed_scope": "Phase 7 final_release audit; no silent refactor",
+      "status": "implemented_unverified",
+      "status_history": [
+        "planned",
+        "implemented_unverified"
+      ],
+      "owner_responsibility": "Primary agent; self-review disclosed, no independent reviewer",
+      "actual_touched_files": [
+        "tests/test_audit_integration.py",
+        "docs/engineering/evidence/audit-integration.json",
+        "docs/engineering/reference-reviews/COS-100.md",
+        "docs/engineering/reference-reviews/COS-100.json"
+      ],
+      "decisions": [
+        "Frozen conformance/lineage evidence reused; full live rerun exceeds audit budget",
+        "Chain traced by code path; explicit baseline links only",
+        "Two findings (live-surface deviation, missing restore) without silent fix"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format audit",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_audit_integration (3 tests)",
+          "result": "pass"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "COS-101 functionality and demo audit"
     }
   ],
   "contract_closure": {
