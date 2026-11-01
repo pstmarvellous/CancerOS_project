@@ -22666,6 +22666,52 @@
         "authorized staging target, apply, failure-injection window, isolated restore with key recovery and RPO/RTO"
       ],
       "next_action": "COS-104 freeze and tag"
+    },
+    {
+      "id": "COS-104",
+      "purpose": "Freeze the validated release, tag the repository and assemble reproducibility evidence",
+      "dependency_ids": [
+        "COS-097",
+        "COS-098",
+        "COS-102",
+        "COS-103"
+      ],
+      "requirement_links": [
+        "TASK-COS-104"
+      ],
+      "allowed_scope": "Phase 7 final_release; blocked freeze without tag or push",
+      "status": "blocked",
+      "status_history": [
+        "planned",
+        "blocked"
+      ],
+      "owner_responsibility": "Primary agent; self-review disclosed, no invented signatures",
+      "actual_touched_files": [
+        "tests/test_freeze_record.py",
+        "docs/engineering/evidence/freeze-record.json",
+        "docs/engineering/reference-reviews/COS-104.md",
+        "docs/engineering/reference-reviews/COS-104.json"
+      ],
+      "decisions": [
+        "Mandatory gates open so no release tag created and no validated claim made",
+        "Candidate package manifest over fixed commit; safe contents verified",
+        "Local tagging distinct from remote push; nothing pushed by this task"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format freeze audit",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_freeze_record (4 tests)",
+          "result": "pass; record result blocked by design"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [
+        "COS-102/103 gate closure: D02, restore, smoke, review, performance, participants"
+      ],
+      "next_action": "Phase 7 complete; unblock gates then re-run affected audits with new fingerprint"
     }
   ],
   "contract_closure": {
