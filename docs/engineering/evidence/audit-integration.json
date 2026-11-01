@@ -1,10 +1,10 @@
 {
-  "audit_run_id": "cos100-af2260f89df4",
+  "audit_run_id": "cos100-4f3cb96c3652",
   "mode": "final_release",
-  "candidate_commit": "af2260f89df490274ac78d7bc382cbd5ec411cb3",
+  "candidate_commit": "4f3cb96c3652a19e7db8b95c3b91ca14da66bd17",
   "platform": "Windows-11-10.0.22631-SP0",
   "suite": "audit-integration/1",
-  "recorded_at": "2026-11-01T15:11:16.358313+00:00",
+  "recorded_at": "2026-11-01T15:29:19.988665+00:00",
   "chain": [
     "source registry",
     "patient linkage",

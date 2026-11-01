@@ -1,10 +1,10 @@
 {
-  "run_id": "cos103-17337a445267",
+  "run_id": "cos103-4f3cb96c3652",
   "mode": "final_release",
-  "candidate_commit": "17337a445267a90566dc84a71523ec9b1c932ca4",
+  "candidate_commit": "4f3cb96c3652a19e7db8b95c3b91ca14da66bd17",
   "platform": "Windows-11-10.0.22631-SP0",
   "suite": "operational-verification/1",
-  "recorded_at": "2026-11-01T15:23:51.785031+00:00",
+  "recorded_at": "2026-11-01T15:29:21.847522+00:00",
   "deployed_smoke": "blocked: no authorized staging target or apply in this scope",
   "recovery_drill": "blocked: no controlled restart or failure injection on a live target",
   "isolated_restore": "blocked: inherits COS-089; no byte/hash/lineage restore run with RPO/RTO measurement",
@@ -14,5 +14,5 @@
   "disposition": "blocked",
   "scope": "candidate-bound record without a live deployment; COS-104 freeze stays gated",
   "result": "blocked",
-  "manifest_sha256": "defd84d91f680714e65edc3392d091f59483c843033baaa4efaa332bdae03008"
+  "manifest_sha256": "2e02c73a340337ac89a43d3b8583f509777f7726c6253343b91429853e44aac9"
 }

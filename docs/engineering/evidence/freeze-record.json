@@ -1,14 +1,14 @@
 {
-  "run_id": "cos104-070d5a2b9e6a",
+  "run_id": "cos104-4f3cb96c3652",
   "mode": "final_release",
-  "candidate_commit": "070d5a2b9e6a326a502211abb3c2857822d4822c",
-  "validated_application_commit": "070d5a2b9e6a326a502211abb3c2857822d4822c",
+  "candidate_commit": "4f3cb96c3652a19e7db8b95c3b91ca14da66bd17",
+  "validated_application_commit": "4f3cb96c3652a19e7db8b95c3b91ca14da66bd17",
   "release_evidence_commit": "pending: evidence sidecar written after this record; tag created only when gates pass",
   "tag": "none created: mandatory gates open; no validated release to freeze",
   "remote_publication": "none performed: local tagging distinct from remote push; no push in this task",
   "platform": "Windows-11-10.0.22631-SP0",
   "suite": "freeze-record/1",
-  "recorded_at": "2026-11-01T15:26:54.624422+00:00",
+  "recorded_at": "2026-11-01T15:29:22.039602+00:00",
   "disposition": "blocked: candidate package assembled; validated release tag gated on COS-102/103 closure",
   "remaining_to_unblock": [
     "D02 genuine two-exam case",
@@ -19,5 +19,5 @@
   ],
   "self_review_disclosure": "single agent self-review; no invented signatures",
   "result": "blocked",
-  "manifest_sha256": "1bfeface4d1094f12667a8bd3a75c15c0cda8e8f0a78acf256c1aed39805f054"
+  "manifest_sha256": "2e02c73a340337ac89a43d3b8583f509777f7726c6253343b91429853e44aac9"
 }

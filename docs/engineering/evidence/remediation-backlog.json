@@ -1,10 +1,10 @@
 {
-  "audit_run_id": "cos102-2d5117ff7db5",
+  "audit_run_id": "cos102-4f3cb96c3652",
   "mode": "final_release",
-  "candidate_commit": "2d5117ff7db5f4e6331625c70fe9d7aa3b4ed674",
+  "candidate_commit": "4f3cb96c3652a19e7db8b95c3b91ca14da66bd17",
   "platform": "Windows-11-10.0.22631-SP0",
   "suite": "remediation-backlog/1",
-  "recorded_at": "2026-11-01T15:19:34.925455+00:00",
+  "recorded_at": "2026-11-01T15:29:21.727208+00:00",
   "backlog": [
     {
       "rank": 1,

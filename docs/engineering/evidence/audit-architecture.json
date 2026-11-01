@@ -1,12 +1,12 @@
 {
-  "audit_run_id": "cos099-a66baf2f384e",
+  "audit_run_id": "cos099-4f3cb96c3652",
   "mode": "final_release",
-  "candidate_commit": "a66baf2f384e6a1ca3676eb9ee2f76ca54d3a290",
-  "dirty_worktree": "?? docs/engineering/evidence/audit-architecture.json\n?? docs/engineering/reference-reviews/COS-099.json\n?? docs/engineering/reference-reviews/COS-099.md\n?? tests/test_audit_architecture.py",
+  "candidate_commit": "4f3cb96c3652a19e7db8b95c3b91ca14da66bd17",
+  "dirty_worktree": "M docs/engineering/evidence/audit-functionality.json",
   "tags_at_candidate": "",
   "platform": "Windows-11-10.0.22631-SP0",
   "suite": "audit-architecture/1",
-  "recorded_at": "2026-11-01T14:32:02.354933+00:00",
+  "recorded_at": "2026-11-01T15:29:16.639403+00:00",
   "specification_adoption": "COS-AUD-001 baseline 1.0 adoption not_evidenced; domain authority per authority-and-scope.md",
   "self_review_disclosure": "single agent self-review; no independent reviewer signatures",
   "findings": [
