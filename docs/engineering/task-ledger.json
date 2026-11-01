@@ -21779,6 +21779,60 @@
       "known_failures": [],
       "blocked_on": [],
       "next_action": "COS-086 safety abstention tests"
+    },
+    {
+      "id": "COS-086",
+      "purpose": "AI safety, hallucination, prompt-injection and abstention tests",
+      "dependency_ids": [
+        "COS-057",
+        "COS-062",
+        "COS-063",
+        "COS-064",
+        "COS-065",
+        "COS-070",
+        "COS-071",
+        "COS-079",
+        "COS-081",
+        "COS-085"
+      ],
+      "requirement_links": [
+        "TASK-COS-086"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
+      "status": "implemented_unverified",
+      "status_history": [
+        "planned",
+        "implemented_unverified"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "tests/test_safety_adversary.py",
+        "docs/engineering/evidence/safety-adversary.json",
+        "docs/engineering/reference-reviews/COS-086.md",
+        "docs/engineering/reference-reviews/COS-086.json"
+      ],
+      "decisions": [
+        "Frozen 60-case gate asserted through local paths; no best-run selection",
+        "Default denial makes zero transport calls; withholds stay with safe explanation",
+        "Finite-suite evidence only; no zero-hallucination or penetration claim"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format adversary",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_safety_adversary (5 tests)",
+          "result": "pass"
+        },
+        {
+          "check": "live provider / penetration review",
+          "result": "Not evaluated; owner and evidence recorded"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "COS-087 journeys and evaluation report"
     }
   ],
   "contract_closure": {
