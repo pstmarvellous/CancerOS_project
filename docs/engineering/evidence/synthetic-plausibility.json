@@ -1,0 +1,21 @@
+{
+  "recorded_at": "2026-11-01T13:29:45.092635+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "synthetic-plausibility/1",
+  "families": [
+    "SC-01",
+    "SC-02",
+    "SC-03",
+    "SC-04",
+    "SC-05"
+  ],
+  "rule_consistency": "passed: 5 families x fixed seed 3, measurement_only scope",
+  "geometry_tolerance": "passed: max(one voxel volume, 1% nonzero target) on declared targets",
+  "repeat_stability": "passed: normalized semantic digests match across repeated set",
+  "real_lab_distribution_similarity": "Not evaluated: no eligible real labs with comparable units/schedules/context",
+  "qualified_plausibility_review": "Blocked: no qualified reviewer; owner and review evidence pending",
+  "clinical_efficacy_or_realism": "Not claimed: simulator output never establishes treatment efficacy or patient forecast validity",
+  "scope": "rule consistency and qualified-limits reporting; not biological realism or predictive validity",
+  "result": "passed",
+  "manifest_sha256": "ef8c78de03032653d25f3da38e7bebd8595329a5548820a77817c2fe3a8dd73c"
+}

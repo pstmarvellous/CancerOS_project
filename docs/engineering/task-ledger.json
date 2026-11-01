@@ -21677,6 +21677,55 @@
         "D02: curated real case with source rights, two-exam linkage, reviewer and permitted use"
       ],
       "next_action": "COS-084 synthetic plausibility"
+    },
+    {
+      "id": "COS-084",
+      "purpose": "Synthetic distribution and cross-modal plausibility evaluation",
+      "dependency_ids": [
+        "COS-020",
+        "COS-024",
+        "COS-040",
+        "COS-042",
+        "COS-048",
+        "COS-049",
+        "COS-050",
+        "COS-081",
+        "COS-082"
+      ],
+      "requirement_links": [
+        "TASK-COS-084"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
+      "status": "implemented_unverified",
+      "status_history": [
+        "planned",
+        "implemented_unverified"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "tests/test_synthetic_plausibility.py",
+        "docs/engineering/evidence/synthetic-plausibility.json",
+        "docs/engineering/reference-reviews/COS-084.md",
+        "docs/engineering/reference-reviews/COS-084.json"
+      ],
+      "decisions": [
+        "Reused frozen ten-seed regression; declared rules at proper levels",
+        "Geometry tolerance max(one voxel, 1% target); repeat hashes stable",
+        "Real-lab similarity Not evaluated; qualified review Blocked; no realism claim"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format plausibility",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_synthetic_plausibility (4 tests)",
+          "result": "pass"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "COS-085 NLP retrieval evaluation"
     }
   ],
   "contract_closure": {

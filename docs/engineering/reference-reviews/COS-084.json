@@ -1,0 +1,403 @@
+{
+  "task": "COS-084",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "synthetic",
+      "returncode": 0,
+      "output": "\n=== D.SIM Synthetic longitudinal engine ===\n Five hypothetical trajectories with treatment events, clinical values and uncertainty. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS SIM.ELIG Treatment and scenario eligibility\n  --> IMPLEMENTS SIM.RESPONSE Family 1: strong response\n  --> IMPLEMENTS SIM.STABLE Family 2: partial/stable\n  --> IMPLEMENTS SIM.PROGRESS Family 3: progression\n  --> IMPLEMENTS SIM.REGROW Family 4: response then regrowth\n  --> IMPLEMENTS SIM.TOXIC Family 5: clinical deterioration\n  --> IMPLEMENTS SIM.EXPOSURE Treatment exposures\n  --> IMPLEMENTS SIM.LATENT Latent evolution state\n  --> IMPLEMENTS SIM.OBS Observation simulation\n  --> IMPLEMENTS SIM.SEED Reproducibility\n  --> IMPLEMENTS SIM.VALID Simulation validation\n  --> IMPLEMENTS SIM.BATCH Cohort branching target\n\n=== DATA.NOTE ClinicalNote ===\n Source text or synthetic note with context, negation and evidence spans. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- RELATES_TO DATA.VISIT ClinicalVisit\n\n=== DATA.OUTCOME OutcomeObservation ===\n Recorded real endpoint or synthetic state; pCR distinct from MRI response. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- RELATES_TO DATA.PATIENT ResearchPatient\n\n=== DATA.PROV ProvenanceRecord ===\n Real observed, real derived, synthetic generated, interpolated or model predicted with parent, version and hash. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n\n=== IMG.SYNMESH Synthetic lesion geometry ===\n Transform baseline mask to target volume with validated geometry, label synthetic; no fabricated follow-up MRI. \nSources: IMG,REF\n  <-- IMPLEMENTS D.IMG Medical imaging\n  <-- PRECEDES IMG.VOL Quantitative measurement\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES SIM.OBS Observation simulation\n  --> WORKFLOW_PRECEDES SIM.VALID Simulation validation\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n\n=== AI.FORECAST Optional future-state forecasts ===\n Only with qualified independent real-data evaluation; abstain otherwise. Synthetic simulator is not predictive validation. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- CONSTRAINS GOV.ABSTAIN Disclose unknowns\n  <-- VERIFIES EVAL.REAL Authentic longitudinal case evaluation\n\n=== UX.3D Interactive lesion viewport ===\n Rotate, pan, zoom, reset; clearly distinguish observed/synthetic/illustrative geometry. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n  <-- HAS_STEP WF.REAL Real imaging vertical slice\n  <-- WORKFLOW_PRECEDES IMG.MESH Mask-to-mesh conversion\n  --> WORKFLOW_PRECEDES EVAL.PHANTOM Geometry phantom tests\n\n=== UX.EVAL Evaluation/limitations view ===\n What was tested, real versus synthetic metrics, cohort size, unknowns and known failures. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n\n=== EVAL.E2E End-to-end demo ===\n One MRI → mask → measurable mesh → five synthetic scenarios → timeline → AI interpretation. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  --> WORKFLOW_PRECEDES EVAL.AI NLP/LLM grounding evaluation\n  --> VERIFIES WF.REAL Real imaging vertical slice\n  --> VERIFIES WF.SIM Synthetic scenario vertical slice\n\n=== EVAL.REPORT Scientific limitations report ===\n Cohort size, methods, source licenses, real/synthetic distinction and unvalidated claims. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  <-- HAS_STEP WF.REALVAL Actual longitudinal evaluation\n  <-- WORKFLOW_PRECEDES EVAL.REAL Authentic longitudinal case evaluation\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  <-- WORKFLOW_PRECEDES INF.DEPLOY Deployment\n\n=== GOV.PROV Five provenance classes ===\n REAL_OBSERVED, REAL_DERIVED, SYNTHETIC_GENERATED, INTERPOLATED, MODEL_PREDICTED. \nSources: SAF,PRD\n  <-- ENFORCES D.GOV Safety and provenance\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  <-- WORKFLOW_PRECEDES EVAL.AI NLP/LLM grounding evaluation\n  --> WORKFLOW_PRECEDES GOV.PRIV Privacy and access\n  --> CONSTRAINS DATA.PROV ProvenanceRecord\n  --> CONSTRAINS TWIN.STATE Time-indexed state\n  --> CONSTRAINS TWIN.BRANCH Scenario branch isolation\n  --> CONSTRAINS AI.LLM Grounded explanation\n  --> CONSTRAINS UX.TIMELINE Observation/date selector\n  --> CONSTRAINS IMG.SYNMESH Synthetic lesion geometry\n\n=== X.PHOTOMRI Synthetic follow-up scans represented as authentic MRI ===\n Explicitly outside the hackathon prototype scope. \nSources: PRD\n  <-- EXCLUDES ROOT CancerOS breast cancer digital twin\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "synthetic",
+      "returncode": 0,
+      "output": "\nDAT.02 — Licensing and provenance\nDesign: Separate source licensing, original/derived/synthetic origin and immutable lineage\nAcceptance: Provenance complete; unauthorized sources quarantined\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R07 IDC Index — reproducible dataset collection and download — https://github.com/ImagingDataCommons/idc-index\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n\nDAT.03 — Data quality and missingness\nDesign: Do not impute absent labs or tumor labels without explicit derived/synthetic markers\nAcceptance: Missingness and unit validation fixtures\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R07 IDC Index — reproducible dataset collection and download — https://github.com/ImagingDataCommons/idc-index\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n\nDAT.04 — Patient-level split and duplicate detection\nDesign: Keep source patient and synthetic descendants in same evaluation partition\nAcceptance: No split leakage or duplicated derivative patient\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  REPO R07 IDC Index — reproducible dataset collection and download — https://github.com/ImagingDataCommons/idc-index\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n\nIMG.13 — Synthetic shape generation\nDesign: Derive simulated mesh from original mask; label geometry simulated; constrain target volume\nAcceptance: Target-vs-produced mask volume tolerance\n  READ A07 Insight into Images — Terry S. Yoo (ed.) — Isosurfaces, medical segmentation, deformable models, registration; inspect chapter headings in accessible edition — https://www.routledge.com/Insight-into-Images/Yooah2/p/book/9781568812175\n  READ A08 IBSI Reference Manuals — IBSI 1 reference manual — image preprocessing and biomarker feature definitions; select benchmark in documentation — https://theibsi.github.io/documentation/\n  READ A17 MIT Computer Graphics OpenCourseWare — Transforms and 3D geometry; select exact lecture in course notes — https://ocw.mit.edu/courses/6-837-computer-graphics-fall-2012/pages/lecture-notes/\n  REPO R03 3D Slicer — reference geometry/segmentation/measurement — https://github.com/Slicer/Slicer\n  PAPER P04 IBSI image biomarker standardisation —  — https://theibsi.github.io/documentation/\n\nTWIN.01 — Observed and synthetic twin states\nDesign: Maintain immutable actual states and independent simulated branches\nAcceptance: Branch isolation and history tests\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  READ A15 FDA Computational Model Credibility Guidance — Context of use; model verification, validation and credibility assessment — https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions\n  REPO R04 OHIF Viewer — DICOM viewer, longitudinal measurement tracking — https://github.com/OHIF/Viewers\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n\nAI.05 — Temporal forecasting eligibility\nDesign: Use simple comparator first; abstain on insufficient real follow-up; synthetic not real proof\nAcceptance: Held-out simple baselines; no fabricated confidence\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  READ A09 Stan User’s Guide — Posterior and Prior Predictive Checks — https://mc-stan.org/docs/stan-users-guide/ppcs.html\n  READ A15 FDA Computational Model Credibility Guidance — Context of use; model verification, validation and credibility assessment — https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions\n  REPO R10 Stan — probabilistic model reference — https://github.com/stan-dev/stan\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n\nEVAL.02 — Statistical diagnostics of synthetic cohorts\nDesign: Compare real available distributions against replicated synthetic summaries\nAcceptance: Plots/tests for correlation, time spacing, missingness\n  READ A09 Stan User’s Guide — Posterior and Prior Predictive Checks — https://mc-stan.org/docs/stan-users-guide/ppcs.html\n  READ A10 Stan User’s Guide — Hierarchical models and mixed replication; navigate from current official guide — https://mc-stan.org/docs/stan-users-guide/\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  REPO R10 Stan — probabilistic model reference — https://github.com/stan-dev/stan\n\nUX.01 — Provenance-labeled scenario comparison\nDesign: Real observed / real derived / synthetic / interpolation / forecast never conflated\nAcceptance: Visible labels in screenshots and E2E tests\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  READ A15 FDA Computational Model Credibility Guidance — Context of use; model verification, validation and credibility assessment — https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions\n  REPO R04 OHIF Viewer — DICOM viewer, longitudinal measurement tracking — https://github.com/OHIF/Viewers\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "synthetic",
+      "returncode": 0,
+      "output": "\n== DAT.02 Licensing and provenance ==\nIntent: Separate source licensing, original/derived/synthetic origin and immutable lineage \nTest: Provenance complete; unauthorized sources quarantined\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R07 IDC Index | https://github.com/ImagingDataCommons/idc-index \n  Inspect: Inspect IDCClient metadata hierarchy, SQL querying, download manifests \n  Reuse: Adopt maintained package to download authorized selected studies \n  Avoid: Do not bulk-download entire datasets or assume every cohort is in IDC \n  Verify: Download one approved series, SHA-256 and patient/study linkage\n\n== DAT.03 Data quality and missingness ==\nIntent: Do not impute absent labs or tumor labels without explicit derived/synthetic markers \nTest: Missingness and unit validation fixtures\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R07 IDC Index | https://github.com/ImagingDataCommons/idc-index \n  Inspect: Inspect IDCClient metadata hierarchy, SQL querying, download manifests \n  Reuse: Adopt maintained package to download authorized selected studies \n  Avoid: Do not bulk-download entire datasets or assume every cohort is in IDC \n  Verify: Download one approved series, SHA-256 and patient/study linkage\n\n== DAT.04 Patient-level split and duplicate detection ==\nIntent: Keep source patient and synthetic descendants in same evaluation partition \nTest: No split leakage or duplicated derivative patient\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R07 IDC Index | https://github.com/ImagingDataCommons/idc-index \n  Inspect: Inspect IDCClient metadata hierarchy, SQL querying, download manifests \n  Reuse: Adopt maintained package to download authorized selected studies \n  Avoid: Do not bulk-download entire datasets or assume every cohort is in IDC \n  Verify: Download one approved series, SHA-256 and patient/study linkage\n\n== IMG.13 Synthetic shape generation ==\nIntent: Derive simulated mesh from original mask; label geometry simulated; constrain target volume \nTest: Target-vs-produced mask volume tolerance\n BOOK/LECTURE A07 Insight into Images — Terry S. Yoo (ed.) | Isosurfaces, medical segmentation, deformable models, registration; inspect chapter headings in accessible edition | https://www.routledge.com/Insight-into-Images/Yooah2/p/book/9781568812175 | topic indicated; precise chapter pending\n BOOK/LECTURE A08 IBSI Reference Manuals | IBSI 1 reference manual — image preprocessing and biomarker feature definitions; select benchmark in documentation | https://theibsi.github.io/documentation/ | reference manual verified\n BOOK/LECTURE A17 MIT Computer Graphics OpenCourseWare | Transforms and 3D geometry; select exact lecture in course notes | https://ocw.mit.edu/courses/6-837-computer-graphics-fall-2012/pages/lecture-notes/ | exact lecture pending\n PAPER P04 IBSI image biomarker standardisation | https://theibsi.github.io/documentation/\n REPOSITORY R03 3D Slicer | https://github.com/Slicer/Slicer \n  Inspect: Inspect MRML, Segmentations, Segment Editor, transformations, model/segment statistics \n  Reuse: Use as independent geometry reference; leverage VTK/SimpleITK libraries \n  Avoid: Do not transplant desktop application to web \n  Verify: Compare exported mesh dimensions and mask-derived volume\n REPOSITORY R13 Cornerstone3D | https://github.com/cornerstonejs/cornerstone3D \n  Inspect: Inspect packages/tools, viewport, segmentation loaders and examples \n  Reuse: Evaluate direct library integration rather than all of OHIF \n  Avoid: Do not recode entire DICOM viewport layer \n  Verify: Render known DICOM and overlay matched segmentation\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n\n== TWIN.01 Observed and synthetic twin states ==\nIntent: Maintain immutable actual states and independent simulated branches \nTest: Branch isolation and history tests\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n BOOK/LECTURE A15 FDA Computational Model Credibility Guidance | Context of use; model verification, validation and credibility assessment | https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions | applicability limited to intended guidance scope\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R04 OHIF Viewer | https://github.com/OHIF/Viewers \n  Inspect: Inspect modes/longitudinal, extensions/measurement-tracking, extensions/cornerstone, platform/core \n  Reuse: Prototype OHIF integration versus Cornerstone3D standalone \n  Avoid: Do not assume original longitudinal mode understands synthetic branching \n  Verify: Browser MRI overlay, state switch, correct patient/time, performance\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n\n== AI.05 Temporal forecasting eligibility ==\nIntent: Use simple comparator first; abstain on insufficient real follow-up; synthetic not real proof \nTest: Held-out simple baselines; no fabricated confidence\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n BOOK/LECTURE A09 Stan User’s Guide | Posterior and Prior Predictive Checks | https://mc-stan.org/docs/stan-users-guide/ppcs.html | verified section\n BOOK/LECTURE A15 FDA Computational Model Credibility Guidance | Context of use; model verification, validation and credibility assessment | https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions | applicability limited to intended guidance scope\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n REPOSITORY R15 MONAI Deploy App SDK | https://github.com/Project-MONAI/monai-deploy-app-sdk \n  Inspect: Inspect examples/apps and operator contracts \n  Reuse: Study preprocessing/inference/postprocessing pipeline pattern \n  Avoid: Do not require heavyweight SDK on local laptop \n  Verify: CPU sample chain smoke test\n\n== EVAL.02 Statistical diagnostics of synthetic cohorts ==\nIntent: Compare real available distributions against replicated synthetic summaries \nTest: Plots/tests for correlation, time spacing, missingness\n BOOK/LECTURE A09 Stan User’s Guide | Posterior and Prior Predictive Checks | https://mc-stan.org/docs/stan-users-guide/ppcs.html | verified section\n BOOK/LECTURE A10 Stan User’s Guide | Hierarchical models and mixed replication; navigate from current official guide | https://mc-stan.org/docs/stan-users-guide/ | topical location; subsection pending\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n\n== UX.01 Provenance-labeled scenario comparison ==\nIntent: Real observed / real derived / synthetic / interpolation / forecast never conflated \nTest: Visible labels in screenshots and E2E tests\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n BOOK/LECTURE A15 FDA Computational Model Credibility Guidance | Context of use; model verification, validation and credibility assessment | https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions | applicability limited to intended guidance scope\n REPOSITORY R04 OHIF Viewer | https://github.com/OHIF/Viewers \n  Inspect: Inspect modes/longitudinal, extensions/measurement-tracking, extensions/cornerstone, platform/core \n  Reuse: Prototype OHIF integration versus Cornerstone3D standalone \n  Avoid: Do not assume original longitudinal mode understands synthetic branching \n  Verify: Browser MRI overlay, state switch, correct patient/time, performance\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "plausibility",
+      "returncode": 0,
+      "output": "\n=== EVAL.SIM Simulation integrity evaluation ===\n Plausibility review, parameter assumptions, correlations, chronology, reproducibility and missingness. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  --> VERIFIES SIM.VALID Simulation validation\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "plausibility",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "plausibility",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "AI.FORECAST",
+    "D.SIM",
+    "DATA.NOTE",
+    "DATA.OUTCOME",
+    "DATA.PROV",
+    "EVAL.E2E",
+    "EVAL.REPORT",
+    "EVAL.SIM",
+    "GOV.PROV",
+    "IMG.SYNMESH",
+    "UX.3D",
+    "UX.EVAL",
+    "WF.SIM",
+    "X.PHOTOMRI"
+  ],
+  "academic_behavior_ids": [
+    "DAT.02",
+    "DAT.03",
+    "DAT.04",
+    "IMG.13",
+    "TWIN.01",
+    "SIM.08",
+    "AI.05",
+    "EVAL.02",
+    "UX.01"
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.SIM"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.NOTE"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.OUTCOME"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.PROV"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.NOTE"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.OUTCOME"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "IMG.VOL",
+      "relation": "PRECEDES",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.ELIG"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.RESPONSE"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.STABLE"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.PROGRESS"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.REGROW"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.TOXIC"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.EXPOSURE"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.LATENT"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.SEED"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.BATCH"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.EVAL"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.SIM"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.PHOTOMRI"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "IMG.MESH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "UX.3D",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.SIM"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.BASELINE"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.ELIG"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.LATENT"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "SIM.OBS",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "IMG.SYNMESH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "EVAL.REAL",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "EVAL.AI",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "INF.DEPLOY",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.PROV"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "GOV.ABSTAIN",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "EVAL.REAL",
+      "relation": "VERIFIES",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "EVAL.SIM",
+      "relation": "VERIFIES",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.SIM"
+    }
+  ],
+  "mapped_source_ids": [
+    "A07",
+    "A08",
+    "A09",
+    "A10",
+    "A11",
+    "A14",
+    "A15",
+    "A17",
+    "P04",
+    "P05",
+    "R03",
+    "R04",
+    "R07",
+    "R10"
+  ],
+  "source_sections_inspected": "COS-084 synthetic evaluation"
+}
