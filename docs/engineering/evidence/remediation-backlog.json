@@ -1,0 +1,85 @@
+{
+  "audit_run_id": "cos102-2d5117ff7db5",
+  "mode": "final_release",
+  "candidate_commit": "2d5117ff7db5f4e6331625c70fe9d7aa3b4ed674",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "remediation-backlog/1",
+  "recorded_at": "2026-11-01T15:19:34.925455+00:00",
+  "backlog": [
+    {
+      "rank": 1,
+      "finding_id": "AUD-001",
+      "severity": "major",
+      "status": "open",
+      "title": "No deployed target or isolated restore run",
+      "dependency": "COS-103",
+      "owner": "platform",
+      "acceptance": "deployed smoke + isolated restore pass on named candidate"
+    },
+    {
+      "rank": 2,
+      "finding_id": "AUD-002",
+      "severity": "major",
+      "status": "open",
+      "title": "No genuine two-exam longitudinal case",
+      "dependency": "curated case",
+      "owner": "data/rights",
+      "acceptance": "two-exam case with rights, linkage, reviewer and demo use"
+    },
+    {
+      "rank": 3,
+      "finding_id": "INT-002",
+      "severity": "major",
+      "status": "open",
+      "title": "Isolated restore of the exact candidate not run",
+      "dependency": "COS-103",
+      "owner": "platform",
+      "acceptance": "isolated restore with byte/hash/lineage checks and RPO/RTO"
+    },
+    {
+      "rank": 4,
+      "finding_id": "FUN-002",
+      "severity": "major",
+      "status": "open",
+      "title": "No live judge walkthrough on a deployed target",
+      "dependency": "COS-103",
+      "owner": "demo",
+      "acceptance": "clean-browser judge access with presenter separation"
+    },
+    {
+      "rank": 5,
+      "finding_id": "FUN-003",
+      "severity": "major",
+      "status": "open",
+      "title": "Measured device/browser/performance trials not run",
+      "dependency": "declared device",
+      "owner": "qa",
+      "acceptance": "declared-device trials with retained slow/failing trials"
+    },
+    {
+      "rank": 6,
+      "finding_id": "AUD-003",
+      "severity": "minor",
+      "status": "accepted_nonblocking",
+      "title": "Optional models disabled pending verified policy",
+      "dependency": "policy/credentials",
+      "owner": "platform",
+      "acceptance": "existing denial tests; enable only with versioned policy"
+    },
+    {
+      "rank": 7,
+      "finding_id": "COS-101-proxy",
+      "severity": "minor",
+      "status": "verified_fixed",
+      "title": "Restart-contract assertion now uses exact wording",
+      "dependency": "none",
+      "owner": "qa",
+      "acceptance": "test_audit_functionality passes on exact contract text"
+    }
+  ],
+  "engineering_disposition": "blocked for full P0 readiness; ready_for_final_operational_verification of the named candidate",
+  "handoff_to_cos103": "candidate fingerprint above; remaining checks: deployed smoke, failed-rollout rehearsal, isolated restore with RPO/RTO",
+  "self_review_disclosure": "single agent self-review; no invented owner signatures",
+  "result": "passed",
+  "manifest_sha256": "ea7411deebbe931c897806310a517d8acd3fe29f32481f456f3df217925929a4"
+}

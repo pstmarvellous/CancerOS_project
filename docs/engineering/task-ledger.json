@@ -22575,6 +22575,49 @@
       "known_failures": [],
       "blocked_on": [],
       "next_action": "COS-102 remediation and sign-off"
+    },
+    {
+      "id": "COS-102",
+      "purpose": "Risk-based remediation backlog, regression verification and release sign-off",
+      "dependency_ids": [
+        "COS-099",
+        "COS-100",
+        "COS-101"
+      ],
+      "requirement_links": [
+        "TASK-COS-102"
+      ],
+      "allowed_scope": "Phase 7 final_release audit; minimal fixes without new scope",
+      "status": "implemented_unverified",
+      "status_history": [
+        "planned",
+        "implemented_unverified"
+      ],
+      "owner_responsibility": "Primary agent; self-review disclosed, no invented signatures",
+      "actual_touched_files": [
+        "tests/test_remediation_backlog.py",
+        "docs/engineering/evidence/remediation-backlog.json",
+        "docs/engineering/reference-reviews/COS-102.md",
+        "docs/engineering/reference-reviews/COS-102.json"
+      ],
+      "decisions": [
+        "Backlog deduplicated with stable audit references and severity order",
+        "One minimal exact-wording fix with rerun regression; no architecture change",
+        "Disposition blocked for readiness, ready for COS-103 operational checks"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format backlog",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_remediation_backlog (3 tests)",
+          "result": "pass"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "COS-103 deployment verification"
     }
   ],
   "contract_closure": {
