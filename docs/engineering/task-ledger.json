@@ -21290,17 +21290,47 @@
         "TASK-COS-077"
       ],
       "allowed_scope": "Phase 5 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
-      "status": "planned",
+      "status": "implemented_unverified",
       "status_history": [
-        "planned"
+        "planned",
+        "implemented_unverified"
       ],
       "owner_responsibility": "Primary agent; specialist self-review only",
-      "actual_touched_files": [],
-      "decisions": [],
-      "checks_evidence": [],
+      "actual_touched_files": [
+        "apps/web/components/clinical-charts-explorer.tsx",
+        "apps/web/components/clinical-charts-explorer.test.tsx",
+        "apps/web/components/app-shell.tsx",
+        "apps/web/app/charts/page.tsx",
+        "apps/web/app/api/clinical-charts/route.ts",
+        "docs/engineering/reference-reviews/COS-077.md",
+        "docs/engineering/reference-reviews/COS-077.json"
+      ],
+      "decisions": [
+        "Bounded paginated history; first page never stands in for full history",
+        "Small multiples per concept with exact tables; no smoothing, gap fill or mixed-unit axes",
+        "Missing stays missing; censored keeps comparator/threshold; browser recomputes no clinical arithmetic"
+      ],
+      "checks_evidence": [
+        {
+          "check": "tsc --noEmit -p apps/web/tsconfig.json",
+          "result": "pass"
+        },
+        {
+          "check": "eslint charts/shell/route",
+          "result": "pass"
+        },
+        {
+          "check": "vitest charts+shell (4 tests)",
+          "result": "pass"
+        },
+        {
+          "check": "real-data operation / scientific review",
+          "result": "not_run; fixture evidence only"
+        }
+      ],
       "known_failures": [],
       "blocked_on": [],
-      "next_action": "Execute in Phase 5 order; optional P1 prompts remain gated"
+      "next_action": "COS-078 scenario exploration"
     },
     {
       "id": "COS-078",
