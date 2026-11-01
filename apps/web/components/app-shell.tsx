@@ -24,6 +24,7 @@ const NAV = [
 const CASE_NAV = [
   {href: '/cases/detail', label: 'Overview'},
   {href: '/twin', label: 'Twin workspace'},
+  {href: '/states', label: 'History & states'},
   {href: '/scenarios', label: 'Scenarios'},
   {href: '/sources', label: 'Sources'},
 ];
