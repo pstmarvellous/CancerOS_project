@@ -22232,6 +22232,55 @@
         "approved baselines, source rights, branch/run identities, validation reports, deployed IDs"
       ],
       "next_action": "COS-095 authentic longitudinal demo"
+    },
+    {
+      "id": "COS-095",
+      "purpose": "Prepare authentic longitudinal imaging case and comparison demonstration",
+      "dependency_ids": [
+        "COS-037",
+        "COS-038",
+        "COS-076",
+        "COS-082",
+        "COS-083",
+        "COS-087",
+        "COS-093"
+      ],
+      "requirement_links": [
+        "TASK-COS-095"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; preflight pin without authentic pair",
+      "status": "blocked",
+      "status_history": [
+        "planned",
+        "blocked"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "tests/test_demo_case_longitudinal.py",
+        "docs/engineering/evidence/demo-case-longitudinal.json",
+        "docs/engineering/reference-reviews/COS-095.md",
+        "docs/engineering/reference-reviews/COS-095.json"
+      ],
+      "decisions": [
+        "Reused COS-083 gate; no new pair declared from study count",
+        "D02 retained in demo preflight; reduced scope uses synthetic entries",
+        "No synthetic dates/scans/morphs/recordings-labeled-authentic"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format longitudinal demo gate",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_demo_case_longitudinal (1 test)",
+          "result": "pass; gate result blocked by design"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [
+        "D02: verified original-patient case with two real exams, demo rights and reviewed meaning"
+      ],
+      "next_action": "COS-096 deterministic fixtures"
     }
   ],
   "contract_closure": {

@@ -1,0 +1,30 @@
+{
+  "recorded_at": "2026-11-01T14:04:08.206943+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "demo-case-longitudinal/1",
+  "cos083_gate_result": "blocked",
+  "eligible_original_patients": 0,
+  "distinct_real_exams": 0,
+  "registration_qc": "not established; side-by-side or sequential only with spatial alignment not established",
+  "narration_scope": [
+    "what was collected",
+    "what changed",
+    "what is uncertain",
+    "what cannot be concluded"
+  ],
+  "forbidden_claims": [
+    "causal treatment benefit",
+    "resistance claim",
+    "stage claim",
+    "survival claim",
+    "formal response grade",
+    "population forecast",
+    "synthetic dates",
+    "morphed baseline",
+    "recording labeled authentic"
+  ],
+  "demo_preflight": "blocked D02 retained; reduced-scope demo uses COS-094 synthetic entries only",
+  "scope": "preflight pin without an authentic pair; no overstated clinical conclusion",
+  "result": "blocked",
+  "manifest_sha256": "4ab2a6e167b38817f6567d87981bca1999095735c348625636f6207f478174c1"
+}
