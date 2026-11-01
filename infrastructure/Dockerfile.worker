@@ -1,0 +1,17 @@
+# Bounded CPU worker image; shares the API base, runs one explicit queue batch.
+# Build: docker build -f infrastructure/Dockerfile.worker -t canceros-worker:<digest> .
+# Run: compose profile `staging` with a private .env.staging (never committed).
+
+FROM python:3.12.14-slim AS base
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+RUN useradd -r -u 10001 canceros && mkdir -p /app && chown canceros:canceros /app
+WORKDIR /app
+USER canceros
+
+FROM base AS worker
+COPY --chown=canceros:canceros pyproject.toml uv.lock alembic.ini ./
+COPY --chown=canceros:canceros src/ ./src/
+COPY --chown=canceros:canceros migrations/ ./migrations/
+COPY --chown=canceros:canceros workers/ ./workers/
+HEALTHCHECK --interval=60s --timeout=5s --retries=2 CMD python -c "import workers.digest; print('worker image ok')"
+ENTRYPOINT ["python", "-m", "workers.digest"]

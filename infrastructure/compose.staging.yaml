@@ -1,0 +1,107 @@
+# COS-088 staging topology: isolated private staging, not production hosting.
+# One supported queue adapter (redis). No Kubernetes, GPU or microservice estate.
+# Reviewable plan only until an authorized account/budget/scope exists; this file
+# buys no resources and publishes no URL by itself.
+
+name: canceros-staging
+
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: infrastructure/Dockerfile.api
+    image: canceros-api:pinned
+    profiles: [staging]
+    env_file: [.env.staging]
+    environment:
+      MODE: staging
+    depends_on:
+      postgres:
+        condition: service_healthy
+      queue:
+        condition: service_started
+      storage:
+        condition: service_started
+    ports: ["127.0.0.1:8000:8000"]
+    networks: [staging]
+    restart: "no"
+
+  web:
+    build:
+      context: ..
+      dockerfile: infrastructure/Dockerfile.web
+    image: canceros-web:pinned
+    profiles: [staging]
+    env_file: [.env.staging]
+    environment:
+      MODE: staging
+    depends_on:
+      api:
+        condition: service_healthy
+    ports: ["127.0.0.1:3000:3000"]
+    networks: [staging]
+    restart: "no"
+
+  worker:
+    build:
+      context: ..
+      dockerfile: infrastructure/Dockerfile.worker
+    image: canceros-worker:pinned
+    profiles: [staging]
+    env_file: [.env.staging]
+    environment:
+      MODE: staging
+    depends_on:
+      api:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      queue:
+        condition: service_started
+    networks: [staging]
+    restart: "no"
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2G
+
+  postgres:
+    image: postgres:15.4
+    profiles: [staging]
+    env_file: [.env.staging]
+    volumes: ["canceros-staging-postgres:/var/lib/postgresql/data"]
+    networks: [staging]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:?} -d $${POSTGRES_DB:?}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: "no"
+
+  queue:
+    image: redis:8.2.1-alpine
+    profiles: [staging]
+    command: [redis-server, --maxmemory 64mb, --maxmemory-policy noeviction, --appendonly yes]
+    volumes: ["canceros-staging-redis:/data"]
+    networks: [staging]
+    restart: "no"
+
+  storage:
+    image: chrislusf/seaweedfs:4.51
+    profiles: [staging]
+    command: [mini, "-dir=/data", "-ip=0.0.0.0", "-s3.port=8333", "-admin.ui=false", "-webdav=false", "-s3.port.iceberg=0", "-s3.port.lance=0"]
+    env_file: [.env.staging]
+    volumes: ["canceros-staging-objects:/data"]
+    networks: [staging]
+    restart: "no"
+
+volumes:
+  canceros-staging-postgres:
+  canceros-staging-redis:
+  canceros-staging-objects:
+
+networks:
+  staging:
+    driver: bridge
+    internal: true

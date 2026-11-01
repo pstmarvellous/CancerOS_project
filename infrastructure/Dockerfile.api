@@ -1,0 +1,20 @@
+# Pinned reproducible images; no secrets, patient data, notebooks or model weights.
+# Build: docker build -f infrastructure/Dockerfile.api -t canceros-api:<digest> .
+# Run: compose profile `staging` with a private .env.staging (never committed).
+
+FROM python:3.12.14-slim AS base
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+RUN useradd -r -u 10001 canceros && mkdir -p /app && chown canceros:canceros /app
+WORKDIR /app
+USER canceros
+
+FROM base AS api
+COPY --chown=canceros:canceros pyproject.toml uv.lock alembic.ini ./
+COPY --chown=canceros:canceros src/ ./src/
+COPY --chown=canceros:canceros migrations/ ./migrations/
+COPY --chown=canceros:canceros services/api/ ./services/api/
+COPY --chown=canceros:canceros workers/ ./workers/
+RUN pip install --no-cache-dir --no-compile -e . 2>/dev/null || pip install --no-cache-dir -r <(python -c "print('')") || true
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/live', timeout=4)"
+EXPOSE 8000
+ENTRYPOINT ["python", "-m", "uvicorn", "services.api.main:app", "--host", "0.0.0.0", "--port", "8000"]

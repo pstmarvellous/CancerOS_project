@@ -1,0 +1,13 @@
+{
+  "recorded_at": "2026-11-01T13:44:31.529387+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "staging-deployment/1",
+  "config_gate": "pass: missing-file path returns typed diagnostics with exit 2",
+  "images": "Dockerfiles present; digests recorded only after a real build on a Docker host",
+  "deployment_status": "not deployed: no authorized account/target/spending authority in this scope",
+  "estimated_resources": "~4 vCPU / ~6 GiB across six services before object data",
+  "measured_costs": "none: no cost-bearing apply performed",
+  "scope": "reviewable plan and local validation only; not cloud-deployed evidence",
+  "result": "passed",
+  "manifest_sha256": "156edb73880ecc24577a30009f485dfc69c0fe20d5fed22aab7f97e2a5ccb9d8"
+}

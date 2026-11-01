@@ -21886,6 +21886,61 @@
         "qualified review"
       ],
       "next_action": "COS-088 deployment configuration"
+    },
+    {
+      "id": "COS-088",
+      "purpose": "Cloud deployment configuration, container images and environment separation",
+      "dependency_ids": [
+        "COS-013",
+        "COS-014",
+        "COS-015",
+        "COS-071",
+        "COS-087"
+      ],
+      "requirement_links": [
+        "TASK-COS-088"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; reviewable plan only without cloud authority",
+      "status": "implemented_unverified",
+      "status_history": [
+        "planned",
+        "implemented_unverified"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "infrastructure/Dockerfile.api",
+        "infrastructure/Dockerfile.web",
+        "infrastructure/Dockerfile.worker",
+        "infrastructure/compose.staging.yaml",
+        "docs/runbooks/staging-deployment.md",
+        "scripts/check_deployment_config.py",
+        "tests/test_staging_deployment.py",
+        "docs/engineering/evidence/staging-deployment.json",
+        "docs/engineering/reference-reviews/COS-088.md",
+        "docs/engineering/reference-reviews/COS-088.json"
+      ],
+      "decisions": [
+        "Modest portable staging topology; no Kubernetes/GPU/microservices",
+        "Pinned Dockerfiles with non-root, healthchecks, digests; secrets never in images",
+        "Environments separated by identities/secrets/data/queues/origins; staging restricted"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format config gate and evidence test",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_staging_deployment (1 test)",
+          "result": "pass"
+        },
+        {
+          "check": "cloud deployment",
+          "result": "not deployed; no authorized account/target/spending authority"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "COS-089 storage and backup policies"
     }
   ],
   "contract_closure": {
