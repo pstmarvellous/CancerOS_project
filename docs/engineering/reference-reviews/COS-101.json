@@ -1,0 +1,81 @@
+{
+  "task": "COS-101",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "functionality",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "functionality",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "functionality",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "controls",
+      "returncode": 0,
+      "output": "\n=== UX.FAIL Graceful empty/error states ===\n No nonfunctional controls, sensible missing-image state, no stale insight falsely current. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "controls",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "controls",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "demonstration",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "demonstration",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "demonstration",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "UX.FAIL"
+  ],
+  "academic_behavior_ids": [],
+  "edges": [
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.FAIL"
+    }
+  ],
+  "mapped_source_ids": [],
+  "source_sections_inspected": "COS-101 final release audit"
+}

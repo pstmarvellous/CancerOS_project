@@ -1,0 +1,66 @@
+{
+  "audit_run_id": "cos101-de40b9a9137f",
+  "mode": "final_release",
+  "candidate_commit": "de40b9a9137f7376b263951dbd5a5d81d3bb7170",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "audit-functionality/1",
+  "recorded_at": "2026-11-01T15:16:25.329853+00:00",
+  "routes": [
+    ".",
+    "activity",
+    "admin",
+    "cases",
+    "cases/detail",
+    "charts",
+    "evaluation",
+    "guided-demo",
+    "insights",
+    "mesh-preview",
+    "simulation",
+    "states",
+    "timeline",
+    "twin"
+  ],
+  "components": 20,
+  "ux_map": "reused frozen UX-01..18 evidence; manual and unmeasured gaps retained",
+  "ux_evidence_result": "passed",
+  "findings": [
+    {
+      "id": "FUN-001",
+      "category": "accepted deviation",
+      "severity": "minor",
+      "status": "accepted",
+      "title": "Static preview fallback on WebGL loss is labeled and non-interactive",
+      "requirement": "SPEC-009/COS-075",
+      "path": "apps/web/components/mesh-renderer.tsx",
+      "detail": "Fallback shows tables with Retry 3D; explicitly not interactive release evidence.",
+      "remedy": "Keep labeled; interactive readiness needs a genuine supported-device 3D test."
+    },
+    {
+      "id": "FUN-002",
+      "category": "missing evidence",
+      "severity": "major",
+      "status": "open",
+      "title": "No live judge walkthrough on a deployed target with real data",
+      "requirement": "COS-093/COS-094/COS-095",
+      "path": "docs/engineering/evidence/smoke-rollback.json",
+      "detail": "Component contracts verified on fixtures; deployed journey with role denial untested.",
+      "remedy": "COS-103 on the named candidate with clean-browser judge access and presenter separation."
+    },
+    {
+      "id": "FUN-003",
+      "category": "missing evidence",
+      "severity": "major",
+      "status": "open",
+      "title": "Measured device/browser/performance trials not run in this scope",
+      "requirement": "SPEC-009/COS-080",
+      "path": "apps/web/components/ux-checklist.tsx",
+      "detail": "UX-01..18 mapped with honest manual/unmeasured gaps; p95/mesh/frame targets unmeasured.",
+      "remedy": "Record declared-device trials, retain slow/failing trials and participant limits."
+    }
+  ],
+  "self_review_disclosure": "single agent self-review; no independent reviewer signatures",
+  "scope": "visible controls and journey contracts; fixes route to COS-102 without silent refactor",
+  "result": "passed",
+  "manifest_sha256": "93a45da77b84ff0233e7b1fec217566a65acc5b8ef6b7161041088ab28d053c1"
+}

@@ -22526,6 +22526,55 @@
       "known_failures": [],
       "blocked_on": [],
       "next_action": "COS-101 functionality and demo audit"
+    },
+    {
+      "id": "COS-101",
+      "purpose": "End-to-end functionality, dead controls and demonstration reliability audit",
+      "dependency_ids": [
+        "COS-080",
+        "COS-087",
+        "COS-093",
+        "COS-094",
+        "COS-095",
+        "COS-096",
+        "COS-098",
+        "COS-099",
+        "COS-100"
+      ],
+      "requirement_links": [
+        "TASK-COS-101"
+      ],
+      "allowed_scope": "Phase 7 final_release audit; no silent refactor",
+      "status": "implemented_unverified",
+      "status_history": [
+        "planned",
+        "implemented_unverified"
+      ],
+      "owner_responsibility": "Primary agent; self-review disclosed, no independent reviewer",
+      "actual_touched_files": [
+        "tests/test_audit_functionality.py",
+        "docs/engineering/evidence/audit-functionality.json",
+        "docs/engineering/reference-reviews/COS-101.md",
+        "docs/engineering/reference-reviews/COS-101.json"
+      ],
+      "decisions": [
+        "Route/control inventory from web tree; restart contract from source",
+        "UX-01..18 reused with manual gaps retained; static fallback accepted deviation",
+        "Two major missing-evidence findings route to COS-102/103"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format audit",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_audit_functionality (3 tests)",
+          "result": "pass"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "COS-102 remediation and sign-off"
     }
   ],
   "contract_closure": {
