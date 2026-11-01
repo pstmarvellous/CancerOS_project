@@ -21833,6 +21833,59 @@
       "known_failures": [],
       "blocked_on": [],
       "next_action": "COS-087 journeys and evaluation report"
+    },
+    {
+      "id": "COS-087",
+      "purpose": "End-to-end user journeys, regression tests and scientific evaluation report",
+      "dependency_ids": [
+        "COS-071",
+        "COS-080",
+        "COS-081",
+        "COS-082",
+        "COS-083",
+        "COS-084",
+        "COS-085",
+        "COS-086"
+      ],
+      "requirement_links": [
+        "TASK-COS-087"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; synthetic fixture verification distinct from real-data and qualified review gates",
+      "status": "blocked",
+      "status_history": [
+        "planned",
+        "blocked"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "tests/test_candidate_report.py",
+        "docs/engineering/evidence/candidate-report.json",
+        "docs/engineering/reference-reviews/COS-087.md",
+        "docs/engineering/reference-reviews/COS-087.json"
+      ],
+      "decisions": [
+        "Reconciled frozen evidence into one report; Evaluation page matches report",
+        "Disposition blocked for full P0 readiness; fixture gates intact",
+        "Cloud recovery deferred to COS-093/COS-098 deployment evidence"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format candidate report",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_candidate_report (1 test)",
+          "result": "pass; report result blocked by design"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [
+        "D02 genuine follow-up",
+        "real-data validation",
+        "live deployment verification",
+        "qualified review"
+      ],
+      "next_action": "COS-088 deployment configuration"
     }
   ],
   "contract_closure": {

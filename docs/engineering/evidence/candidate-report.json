@@ -1,0 +1,70 @@
+{
+  "recorded_at": "2026-11-01T13:40:31.854408+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "candidate-report/1",
+  "journey": [
+    "authorized case",
+    "actual derived mesh",
+    "exact state/record",
+    "charts/table",
+    "valid comparison",
+    "five scenario workflows",
+    "source-backed update",
+    "grounded insight/evidence",
+    "evaluation/guide"
+  ],
+  "suites": {
+    "release_suite": "passed",
+    "geometry_benchmark": "passed",
+    "longitudinal_gate": "blocked",
+    "synthetic_plausibility": "passed",
+    "nlp_retrieval_challenge": "passed",
+    "safety_adversary": "passed"
+  },
+  "attempted_eligible_excluded_failed": {
+    "release_suite": {
+      "attempted": 50
+    },
+    "geometry_benchmark": {},
+    "longitudinal_gate": {
+      "eligible_real_cases": 0
+    },
+    "synthetic_plausibility": {},
+    "nlp_retrieval_challenge": {
+      "frozen_cases": 30
+    },
+    "safety_adversary": {
+      "frozen_cases": 60
+    }
+  },
+  "defects": [
+    {
+      "severity": "major",
+      "capability": "genuine longitudinal chronology",
+      "detail": "D02 blocked: no curated two-exam case; forecast accuracy Not evaluated"
+    },
+    {
+      "severity": "major",
+      "capability": "real-data validation",
+      "detail": "no approved real data, live provider runs or participant sessions in this scope"
+    },
+    {
+      "severity": "minor",
+      "capability": "measured performance",
+      "detail": "p95/mesh/frame/budget targets unmeasured on declared hardware"
+    }
+  ],
+  "open_gates": [
+    "genuine longitudinal D02",
+    "real-data validation",
+    "live deployment/provider verification",
+    "qualified scientific review",
+    "measured performance and participant review",
+    "cloud recovery (COS-093/COS-098)"
+  ],
+  "evaluation_page_match": "Evaluation page separates fixture-tested from Not evaluated and Blocked with no decorative percentages, matching this report",
+  "disposition": "blocked for full P0 readiness: missing mandatory genuine follow-up; identity/privacy/provenance gates intact for fixture scope",
+  "scope": "pre-deployment candidate evidence only; not clinical validation or deployment readiness",
+  "result": "blocked",
+  "manifest_sha256": "a8573d1aacf7e74058e29fba58c16cc20e5c8e90365b462cc6ac9eda443914a7"
+}
