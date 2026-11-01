@@ -22085,6 +22085,56 @@
       "known_failures": [],
       "blocked_on": [],
       "next_action": "COS-092 logging telemetry cost controls"
+    },
+    {
+      "id": "COS-092",
+      "purpose": "Logging, telemetry, health checks, error tracking and cost controls",
+      "dependency_ids": [
+        "COS-065",
+        "COS-088",
+        "COS-089",
+        "COS-090",
+        "COS-091"
+      ],
+      "requirement_links": [
+        "TASK-COS-092"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; fixture and static checks without live target",
+      "status": "implemented_unverified",
+      "status_history": [
+        "planned",
+        "implemented_unverified"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "docs/runbooks/observability-cost.md",
+        "tests/test_observability_cost.py",
+        "docs/engineering/evidence/observability-cost.json",
+        "docs/engineering/reference-reviews/COS-092.md",
+        "docs/engineering/reference-reviews/COS-092.json"
+      ],
+      "decisions": [
+        "Public liveness topology-free; restricted readiness denies without monitor token",
+        "Redaction at source and exporter; support/request ID only to patients",
+        "Budget ledger estimates only; alerts are not hard caps; pause path preserves reads"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format observability gate",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_observability_cost (4 tests)",
+          "result": "pass"
+        },
+        {
+          "check": "alert delivery / billed measurements",
+          "result": "open; needs a live target"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "COS-093 smoke tests and rollback"
     }
   ],
   "contract_closure": {

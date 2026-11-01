@@ -1,0 +1,12 @@
+{
+  "recorded_at": "2026-11-01T13:58:59.177789+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "observability-cost/1",
+  "health": "pass: public liveness topology-free; restricted readiness denies without monitor token",
+  "redaction": "pass: no bearer/key/grant graph in health, schema or denied responses",
+  "budget_ledger": "estimates only: compute/DB/storage/egress/observability/model lines with caps; no free-credit assumption",
+  "alerts_caps": "configured ceilings documented; delivery test needs a staging apply; alerts are not hard caps",
+  "scope": "fixture and static checks; alert delivery and billed measurements need a live target",
+  "result": "passed",
+  "manifest_sha256": "2bf95a30ffa04b332bcc952ebc4439bc497b0b1b3f3b18d3921364a895917bd7"
+}
