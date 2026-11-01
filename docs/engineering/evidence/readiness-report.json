@@ -1,8 +1,8 @@
 {
-  "recorded_at": "2026-11-01T14:17:10.640350+00:00",
+  "recorded_at": "2026-11-01T14:22:42.453122+00:00",
   "platform": "Windows-11-10.0.22631-SP0",
   "suite": "readiness-report/1",
-  "frozen_commit": "e870d8003fca3ba805b3884fd30eefcf0ff58fef",
+  "frozen_commit": "609ebbc4510adfbbd135368dd4f4ea047d224daa",
   "official_event_details": "unverified: no authoritative instructions inspected in this scope; five minutes and ten working days remain planning assumptions",
   "rehearsal": "not run on a declared device/connection/account: no deployed target; Guided demo component asserts UI-only restart and safe reset",
   "release_decision": "blocked for full P0 readiness and for any external submission; reviewable package complete",
@@ -16,5 +16,5 @@
   "optional_scope": "disabled optional models declared; never silently enabled for presentation",
   "external_send": "none performed by this task; submission needs explicit authorization",
   "result": "blocked",
-  "manifest_sha256": "4739def2de01acf4ab9316b90ad4ac002bb4a8f112f6aae85bc209df9d0db074"
+  "manifest_sha256": "f6951473456bdcec068f5ebf3b0ebc0900407826620f074859424cbdcc00582a"
 }

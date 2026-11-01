@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-11-01T13:58:59.177789+00:00",
+  "recorded_at": "2026-11-01T14:18:31.242078+00:00",
   "platform": "Windows-11-10.0.22631-SP0",
   "suite": "observability-cost/1",
   "health": "pass: public liveness topology-free; restricted readiness denies without monitor token",

@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-11-01T13:35:20.775302+00:00",
+  "recorded_at": "2026-11-01T14:18:26.589802+00:00",
   "platform": "Windows-11-10.0.22631-SP0",
   "suite": "nlp-retrieval-challenge/1",
   "protocol": "20 grounded / 20 missing-conflicting-temporal-negation / 20 adversarial-prohibited; 30-case dev, 30-case frozen evaluation",
