@@ -1,0 +1,13 @@
+{
+  "recorded_at": "2026-11-01T13:52:06.949161+00:00",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "suite": "security-hardening/1",
+  "frontend_boundary": "pass: none of 4 forbidden patterns in web sources",
+  "committed_secrets": "pass: no .env or restricted assets in git-visible files",
+  "denied_egress": "pass: zero transport calls when export disabled",
+  "deployed_review": "open: no deployed target; ingress/TLS/session/CSRF/origin and scanner audit need a staging apply",
+  "demo_manifest_rights": "open: source rights reconciled against the demo manifest at curation time (COS-094/095)",
+  "scope": "fixture and static gates; not a complete security audit",
+  "result": "passed",
+  "manifest_sha256": "3f6c54bef92fada7b5cd9884400c2d8ba0871f8e677b5439d0d4afc2ea0aa67a"
+}

@@ -22037,6 +22037,54 @@
       "known_failures": [],
       "blocked_on": [],
       "next_action": "COS-091 security hardening"
+    },
+    {
+      "id": "COS-091",
+      "purpose": "Security hardening, dataset permissions, secrets and external AI data controls",
+      "dependency_ids": [
+        "COS-057",
+        "COS-064",
+        "COS-067",
+        "COS-071",
+        "COS-086",
+        "COS-088",
+        "COS-089",
+        "COS-090"
+      ],
+      "requirement_links": [
+        "TASK-COS-091"
+      ],
+      "allowed_scope": "Phase 6 assigned prompt; static and fixture gates without deployed target",
+      "status": "implemented_unverified",
+      "status_history": [
+        "planned",
+        "implemented_unverified"
+      ],
+      "owner_responsibility": "Primary agent; specialist self-review only",
+      "actual_touched_files": [
+        "tests/test_security_hardening.py",
+        "docs/engineering/evidence/security-hardening.json",
+        "docs/engineering/reference-reviews/COS-091.md",
+        "docs/engineering/reference-reviews/COS-091.json"
+      ],
+      "decisions": [
+        "Frontend boundary and secret hygiene asserted on git-visible files",
+        "Denied-by-default export with zero transport calls on every retry path",
+        "Deployed ingress/scanner review open; demo rights reconciled at curation"
+      ],
+      "checks_evidence": [
+        {
+          "check": "ruff check/format hardening gate",
+          "result": "pass"
+        },
+        {
+          "check": "pytest test_security_hardening (4 tests)",
+          "result": "pass"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "COS-092 logging telemetry cost controls"
     }
   ],
   "contract_closure": {
