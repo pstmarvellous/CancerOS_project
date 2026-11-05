@@ -5,6 +5,7 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'CancerOS · Explore Cancer Evolution in 3D',
   description: 'Explore tumor geometry, hypothetical scenarios and clinical observations in a breast cancer research digital twin.',
+  icons: { icon: '/favicon.svg' },
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {

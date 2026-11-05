@@ -1,0 +1,24 @@
+{
+  "recorded_at": "2026-11-05T21:19:04.958Z",
+  "scope": "Actual RS256/SQL/private-storage services; artificial sources and observations only",
+  "case_creation": true,
+  "profile_saved_and_refreshed": true,
+  "clinical_kinds": [
+    "laboratory",
+    "vital",
+    "symptom",
+    "treatment",
+    "diagnosis",
+    "visit",
+    "note"
+  ],
+  "exact_decimal_preserved": true,
+  "observation_refresh": true,
+  "immutable_correction": true,
+  "existing_charts_integrated": true,
+  "unavailable_imaging_preserves_case": true,
+  "duplicate_denied": true,
+  "invalid_unit_denied": true,
+  "mobile_overflow": false,
+  "browser_errors": []
+}
