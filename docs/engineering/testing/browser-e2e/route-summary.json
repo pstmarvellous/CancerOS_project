@@ -1,0 +1,62 @@
+{
+  "recorded_at": "2026-11-03T12:01:53.975Z",
+  "summary": [
+    {
+      "route": "/",
+      "title": "A foundation for traceable research.",
+      "status": "rendered"
+    },
+    {
+      "route": "/cases",
+      "title": "Open an authorized case",
+      "status": "gated-empty-state"
+    },
+    {
+      "route": "/twin",
+      "title": "Inspect the lesion in physical scale",
+      "status": "gated-empty-state"
+    },
+    {
+      "route": "/states",
+      "title": "Inspect one persisted state at a time",
+      "status": "gated-empty-state"
+    },
+    {
+      "route": "/charts",
+      "title": "Charts and tables without invented values",
+      "status": "gated-empty-state"
+    },
+    {
+      "route": "/simulation",
+      "title": "Configure a hypothetical research branch",
+      "status": "rendered"
+    },
+    {
+      "route": "/insights",
+      "title": "Supported findings with honest uncertainty",
+      "status": "gated-empty-state"
+    },
+    {
+      "route": "/timeline",
+      "title": "Inspect an exact observation timeline",
+      "status": "rendered"
+    },
+    {
+      "route": "/evaluation",
+      "title": "Inspect evidence and limits",
+      "status": "rendered"
+    },
+    {
+      "route": "/guided-demo",
+      "title": "Follow a pinned authorized path",
+      "status": "gated-empty-state"
+    },
+    {
+      "route": "/mesh-preview",
+      "title": "Inspect physical region geometry",
+      "status": "rendered"
+    }
+  ],
+  "consoleErrors": [],
+  "failedResponses": []
+}

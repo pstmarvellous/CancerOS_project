@@ -1,0 +1,12 @@
+{
+  "recorded_at": "2026-11-03T11:52:40.348Z",
+  "scope": "Continuous browser journey on the explicitly synthetic phase3 fixture context (no authentic patient)",
+  "steps": [
+    "simulation branch loaded",
+    "exact timeline queried",
+    "charts bound",
+    "insights bound"
+  ],
+  "timeline_items": 5,
+  "console_errors": []
+}

@@ -2,6 +2,11 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { InsightsExplorer } from './insights-explorer';
 
+const query = vi.hoisted(() => ({ search: '' }));
+vi.mock('next/navigation', () => ({
+  useSearchParams: () => new URLSearchParams(query.search),
+}));
+
 const PROJECT = '11111111-1111-1111-1111-111111111111';
 const PATIENT = '22222222-2222-2222-2222-222222222222';
 const STATE = '33333333-3333-3333-3333-333333333333';
@@ -55,16 +60,13 @@ function stubFetch() {
 
 describe('COS-079 insights explorer', () => {
   it('asks for a case instead of guessing one', () => {
-    Object.defineProperty(window, 'location', { value: { search: '' }, writable: true });
+    query.search = '';
     render(<InsightsExplorer />);
     expect(screen.getByText(/Open a case to inspect its insights/)).toBeVisible();
   });
 
   it('loads snapshot-bound context and labels rule-based execution', async () => {
-    Object.defineProperty(window, 'location', {
-      value: { search: `?project=${PROJECT}&patient=${PATIENT}&state=${STATE}` },
-      writable: true,
-    });
+    query.search = `?project=${PROJECT}&patient=${PATIENT}&state=${STATE}`;
     vi.stubGlobal('fetch', stubFetch());
     render(<InsightsExplorer />);
     fireEvent.change(screen.getByLabelText('State UUID'), { target: { value: STATE } });

@@ -146,3 +146,25 @@ and atomic current-corpus activation.100 fixture/SQL/S3/HTTP checks passed plus
 Ruff/mypy and corrected contract drift. NCI source metadata/reuse policy inspected
 as a candidate; no NCI text imported. Complete object-retention and real curation
 remain unverified. No provider call, external export or new code publication.
+
+
+COS-UX-RECOVERY-001 (2026-11-05): targeted homepage and read-only synthetic
+digital-twin journey. Reused existing mask/measurement/mesh, five-family simulation,
+timeline/trend engines and Three.js/OrbitControls. New token-free local presentation
+adapter, scoped session and user-task navigation; no backend authorization relaxation.
+77 frontend tests passed in the standard thread pool; 3 Chromium workflow/boundary
+checks passed. Final evidence: ../engineering/testing/ux-recovery/RECOVERY-REPORT.md.
+Every geometry/observation is synthetic; the baseline is a geometric phantom.
+Insights use a labeled local template; no live Meta call, real-data claim, new commit,
+push or publication. This contribution record does not assert event eligibility.
+
+COS-UX-RECOVERY-002 (2026-11-05): resumed implementation with versioned synthetic
+bundle validation and explicit mesh-to-state bindings from the existing preparation
+pipeline. Exact source/chart/context references are checked without recomputing
+scientific measurements. 113 frontend tests across 18 files, 3 production Chromium
+checks, build, typecheck, focused ESLint and Ruff passed; actual five-family bundle
+regeneration succeeded. See ../engineering/testing/ux-recovery/INTEGRITY-CONTINUATION.md.
+All data remain synthetic, insights remain a local template, and the digest is not
+scientific attestation. No new dependency/model/data adoption, live Meta call,
+authentic-source transmission, commit, push or deployment. Existing rights,
+scientific-review, provider and publication gates remain open.

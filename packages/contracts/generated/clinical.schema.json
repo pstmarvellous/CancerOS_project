@@ -1473,6 +1473,20 @@
       ],
       "title": "Scientific Review",
       "type": "string"
+    },
+    "source_reference": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Reference"
     }
   },
   "required": [

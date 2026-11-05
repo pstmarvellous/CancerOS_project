@@ -2,6 +2,11 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { LesionViewer } from './lesion-viewer';
 
+const query = vi.hoisted(() => ({ search: '' }));
+vi.mock('next/navigation', () => ({
+  useSearchParams: () => new URLSearchParams(query.search),
+}));
+
 const LESION = '44444444-4444-4444-4444-444444444444';
 const REPORT = '55555555-5555-5555-5555-555555555555';
 const MEASUREMENT = '66666666-6666-6666-6666-666666666666';
@@ -74,18 +79,13 @@ function stubFetch() {
 
 describe('COS-075 lesion viewer', () => {
   it('asks for a case instead of guessing one', () => {
-    Object.defineProperty(window, 'location', { value: { search: '' }, writable: true });
+    query.search = '';
     render(<LesionViewer />);
     expect(screen.getByText(/Open a case to inspect its lesion/)).toBeVisible();
   });
 
   it('loads authorized geometry with server measurements', async () => {
-    Object.defineProperty(window, 'location', {
-      value: {
-        search: '?project=11111111-1111-1111-1111-111111111111&patient=22222222-2222-2222-2222-222222222222',
-      },
-      writable: true,
-    });
+    query.search = '?project=11111111-1111-1111-1111-111111111111&patient=22222222-2222-2222-2222-222222222222';
     vi.stubGlobal('fetch', stubFetch());
     render(<LesionViewer />);
     await waitFor(() => expect(screen.getByText(/Authorized geometry ready/)).toBeVisible(), { timeout: 10000 });
@@ -95,12 +95,7 @@ describe('COS-075 lesion viewer', () => {
   });
 
   it('switches lesions without inventing geometry', async () => {
-    Object.defineProperty(window, 'location', {
-      value: {
-        search: '?project=11111111-1111-1111-1111-111111111111&patient=22222222-2222-2222-2222-222222222222',
-      },
-      writable: true,
-    });
+    query.search = '?project=11111111-1111-1111-1111-111111111111&patient=22222222-2222-2222-2222-222222222222';
     const second = '88888888-8888-8888-8888-888888888888';
     const fetchMock = vi.fn(async (input: unknown) => {
       const url = String(input);

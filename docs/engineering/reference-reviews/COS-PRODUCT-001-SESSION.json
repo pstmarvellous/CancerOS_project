@@ -1,0 +1,148 @@
+{
+  "task": "COS-PRODUCT-001-SESSION",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "privacy",
+      "returncode": 0,
+      "output": "\n=== IMG.INGEST DICOM and NIfTI ingestion ===\n Validate study, series, sequence, privacy, slice sorting, pixel geometry and checksums. \nSources: IMG,REF\n  <-- IMPLEMENTS D.IMG Medical imaging\n  --> PRECEDES IMG.PRE MRI preprocessing\n  <-- HAS_STEP WF.REAL Real imaging vertical slice\n  <-- WORKFLOW_PRECEDES DATA.PATIENT ResearchPatient\n  --> WORKFLOW_PRECEDES IMG.PRE MRI preprocessing\n  <-- HAS_STEP WF.REALVAL Actual longitudinal evaluation\n  --> WORKFLOW_PRECEDES IMG.REG Longitudinal registration\n\n=== GOV.PRIV Privacy and access ===\n Pseudonyms, deidentification checks, role-aware access, approved external data processing only. \nSources: SAF,PRD\n  <-- ENFORCES D.GOV Safety and provenance\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  <-- WORKFLOW_PRECEDES GOV.PROV Five provenance classes\n  --> WORKFLOW_PRECEDES INF.DEPLOY Deployment\n  --> CONSTRAINS DATA.PATIENT ResearchPatient\n  --> CONSTRAINS INF.OBJECT Imaging/object storage\n  --> CONSTRAINS AI.NLP Clinical note extraction\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "privacy",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "privacy",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "access",
+      "returncode": 0,
+      "output": "\n=== DATA.ARTIFACT Artifact ===\n Source DICOM, NIfTI, mask, mesh or report with checksum, access control and transformations. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- RELATES_TO DATA.SOURCE Dataset and licensing registry\n  <-- CONSTRAINS GOV.REAL Immutable source truth\n\n=== UX.CASE Research case browser ===\n Pseudonymous case listing, source metadata, completeness and access. \nSources: PRD,UX\n  <-- IMPLEMENTS D.UX Researcher experience\n\n=== GOV.PRIV Privacy and access ===\n Pseudonyms, deidentification checks, role-aware access, approved external data processing only. \nSources: SAF,PRD\n  <-- ENFORCES D.GOV Safety and provenance\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  <-- WORKFLOW_PRECEDES GOV.PROV Five provenance classes\n  --> WORKFLOW_PRECEDES INF.DEPLOY Deployment\n  --> CONSTRAINS DATA.PATIENT ResearchPatient\n  --> CONSTRAINS INF.OBJECT Imaging/object storage\n  --> CONSTRAINS AI.NLP Clinical note extraction\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "access",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "access",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "DATA.ARTIFACT",
+    "GOV.PRIV",
+    "IMG.INGEST",
+    "UX.CASE"
+  ],
+  "academic_behavior_ids": [],
+  "edges": [
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.ARTIFACT"
+    },
+    {
+      "from_id": "DATA.SOURCE",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.ARTIFACT"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "PRECEDES",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.CASE"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "GOV.REAL",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.ARTIFACT"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "CONSTRAINS",
+      "to_id": "INF.OBJECT"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.NLP"
+    }
+  ],
+  "mapped_source_ids": [],
+  "source_sections_inspected": "COS-PRODUCT-001 sections 4, 6, 9, 10, 14; source specifications to inspect; current case-proxy implementation inspected"
+}

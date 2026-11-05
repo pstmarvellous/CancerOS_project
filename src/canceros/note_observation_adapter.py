@@ -26,8 +26,11 @@ def validate_note_pointer(c, i, p, u, item: NoteInput) -> "NoteDocument":
         require_resource_action(c, i, p, u, document.note_id, action)
     if (
         document.branch_id is not None
-        or document.context != Context.SYNTHETIC
-        or document.provenance != Provenance.SYNTHETIC_GENERATED
+        or (document.context, document.provenance)
+        not in (
+            (Context.SYNTHETIC, Provenance.SYNTHETIC_GENERATED),
+            (Context.OBSERVED, Provenance.REAL_DERIVED),
+        )
         or item.artifact_id != document.artifact_id
         or item.content_sha256 != document.source_sha256
         or item.language != "en"

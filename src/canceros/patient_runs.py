@@ -49,7 +49,9 @@ class VisitPage(Contract):
 
 
 class ObservationFilter(Contract):
-    kind: Literal["laboratory", "vital", "diagnosis", "treatment", "symptom", "visit", "note"] | None = None
+    kind: (
+        Literal["laboratory", "vital", "diagnosis", "treatment", "symptom", "visit", "note"] | None
+    ) = None
     concept: str | None = Field(default=None, max_length=120)
     visit_id: UUID | None = None
     limit: int = Field(default=OBSERVATION_PAGE_LIMIT, strict=True, ge=1, le=100)
@@ -78,7 +80,9 @@ def _grant_clause(admin: bool) -> str:
       WHERE g.project_id=:p AND g.user_id=:u"""
 
 
-def list_patients(c, i, p: UUID, limit: int = PATIENT_PAGE_LIMIT, cursor: str | None = None) -> PatientPage:
+def list_patients(
+    c, i, p: UUID, limit: int = PATIENT_PAGE_LIMIT, cursor: str | None = None
+) -> PatientPage:
     authorize_project(i, p, "viewer")
     admin = i.memberships[p] == "admin"
     rows = (
@@ -118,14 +122,18 @@ def patient_detail(c, i, p: UUID, u: UUID) -> PatientDetail:
     )
     if row is None:
         raise HTTPException(404)
-    counts = c.execute(
-        text(
-            "SELECT COUNT(*) FILTER (WHERE payload->'item'->>'kind'<>'visit') AS obs, "
-            "COUNT(*) FILTER (WHERE payload->'item'->>'kind'='visit') AS visits "
-            "FROM clinical.observations WHERE project_id=:p AND patient_id=:u"
-        ),
-        {"p": p, "u": u},
-    ).mappings().one()
+    counts = (
+        c.execute(
+            text(
+                "SELECT COUNT(*) FILTER (WHERE payload->'item'->>'kind'<>'visit') AS obs, "
+                "COUNT(*) FILTER (WHERE payload->'item'->>'kind'='visit') AS visits "
+                "FROM clinical.observations WHERE project_id=:p AND patient_id=:u"
+            ),
+            {"p": p, "u": u},
+        )
+        .mappings()
+        .one()
+    )
     return PatientDetail(
         patient_id=u,
         display_code=row["display_code"],
@@ -153,15 +161,15 @@ def list_visits(c, i, p: UUID, u: UUID) -> VisitPage:
     )
     return VisitPage(
         items=tuple(
-            VisitSummary(visit_id=r["id"], time_basis=r["basis"] or "unknown", observation_count=r["n"])
+            VisitSummary(
+                visit_id=r["id"], time_basis=r["basis"] or "unknown", observation_count=r["n"]
+            )
             for r in rows
         )
     )
 
 
-def query_observations(
-    c, i, p: UUID, u: UUID, filt: ObservationFilter
-) -> ObservationPage:
+def query_observations(c, i, p: UUID, u: UUID, filt: ObservationFilter) -> ObservationPage:
     authorize_patient(c, i, p, u)
     clauses = ["o.project_id=:p", "o.patient_id=:u"]
     params: dict = {"p": p, "u": u, "limit": filt.limit}
@@ -178,7 +186,9 @@ def query_observations(
         c.execute(
             text(
                 "SELECT o.id,o.payload->'item'->>'kind' AS kind,o.payload->'item'->>'concept' AS concept,"
-                "o.payload_hash AS h,(o.supersedes_id IS NOT NULL) AS s FROM clinical.observations o "
+                "o.payload_hash AS h,EXISTS (SELECT 1 FROM clinical.observations newer "
+                "WHERE newer.project_id=o.project_id AND newer.patient_id=o.patient_id "
+                "AND newer.supersedes_id=o.id) AS s FROM clinical.observations o "
                 f"WHERE {' AND '.join(clauses)} ORDER BY o.id LIMIT :limit"
             ),
             params,
@@ -187,7 +197,11 @@ def query_observations(
         .all()
     )
     cursor = science_hash(
-        {"patient": str(u), "filter": filt.model_dump(mode="json"), "ids": sorted(str(r["id"]) for r in rows)}
+        {
+            "patient": str(u),
+            "filter": filt.model_dump(mode="json"),
+            "ids": sorted(str(r["id"]) for r in rows),
+        }
     )
     return ObservationPage(
         items=tuple(

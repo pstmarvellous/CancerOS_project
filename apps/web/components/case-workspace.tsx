@@ -1,9 +1,14 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import type { components } from '../../../packages/contracts/generated/api';
 import { ErrorSummary, LoadingState } from './research';
+import { ObservationIntake } from './observation-intake';
+import { ResearchProfile } from './research-profile';
+import { ClinicalHistoryTable } from './clinical-history-table';
+import { CaseImaging } from './case-imaging';
 
 type S = components['schemas'];
 type PatientDetail = S['PatientDetail'];
@@ -21,12 +26,8 @@ type Status =
   | { kind: 'ready' };
 
 function useSelection(): { project: string | null; patient: string | null } {
-  const [selection] = useState<{ project: string | null; patient: string | null }>(() => {
-    if (typeof window === 'undefined') return { project: null, patient: null };
-    const params = new URLSearchParams(window.location.search);
-    return { project: params.get('project'), patient: params.get('patient') };
-  });
-  return selection;
+  const params = useSearchParams();
+  return { project: params.get('project'), patient: params.get('patient') };
 }
 
 async function readJson(response: Response): Promise<unknown> {
@@ -102,11 +103,18 @@ function fieldOf(record: ClinicalRecord, name: string): string | null {
 }
 
 export function CaseWorkspace() {
+  return <Suspense fallback={<LoadingState/>}><CaseWorkspaceFromQuery /></Suspense>;
+}
+
+function CaseWorkspaceFromQuery() {
   const { project, patient } = useSelection();
   const [status, setStatus] = useState<Status>(() =>
     project && patient ? { kind: 'loading' } : { kind: 'needs-selection' },
   );
   const [detail, setDetail] = useState<PatientDetail | null>(null);
+  const [sourceOrigin, setSourceOrigin] = useState<'real_source'|'synthetic_engineering_fixture'|null>(null);
+  const [canWrite, setCanWrite] = useState(false);
+  const [correction, setCorrection] = useState<ClinicalRecord|null>(null);
   const [visits, setVisits] = useState<VisitPage | null>(null);
   const [filters, setFilters] = useState<ObservationFilters>({ kind: 'all', cursor: null, items: [] });
   const [snapshot, setSnapshot] = useState<string | null>(null);
@@ -149,7 +157,7 @@ export function CaseWorkspace() {
       setRecords({});
       setStatus({ kind: 'ready' });
       setMessage(
-        `Case ${detailBody.display_code} · revision ${detailBody.data_revision} · ${detailBody.observation_count} observations in ${detailBody.visit_count} visits. Unknown values stay “Not recorded”.`,
+        `Research case loaded · ${detailBody.observation_count} observations in ${detailBody.visit_count} visits. Unknown values stay “Not recorded”.`,
       );
     } catch (error) {
       if (controller.signal.aborted) return;
@@ -258,47 +266,9 @@ export function CaseWorkspace() {
       <p role="status" aria-live="polite">
         {message}
       </p>
-      <section className="card" aria-label="Case overview">
-        <p className="eyebrow">Overview · Observed case facts</p>
-        <h2>{detail.display_code}</h2>
-        <dl className="case-fields">
-          <div>
-            <dt>Case</dt>
-            <dd>{detail.display_code}</dd>
-          </div>
-          <div>
-            <dt>Data revision</dt>
-            <dd>{detail.data_revision}</dd>
-          </div>
-          <div>
-            <dt>Observations</dt>
-            <dd>{detail.observation_count}</dd>
-          </div>
-          <div>
-            <dt>Visits</dt>
-            <dd>{detail.visit_count}</dd>
-          </div>
-          <div>
-            <dt>Next action</dt>
-            <dd>{detail.next_action}</dd>
-          </div>
-        </dl>
-        <p>
-          Pseudonymous research case. Source-backed facts appear below; unknown receptor or pathology values stay
-          “Not recorded” and are never inferred from a scenario.
-        </p>
-        <dl className="case-fields">
-          <ReceptorRow label="Side" value={receptor('laterality') ?? receptor('side')} />
-          <ReceptorRow label="Pathology" value={receptor('histology') ?? receptor('diagnosis_text')} />
-          <ReceptorRow label="Estrogen receptor" value={receptor('er_status')} />
-          <ReceptorRow label="Progesterone receptor" value={receptor('pr_status')} />
-          <ReceptorRow label="HER2" value={receptor('her2_status')} />
-        </dl>
-        <p>
-          Two-state comparison within this history stays available from the Twin workspace. Branch switching is
-          sequential and never invents intermediate geometry.
-        </p>
-      </section>
+      <ResearchProfile project={project} patient={patient} onLoaded={(profile,editable)=>{setSourceOrigin(profile.origin);setCanWrite(editable);}}/>
+      <p className="field-hint">{detail.observation_count} clinical records · {detail.visit_count} visits. Scientific snapshots retain their original evidence.</p>
+      <ClinicalHistoryTable key={detail.data_revision} project={project} patient={patient} onCorrect={canWrite?record=>{setCorrection(record);setTimeout(()=>document.getElementById('case-observation-entry')?.scrollIntoView({behavior:'smooth'}),0);}:undefined}/>
 
       <section className="card" aria-label="Record completeness">
         <h2>Completeness by capability</h2>
@@ -322,6 +292,31 @@ export function CaseWorkspace() {
           ))}
         </ul>
         <p>Restricted capabilities show “access restricted”. Pending review and invalid records stay distinct.</p>
+      </section>
+
+      <section className="card" aria-label="Cancer information">
+        <p className="eyebrow">C · CANCER INFORMATION</p>
+        <h2>Diagnosis details from source records</h2>
+        <dl className="case-fields">
+          <ReceptorRow label="Cancer type / histology" value={receptor('histology') ?? receptor('diagnosis_text') ?? receptor('concept')} />
+          <ReceptorRow label="Laterality" value={receptor('laterality') ?? receptor('side')} />
+          <ReceptorRow label="Clinical stage" value={receptor('clinical_stage')} />
+          <ReceptorRow label="Pathologic stage" value={receptor('pathologic_stage')} />
+          <ReceptorRow label="Staging system" value={receptor('staging_system')} />
+          <ReceptorRow label="Estrogen receptor" value={receptor('er_status')} />
+          <ReceptorRow label="Progesterone receptor" value={receptor('pr_status')} />
+          <ReceptorRow label="HER2" value={receptor('her2_status')} />
+        </dl>
+        <p>Values come only from opened source-backed diagnosis records. Unopened or absent records stay “Not recorded”; staging without a system is rejected by the server.</p>
+      </section>
+
+      <CaseImaging project={project} patient={patient}/>
+
+      <section className="card" aria-label="Clinical history summary">
+        <p className="eyebrow">E · CLINICAL HISTORY</p>
+        <h2>Longitudinal observations</h2>
+        <p>Laboratory results, vital signs, symptoms, treatments, notes and imaging examinations are listed in the observations drill-down and charts below. Newly saved observations appear in the patient overview, clinical tables, charts and timeline.</p>
+        <p><Link href={`/charts?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}`}>Open clinical charts</Link> · <Link href={`/timeline?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}`}>Open observation timeline</Link></p>
       </section>
 
       <section className="card" aria-label="Observations">
@@ -391,6 +386,20 @@ export function CaseWorkspace() {
         )}
       </section>
 
+      <div id="case-observation-entry">{sourceOrigin && canWrite && <ObservationIntake
+        key={correction?.id??'new-observation'}
+        project={project}
+        patient={patient}
+        revision={detail.data_revision}
+        origin={sourceOrigin}
+        correction={correction}
+        onCancelCorrection={()=>setCorrection(null)}
+        onSaved={note => {
+          setCorrection(null);
+          void load().then(() => setMessage(note));
+        }}
+      />}</div>
+      <details className="card workspace-section"><summary>Advanced import and correction tools</summary>
       <ObservationEditor
         project={project}
         patient={patient}
@@ -405,6 +414,7 @@ export function CaseWorkspace() {
         patient={patient}
         onDone={note => setMessage(note)}
       />
+      </details>
     </>
   );
 }

@@ -1,10 +1,4 @@
-import Link from 'next/link';
-import { CaseLibrary } from '../../components/case-library';
-
+import { ResearchCases } from '../../components/research-cases';
 export default function CasesPage() {
-  return <>
-    <div className="intro"><p className="eyebrow">Research cases</p><h1>Open an authorized case</h1><p className="lead">Cases come from the authorized patient list. Unknown values stay “Not recorded”. Opening a case binds the header, viewer, charts and insights to one selection.</p></div>
-    <CaseLibrary detailBase="/cases/detail"/>
-    <p><Link href="/">← Research workspace</Link> · <Link href="/guided-demo">Start guided demo</Link></p>
-  </>;
+  return <><div className="intro"><p className="eyebrow">Research workspace</p><h1>Research Cases</h1><p className="lead">Create a research profile, record clinical observations and explore available imaging in one case-centered workspace.</p></div><ResearchCases/></>;
 }

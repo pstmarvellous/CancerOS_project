@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import type { MeshAsset } from './mesh-types';
@@ -8,10 +8,13 @@ import styles from './mesh-preview.module.css';
 
 type CameraAction = 'left' | 'right' | 'up' | 'down' | 'pan-left' | 'pan-right' | 'pan-up' | 'pan-down' | 'in' | 'out' | 'fit' | 'reset';
 export type RenderableMesh = {objects: Pick<MeshAsset['objects'][number], 'segmentation_id' | 'surface'>[]};
-export default function MeshRenderer({asset, selected, onFailure}: {asset: RenderableMesh; selected: string; onFailure: () => void}) {
+export default function MeshRenderer({asset, selected, onFailure, label = 'Synthetic region · mm · RAS frame · Z up'}: {asset: RenderableMesh; selected: string; onFailure: () => void; label?: string}) {
   const host = useRef<HTMLDivElement>(null);
   const actions = useRef<((action: CameraAction) => void) | null>(null);
-  const interaction = useRef<(() => void) | null>(null);
+  const interaction = useRef<((enabled: boolean) => void) | null>(null);
+  const pointerMode = useRef<((mode: 'orbit' | 'pan') => void) | null>(null);
+  const [mode, setMode] = useState<'orbit' | 'pan'>('orbit');
+  const helpId = useId();
   const selection = useRef<((id: string) => void) | null>(null);
 
   useEffect(() => {
@@ -29,18 +32,19 @@ export default function MeshRenderer({asset, selected, onFailure}: {asset: Rende
       scene.background = new THREE.Color('#111827');
       renderer = new THREE.WebGLRenderer({antialias: true, alpha: false});
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-      renderer.domElement.setAttribute('aria-label', 'Private synthetic engineering region, physical RAS coordinates in millimeters');
+      renderer.domElement.setAttribute('aria-label', 'Synthetic region, physical RAS coordinates in millimeters');
       renderer.domElement.setAttribute('role', 'img');
       renderer.domElement.addEventListener('webglcontextlost', lost);
       element.appendChild(renderer.domElement);
       const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.01, 1000);
       camera.up.set(0, 0, 1);
       controls = new OrbitControls(camera, renderer.domElement);
-      controls.enabled = false;
+      controls.enabled = true;
       controls.enableDamping = false;
       controls.screenSpacePanning = true;
       controls.minZoom = 0.1; controls.maxZoom = 20;
-      renderer.domElement.style.touchAction = 'pan-y';
+      renderer.domElement.style.touchAction = 'none';
+      element.dataset.interacting = 'true';
       const activeControls = controls;
       const activeRenderer = renderer;
       const objects: THREE.Mesh[] = [];
@@ -70,7 +74,7 @@ export default function MeshRenderer({asset, selected, onFailure}: {asset: Rende
         geometry.setAttribute('normal', new THREE.Float32BufferAttribute(surface.normals.flat(), 3));
         geometry.setIndex(surface.triangles.flat());
         // All objects retain their shared physical coordinates; no object scaling.
-        const material = new THREE.MeshStandardMaterial({color: '#c4b5fd', roughness: 0.55, metalness: 0});
+        const material = new THREE.MeshStandardMaterial({color: '#c4b5fd', roughness: 0.48, metalness: 0});
         materials.push(material);
         const mesh = new THREE.Mesh(geometry, material);
         mesh.position.copy(center);
@@ -143,21 +147,17 @@ export default function MeshRenderer({asset, selected, onFailure}: {asset: Rende
         }
         activeControls.update(); render();
       };
-      interaction.current = () => {
-        activeControls.enabled = !activeControls.enabled;
-        element.dataset.interacting = String(activeControls.enabled);
-        renderer!.domElement.style.touchAction = activeControls.enabled ? 'none' : 'pan-y';
-        const button = element.querySelector<HTMLButtonElement>('[data-interact]');
-        if (button) {
-          button.setAttribute('aria-pressed', String(activeControls.enabled));
-          button.textContent = activeControls.enabled ? 'Done interacting' : 'Interact with 3D';
-        }
+      interaction.current = enabled => {
+        activeControls.enabled = enabled;
+        element.dataset.interacting = String(enabled);
+        renderer!.domElement.style.touchAction = enabled ? 'none' : 'pan-y';
+      };
+      pointerMode.current = value => {
+        activeControls.mouseButtons.LEFT = value === 'pan' ? THREE.MOUSE.PAN : THREE.MOUSE.ROTATE;
+        activeControls.touches.ONE = value === 'pan' ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
+        interaction.current?.(true);
       };
       selection.current = id => { for (const mesh of objects) mesh.visible = mesh.userData.annotationId === id; render(); };
-      const outside = (event: PointerEvent) => {
-        if (activeControls.enabled && event.target instanceof Node && !element.contains(event.target)) interaction.current?.();
-      };
-      document.addEventListener('pointerdown', outside);
       activeControls.addEventListener('change', render);
       document.addEventListener('visibilitychange', render);
       observer = new ResizeObserver(resize);
@@ -167,13 +167,12 @@ export default function MeshRenderer({asset, selected, onFailure}: {asset: Rende
       return () => {
         disposed = true; observer?.disconnect();
         document.removeEventListener('visibilitychange', render);
-        document.removeEventListener('pointerdown', outside);
         activeControls.removeEventListener('change', render);
         activeControls.dispose();
         activeRenderer.domElement.removeEventListener('webglcontextlost', lost);
         geometries.forEach(g => g.dispose()); materials.forEach(m => m.dispose());
         activeRenderer.dispose(); activeRenderer.domElement.remove();
-        actions.current = null; interaction.current = null; selection.current = null;
+        actions.current = null; interaction.current = null; pointerMode.current = null; selection.current = null;
       };
     } catch {
       observer?.disconnect(); controls?.dispose();
@@ -184,13 +183,36 @@ export default function MeshRenderer({asset, selected, onFailure}: {asset: Rende
   }, [asset, onFailure]);
 
   useEffect(() => { selection.current?.(selected); }, [selected, asset]);
-  const buttons: [CameraAction, string][] = [['left', 'Rotate left'], ['right', 'Rotate right'], ['up', 'Rotate up'], ['down', 'Rotate down'], ['pan-left', 'Pan left'], ['pan-right', 'Pan right'], ['pan-up', 'Pan up'], ['pan-down', 'Pan down'], ['in', 'Zoom in'], ['out', 'Zoom out'], ['fit', 'Fit view'], ['reset', 'Reset view']];
-  return <section aria-label="3D region controls">
-    <div className={styles.viewport} ref={host} onKeyDown={event => { if (event.key === 'Escape' && host.current?.dataset.interacting === 'true') interaction.current?.(); }}>
-      <p className={styles.viewportLabel}>Engineering region · synthetic · mm · RAS frame · Z up</p>
-      <button data-interact className={styles.interact} aria-pressed="false" onClick={() => interaction.current?.()}>Interact with 3D</button>
+  useEffect(() => { pointerMode.current?.(mode); }, [mode, asset]);
+  const steps: [CameraAction, string, string][] = [['left', 'Rotate left', '↶'], ['right', 'Rotate right', '↷'],
+    ['pan-left', 'Pan left', '←'], ['pan-right', 'Pan right', '→'], ['in', 'Zoom in', '+'], ['out', 'Zoom out', '−'],
+    ['fit', 'Fit view', 'Fit'], ['reset', 'Reset view', 'Reset']];
+  return <section className={styles.renderer} aria-label="3D region controls">
+    <div className={styles.controls} role="toolbar" aria-label="Camera controls">
+      <span role="group" aria-label="Pointer mode">{(['orbit', 'pan'] as const).map(value =>
+        <button key={value} type="button" aria-pressed={mode === value} title={`${value === 'orbit' ? 'Orbit' : 'Pan'} with pointer drag`}
+          onClick={() => { setMode(value); pointerMode.current?.(value); }}>{value === 'orbit' ? 'Orbit' : 'Pan'}</button>)}</span>
+      <span role="group" aria-label="Camera steps">{steps.map(([action, text, icon]) =>
+        <button key={action} type="button" title={text} aria-label={text} onClick={() => actions.current?.(action)}>{icon}</button>)}</span>
+      <details className={styles.extraControls}><summary>More camera controls</summary><div>
+        {([['up', 'Rotate up'], ['down', 'Rotate down'], ['pan-up', 'Pan up'], ['pan-down', 'Pan down']] as [CameraAction, string][]).map(([action, text]) =>
+          <button key={action} type="button" onClick={() => actions.current?.(action)}>{text}</button>)}
+      </div></details>
     </div>
-    <p>Use the buttons below, or enable viewport interaction to drag, pan and zoom. Escape ends viewport interaction. Camera scale is shared across all regions in this asset.</p>
-    <div className={styles.controls}>{buttons.map(([action, label]) => <button key={action} onClick={() => actions.current?.(action)}>{label}</button>)}</div>
+    <div className={styles.viewport} ref={host} tabIndex={0} role="group" aria-label="Interactive 3D viewport" aria-describedby={helpId}
+      onPointerDown={event => { if (event.target instanceof HTMLCanvasElement) event.currentTarget.focus({ preventScroll: true }); }}
+      onKeyDown={event => {
+        if (event.target !== event.currentTarget) return;
+        const arrow = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down' } as const;
+        const direction = arrow[event.key as keyof typeof arrow];
+        const action = direction ? (event.shiftKey ? `pan-${direction}` : direction) as CameraAction :
+          ({ '+': 'in', '=': 'in', '-': 'out', f: 'fit', F: 'fit', r: 'reset', R: 'reset' } as Record<string, CameraAction>)[event.key];
+        if (action) { event.preventDefault(); actions.current?.(action); }
+        if (event.key === 'Escape') interaction.current?.(false);
+      }}>
+      <p className={styles.viewportLabel}>{label}</p>
+      <button data-interact className={styles.interact} type="button" onClick={() => { interaction.current?.(true); host.current?.focus({ preventScroll: true }); }}>Interact with 3D</button>
+    </div>
+    <p id={helpId} className={styles.cameraHelp}>Drag to {mode}; right-drag to pan; scroll or pinch to zoom. Keyboard: arrows orbit, Shift + arrows pan, + / − zoom, F fit, R reset. Escape pauses pointer interaction. Scale stays shared across states.</p>
   </section>;
 }

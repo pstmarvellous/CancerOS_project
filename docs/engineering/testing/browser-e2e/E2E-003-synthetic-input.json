@@ -1,0 +1,20 @@
+{
+  "evidence_ids": [
+    "6eddff3a-5e04-42a9-91c8-f6e98d93365f"
+  ],
+  "input_snapshot_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "measurements": [
+    {
+      "metric_code": "synthetic_region_volume",
+      "provenance": "SYNTHETIC_GENERATED",
+      "reference_id": "e7eebaad-1706-4745-90c9-29024af23bb8",
+      "unit": "mm3",
+      "value": "216"
+    }
+  ],
+  "missingness": [
+    "source_note_extraction_unavailable"
+  ],
+  "purpose": "research_summary",
+  "schema_version": "provider-input/1"
+}

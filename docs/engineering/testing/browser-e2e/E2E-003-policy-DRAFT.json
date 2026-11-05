@@ -1,0 +1,34 @@
+{
+  "schema_version": "export/2",
+  "policy_id": "DRAFT-synthetic-live-test-NOT-AUTHORIZED",
+  "provider": "meta",
+  "model_identifier": "muse-spark-1.3",
+  "endpoint": "https://api.meta.ai/v1/responses",
+  "account_id": "DRAFT-unconfirmed",
+  "region": "DRAFT-unconfirmed",
+  "purpose": "research_summary",
+  "data_class": "minimized_structured_research",
+  "retention_policy": "DRAFT: no retention terms confirmed with provider",
+  "training_policy": "DRAFT: no training-use terms confirmed with provider",
+  "onward_processing_policy": "DRAFT: no onward-processing terms confirmed",
+  "permission_evidence": [],
+  "source_rights_evidence": [],
+  "approved_input_hashes": [
+    "165410f3c86054237c50d708006d5a60b19c93db7a9993526852b7718c184578"
+  ],
+  "approved_wire_hashes": [
+    "ae1d6c5bf53185810fc5369d31ca23759150fdd30144558458883c45fd733339"
+  ],
+  "allowed_fields": [
+    "schema_version",
+    "purpose",
+    "input_snapshot_hash",
+    "measurements",
+    "missingness",
+    "evidence_ids"
+  ],
+  "expires_at": "2000-01-01T00:00:00Z",
+  "policy_reviewed": true,
+  "account_access_verified": true,
+  "revoked": true
+}

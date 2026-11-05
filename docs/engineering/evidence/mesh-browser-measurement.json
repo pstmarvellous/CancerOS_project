@@ -1,7 +1,7 @@
 {
-  "recorded_at": "2026-10-28T08:54:36.355Z",
+  "recorded_at": "2026-11-03T11:50:39.265Z",
   "scope": "Real loopback HTTP, disposable PostgreSQL, private S3, synthetic engineering cuboid only; no clinical or large-study performance claim",
-  "actual_render_ready_load_ms": 1432.3729999999998,
+  "actual_render_ready_load_ms": 3676.7078999999994,
   "displayed_objects": 2,
   "authorization_denial_clears_old_geometry": true,
   "camera_controls_and_selection_preserve_physical_bounds": true,

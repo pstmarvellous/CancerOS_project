@@ -20,7 +20,7 @@ test('real private synthetic mesh, camera controls and authorization recovery', 
   await page.getByRole('button', {name:'Load private mesh', exact:true}).click();
   const asset = await (await assetResponse).json();
   await expect(page.getByRole('status').filter({hasText:'Authorized private engineering geometry loaded'})).toBeVisible();
-  const canvas = page.getByRole('img', {name:'Private synthetic engineering region, physical RAS coordinates in millimeters'});
+  const canvas = page.getByRole('img', {name:'Synthetic region, physical RAS coordinates in millimeters'});
   await expect(canvas).toBeVisible();
   await expect(canvas).toHaveAttribute('data-render-ready', 'true');
   const loadMs = performance.now() - started;

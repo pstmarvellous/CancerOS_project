@@ -1640,8 +1640,11 @@
             "type": "string"
           },
           "verification_scope": {
-            "const": "synthetic_engineering_fixture_only",
             "default": "synthetic_engineering_fixture_only",
+            "enum": [
+              "synthetic_engineering_fixture_only",
+              "documented_source_structural_only"
+            ],
             "title": "Verification Scope",
             "type": "string"
           }
@@ -2860,6 +2863,19 @@
             ],
             "title": "Scientific Review",
             "type": "string"
+          },
+          "source_reference": {
+            "anyOf": [
+              {
+                "maxLength": 1000,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reference"
           }
         },
         "required": [
@@ -2956,6 +2972,22 @@
             "pattern": "^[0-9a-f]{64}$",
             "title": "Sha256",
             "type": "string"
+          },
+          "source_reference": {
+            "anyOf": [
+              {
+                "format": "password",
+                "maxLength": 1000,
+                "minLength": 1,
+                "type": "string",
+                "writeOnly": true
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reference",
+            "writeOnly": true
           },
           "source_version_id": {
             "format": "uuid",
@@ -10017,8 +10049,8 @@
             "type": "string"
           },
           "real_source_processing": {
-            "const": "blocked_pending_privacy_linkage_review",
-            "default": "blocked_pending_privacy_linkage_review",
+            "const": "requires_documented_privacy_linkage_review",
+            "default": "requires_documented_privacy_linkage_review",
             "title": "Real Source Processing",
             "type": "string"
           }
@@ -10028,6 +10060,805 @@
           "next_action"
         ],
         "title": "LinkageStatus",
+        "type": "object"
+      },
+      "ManualDiagnosisInput": {
+        "additionalProperties": false,
+        "properties": {
+          "certainty": {
+            "enum": [
+              "documented",
+              "reported",
+              "uncertain",
+              "unknown"
+            ],
+            "title": "Certainty",
+            "type": "string"
+          },
+          "clinical_stage": {
+            "anyOf": [
+              {
+                "maxLength": 100,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clinical Stage"
+          },
+          "concept": {
+            "const": "source_pathology",
+            "title": "Concept",
+            "type": "string"
+          },
+          "dictionary_version": {
+            "const": "canceros-local/1",
+            "default": "canceros-local/1",
+            "title": "Dictionary Version",
+            "type": "string"
+          },
+          "er_status": {
+            "enum": [
+              "positive",
+              "negative",
+              "equivocal",
+              "unknown",
+              "not_tested",
+              "not_recorded",
+              "invalid"
+            ],
+            "title": "Er Status",
+            "type": "string"
+          },
+          "her2_status": {
+            "enum": [
+              "positive",
+              "negative",
+              "equivocal",
+              "unknown",
+              "not_tested",
+              "not_recorded",
+              "invalid"
+            ],
+            "title": "Her2 Status",
+            "type": "string"
+          },
+          "histology": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Histology"
+          },
+          "kind": {
+            "const": "diagnosis",
+            "title": "Kind",
+            "type": "string"
+          },
+          "negation": {
+            "enum": [
+              "affirmed",
+              "negated",
+              "unspecified"
+            ],
+            "title": "Negation",
+            "type": "string"
+          },
+          "original_term": {
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Original Term",
+            "type": "string"
+          },
+          "pathologic_stage": {
+            "anyOf": [
+              {
+                "maxLength": 100,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pathologic Stage"
+          },
+          "pr_status": {
+            "enum": [
+              "positive",
+              "negative",
+              "equivocal",
+              "unknown",
+              "not_tested",
+              "not_recorded",
+              "invalid"
+            ],
+            "title": "Pr Status",
+            "type": "string"
+          },
+          "side": {
+            "enum": [
+              "left",
+              "right",
+              "bilateral",
+              "unknown"
+            ],
+            "title": "Side",
+            "type": "string"
+          },
+          "staging_system": {
+            "anyOf": [
+              {
+                "maxLength": 100,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Staging System"
+          },
+          "time": {
+            "$ref": "#/components/schemas/ClinicalTime"
+          },
+          "visit_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Visit Id"
+          }
+        },
+        "required": [
+          "time",
+          "original_term",
+          "certainty",
+          "negation",
+          "kind",
+          "concept",
+          "side",
+          "er_status",
+          "pr_status",
+          "her2_status"
+        ],
+        "title": "ManualDiagnosisInput",
+        "type": "object"
+      },
+      "ManualNoteInput": {
+        "additionalProperties": false,
+        "properties": {
+          "certainty": {
+            "enum": [
+              "documented",
+              "reported",
+              "uncertain",
+              "unknown"
+            ],
+            "title": "Certainty",
+            "type": "string"
+          },
+          "kind": {
+            "const": "note",
+            "title": "Kind",
+            "type": "string"
+          },
+          "negation": {
+            "enum": [
+              "affirmed",
+              "negated",
+              "unspecified"
+            ],
+            "title": "Negation",
+            "type": "string"
+          },
+          "original_term": {
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Original Term",
+            "type": "string"
+          },
+          "text": {
+            "format": "password",
+            "maxLength": 16000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string",
+            "writeOnly": true
+          },
+          "time": {
+            "$ref": "#/components/schemas/ClinicalTime"
+          }
+        },
+        "required": [
+          "kind",
+          "time",
+          "original_term",
+          "certainty",
+          "negation",
+          "text"
+        ],
+        "title": "ManualNoteInput",
+        "type": "object"
+      },
+      "ManualNumericInput": {
+        "additionalProperties": false,
+        "properties": {
+          "certainty": {
+            "enum": [
+              "documented",
+              "reported",
+              "uncertain",
+              "unknown"
+            ],
+            "title": "Certainty",
+            "type": "string"
+          },
+          "component_group": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Component Group"
+          },
+          "concept": {
+            "enum": [
+              "hemoglobin",
+              "wbc",
+              "anc",
+              "platelets",
+              "creatinine",
+              "alt",
+              "ast",
+              "heart_rate",
+              "temperature",
+              "weight",
+              "systolic_bp",
+              "diastolic_bp"
+            ],
+            "title": "Concept",
+            "type": "string"
+          },
+          "dictionary_version": {
+            "const": "canceros-local/1",
+            "default": "canceros-local/1",
+            "title": "Dictionary Version",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "laboratory",
+              "vital"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "negation": {
+            "enum": [
+              "affirmed",
+              "negated",
+              "unspecified"
+            ],
+            "title": "Negation",
+            "type": "string"
+          },
+          "original_term": {
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Original Term",
+            "type": "string"
+          },
+          "original_unit": {
+            "anyOf": [
+              {
+                "maxLength": 32,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Unit"
+          },
+          "original_value": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Value"
+          },
+          "reference_interval": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceReferenceInterval"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "result": {
+            "discriminator": {
+              "mapping": {
+                "censored": "#/components/schemas/CensoredResult",
+                "exact": "#/components/schemas/ExactResult",
+                "missing": "#/components/schemas/MissingResult"
+              },
+              "propertyName": "form"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ExactResult"
+              },
+              {
+                "$ref": "#/components/schemas/CensoredResult"
+              },
+              {
+                "$ref": "#/components/schemas/MissingResult"
+              }
+            ],
+            "title": "Result"
+          },
+          "time": {
+            "$ref": "#/components/schemas/ClinicalTime"
+          },
+          "visit_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Visit Id"
+          }
+        },
+        "required": [
+          "time",
+          "original_term",
+          "certainty",
+          "negation",
+          "kind",
+          "concept",
+          "result"
+        ],
+        "title": "ManualNumericInput",
+        "type": "object"
+      },
+      "ManualObservationInput": {
+        "additionalProperties": false,
+        "properties": {
+          "corrects_record_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Corrects Record Id"
+          },
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "observation": {
+            "discriminator": {
+              "mapping": {
+                "diagnosis": "#/components/schemas/ManualDiagnosisInput",
+                "laboratory": "#/components/schemas/ManualNumericInput",
+                "note": "#/components/schemas/ManualNoteInput",
+                "symptom": "#/components/schemas/ManualSymptomInput",
+                "treatment": "#/components/schemas/ManualTreatmentInput",
+                "visit": "#/components/schemas/ManualVisitInput",
+                "vital": "#/components/schemas/ManualNumericInput"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ManualVisitInput"
+              },
+              {
+                "$ref": "#/components/schemas/ManualNumericInput"
+              },
+              {
+                "$ref": "#/components/schemas/ManualDiagnosisInput"
+              },
+              {
+                "$ref": "#/components/schemas/ManualTreatmentInput"
+              },
+              {
+                "$ref": "#/components/schemas/ManualSymptomInput"
+              },
+              {
+                "$ref": "#/components/schemas/ManualNoteInput"
+              }
+            ],
+            "title": "Observation"
+          },
+          "source_reference": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Source Reference",
+            "type": "string"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "source_reference",
+          "observation"
+        ],
+        "title": "ManualObservationInput",
+        "type": "object"
+      },
+      "ManualSymptomInput": {
+        "additionalProperties": false,
+        "properties": {
+          "certainty": {
+            "enum": [
+              "documented",
+              "reported",
+              "uncertain",
+              "unknown"
+            ],
+            "title": "Certainty",
+            "type": "string"
+          },
+          "concept": {
+            "enum": [
+              "fatigue",
+              "pain",
+              "nausea",
+              "swelling",
+              "other"
+            ],
+            "title": "Concept",
+            "type": "string"
+          },
+          "dictionary_version": {
+            "const": "canceros-local/1",
+            "default": "canceros-local/1",
+            "title": "Dictionary Version",
+            "type": "string"
+          },
+          "instrument": {
+            "anyOf": [
+              {
+                "maxLength": 100,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instrument"
+          },
+          "instrument_version": {
+            "anyOf": [
+              {
+                "maxLength": 50,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instrument Version"
+          },
+          "kind": {
+            "const": "symptom",
+            "title": "Kind",
+            "type": "string"
+          },
+          "negation": {
+            "enum": [
+              "affirmed",
+              "negated",
+              "unspecified"
+            ],
+            "title": "Negation",
+            "type": "string"
+          },
+          "original_term": {
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Original Term",
+            "type": "string"
+          },
+          "presence": {
+            "enum": [
+              "present",
+              "absent",
+              "unknown",
+              "not_assessed"
+            ],
+            "title": "Presence",
+            "type": "string"
+          },
+          "reporter": {
+            "enum": [
+              "patient",
+              "clinician",
+              "unknown"
+            ],
+            "title": "Reporter",
+            "type": "string"
+          },
+          "severity": {
+            "anyOf": [
+              {
+                "pattern": "^-?(0|[1-9]\\d*)(\\.\\d{1,9})?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Severity"
+          },
+          "time": {
+            "$ref": "#/components/schemas/ClinicalTime"
+          },
+          "visit_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Visit Id"
+          }
+        },
+        "required": [
+          "time",
+          "original_term",
+          "certainty",
+          "negation",
+          "kind",
+          "concept",
+          "presence",
+          "reporter"
+        ],
+        "title": "ManualSymptomInput",
+        "type": "object"
+      },
+      "ManualTreatmentInput": {
+        "additionalProperties": false,
+        "properties": {
+          "certainty": {
+            "enum": [
+              "documented",
+              "reported",
+              "uncertain",
+              "unknown"
+            ],
+            "title": "Certainty",
+            "type": "string"
+          },
+          "concept": {
+            "enum": [
+              "chemotherapy",
+              "endocrine",
+              "her2_targeted",
+              "immunotherapy",
+              "surgery",
+              "radiotherapy",
+              "other",
+              "unknown"
+            ],
+            "title": "Concept",
+            "type": "string"
+          },
+          "dictionary_version": {
+            "const": "canceros-local/1",
+            "default": "canceros-local/1",
+            "title": "Dictionary Version",
+            "type": "string"
+          },
+          "ended_time": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClinicalTime"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "event_type": {
+            "enum": [
+              "ordered",
+              "prescribed",
+              "administered",
+              "reported_exposure",
+              "stopped",
+              "unknown"
+            ],
+            "title": "Event Type",
+            "type": "string"
+          },
+          "exposure_status": {
+            "enum": [
+              "documented_delivery",
+              "ordered_only",
+              "reported",
+              "unknown"
+            ],
+            "title": "Exposure Status",
+            "type": "string"
+          },
+          "kind": {
+            "const": "treatment",
+            "title": "Kind",
+            "type": "string"
+          },
+          "negation": {
+            "enum": [
+              "affirmed",
+              "negated",
+              "unspecified"
+            ],
+            "title": "Negation",
+            "type": "string"
+          },
+          "original_term": {
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Original Term",
+            "type": "string"
+          },
+          "regimen_text": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Regimen Text"
+          },
+          "time": {
+            "$ref": "#/components/schemas/ClinicalTime"
+          },
+          "visit_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Visit Id"
+          }
+        },
+        "required": [
+          "time",
+          "original_term",
+          "certainty",
+          "negation",
+          "kind",
+          "concept",
+          "event_type",
+          "exposure_status"
+        ],
+        "title": "ManualTreatmentInput",
+        "type": "object"
+      },
+      "ManualVisitInput": {
+        "additionalProperties": false,
+        "properties": {
+          "certainty": {
+            "enum": [
+              "documented",
+              "reported",
+              "uncertain",
+              "unknown"
+            ],
+            "title": "Certainty",
+            "type": "string"
+          },
+          "concept": {
+            "enum": [
+              "clinical_visit",
+              "imaging_exam",
+              "source_occasion",
+              "unknown"
+            ],
+            "title": "Concept",
+            "type": "string"
+          },
+          "dictionary_version": {
+            "const": "canceros-local/1",
+            "default": "canceros-local/1",
+            "title": "Dictionary Version",
+            "type": "string"
+          },
+          "kind": {
+            "const": "visit",
+            "title": "Kind",
+            "type": "string"
+          },
+          "label": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Label",
+            "type": "string"
+          },
+          "negation": {
+            "enum": [
+              "affirmed",
+              "negated",
+              "unspecified"
+            ],
+            "title": "Negation",
+            "type": "string"
+          },
+          "original_term": {
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Original Term",
+            "type": "string"
+          },
+          "time": {
+            "$ref": "#/components/schemas/ClinicalTime"
+          },
+          "visit_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Visit Id"
+          }
+        },
+        "required": [
+          "time",
+          "original_term",
+          "certainty",
+          "negation",
+          "kind",
+          "concept",
+          "label"
+        ],
+        "title": "ManualVisitInput",
         "type": "object"
       },
       "MaskAssociation": {
@@ -14712,6 +15543,460 @@
         "title": "RelativeTime",
         "type": "object"
       },
+      "ResearchCaseInput": {
+        "additionalProperties": false,
+        "properties": {
+          "age_at_observation": {
+            "anyOf": [
+              {
+                "maximum": 150.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age At Observation"
+          },
+          "age_observed_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age Observed On"
+          },
+          "case_identifier": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$",
+            "title": "Case Identifier",
+            "type": "string"
+          },
+          "medical_history": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Medical History"
+          },
+          "profile_source_reference": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Profile Source Reference",
+            "type": "string"
+          },
+          "pseudonym": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Pseudonym",
+            "type": "string"
+          },
+          "sex": {
+            "default": "not_recorded",
+            "enum": [
+              "female",
+              "male",
+              "intersex",
+              "unknown",
+              "not_recorded"
+            ],
+            "title": "Sex",
+            "type": "string"
+          },
+          "source_version_id": {
+            "format": "uuid",
+            "title": "Source Version Id",
+            "type": "string"
+          },
+          "status": {
+            "default": "draft",
+            "enum": [
+              "draft",
+              "active",
+              "archived"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "case_identifier",
+          "title",
+          "pseudonym",
+          "profile_source_reference",
+          "source_version_id"
+        ],
+        "title": "ResearchCaseInput",
+        "type": "object"
+      },
+      "ResearchCasePage": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ResearchCaseView"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ResearchCasePage",
+        "type": "object"
+      },
+      "ResearchCaseSource": {
+        "additionalProperties": false,
+        "properties": {
+          "clinical_entry_permitted": {
+            "title": "Clinical Entry Permitted",
+            "type": "boolean"
+          },
+          "creation_permitted": {
+            "title": "Creation Permitted",
+            "type": "boolean"
+          },
+          "origin": {
+            "enum": [
+              "real_source",
+              "synthetic_engineering_fixture"
+            ],
+            "title": "Origin",
+            "type": "string"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "source_version_id": {
+            "format": "uuid",
+            "title": "Source Version Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_version_id",
+          "title",
+          "origin",
+          "creation_permitted",
+          "clinical_entry_permitted",
+          "reason"
+        ],
+        "title": "ResearchCaseSource",
+        "type": "object"
+      },
+      "ResearchCaseSources": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ResearchCaseSource"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_action": {
+            "default": "An administrator must register source evidence and current action-specific reviews; no source or permission is created automatically",
+            "title": "Next Action",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ResearchCaseSources",
+        "type": "object"
+      },
+      "ResearchCaseView": {
+        "additionalProperties": false,
+        "properties": {
+          "age_at_observation": {
+            "anyOf": [
+              {
+                "maximum": 150.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age At Observation"
+          },
+          "age_observed_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age Observed On"
+          },
+          "case_identifier": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$",
+            "title": "Case Identifier",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "data_revision": {
+            "title": "Data Revision",
+            "type": "integer"
+          },
+          "imaging_count": {
+            "title": "Imaging Count",
+            "type": "integer"
+          },
+          "medical_history": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Medical History"
+          },
+          "observation_count": {
+            "title": "Observation Count",
+            "type": "integer"
+          },
+          "origin": {
+            "enum": [
+              "real_source",
+              "synthetic_engineering_fixture"
+            ],
+            "title": "Origin",
+            "type": "string"
+          },
+          "patient_id": {
+            "format": "uuid",
+            "title": "Patient Id",
+            "type": "string"
+          },
+          "profile_revision": {
+            "title": "Profile Revision",
+            "type": "integer"
+          },
+          "profile_source_reference": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Profile Source Reference",
+            "type": "string"
+          },
+          "project_id": {
+            "format": "uuid",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "pseudonym": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Pseudonym",
+            "type": "string"
+          },
+          "sex": {
+            "default": "not_recorded",
+            "enum": [
+              "female",
+              "male",
+              "intersex",
+              "unknown",
+              "not_recorded"
+            ],
+            "title": "Sex",
+            "type": "string"
+          },
+          "source_version_id": {
+            "format": "uuid",
+            "title": "Source Version Id",
+            "type": "string"
+          },
+          "status": {
+            "default": "draft",
+            "enum": [
+              "draft",
+              "active",
+              "archived"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "case_identifier",
+          "title",
+          "pseudonym",
+          "profile_source_reference",
+          "source_version_id",
+          "patient_id",
+          "project_id",
+          "profile_revision",
+          "data_revision",
+          "origin",
+          "created_at",
+          "updated_at",
+          "observation_count",
+          "imaging_count"
+        ],
+        "title": "ResearchCaseView",
+        "type": "object"
+      },
+      "ResearchProfileUpdate": {
+        "additionalProperties": false,
+        "properties": {
+          "age_at_observation": {
+            "anyOf": [
+              {
+                "maximum": 150.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age At Observation"
+          },
+          "age_observed_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age Observed On"
+          },
+          "case_identifier": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$",
+            "title": "Case Identifier",
+            "type": "string"
+          },
+          "expected_profile_revision": {
+            "minimum": 1.0,
+            "title": "Expected Profile Revision",
+            "type": "integer"
+          },
+          "medical_history": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Medical History"
+          },
+          "profile_source_reference": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Profile Source Reference",
+            "type": "string"
+          },
+          "pseudonym": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Pseudonym",
+            "type": "string"
+          },
+          "sex": {
+            "default": "not_recorded",
+            "enum": [
+              "female",
+              "male",
+              "intersex",
+              "unknown",
+              "not_recorded"
+            ],
+            "title": "Sex",
+            "type": "string"
+          },
+          "status": {
+            "default": "draft",
+            "enum": [
+              "draft",
+              "active",
+              "archived"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "case_identifier",
+          "title",
+          "pseudonym",
+          "profile_source_reference",
+          "expected_profile_revision"
+        ],
+        "title": "ResearchProfileUpdate",
+        "type": "object"
+      },
       "ResourceLineage": {
         "additionalProperties": false,
         "properties": {
@@ -17899,7 +19184,8 @@
           "internal_processing",
           "external_inference",
           "derivative_creation",
-          "public_demo_redistribution"
+          "public_demo_redistribution",
+          "patient_linkage_privacy"
         ],
         "title": "SourceAction",
         "type": "string"
@@ -21433,6 +22719,59 @@
           "affected_descendant_ids"
         ],
         "title": "WithdrawalReceipt",
+        "type": "object"
+      },
+      "WorkspaceProject": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "project_id": {
+            "format": "uuid",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "viewer",
+              "editor",
+              "admin"
+            ],
+            "title": "Role",
+            "type": "string"
+          }
+        },
+        "required": [
+          "project_id",
+          "name",
+          "role"
+        ],
+        "title": "WorkspaceProject",
+        "type": "object"
+      },
+      "WorkspaceView": {
+        "additionalProperties": false,
+        "properties": {
+          "projects": {
+            "items": {
+              "$ref": "#/components/schemas/WorkspaceProject"
+            },
+            "title": "Projects",
+            "type": "array"
+          },
+          "user_id": {
+            "format": "uuid",
+            "title": "User Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "user_id",
+          "projects"
+        ],
+        "title": "WorkspaceView",
         "type": "object"
       },
       "canceros__contracts__Publication": {
@@ -26866,6 +28205,94 @@
         "summary": "Get Lesion"
       }
     },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/manual-observations": {
+      "post": {
+        "operationId": "manual_api_v1_projects__project_id__patients__patient_id__manual_observations_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9._-]+$",
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManualObservationInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchReport"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Manual"
+      }
+    },
     "/api/v1/projects/{project_id}/patients/{patient_id}/mask-alignments": {
       "post": {
         "operationId": "alignment_api_v1_projects__project_id__patients__patient_id__mask_alignments_post",
@@ -29575,6 +31002,158 @@
           }
         },
         "summary": "Patient Relationship Detail"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/research-profile": {
+      "get": {
+        "operationId": "profile_api_v1_projects__project_id__patients__patient_id__research_profile_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResearchCaseView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Profile"
+      },
+      "post": {
+        "operationId": "save_profile_api_v1_projects__project_id__patients__patient_id__research_profile_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9._-]+$",
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResearchProfileUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResearchCaseView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Save Profile"
       }
     },
     "/api/v1/projects/{project_id}/patients/{patient_id}/resources/{resource_id}/provenance": {
@@ -32597,6 +34176,234 @@
         "summary": "Link Detail"
       }
     },
+    "/api/v1/projects/{project_id}/research-case-sources": {
+      "get": {
+        "operationId": "sources_api_v1_projects__project_id__research_case_sources_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResearchCaseSources"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Sources"
+      }
+    },
+    "/api/v1/projects/{project_id}/research-cases": {
+      "get": {
+        "operationId": "cases_api_v1_projects__project_id__research_cases_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "default": "",
+              "maxLength": 100,
+              "title": "Search",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResearchCasePage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Cases"
+      },
+      "post": {
+        "operationId": "create_api_v1_projects__project_id__research_cases_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9._-]+$",
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResearchCaseInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResearchCaseView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create"
+      }
+    },
     "/api/v1/projects/{project_id}/source-patient-resolutions": {
       "post": {
         "operationId": "resolve_api_v1_projects__project_id__source_patient_resolutions_post",
@@ -32967,6 +34774,52 @@
           }
         },
         "summary": "Review"
+      }
+    },
+    "/api/v1/workspace": {
+      "get": {
+        "operationId": "authorized_workspace_api_v1_workspace_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Authorized Workspace"
       }
     },
     "/health/live": {

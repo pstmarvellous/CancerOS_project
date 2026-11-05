@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { allowedResearchWrite, deleteResearchSession, researchAuthorization } from './research-session';
 
 const API = process.env.API_BASE_URL ?? 'http://127.0.0.1:8000';
 
@@ -22,7 +23,7 @@ export function caseParams(request: Request): { project: string; patient: string
 
 function forwardHeaders(request: Request): Record<string, string> {
   const headers: Record<string, string> = {};
-  const authorization = request.headers.get('authorization');
+  const authorization = researchAuthorization(request);
   if (authorization) headers.authorization = authorization;
   const idempotency = request.headers.get('idempotency-key');
   if (idempotency) headers['idempotency-key'] = idempotency;
@@ -32,6 +33,12 @@ function forwardHeaders(request: Request): Record<string, string> {
 }
 
 export async function proxyCase(request: Request, url: URL, method: string, bodyText?: string) {
+  if (!['GET', 'HEAD', 'OPTIONS'].includes(method.toUpperCase()) && !allowedResearchWrite(request)) {
+    return NextResponse.json({ title: 'Use CancerOS from the same origin to save changes.' },
+      { status: 403, headers: { 'Cache-Control': 'private, no-store' } });
+  }
+  if (!researchAuthorization(request)) return NextResponse.json({ title: 'An authorized research session is required.' },
+    { status: 401, headers: { 'Cache-Control': 'private, no-store' } });
   try {
     const headers = forwardHeaders(request);
     if (bodyText !== undefined) headers['content-type'] = 'application/json';
@@ -40,15 +47,22 @@ export async function proxyCase(request: Request, url: URL, method: string, body
       headers,
       body: bodyText,
       cache: 'no-store',
+      redirect: 'error',
       signal: AbortSignal.timeout(15000),
     });
     const body = await response.text();
+    if (response.status === 401) deleteResearchSession(request);
+    const responseHeaders: Record<string, string> = { 'content-type': 'application/json', 'Cache-Control': 'private, no-store' };
+    for (const name of ['etag', 'location', 'retry-after']) {
+      const value = response.headers.get(name);
+      if (value) responseHeaders[name] = value;
+    }
     return new NextResponse(body, {
       status: response.status,
-      headers: { 'content-type': 'application/json', 'Cache-Control': 'private, no-store' },
+      headers: responseHeaders,
     });
   } catch {
-    return NextResponse.json({ title: 'API process unavailable' }, { status: 502 });
+    return NextResponse.json({ title: 'API process unavailable' }, { status: 502, headers: { 'Cache-Control': 'private, no-store' } });
   }
 }
 

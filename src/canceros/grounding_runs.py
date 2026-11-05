@@ -2,12 +2,15 @@
 
 import re
 from typing import Literal
+from uuid import UUID
 
 from fastapi import HTTPException
+from pydantic import TypeAdapter
 
 from canceros.context_contracts import InterpretationContext
 from canceros.grounding_contracts import GroundingReport, ReasonCode
 from canceros.interpretation_contracts import InterpretationReport
+from canceros.interpretation_contracts import Code as FindingCode
 from canceros.provider_gateway import PrivateResult, ProviderFailure
 
 GATE_VERSION: str = "grounding-gate/1"
@@ -129,12 +132,60 @@ def validate_publication(
 
 
 class GroundingValidator:
-    """Real fail-closed gate replacing the unavailable-validator placeholder."""
+    """Real fail-closed gate replacing the unavailable-validator placeholder.
+
+    Validates a live provider candidate against an authorized snapshot-bound
+    context: snapshot-hash match, reference membership, numeric fidelity,
+    allowed claims and abstention. Returns the GroundingReport on success;
+    anything else raises FAILED_GROUNDING (prohibited content included) so
+    the candidate stays private. No network, no secrets, no logging of
+    candidate prose beyond the returned report.
+    """
 
     version: str = GATE_VERSION
 
-    def validate(self, result: PrivateResult) -> None:
-        raise ProviderFailure("GROUNDING_VALIDATOR_UNAVAILABLE")
+    def validate(
+        self, result: PrivateResult, context: InterpretationContext
+    ) -> GroundingReport:
+        candidate = result.candidate
+        if candidate.input_snapshot_hash != context.snapshot_hash:
+            raise ProviderFailure("FAILED_GROUNDING")
+        return validate_private_candidate(
+            context,
+            [
+                {
+                    "kind": "observed_measurement",
+                    "text": finding.text,
+                    "measurement_refs": [str(reference) for reference in finding.measurement_refs],
+                    "passage_refs": [str(reference) for reference in finding.passage_refs],
+                    "metric_code": self._metric(context, finding, 0),
+                    "metric_value": self._metric(context, finding, 1),
+                    "metric_unit": self._metric(context, finding, 2),
+                }
+                for finding in candidate.findings
+            ],
+        )
+
+    @staticmethod
+    def _metric(
+        context: InterpretationContext, finding, index: int
+    ) -> FindingCode | UUID | None:
+        for measurement in context.measurements:
+            if measurement.reference_id in finding.measurement_refs:
+                candidate = (
+                    measurement.metric_code
+                    if index == 0
+                    else measurement.value
+                    if index == 1
+                    else measurement.unit
+                )
+                if index == 0:
+                    try:
+                        return TypeAdapter(FindingCode).validate_python(candidate)
+                    except ValueError:
+                        return None
+                return candidate
+        return None
 
 
 def validate_private_candidate(

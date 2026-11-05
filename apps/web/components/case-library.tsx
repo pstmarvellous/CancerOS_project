@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import type { components } from '../../../packages/contracts/generated/api';
 import { ErrorSummary, LoadingState } from './research';
 
@@ -14,11 +15,6 @@ type CaseState =
   | {kind: 'failed'; message: string}
   | {kind: 'ready'; items: PatientSummary[]};
 
-function projectFromQuery(): string | null {
-  const params = new URLSearchParams(window.location.search);
-  return params.get('project');
-}
-
 function explain(response: Response, body: string): string {
   if (response.status === 401) return 'Sign in with an authorized project session, then retry.';
   if (response.status === 403) return 'This project is restricted for your role. Ask an administrator for access.';
@@ -28,13 +24,19 @@ function explain(response: Response, body: string): string {
 }
 
 export function CaseLibrary({initialProject, detailBase = '/cases/detail'}: {initialProject?: string | null; detailBase?: string}) {
-  const [project] = useState<string | null>(() => {
-    if (initialProject !== undefined) return initialProject;
-    if (typeof window === 'undefined') return null;
-    return projectFromQuery();
-  });
+  if (initialProject !== undefined) return <CaseLibraryBody initialProject={initialProject} detailBase={detailBase}/>;
+  return <Suspense fallback={<LoadingState/>}><CaseLibraryFromQuery detailBase={detailBase}/></Suspense>;
+}
+
+function CaseLibraryFromQuery({detailBase = '/cases/detail'}: {detailBase?: string}) {
+  const params = useSearchParams();
+  return <CaseLibraryBody initialProject={params.get('project')} detailBase={detailBase}/>;
+}
+
+function CaseLibraryBody({initialProject, detailBase = '/cases/detail'}: {initialProject: string | null; detailBase?: string}) {
+  const [project] = useState<string | null>(initialProject);
   const [state, setState] = useState<CaseState>(() =>
-    (initialProject ?? (typeof window === 'undefined' ? null : projectFromQuery())) ? {kind: 'loading'} : {kind: 'needs-project'},
+    initialProject ? {kind: 'loading'} : {kind: 'needs-project'},
   );
   const [attempt, setAttempt] = useState(0);
 

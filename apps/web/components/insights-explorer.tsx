@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import type { components } from '../../../packages/contracts/generated/api';
 import { ErrorSummary, LoadingState, ProvenanceBadge } from './research';
 import { InterpretationPanel } from './interpretation-panel';
@@ -13,9 +14,7 @@ type InterpretationContext = S['InterpretationContext'];
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-function initialParams(): { project: string | null; patient: string | null; branch: string | null; state: string | null } {
-  if (typeof window === 'undefined') return { project: null, patient: null, branch: null, state: null };
-  const params = new URLSearchParams(window.location.search);
+function initialParams(params: URLSearchParams): { project: string | null; patient: string | null; branch: string | null; state: string | null } {
   return { project: params.get('project'), patient: params.get('patient'), branch: params.get('branch'), state: params.get('state') };
 }
 
@@ -35,7 +34,11 @@ function explain(status: number): string {
 type LoadedContext = { context: InterpretationContext; fetchedAt: string; stale: boolean };
 
 export function InsightsExplorer() {
-  const [initial] = useState(initialParams);
+  return <Suspense fallback={<LoadingState/>}><InsightsFromQuery /></Suspense>;
+}
+
+function InsightsFromQuery() {
+  const initial = initialParams(useSearchParams());
   const { project, patient } = initial;
   const [branch, setBranch] = useState<string | null>(initial.branch);
   const [stateId, setStateId] = useState<string | null>(initial.state);

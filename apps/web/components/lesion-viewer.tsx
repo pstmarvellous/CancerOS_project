@@ -2,7 +2,8 @@
 
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import type { MeasurementReport, MeshAsset, MeshQCReport } from './mesh-types';
 import { ErrorSummary, LoadingState } from './research';
 import styles from './mesh-preview.module.css';
@@ -37,14 +38,17 @@ type Loaded = {
   measurement: MeasurementReport;
 };
 
-function initialSelection(): { project: string | null; patient: string | null; lesion: string | null } {
-  if (typeof window === 'undefined') return { project: null, patient: null, lesion: null };
-  const params = new URLSearchParams(window.location.search);
+function initialSelection(params: URLSearchParams): { project: string | null; patient: string | null; lesion: string | null } {
   return { project: params.get('project'), patient: params.get('patient'), lesion: params.get('lesion') };
 }
 
 export function LesionViewer() {
-  const [initial] = useState(initialSelection);
+  return <Suspense fallback={<LoadingState/>}><LesionViewerFromQuery /></Suspense>;
+}
+
+function LesionViewerFromQuery() {
+  const params = useSearchParams();
+  const initial = initialSelection(params);
   return <LesionViewerBody initialProject={initial.project} initialPatient={initial.patient} initialLesion={initial.lesion} />;
 }
 

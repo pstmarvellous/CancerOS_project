@@ -10,7 +10,8 @@ vi.mock('next/navigation', () => ({
 describe('COS-072 shell selection ownership', () => {
   it('shows one active selection from the URL and keeps browser storage clear of payloads', () => {
     render(<AppShell/>);
-    expect(screen.getByText(/Selection: a \/ b \/ c \/ d/)).toBeVisible();
+    expect(screen.getByText(/Research case selected · advanced identifiers/)).toBeVisible();
+    expect(screen.getByText(/Selection: a \/ b \/ c \/ d/)).toBeInTheDocument();
     expect(window.sessionStorage.length).toBe(0);
     expect(window.localStorage.length).toBe(0);
   });
@@ -18,8 +19,8 @@ describe('COS-072 shell selection ownership', () => {
     render(<AppShell/>);
     expect(screen.getByRole('link', {name: 'Skip to main content'})).toBeVisible();
     expect(screen.getByRole('navigation', {name: 'Primary'})).toBeVisible();
-    expect(screen.getByRole('link', {name: 'Research workspace'})).toHaveAttribute('aria-current', 'page');
-    for (const label of ['Cases', 'Guided demo', 'Evaluation']) {
+    expect(screen.getByRole('link', {name: 'Overview'})).toHaveAttribute('aria-current', 'page');
+    for (const label of ['Research Cases', 'Digital Twin', 'Clinical Data', 'Hypothetical Scenarios', 'AI Research Insights', 'Evaluation / Technical Details']) {
       expect(screen.getByRole('link', {name: label})).toBeVisible();
     }
   });

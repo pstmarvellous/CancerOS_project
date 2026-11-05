@@ -11,6 +11,8 @@
     "dev": "npm run dev --workspace @canceros/web",
     "build": "npm run build --workspace @canceros/web",
     "start": "npm run start --workspace @canceros/web",
+    "demo:prepare": "uv run python scripts/prepare_synthetic_demo.py",
+    "demo": "node scripts/serve_synthetic_demo.mjs",
     "lint": "eslint apps/web packages/contracts/index.ts",
     "typecheck": "tsc --noEmit -p apps/web/tsconfig.json",
     "test": "vitest run",

@@ -1,9 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import type { components } from '../../../packages/contracts/generated/api';
 import { ErrorSummary, LoadingState } from './research';
+import { clinicalTime, clinicalValue } from '../lib/clinical-presentation';
 
 type S = components['schemas'];
 type ObservationPage = S['ObservationPage'];
@@ -34,9 +36,7 @@ const PANELS: Panel[] = [
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-function initialParams(): { project: string | null; patient: string | null; visit: string | null } {
-  if (typeof window === 'undefined') return { project: null, patient: null, visit: null };
-  const params = new URLSearchParams(window.location.search);
+function initialParams(params: URLSearchParams): { project: string | null; patient: string | null; visit: string | null } {
   return { project: params.get('project'), patient: params.get('patient'), visit: params.get('visit') };
 }
 
@@ -57,7 +57,8 @@ function explain(response: Response): string {
   return `The authorized read failed (status ${response.status}).`;
 }
 
-function recordConcept(record: ClinicalRecord): string {
+function recordConcept(record: ClinicalRecord | null): string {
+  if (!record) return 'unlinked concept';
   const item = record.item as { concept?: unknown; original_term?: unknown };
   if (typeof item.concept === 'string' && item.concept) return item.concept;
   if (typeof item.original_term === 'string' && item.original_term) return item.original_term;
@@ -65,34 +66,24 @@ function recordConcept(record: ClinicalRecord): string {
 }
 
 function recordUnit(record: ClinicalRecord): string {
+  const itemWithResult = record.item;
+  if (itemWithResult.kind === 'laboratory' || itemWithResult.kind === 'vital') {
+    const result = itemWithResult.result;
+    if (result?.form === 'exact') return result.quantity.unit;
+    if (result?.form === 'censored') return result.threshold.unit;
+  }
   const item = record.item as { original_unit?: unknown };
   return typeof item.original_unit === 'string' && item.original_unit ? item.original_unit : 'unit not recorded';
 }
 
 function recordValue(record: ClinicalRecord): string {
-  const item = record.item as {
-    original_value?: unknown; value?: unknown; presence?: unknown; severity?: unknown;
-    instrument?: unknown; instrument_version?: unknown; event_type?: unknown; exposure_status?: unknown;
-    ended_time?: unknown;
-  };
-  if (typeof item.original_value === 'string' && item.original_value) return item.original_value;
-  if (typeof item.value === 'string' && item.value) return item.value;
-  const parts: string[] = [];
-  if (typeof item.presence === 'string') parts.push(`presence: ${item.presence}`);
-  if (typeof item.severity === 'string') parts.push(`severity: ${item.severity}`);
-  if (typeof item.instrument === 'string' && item.instrument) parts.push(`${item.instrument}/${typeof item.instrument_version === 'string' ? item.instrument_version : '?'}`);
-  if (typeof item.event_type === 'string') parts.push(item.event_type);
-  if (typeof item.exposure_status === 'string') parts.push(item.exposure_status);
-  if (item.ended_time == null) parts.push('stop: open (not fabricated)');
-  return parts.length ? parts.join(' · ') : 'value not recorded';
+  if (record.item.time?.reference && ('result' in record.item || !['laboratory','vital'].includes(record.item.kind))) return clinicalValue(record);
+  const legacy = record.item as { original_value?: string };
+  return legacy.original_value ?? 'Not recorded';
 }
 
 function recordTime(record: ClinicalRecord): string {
-  const item = record.item as { time?: { basis?: unknown; value?: unknown; time_domain?: unknown } | null };
-  if (!item.time || typeof item.time !== 'object') return 'actual collection time not recorded';
-  const { basis, value, time_domain } = item.time;
-  if (typeof value === 'string' && value) return `${value}${typeof time_domain === 'string' ? ` · ${time_domain}` : ''}${typeof basis === 'string' ? ` · ${basis}` : ''}`;
-  return 'actual collection time not recorded';
+  return record.item.time?.reference ? clinicalTime(record) : 'actual collection time not recorded';
 }
 
 function groupKey(record: ClinicalRecord | null, summary: ObservationSummary): string {
@@ -100,13 +91,18 @@ function groupKey(record: ClinicalRecord | null, summary: ObservationSummary): s
     const item = record.item as { concept?: unknown; instrument?: unknown };
     const concept = typeof item.concept === 'string' ? item.concept : summary.concept;
     const instrument = typeof item.instrument === 'string' && item.instrument ? ` · ${item.instrument}` : '';
-    return `${concept}${instrument}`;
+    return `${concept}${instrument} · ${recordUnit(record)}`;
   }
   return summary.concept;
 }
 
 export function ClinicalChartsExplorer() {
-  const [initial] = useState(initialParams);
+  return <Suspense fallback={<LoadingState/>}><ClinicalChartsFromQuery /></Suspense>;
+}
+
+function ClinicalChartsFromQuery() {
+  const params = useSearchParams();
+  const initial = initialParams(params);
   const { project, patient } = initial;
   const [visit] = useState(initial.visit);
   const [rows, setRows] = useState<Row[]>([]);
@@ -115,11 +111,8 @@ export function ClinicalChartsExplorer() {
   const [loadedPages, setLoadedPages] = useState(0);
   const [panel, setPanel] = useState('laboratory');
   const [status, setStatus] = useState<Status>('needs-selection');
-  const [message, setMessage] = useState('Complete paginated history loads through bounded pages; the first page never stands in for the full history.');
-  const [selectedState] = useState<string | null>(() => {
-    if (typeof window === 'undefined') return null;
-    return new URLSearchParams(window.location.search).get('state');
-  });
+  const [message, setMessage] = useState('This view loads up to 100 source records. Plots keep concepts and units separate; the table includes retained history.');
+  const [selectedState] = useState<string | null>(() => params.get('state'));
   const requestId = useRef(0);
   const pending = useRef<AbortController | null>(null);
   useEffect(() => () => pending.current?.abort(), []);
@@ -136,7 +129,7 @@ export function ClinicalChartsExplorer() {
       {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ kind: null, concept: null, visit_id: nextVisit && UUID.test(nextVisit) ? nextVisit : null, cursor: nextCursor, limit: 25 }),
+        body: JSON.stringify({ kind: null, concept: null, visit_id: nextVisit && UUID.test(nextVisit) ? nextVisit : null, cursor: nextCursor, limit: 100 }),
         cache: 'no-store',
         signal,
       },
@@ -168,7 +161,7 @@ export function ClinicalChartsExplorer() {
     setCursor(null);
     setTotal(null);
     setLoadedPages(0);
-    setMessage('Loading complete authorized history page by page…');
+    setMessage('Loading up to 100 authorized clinical records…');
     const collected: Row[] = [];
     let pages = 0;
     try {
@@ -189,7 +182,7 @@ export function ClinicalChartsExplorer() {
       setStatus('ready');
       setMessage(
         collected.length
-          ? `${collected.length} authorized records across ${pages} bounded page(s). Tables preserve exact decimal strings; plots use bounded numeric conversion only. More history loads through visit filters; partial status stays explicit.`
+          ? `${collected.length} authorized records across ${pages} bounded page(s). Tables preserve exact decimal strings; plots use bounded numeric conversion only. This bounded view is not a complete patient-history export.`
           : 'No laboratory, vital, symptom or treatment records are available in this authorized history. Missing records are not zero or normal.',
       );
     } catch (error) {
@@ -212,7 +205,7 @@ export function ClinicalChartsExplorer() {
   }
 
   const active = PANELS.find(item => item.key === panel) ?? PANELS[0];
-  const filtered = rows.filter(row => active.kinds.includes(row.summary.kind));
+  const filtered = rows.filter(row => active.kinds.includes(row.summary.kind) && !row.summary.superseded);
   const groups = new Map<string, Row[]>();
   for (const row of filtered) {
     const key = groupKey(row.record, row.summary);
@@ -255,7 +248,7 @@ export function ClinicalChartsExplorer() {
       </section>
       <section aria-label="Clinical record parity table">
         <h2>Exact record table</h2>
-        <p>Decimal strings below are exact server values; chart coordinates are bounded display approximations. Clicking a point opens its exact record.</p>
+        <p>Decimal strings below are exact server values; chart coordinates are bounded display approximations. Plots omit superseded revisions; retained records remain in the table.</p>
         <div style={{ overflowX: 'auto' }}>
           <table>
             <caption>Authorized clinical records · exact values and missingness</caption>
@@ -279,7 +272,7 @@ export function ClinicalChartsExplorer() {
                   <td>{row.record ? recordValue(row.record) : 'Not loaded; no value invented'}</td>
                   <td>{row.record ? recordUnit(row.record) : 'Not loaded'}</td>
                   <td>{row.record ? recordTime(row.record) : 'Not loaded'}</td>
-                  <td>{row.record ? String(row.record.origin) : 'Not loaded'}</td>
+                  <td>{row.record ? String(row.record.origin) : 'Not loaded'}{row.summary.superseded ? ' · superseded' : ''}</td>
                 </tr>
               ))}
             </tbody>
@@ -299,6 +292,12 @@ function coordinate(value: string | null | undefined): number | null {
 
 function numericOf(record: ClinicalRecord | null): { text: string; value: number | null; censored: string | null } {
   if (!record) return { text: 'Not loaded', value: null, censored: null };
+  if (record.item.kind === 'laboratory' || record.item.kind === 'vital') {
+    const result = record.item.result;
+    if (result?.form === 'missing') return {text: `Missing: ${result.missing_reason}`, value:null, censored:null};
+    if (result?.form === 'censored') return {text: `${result.comparator}${result.threshold.value}`, value:null, censored:result.threshold.value};
+    if (result?.form === 'exact') return {text:result.quantity.value, value:coordinate(result.quantity.value), censored:null};
+  }
   const item = record.item as { original_value?: unknown; value?: unknown; comparator?: unknown; threshold?: unknown };
   const text = typeof item.original_value === 'string' ? item.original_value : typeof item.value === 'string' ? item.value : null;
   if (text == null) {
@@ -330,7 +329,7 @@ function ClinicalSmallMultiple({ rows }: { rows: Row[] }) {
               return <circle key={item.row.summary.record_id} cx={x} cy={y} r="4" fill="#5b21b6"><title>{`${item.parsed.text} · actual time in table below`}</title></circle>;
             })}
           </svg>
-          <figcaption>Filled points are exact returned observations on an index axis. Connecting segments are visual guides between adjacent eligible points, not new evidence. Coordinates are display approximations; use the exact-value table.</figcaption>
+          <figcaption>Each dot represents one returned exact observation. Horizontal positions show record order; collection times and exact values remain in the table.</figcaption>
         </figure>
       ) : (
         <p>No finite coordinates are available for plotting. The exact-value table below remains authoritative.</p>

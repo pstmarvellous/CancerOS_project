@@ -35,6 +35,9 @@ class ClinicalSourceUpload(Contract):
     content_base64: SecretStr = Field(
         min_length=1, max_length=1400000, json_schema_extra={"writeOnly": True}
     )
+    source_reference: SecretStr | None = Field(
+        default=None, min_length=1, max_length=1000, json_schema_extra={"writeOnly": True}
+    )
 
 
 class ClinicalSourceReceipt(Contract):
@@ -71,9 +74,9 @@ class BatchReport(Contract):
     input_revision: int
     result_revision: int | None = None
     publication: Literal["draft"] = "draft"
-    verification_scope: Literal["synthetic_engineering_fixture_only"] = (
-        "synthetic_engineering_fixture_only"
-    )
+    verification_scope: Literal[
+        "synthetic_engineering_fixture_only", "documented_source_structural_only"
+    ] = "synthetic_engineering_fixture_only"
     next_action: str
 
 
@@ -108,9 +111,10 @@ def upload_source(
         connection, identity, project, value.source_version_id, SourceAction.INTERNAL
     )
     source, release = release_for(connection, identity, project, value.source_version_id)
-    # Real-data privacy/linkage onboarding has not been established by engineering rights fixtures.
-    if source.origin != "synthetic_engineering_fixture":
-        raise HTTPException(409)
+    if source.origin == "real_source":
+        require_source_action(
+            connection, identity, project, source.id, SourceAction.PATIENT, real_data=True
+        )
     mapping = connection.execute(
         text(
             "SELECT patient_id,release_version_id FROM source.patient_mappings WHERE project_id=:p AND id=:id"
@@ -130,6 +134,15 @@ def upload_source(
         raise HTTPException(422)
     # Bound JSON structure before storage; malformed rows still survive in quarantined private input.
     document = source_document(raw)
+    if (document["fixture_origin"] == "SYNTHETIC_ENGINEERING_FIXTURE") != (
+        source.origin == "synthetic_engineering_fixture"
+    ):
+        raise HTTPException(422)
+    provenance = (
+        Provenance.SYNTHETIC_GENERATED
+        if source.origin == "synthetic_engineering_fixture"
+        else Provenance.REAL_OBSERVED
+    )
     connection.execute(
         text("SELECT pg_advisory_xact_lock(hashtextextended(:s,0))"),
         {"s": f"source-upload:{project}:{patient}:{source.id}"},
@@ -146,7 +159,7 @@ def upload_source(
     artifact_id = uuid4()
     connection.execute(
         text(
-            "INSERT INTO ops.artifacts(id,project_id,patient_id,object_key,object_version,byte_size,sha256,provenance,availability) VALUES(:id,:p,:u,:key,:version,:size,:hash,'SYNTHETIC_GENERATED','verified')"
+            "INSERT INTO ops.artifacts(id,project_id,patient_id,object_key,object_version,byte_size,sha256,provenance,availability) VALUES(:id,:p,:u,:key,:version,:size,:hash,:origin,'verified')"
         ),
         {
             "id": artifact_id,
@@ -156,6 +169,7 @@ def upload_source(
             "version": stored.version,
             "size": stored.byte_size,
             "hash": digest,
+            "origin": provenance.value,
         },
     )
     connection.execute(
@@ -175,7 +189,7 @@ def upload_source(
         locator = uuid5(NAMESPACE_URL, f"canceros:{artifact_id}:records:{index}")
         connection.execute(
             text(
-                "INSERT INTO source.source_locators(id,project_id,patient_id,artifact_id,row_index,record_hash) VALUES(:id,:p,:u,:a,:row,:hash)"
+                "INSERT INTO source.source_locators(id,project_id,patient_id,artifact_id,row_index,record_hash,source_reference) VALUES(:id,:p,:u,:a,:row,:hash,:reference)"
             ),
             {
                 "id": locator,
@@ -184,6 +198,9 @@ def upload_source(
                 "a": artifact_id,
                 "row": index,
                 "hash": science_hash(row),
+                "reference": value.source_reference.get_secret_value()
+                if value.source_reference
+                else None,
             },
         )
     audit(connection, project, artifact_id, "CLINICAL_SOURCE_STAGED")
@@ -231,7 +248,8 @@ def source_document(raw):
         if (
             set(document) != {"schema_version", "fixture_origin", "records"}
             or document["schema_version"] != "clinical-source/1"
-            or document["fixture_origin"] != "SYNTHETIC_ENGINEERING_FIXTURE"
+            or document["fixture_origin"]
+            not in ("SYNTHETIC_ENGINEERING_FIXTURE", "AUTHORIZED_RESEARCH_SOURCE")
         ):
             raise ValueError()
         if not isinstance(document["records"], list) or not 1 <= len(document["records"]) <= 100:
@@ -257,6 +275,11 @@ def load_source(connection, identity, project, patient, artifact_id, storage):
     require_source_action(
         connection, identity, project, row.source_version_id, SourceAction.INTERNAL
     )
+    source, _ = release_for(connection, identity, project, row.source_version_id)
+    if source.origin == "real_source":
+        require_source_action(
+            connection, identity, project, source.id, SourceAction.PATIENT, real_data=True
+        )
     require_resource_action(
         connection, identity, project, patient, artifact_id, SourceAction.INTERNAL
     )
@@ -318,6 +341,11 @@ def validate_batch(connection, identity, project, patient, command: BatchCommand
                 raise ValueError("Duplicate source key")
             keys.add(item.client_record_key)
             check_time(connection, project, patient, item.time)
+            if (
+                document["fixture_origin"] == "AUTHORIZED_RESEARCH_SOURCE"
+                and item.time.reference.time_domain == "simulation"
+            ):
+                raise ValueError("Observed source time cannot use simulation domain")
             if item.kind == "treatment" and item.ended_time:
                 check_time(connection, project, patient, item.ended_time)
             if item.visit_id:
@@ -385,6 +413,9 @@ def validate_batch(connection, identity, project, patient, command: BatchCommand
         issues=issues,
         record_ids=[],
         input_revision=revision,
+        verification_scope="synthetic_engineering_fixture_only"
+        if document["fixture_origin"] == "SYNTHETIC_ENGINEERING_FIXTURE"
+        else "documented_source_structural_only",
         next_action="Repair the reported source rows and stage a corrected artifact"
         if errors
         else "Explicitly accept this validated batch; states remain unpublished",
@@ -419,6 +450,8 @@ def accept_batch(connection, identity, project, patient, command, key, storage):
                 require_resource_action(connection, identity, project, patient, identifier, action)
         return prior_report
     report, items = validate_batch(connection, identity, project, patient, command, storage)
+    synthetic = report.verification_scope == "synthetic_engineering_fixture_only"
+    origin = Provenance.SYNTHETIC_GENERATED if synthetic else Provenance.REAL_DERIVED
     if report.status == "quarantined":
         report = report.model_copy(update={"id": uuid4()})
         return persist_report(
@@ -447,11 +480,17 @@ def accept_batch(connection, identity, project, patient, command, key, storage):
             project_id=project,
             patient_id=patient,
             item=item,
-            origin=Provenance.SYNTHETIC_GENERATED,
-            context=Context.SYNTHETIC,
+            origin=origin,
+            context=Context.SYNTHETIC if synthetic else Context.OBSERVED,
             quality=Quality.WARNING if has_warnings else Quality.PENDING,
             availability=Availability.AVAILABLE,
             numeric_normalization=normalized,
+            source_reference=connection.execute(
+                text(
+                    "SELECT source_reference FROM source.source_locators WHERE project_id=:p AND patient_id=:u AND id=:id"
+                ),
+                {"p": project, "u": patient, "id": item.source_locator_id},
+            ).scalar_one(),
         )
         payload = record.model_dump(mode="json")
         connection.execute(
@@ -497,7 +536,7 @@ def accept_batch(connection, identity, project, patient, command, key, storage):
                 "clinical-structural/1",
                 {"dictionary_version": item.dictionary_version},
             ),
-            expected_origin=Provenance.SYNTHETIC_GENERATED,
+            expected_origin=origin,
         )
         if head and str(head) in members:
             members.remove(str(head))

@@ -37,8 +37,8 @@ class PatientIdentity(Contract):
 
 class LinkageStatus(Contract):
     enabled: bool
-    real_source_processing: Literal["blocked_pending_privacy_linkage_review"] = (
-        "blocked_pending_privacy_linkage_review"
+    real_source_processing: Literal["requires_documented_privacy_linkage_review"] = (
+        "requires_documented_privacy_linkage_review"
     )
     next_action: str
 
@@ -173,8 +173,12 @@ def resolve_mapping(connection, identity, project, value: LinkageInput, settings
         connection, identity, project, value.source_version_id, SourceAction.INTERNAL
     )
     source, release = release_for(connection, identity, project, value.source_version_id)
-    if source.origin != "synthetic_engineering_fixture":
-        raise HTTPException(409)
+    if source.origin == "real_source":
+        # A source license does not establish privacy/linkage permission. Require
+        # a separate current documented review using the existing policy ledger.
+        require_source_action(
+            connection, identity, project, source.id, SourceAction.PATIENT, real_data=True
+        )
     keys = LinkageKeys(settings)
     raw = value.source_patient_key.get_secret_value()
     if not raw.strip() or raw != raw.strip() or any(ord(c) < 32 for c in raw):

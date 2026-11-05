@@ -24,6 +24,7 @@ class SourceAction(StrEnum):
     EXTERNAL = "external_inference"
     DERIVATIVE = "derivative_creation"
     PUBLIC = "public_demo_redistribution"
+    PATIENT = "patient_linkage_privacy"
 
 
 class SourceVersionInput(Contract):
@@ -125,6 +126,23 @@ def get_source(connection, identity: Identity, project_id: UUID, source_id: UUID
     )
     if row is None:
         raise HTTPException(404)
+    if row["record_key"].startswith("manual-"):
+        # Generated entry sources contain patient-specific content digests. Their
+        # metadata follows the owning clinical resource's access boundary too.
+        authorize_project(identity, project_id, "editor")
+        if identity.memberships[project_id] != "admin":
+            from canceros.patient_linkage import authorize_patient
+
+            owners = connection.execute(
+                text(
+                    "SELECT DISTINCT patient_id FROM ops.resource_registry WHERE project_id=:p AND source_version_id=:id"
+                ),
+                {"p": project_id, "id": source_id},
+            ).all()
+            if not owners:
+                raise HTTPException(404)
+            for owner in owners:
+                authorize_patient(connection, identity, project_id, owner.patient_id)
     return SourceVersion.model_validate(
         {**row["payload"], **{k: row[k] for k in ("id", "project_id", "created_by", "recorded_at")}}
     )

@@ -15,19 +15,22 @@ export type Selection = {
 };
 
 const NAV = [
-  {href: '/', label: 'Research workspace', exact: true},
-  {href: '/cases', label: 'Cases'},
-  {href: '/guided-demo', label: 'Guided demo'},
-  {href: '/evaluation', label: 'Evaluation'},
+  {href: '/', label: 'Overview', exact: true},
+  {href: '/cases', label: 'Research Cases'},
+  {href: '/twin', label: 'Digital Twin'},
+  {href: '/charts', label: 'Clinical Data'},
+  {href: '/simulation', label: 'Hypothetical Scenarios'},
+  {href: '/insights', label: 'AI Research Insights'},
+  {href: '/evaluation', label: 'Evaluation / Technical Details'},
 ];
 
 const CASE_NAV = [
   {href: '/cases/detail', label: 'Overview'},
-  {href: '/twin', label: 'Twin workspace'},
+  {href: '/twin', label: '3D Digital Twin'},
   {href: '/states', label: 'History & states'},
-  {href: '/charts', label: 'Clinical charts'},
-  {href: '/insights', label: 'Insights'},
-  {href: '/simulation', label: 'Scenarios'},
+  {href: '/charts', label: 'Clinical Data'},
+  {href: '/insights', label: 'AI Research Insights'},
+  {href: '/simulation', label: 'Hypothetical Scenarios'},
   {href: '/sources', label: 'Sources'},
 ];
 
@@ -69,19 +72,26 @@ function ShellInner() {
     <a className="skip-link" href="#main">Skip to main content</a>
     <header className="header">
       <div className="brand-row">
-        <Link className="brand" href="/">CancerOS <span>Research workspace</span></Link>
-        {label ? <p className="selection">{label}</p> : null}
+        <Link className="brand" href="/">CancerOS <span>Research digital twin</span></Link>
+        {label ? <details className="selection"><summary>{pathname.startsWith('/demo') ? 'Synthetic demonstration selected' : 'Research case selected'} · advanced identifiers</summary>{label}</details> : null}
       </div>
       <nav aria-label="Primary">
         <ul className="nav-list">
           {NAV.map(item => {
             const active = item.exact ? pathname === item.href : pathname.startsWith(item.href) && item.href !== '/';
-            return <li key={item.href}><Link href={item.href} aria-current={active ? 'page' : undefined}>{item.label}</Link></li>;
+            const demoViews:Record<string,string>={'/twin':'twin','/charts':'clinical','/simulation':'scenarios','/insights':'insights'};
+            let target=item.href;
+            if(pathname.startsWith('/demo')&&demoViews[item.href]){
+              const demoQuery=new URLSearchParams({view:demoViews[item.href]});
+              for(const key of ['scenario','state']){const value=params.get(key);if(value)demoQuery.set(key,value);}
+              target=`/demo?${demoQuery}`;
+            }else if(selection.patient&&demoViews[item.href])target=preserveSelection(item.href,selection);
+            return <li key={item.href}><Link href={target} aria-current={active ? 'page' : undefined}>{item.label}</Link></li>;
           })}
         </ul>
       </nav>
     </header>
-    {(pathname.startsWith('/cases') || pathname.startsWith('/twin')) && selection.patient ? <nav aria-label="Case" className="case-nav">
+    {['/cases/detail', '/twin', '/states', '/charts', '/insights', '/simulation', '/timeline'].some(route => pathname.startsWith(route)) && selection.patient ? <nav aria-label="Case" className="case-nav">
       <ul className="nav-list">
         {CASE_NAV.map(item => {
           const href = preserveSelection(item.href, selection);
@@ -89,7 +99,7 @@ function ShellInner() {
         })}
       </ul>
     </nav> : null}
-    <div className="safety-notice" role="note">Research prototype. Not validated for diagnosis or treatment decisions.</div>
+    {pathname !== '/' && <div className="safety-notice" role="note">Research prototype. Not validated for diagnosis or treatment decisions.</div>}
   </>;
 }
 

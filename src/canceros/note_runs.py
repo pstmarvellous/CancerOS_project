@@ -29,7 +29,7 @@ from canceros.note_extraction import (
 )
 from canceros.patient_linkage import audit, authorize_patient
 from canceros.persistence import science_hash
-from canceros.source_registry import SourceAction
+from canceros.source_registry import SourceAction, require_source_action
 from canceros.storage import StoredObject
 from canceros.twin_states import read_branch
 
@@ -117,15 +117,21 @@ def register_note(c, i, p, u, value: NoteRegistration, storage) -> NoteDocument:
         raise HTTPException(422)
     require_resource_action(c, i, p, u, value.artifact_id, SourceAction.INTERNAL)
     require_resource_action(c, i, p, u, value.artifact_id, SourceAction.DERIVATIVE)
-    # Real-note onboarding/rights/privacy review is not established by fixture tests.
-    if resource["origin"] != Provenance.SYNTHETIC_GENERATED:
-        raise HTTPException(409)
+    synthetic = resource["origin"] == Provenance.SYNTHETIC_GENERATED
+    if not synthetic:
+        if resource["source_version_id"] is None or value.branch_id is not None:
+            raise HTTPException(409)
+        require_source_action(
+            c, i, p, resource["source_version_id"], SourceAction.PATIENT, real_data=True
+        )
     if value.branch_id:
         read_branch(c, i, p, u, value.branch_id)
         require_resource_action(c, i, p, u, value.branch_id, SourceAction.DERIVATIVE)
     if value.anchor:
         check_time(c, p, u, value.anchor)
-        if value.anchor.reference.time_domain != "simulation":
+        if synthetic and value.anchor.reference.time_domain != "simulation":
+            raise HTTPException(422)
+        if not synthetic and value.anchor.reference.time_domain == "simulation":
             raise HTTPException(422)
     previous = read_note(c, i, p, u, value.supersedes_id) if value.supersedes_id else None
     if previous and previous.branch_id != value.branch_id:
@@ -149,8 +155,8 @@ def register_note(c, i, p, u, value: NoteRegistration, storage) -> NoteDocument:
         supersedes_id=value.supersedes_id,
         source_sha256=digest,
         normalized_text_sha256=hashlib.sha256(normalized.encode()).hexdigest(),
-        provenance=Provenance.SYNTHETIC_GENERATED,
-        context=Context.SYNTHETIC,
+        provenance=Provenance.SYNTHETIC_GENERATED if synthetic else Provenance.REAL_DERIVED,
+        context=Context.SYNTHETIC if synthetic else Context.OBSERVED,
         anchor=value.anchor,
     )
     payload = document.model_dump(mode="json")
@@ -185,7 +191,7 @@ def register_note(c, i, p, u, value: NoteRegistration, storage) -> NoteDocument:
         processing_spec(
             __file__, "private-note-registration", "unicode-nfc/1", value.model_dump(mode="json")
         ),
-        expected_origin=Provenance.SYNTHETIC_GENERATED,
+        expected_origin=document.provenance,
     )
     audit(c, p, document.note_id, "NOTE_VERSION_REGISTERED")
     return document

@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import type { components } from '../../../packages/contracts/generated/api';
 import { ErrorSummary, LoadingState, ProvenanceBadge } from './research';
 import { StateFusionView } from './state-fusion-view';
@@ -13,9 +14,7 @@ type StateView = S['StateView'];
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-function initialParams(): { project: string | null; patient: string | null; branch: string | null; state: string | null; compare: string | null } {
-  if (typeof window === 'undefined') return { project: null, patient: null, branch: null, state: null, compare: null };
-  const params = new URLSearchParams(window.location.search);
+function initialParams(params: URLSearchParams): { project: string | null; patient: string | null; branch: string | null; state: string | null; compare: string | null } {
   return {
     project: params.get('project'),
     patient: params.get('patient'),
@@ -41,7 +40,11 @@ function explain(status: number): string {
 }
 
 export function StateTimelineExplorer() {
-  const [initial] = useState(initialParams);
+  return <Suspense fallback={<LoadingState/>}><StateTimelineFromQuery /></Suspense>;
+}
+
+function StateTimelineFromQuery() {
+  const initial = initialParams(useSearchParams());
   return <StateTimelineBody initialProject={initial.project} initialPatient={initial.patient} initialBranch={initial.branch} initialState={initial.state} initialCompare={initial.compare} />;
 }
 

@@ -145,6 +145,7 @@ export type Publication = "draft" | "validating" | "ready" | "published" | "reje
 export type Quality = "pending" | "pass" | "warning" | "fail" | "not_applicable";
 export type SchemaVersion = "clinical/1";
 export type ScientificReview = "pending" | "approved" | "rejected" | "not_applicable";
+export type SourceReference = string | null;
 
 export interface ClinicalRecord {
   availability: Availability;
@@ -159,6 +160,7 @@ export interface ClinicalRecord {
   quality: Quality;
   schema_version?: SchemaVersion;
   scientific_review?: ScientificReview;
+  source_reference?: SourceReference;
 }
 export interface VisitInput {
   certainty: Certainty;

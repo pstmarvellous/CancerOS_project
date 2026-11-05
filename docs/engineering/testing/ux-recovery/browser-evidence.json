@@ -1,0 +1,27 @@
+{
+  "scope": "Actual Chromium/WebGL over backend-prepared synthetic fixtures only",
+  "recorded_at": "2026-11-05T17:30:13.682Z",
+  "homepage": true,
+  "one_click_launch": true,
+  "manual_identifiers": false,
+  "webgl": true,
+  "camera_buttons": true,
+  "drag": true,
+  "state_measurement_mesh_link": true,
+  "prepared_mesh_bindings": true,
+  "refresh": true,
+  "browser_back": true,
+  "families": [
+    "SC-01",
+    "SC-02",
+    "SC-03",
+    "SC-04",
+    "SC-05"
+  ],
+  "clinical_table": true,
+  "insights_mode": "local template; live Meta unavailable",
+  "mobile_overflow": false,
+  "graphics_retry": true,
+  "browser_errors": [],
+  "runtime_backend_requests": []
+}

@@ -290,6 +290,7 @@ class ClinicalRecord(Contract):
     publication: Publication = Publication.DRAFT
     scientific_review: Literal["pending", "approved", "rejected", "not_applicable"] = "pending"
     numeric_normalization: "NumericNormalization | None" = None
+    source_reference: Annotated[str, Field(min_length=1, max_length=1000)] | None = None
 
     @model_validator(mode="after")
     def context_origin(self):

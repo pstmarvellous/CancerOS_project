@@ -22712,6 +22712,207 @@
         "COS-102/103 gate closure: D02, restore, smoke, review, performance, participants"
       ],
       "next_action": "Phase 7 complete; unblock gates then re-run affected audits with new fingerprint"
+    },
+    {
+      "id": "COS-UX-RECOVERY-001",
+      "purpose": "Emergency homepage, synthetic demo entry and digital twin workflow recovery",
+      "dependency_ids": [],
+      "requirement_links": [
+        "COS-SPEC-009 sections 1-4.3,4.5,11-12",
+        "COS-SPEC-008 sections 17,19",
+        "COS-SPEC-010 sections 2,7"
+      ],
+      "allowed_scope": "Targeted local UX remediation; synthetic read-only adapter; no external inference or publication",
+      "status": "verified",
+      "status_history": [
+        "in_progress",
+        "verified"
+      ],
+      "owner_responsibility": "Primary frontend/integration engineer; separate agent read-only security review; no clinical review",
+      "actual_touched_files": [
+        "apps/web/app/page.tsx",
+        "apps/web/app/cases/page.tsx",
+        "apps/web/app/evaluation/page.tsx",
+        "apps/web/app/layout.tsx",
+        "apps/web/app/globals.css",
+        "apps/web/app/demo/page.tsx",
+        "apps/web/app/api/demo-session/route.ts",
+        "apps/web/app/api/demo/route.ts",
+        "apps/web/components/app-shell.tsx",
+        "apps/web/components/app-shell.test.tsx",
+        "apps/web/components/mesh-renderer.tsx",
+        "apps/web/components/demo-workspace.tsx",
+        "apps/web/components/demo-workspace.module.css",
+        "apps/web/lib/demo-contracts.ts",
+        "apps/web/lib/synthetic-demo.ts",
+        "apps/web/lib/synthetic-demo.test.tsx",
+        "scripts/prepare_synthetic_demo.py",
+        "scripts/serve_synthetic_demo.mjs",
+        "package.json",
+        "tests/browser/ux-recovery.spec.ts",
+        "tests/browser/shell.spec.ts",
+        "tests/browser/mesh-preview.spec.ts"
+      ],
+      "decisions": [
+        "Do not relax admin-only timeline/mesh readers or reuse fixture JWT; prepare token-free synthetic snapshot through authorized local fixture pipeline",
+        "Five families share a 216 mm3 artificial baseline with three mask-realized follow-ups each",
+        "URL owns scenario/state/section; renderer uses a common physical camera frame across four states",
+        "Local template disclosure; no live Meta result or external data transmission"
+      ],
+      "checks_evidence": [
+        {
+          "check": "uv run python scripts/prepare_synthetic_demo.py",
+          "result": "pass: five families, each with shared synthetic 216 mm3 baseline and three actual mask-realized follow-ups"
+        },
+        {
+          "check": "npm run build and npm run typecheck",
+          "result": "pass; final production build includes final wording and responsive-chart refinements"
+        },
+        {
+          "check": "npm run lint; focused final ESLint on demo/shell/adapter files",
+          "result": "pass"
+        },
+        {
+          "check": "npx vitest run --pool=threads --maxWorkers=1 --testTimeout=30000",
+          "result": "pass: 77 tests, 18 files, zero unhandled errors"
+        },
+        {
+          "check": "npx playwright test tests/browser/ux-recovery.spec.ts tests/browser/shell.spec.ts --reporter=line",
+          "result": "pass: 3 tests on final production build, 42.2 seconds; fresh-session WebGL, five families, selection/bounds/measurements, navigation, clinical data, insights, graphics recovery and API denials"
+        },
+        {
+          "check": "uv run ruff check scripts/prepare_synthetic_demo.py",
+          "result": "pass"
+        },
+        {
+          "check": "EXTERNAL_INFERENCE_ENABLED=false; uv run python scripts/check_contract_drift.py",
+          "result": "pass: runtime OpenAPI/schema/generated TypeScript unchanged"
+        },
+        {
+          "check": "git diff --check",
+          "result": "pass before final documentation-only updates; CRLF normalization notices only"
+        },
+        {
+          "check": "seven actual browser screenshots visually inspected",
+          "result": "pass; docs/engineering/testing/ux-recovery/RECOVERY-REPORT.md and browser-evidence.json"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "Use local npm run demo server. Reprepare after bundle expiry. Authentic sources, qualified review, live Meta integration and publication retain independent gates.",
+      "resolved_attempts": [
+        "Initial .env external inference validation failure: disabled only in local preparation process",
+        "Initial Vitest run: 69 passes, four 5-second timeouts and duplicate Overview link; shell fixed",
+        "Serial fork run: 65 tests passed, one worker-startup timeout under very low free memory",
+        "Experimental VM pool: Next/SWC module compatibility errors; final standard thread pool passed 77/77",
+        "First browser launch failed loopback origin comparison; corrected original Host comparison",
+        "Two exact browser locators corrected; all final interactions executed successfully"
+      ],
+      "limitations": [
+        "All displayed geometry and clinical observations synthetic; baseline is geometric cube phantom, not patient anatomy",
+        "No live Meta call: labeled local template only",
+        "No real-data/scientific validity or D01-D06 closure claim",
+        "SQL fixture transaction rolled back; generated private object-store blobs retained"
+      ]
+    },
+    {
+      "id": "COS-UX-RECOVERY-002",
+      "purpose": "Resume implementation: enforce prepared-demo context, chart and mesh integrity",
+      "dependency_ids": [
+        "COS-UX-RECOVERY-001"
+      ],
+      "requirement_links": [
+        "COS-SPEC-009 sections 1-4.3,11-12",
+        "COS-SPEC-008 sections 17,19",
+        "GOV.PROV",
+        "UX.TIMELINE"
+      ],
+      "allowed_scope": "Existing synthetic demo adapter only; no new clinical computation, backend auth changes, source onboarding, external inference or publication",
+      "status": "verified",
+      "status_history": [
+        "in_progress",
+        "verified"
+      ],
+      "owner_responsibility": "Primary integration engineer; separate agent corruption review and isolated test ownership; no clinical review",
+      "actual_touched_files": [
+        "apps/web/lib/demo-contracts.ts",
+        "apps/web/lib/demo-integrity.ts",
+        "apps/web/lib/synthetic-demo.ts",
+        "apps/web/lib/synthetic-demo.test.tsx",
+        "apps/web/app/api/demo/route.ts",
+        "scripts/prepare_synthetic_demo.py",
+        "tests/browser/ux-recovery.spec.ts",
+        "docs/engineering/reference-reviews/COS-UX-RECOVERY-002.md",
+        "docs/engineering/reference-reviews/COS-UX-RECOVERY-002.json",
+        "docs/engineering/testing/ux-recovery/INTEGRITY-CONTINUATION.md",
+        "docs/engineering/testing/ux-recovery/RECOVERY-REPORT.md",
+        "docs/engineering/testing/ux-recovery/browser-evidence.json",
+        "docs/engineering/testing/ux-recovery/01-home.png",
+        "docs/engineering/testing/ux-recovery/02-twin-baseline.png",
+        "docs/engineering/testing/ux-recovery/02b-twin-followup.png",
+        "docs/engineering/testing/ux-recovery/03-scenario-timeline.png",
+        "docs/engineering/testing/ux-recovery/04-clinical.png",
+        "docs/engineering/testing/ux-recovery/05-insights.png",
+        "docs/engineering/testing/ux-recovery/06-mobile.png",
+        "docs/engineering/task-ledger.json",
+        "docs/engineering/checkpoint.md",
+        "docs/hackathon/HACKATHON-CONTRIBUTIONS.md"
+      ],
+      "decisions": [
+        "Version internal prepared bundle as synthetic-demo/2 and require re-preparation",
+        "Bind meshes to backend point/state identity with fixed binary SHA256 surface digests",
+        "Validate chart/timeline scope, exact/wire values, time and source references without recomputing medical measurements",
+        "Retain source-rights, real-data, live provider, scientific review and publication gates"
+      ],
+      "checks_evidence": [
+        {
+          "check": "focused synthetic-demo.test.tsx",
+          "result": "39 passed by test-owning agent"
+        },
+        {
+          "check": "npm run typecheck and focused ESLint; Ruff on preparation script",
+          "result": "passed after correcting fixture tuple type and nullable timeline-origin narrowing"
+        },
+        {
+          "check": "npx vitest run --pool=threads --maxWorkers=1 --testTimeout=30000",
+          "result": "pass: 113 tests across 18 files; includes 39 focused adapter tests"
+        },
+        {
+          "check": "EXTERNAL_INFERENCE_ENABLED=false; uv run python scripts/prepare_synthetic_demo.py",
+          "result": "pass after non-destructive local data-service restart: five families, shared baseline plus three follow-ups per family, v2 mesh bindings"
+        },
+        {
+          "check": "npm run build",
+          "result": "pass: production build and route generation"
+        },
+        {
+          "check": "npx playwright test tests/browser/ux-recovery.spec.ts tests/browser/shell.spec.ts --reporter=line",
+          "result": "pass: 3 real Chromium checks against final production build; Python/TypeScript digest interoperability, rendering, state binding and boundaries"
+        },
+        {
+          "check": "two refreshed screenshots visually inspected",
+          "result": "pass: 02b-twin-followup.png and 04-clinical.png; all seven screenshots refreshed by browser run"
+        },
+        {
+          "check": "git diff --check; ledger JSON and evidence inventory validation",
+          "result": "pass; existing line-ending normalization notices only"
+        }
+      ],
+      "known_failures": [],
+      "blocked_on": [],
+      "next_action": "Use npm run demo on loopback port 3000. Version 1 bundles require npm run demo:prepare. Real sources, scientific review, live Meta and publication retain independent gates.",
+      "resolved_attempts": [
+        "Initial preparation failed with local data services stopped; existing services restarted without reset and retry passed",
+        "Initial typecheck found fixture tuple type and nullable timeline-origin narrowing; corrected before passing check",
+        "Ledger update via python alias failed because Windows alias has no interpreter; used project uv-managed Python successfully"
+      ],
+      "limitations": [
+        "All displayed geometry and observations synthetic; shared baseline is a geometric cube phantom",
+        "Local trusted-producer digest binding is not a signature or independent scientific attestation",
+        "No live Meta call; local template only; D01-D06 remain unverified",
+        "No backend schema/API/generated-client change; internal bundle v2 requires re-preparation",
+        "Fixture SQL rolled back; generated private object-store blobs remain"
+      ]
     }
   ],
   "contract_closure": {

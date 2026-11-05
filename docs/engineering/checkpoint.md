@@ -24,3 +24,39 @@ COS-056 optional/deferred. Phase3 code was committed/pushed at77eb4fe; Phase4 is
 local/uncommitted. No live provider, authentic notes, qualified scientific review,
 Phase4 browser verification or new publication performed. D01–D06 remain open;
 forecasts abstain and synthetic descendants remain synthetic.
+
+
+## 2026-11-05 — COS-UX-RECOVERY-001
+
+Verified for the bounded local synthetic UX workflow. Homepage launch enters a
+read-only token-free demonstration without manual UUIDs or credentials. Existing
+backend engines produced five families, a shared 216 mm3 phantom baseline and
+three mask-realized follow-ups per family. Backend authorization is unchanged.
+Final production build, typecheck, lint, contract drift and Ruff passed; 77 frontend
+tests passed in the standard thread pool and 3 Chromium journey/security checks
+passed on the final build. Seven working screenshots were visually inspected.
+See testing/ux-recovery/RECOVERY-REPORT.md and browser-evidence.json.
+
+Local demo left running at http://127.0.0.1:3000 via npm run demo. Bundle expires
+after seven days and requires explicit re-preparation. Every observation and mesh
+is synthetic; the baseline is a geometric phantom. Insights are a local template,
+not live Meta output. Authentic-source, scientific-review, provider and publication
+gates remain separate. Nothing pushed, deployed or submitted.
+
+## 2026-11-05 — COS-UX-RECOVERY-002
+
+Resumed bounded implementation after UX recovery: versioned the prepared synthetic
+demo bundle, bound meshes to exact point/state/patient/branch/run/result identities,
+and rejected inconsistent chart/context/source references before session loading.
+Actual five-family pipeline preparation succeeded with external inference disabled.
+113 frontend tests across 18 files (including 39 adapter checks), 3 Chromium checks,
+production build, typecheck, focused ESLint and preparation-script Ruff passed.
+Stopped local data services were restarted without a reset after the first failed
+preparation attempt. No backend or scientific contract changed. See
+testing/ux-recovery/INTEGRITY-CONTINUATION.md for the version 2 migration and evidence.
+
+The older COS-071 line above is historical; phase-4-execution.md and the task ledger
+already record later implemented slices. Their authentic-source, scientific,
+live-provider and release dependencies remain unverified. Current continuation is
+verified only for the local synthetic workflow. Demo remains on loopback port 3000;
+no commit, push, deployment, patient-source transmission or live inference occurred.

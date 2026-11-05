@@ -1,0 +1,91 @@
+{
+  "subject": "ISPY1_1001",
+  "files": {
+    "dce": "ISPY1_1001_spy1_vis1_dce_aqc_0.nii.gz",
+    "mask": "ISPY1_1001_spy1_vis1_mask.nii.gz"
+  },
+  "sha256": {
+    "dce_gz": "ed8d2357957a82920a86abb5f7823847e60acf49a7917ba3ad4abc661a3a5313",
+    "mask_gz": "90be17ef95b30ff287e474f956380bc4e6fdedcfcd1dc64ed9fb03d3b21f1d12"
+  },
+  "sizes": {
+    "dce_gz": 2247717,
+    "mask_gz": 90064
+  },
+  "geometry": {
+    "dce_shape": [
+      30,
+      256,
+      256
+    ],
+    "mask_shape": [
+      30,
+      256,
+      256
+    ],
+    "shapes_match": true,
+    "affine_match": true,
+    "affine": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mask_labels": [
+      0.0,
+      1.0
+    ],
+    "mask_foreground_voxels": 17331
+  },
+  "parser_compatibility": {
+    "dce_header": {
+      "magic": "n+1\u0000",
+      "extension": "00000000",
+      "xyzt_units_code": 0,
+      "vox_offset": 352.0,
+      "datatype": 64,
+      "bitpix": 64
+    },
+    "mask_header": {
+      "magic": "n+1\u0000",
+      "extension": "00000000",
+      "xyzt_units_code": 0,
+      "vox_offset": 352.0,
+      "datatype": 64,
+      "bitpix": 64
+    }
+  },
+  "staging_contract": {
+    "contract_base64_char_limit": 900000,
+    "dce_base64_chars": 2996956,
+    "mask_base64_chars": 120086,
+    "dce_fits_contract": false,
+    "mask_fits_contract": true
+  },
+  "rights": {
+    "distribution_license": "CC BY-NC 4.0 as distributed in BreastDCEDL_demo_data.tar.gz",
+    "tarball_md5_verified": false,
+    "deidentification_report_found": false,
+    "public_demo_permission_found": false
+  }
+}

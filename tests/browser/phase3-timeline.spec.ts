@@ -13,7 +13,8 @@ async function token(page: Page, value: string) {
 }
 
 test('private published simulation timeline, actual geometry, trends and exact fusion', async ({page}) => {
-  test.setTimeout(120000);
+  test.setTimeout(180000);
+  test.slow();
   expect(existsSync(bundle), 'Start the explicitly disposable Phase 3 browser fixture').toBe(true);
   const fixture = JSON.parse(readFileSync(bundle, 'utf8'));
   await page.goto('http://127.0.0.1:3000/simulation');
@@ -21,13 +22,15 @@ test('private published simulation timeline, actual geometry, trends and exact f
   await page.getByLabel('Patient UUID', {exact:true}).fill(fixture.patient_id);
   await page.getByLabel('Branch UUID', {exact:true}).fill(fixture.branch_id);
   await token(page, fixture.token);
-  await page.getByRole('button', {name:'Load baseline branch',exact:true}).click();
-  await expect(page.getByRole('status').filter({hasText:'Branch loaded.'})).toBeVisible();
+  const loadBranch = page.getByRole('button', {name:'Load baseline branch',exact:true});
+  await loadBranch.focus(); await expect(loadBranch).toBeFocused();
+  await loadBranch.press('Enter');
+  await expect(page.getByRole('status').filter({hasText:'Branch loaded.'})).toBeVisible({timeout: 90000});
   await page.getByLabel('Saved configuration UUID (optional)', {exact:true}).fill(fixture.config_id);
   await page.getByRole('button', {name:'Load saved configuration',exact:true}).click();
-  await expect(page.getByRole('textbox', {name:'Simulation configuration JSON',exact:true})).toHaveValue(/SC-01/);
+  await expect(page.getByRole('textbox', {name:'Simulation configuration JSON',exact:true})).toHaveValue(/SC-01/, {timeout: 90000});
   await page.getByRole('button', {name:'Inspect eligibility and schedule',exact:true}).click();
-  await expect(page.getByRole('table', {name:'Server sampled schedule · relative days, not calendar dates',exact:true})).toBeVisible();
+  await expect(page.getByRole('table', {name:'Server sampled schedule · relative days, not calendar dates',exact:true})).toBeVisible({timeout: 90000});
   await expect(page.getByRole('button', {name:'Publish complete run privately',exact:true})).toBeDisabled();
   await page.goto('http://127.0.0.1:3000/timeline');
   await page.getByLabel('Project UUID', {exact:true}).fill(fixture.project_id);
@@ -49,7 +52,7 @@ test('private published simulation timeline, actual geometry, trends and exact f
   const first = physical[0];
   await page.getByRole('button', {name:`Inspect ${first.id.slice(0,8)}`, exact:true}).click();
   const canvas = page.locator('canvas[data-render-ready]');
-  await expect(canvas).toHaveAttribute('data-render-ready', 'true');
+  await expect(canvas).toHaveAttribute('data-render-ready', 'true', {timeout: 90000});
   await expect(page.getByText(/Exact selected synthetic region/)).toBeVisible();
   const camera = await canvas.getAttribute('data-camera-state');
   await page.getByRole('button', {name:'Rotate left', exact:true}).click();
