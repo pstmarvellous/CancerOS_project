@@ -1,20 +1,19 @@
 import Link from 'next/link';
-import { CaseWorkspace } from '../../../components/case-workspace';
+import { UnifiedWorkspace } from '../../../components/unified-workspace';
 
 export default function CaseDetailPage() {
   return (
     <>
       <div className="intro">
-        <p className="eyebrow">Research case</p>
-        <h1>Profile, sources and completeness</h1>
+        <p className="eyebrow">Research case · unified workspace</p>
+        <h1>Overview, clinical records, charts & imaging</h1>
         <p className="lead">
-          Observed facts, source drill-down and editor workflows bind to one authorized case. Missing values stay
-          “Not recorded”; simulated descendants stay simulated.
+          One case-centered workspace: profile, timeline of source-backed observations, clinical charts without invented values, imaging and re-open after refresh via secure session. Missing stays “Not recorded”; synthetic stays simulated.
         </p>
       </div>
-      <CaseWorkspace />
-      <p>
-        <Link href="/cases">← Case library</Link> · <Link href="/guided-demo">Start guided demo</Link>
+      <UnifiedWorkspace />
+      <p style={{marginTop:24}}>
+        <Link href="/cases">← Case library</Link> · <Link href="/demo">Explore synthetic demo</Link> · <Link href="/guided-demo">Guided demo</Link>
       </p>
     </>
   );

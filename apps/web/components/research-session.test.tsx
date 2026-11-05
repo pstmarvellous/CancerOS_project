@@ -19,7 +19,7 @@ describe('research session panel', () => {
     expect(credential).toHaveAttribute('type', 'password');
     fireEvent.change(credential, { target: { value: 'existing-credential' } });
     fireEvent.click(screen.getByRole('button', { name: 'Sign in to research workspace' }));
-    expect(await screen.findByRole('option', { name: 'Authorized study · editor' })).toBeVisible();
+    expect(await screen.findByRole('option', { name: 'Authorized study · Editor — can add clinical observations' })).toBeVisible();
     expect(credential).toHaveValue('');
     expect(onProjectChange).toHaveBeenLastCalledWith(project.project_id);
     expect(onSessionChange).toHaveBeenLastCalledWith(true);
@@ -48,7 +48,7 @@ describe('research session panel', () => {
     const onProjectChange = vi.fn();
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(Response.json({ authenticated: true, projects: [] })));
     render(<ResearchSessionPanel onProjectChange={onProjectChange}/>);
-    expect(await screen.findByText(/no projects are assigned/)).toBeVisible();
+    expect(await screen.findByText(/No projects yet/)).toBeVisible();
     expect(onProjectChange).toHaveBeenLastCalledWith(null);
     expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
   });

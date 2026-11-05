@@ -10,8 +10,7 @@ vi.mock('next/navigation', () => ({
 describe('COS-072 shell selection ownership', () => {
   it('shows one active selection from the URL and keeps browser storage clear of payloads', () => {
     render(<AppShell/>);
-    expect(screen.getByText(/Research case selected · advanced identifiers/)).toBeVisible();
-    expect(screen.getByText(/Selection: a \/ b \/ c \/ d/)).toBeInTheDocument();
+    expect(screen.getByText(/Research case active/)).toBeVisible();
     expect(window.sessionStorage.length).toBe(0);
     expect(window.localStorage.length).toBe(0);
   });

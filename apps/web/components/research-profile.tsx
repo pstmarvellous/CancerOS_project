@@ -40,25 +40,48 @@ export function ResearchProfile({project, patient, onLoaded}: {project:string; p
     } catch(cause) {setError(researchError(cause));} finally {setBusy(false);}
   }
   return <section className="card workspace-section" aria-label="Research profile editor">
-    <div className="section-heading"><h2>Research profile</h2>{profile && canEdit && !editing && <button className="button-secondary" onClick={()=>{setEditing(true);setNotice('');}}>Edit research profile</button>}</div>
-    {error && <><ErrorSummary message={error}/><button className="button-ghost" onClick={()=>setAttempt(n=>n+1)}>Reload saved profile</button></>}
+    <div className="section-heading"><div><h2>Research profile</h2><p className="field-hint" style={{margin:0}}>Pseudonymized, source-backed. Revision history retained; missing stays “Not recorded”.</p></div>
+      {profile && canEdit && !editing && <button className="button-secondary" onClick={()=>{setEditing(true);setNotice('');}}>Edit profile</button>}</div>
+    {error && <><ErrorSummary message={error}/><button className="button-ghost" onClick={()=>setAttempt(n=>n+1)} style={{marginTop:8}}>Reload saved profile</button></>}
     {!profile && !error && <LoadingState/>}
-    {notice && <p role="status">{notice}</p>}
+    {notice && <p role="status" className="field-hint" style={{background:'#ecfdf5', border:'1px solid #a7f3d0', padding:12, borderRadius:8}}>{notice}</p>}
     {profile && !editing && <>
-      <h3>{profile.title}</h3><span className={`badge ${profile.origin==='real_source'?'observed':'simulated'}`}>{profile.origin==='real_source'?'Source-backed research record':'Synthetic engineering record'}</span>
-      <dl className="profile-facts"><div><dt>Case identifier</dt><dd>{profile.case_identifier}</dd></div><div><dt>Pseudonym</dt><dd>{profile.pseudonym}</dd></div><div><dt>Status</dt><dd>{profile.status}</dd></div><div><dt>Sex</dt><dd>{profile.sex.replaceAll('_',' ')}</dd></div><div><dt>Age at observation</dt><dd>{profile.age_at_observation==null?'Not recorded':`${profile.age_at_observation} years · ${profile.age_observed_on}`}</dd></div><div><dt>Medical history</dt><dd>{profile.medical_history || 'Not recorded'}</dd></div><div><dt>Profile source</dt><dd>{profile.profile_source_reference}</dd></div><div><dt>Created / updated</dt><dd>{new Date(profile.created_at).toLocaleString()} / {new Date(profile.updated_at).toLocaleString()}</dd></div></dl>
-      <p className="field-hint">Profile revision {profile.profile_revision}. Cancer findings belong in source-backed diagnosis observations below.</p>
+      <div style={{display:'flex', flexWrap:'wrap', gap:8, alignItems:'center', marginBottom:12}}>
+        <h3 style={{margin:0}}>{profile.title}</h3>
+        <span className={`badge ${profile.origin==='real_source'?'observed':'simulated'}`}>{profile.origin==='real_source'?'Source-backed research record':'Synthetic engineering record'}</span>
+        <span className="badge warning">Revision {profile.profile_revision}</span>
+        <span className="badge">{profile.status}</span>
+      </div>
+      <dl className="profile-facts" style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(220px, 1fr))', gap:12}}>
+        <div><dt>Case identifier</dt><dd>{profile.case_identifier}</dd></div>
+        <div><dt>Pseudonym</dt><dd>{profile.pseudonym}</dd></div>
+        <div><dt>Status</dt><dd>{profile.status}</dd></div>
+        <div><dt>Sex</dt><dd>{profile.sex.replaceAll('_',' ')}</dd></div>
+        <div><dt>Age</dt><dd>{profile.age_at_observation==null?'Not recorded':`${profile.age_at_observation} years · ${profile.age_observed_on}`}</dd></div>
+        <div style={{gridColumn:'1 / -1'}}><dt>Medical history</dt><dd>{profile.medical_history || 'Not recorded — use clinical note for detailed history'}</dd></div>
+        <div style={{gridColumn:'1 / -1'}}><dt>Source reference</dt><dd>{profile.profile_source_reference}</dd></div>
+        <div><dt>Created</dt><dd>{new Date(profile.created_at).toLocaleString()}</dd></div>
+        <div><dt>Updated</dt><dd>{new Date(profile.updated_at).toLocaleString()}</dd></div>
+      </dl>
+      <p className="field-hint" style={{marginTop:12}}>Cancer findings (ER/PR/HER2, stage) belong in source-backed diagnosis observations — not here — to preserve provenance and missingness.</p>
     </>}
-    {profile && editing && <form aria-label="Edit research profile" onSubmit={save} onChange={()=>setKey(crypto.randomUUID())}><fieldset disabled={busy}><legend>Source-supported research profile</legend><p className="field-hint">Unknown fields remain not recorded. Required fields are marked *. Case identity and source pseudonym are fixed; corrections retain their original linkage.</p><div className="form-grid">
-      <label>Research case identifier *<input name="identifier" readOnly required maxLength={80} pattern={'[A-Za-z0-9._\\-]+'} defaultValue={profile.case_identifier}/></label>
-      <label>Case title *<input name="title" required maxLength={200} defaultValue={profile.title}/></label>
-      <label>Research pseudonym *<input name="pseudonym" readOnly required maxLength={100} defaultValue={profile.pseudonym}/></label>
-      <label>Case status<select name="status" defaultValue={profile.status}>{['draft','active','archived'].map(value=><option key={value}>{value}</option>)}</select></label>
-      <label>Sex as documented<select name="sex" defaultValue={profile.sex}>{['not_recorded','unknown','female','male','intersex'].map(value=><option key={value} value={value}>{value.replaceAll('_',' ')}</option>)}</select></label>
-      <label>Age at observation (years)<input type="number" name="age" min="0" max="150" step="1" defaultValue={profile.age_at_observation ?? ''}/><span className="field-hint">Source age only; leave blank if not recorded.</span></label>
-      <label>Age observation date<input type="date" name="age_date" defaultValue={profile.age_observed_on ?? ''}/></label>
-      <label>Profile source reference *<input name="reference" required maxLength={500} defaultValue={profile.profile_source_reference}/></label>
-      <label className="field-wide">Documented medical history<textarea name="history" rows={3} maxLength={3000} defaultValue={profile.medical_history ?? ''}/><span className="field-hint">A source-supported research summary. Omit direct identifiers. Detailed source notes use the clinical notes form.</span></label>
-    </div></fieldset><div className="actions"><button className="button-primary" disabled={busy}>{busy?'Saving…':'Save profile'}</button><button className="button-ghost" type="button" disabled={busy} onClick={()=>{setEditing(false);setError('');}}>Cancel editing</button></div></form>}
+    {profile && editing && <form aria-label="Edit research profile" onSubmit={save} onChange={()=>setKey(crypto.randomUUID())}>
+      <fieldset disabled={busy} style={{border:0, padding:0}}>
+        <legend style={{fontWeight:700, marginBottom:8}}>Edit source-supported profile</legend>
+        <p className="field-hint">Unknown fields remain “Not recorded”. Case identifier and pseudonym are immutable after creation; edits create new revision retaining original link.</p>
+        <div className="form-grid">
+          <label>Case identifier (immutable)<input name="identifier" readOnly required maxLength={80} pattern={'[A-Za-z0-9._\\-]+'} defaultValue={profile.case_identifier}/><span className="field-hint">Cannot be changed after creation.</span></label>
+          <label>Pseudonym (immutable)<input name="pseudonym" readOnly required maxLength={100} defaultValue={profile.pseudonym}/></label>
+          <label>Case title *<input name="title" required maxLength={200} defaultValue={profile.title} placeholder="Longitudinal research case title"/><span className="field-hint">Clear title for library listing.</span></label>
+          <label>Status<select name="status" defaultValue={profile.status}>{['draft','active','archived'].map(value=><option key={value} value={value}>{value}</option>)}</select></label>
+          <label>Sex as documented<select name="sex" defaultValue={profile.sex}>{['not_recorded','unknown','female','male','intersex'].map(value=><option key={value} value={value}>{value.replaceAll('_',' ')}</option>)}</select></label>
+          <label>Age at observation (years, source only)<input type="number" name="age" min="0" max="150" step="1" defaultValue={profile.age_at_observation ?? ''} placeholder="e.g., 54"/></label>
+          <label>Age observed on<input type="date" name="age_date" defaultValue={profile.age_observed_on ?? ''}/><span className="field-hint">Required if age entered.</span></label>
+          <label style={{gridColumn:'1 / -1'}}>Source reference *<input name="reference" required maxLength={500} defaultValue={profile.profile_source_reference} placeholder="Study register / entry"/><span className="field-hint">Locator supporting this profile.</span></label>
+          <label style={{gridColumn:'1 / -1'}}>Medical history (source summary)<textarea name="history" rows={3} maxLength={3000} defaultValue={profile.medical_history ?? ''} placeholder="Source-supported summary, no identifiers; detailed notes use clinical note form"/><span className="field-hint">Omit names, contact details, government IDs.</span></label>
+        </div>
+      </fieldset>
+      <div style={{display:'flex', gap:8, marginTop:12}}><button className="button-primary" disabled={busy}>{busy?'Saving…':'Save profile revision'}</button><button className="button-ghost" type="button" disabled={busy} onClick={()=>{setEditing(false);setError('');}}>Cancel</button></div>
+    </form>}
   </section>;
 }

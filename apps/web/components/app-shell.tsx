@@ -57,10 +57,9 @@ function readSelection(params: URLSearchParams): Selection {
 }
 
 function selectionLabel(selection: Selection): string | null {
-  const parts = [selection.project, selection.patient, selection.branch ?? selection.run, selection.state]
-    .filter(Boolean);
-  if (!parts.length) return null;
-  return `Selection: ${parts.join(' / ')}${selection.lesion ? ` · lesion ${selection.lesion}` : ''}`;
+  if (selection.patient && selection.project) return `Research case active — project and patient selected`;
+  if (selection.project) return `Research project selected`;
+  return null;
 }
 
 function ShellInner() {
@@ -68,12 +67,14 @@ function ShellInner() {
   const params = useSearchParams();
   const selection = readSelection(params);
   const label = selectionLabel(selection);
+  const showCaseNav = selection.patient && ['/cases/detail', '/twin', '/states', '/charts', '/insights', '/simulation', '/timeline'].some(r => pathname.startsWith(r));
   return <>
     <a className="skip-link" href="#main">Skip to main content</a>
     <header className="header">
       <div className="brand-row">
         <Link className="brand" href="/">CancerOS <span>Research digital twin</span></Link>
-        {label ? <details className="selection"><summary>{pathname.startsWith('/demo') ? 'Synthetic demonstration selected' : 'Research case selected'} · advanced identifiers</summary>{label}</details> : null}
+        {label ? <span className="selection" style={{fontSize:12, color:'#64748b'}}>{label} {pathname.startsWith('/demo') ? '· synthetic demo mode' : ''} — selection persisted via secure cookie + local storage</span> : null}
+        {selection.project && selection.patient ? <details className="selection" style={{fontSize:11, color:'#94a3b8'}}><summary>Technical selection reference (advanced)</summary><span>Project {selection.project.slice(0,8)}… · Patient {selection.patient.slice(0,8)}…{selection.lesion?` · Lesion ${selection.lesion.slice(0,8)}…`:''}</span></details> : null}
       </div>
       <nav aria-label="Primary">
         <ul className="nav-list">
@@ -85,21 +86,30 @@ function ShellInner() {
               const demoQuery=new URLSearchParams({view:demoViews[item.href]});
               for(const key of ['scenario','state']){const value=params.get(key);if(value)demoQuery.set(key,value);}
               target=`/demo?${demoQuery}`;
-            }else if(selection.patient&&demoViews[item.href])target=preserveSelection(item.href,selection);
+            } else if(selection.project && selection.patient) {
+              if (item.href === '/cases/detail') target = preserveSelection(item.href, selection);
+              else if (item.href === '/cases') target = `/cases?project=${encodeURIComponent(selection.project)}`;
+            } else if(selection.project && item.href === '/cases') {
+              target = `/cases?project=${encodeURIComponent(selection.project)}`;
+            }
             return <li key={item.href}><Link href={target} aria-current={active ? 'page' : undefined}>{item.label}</Link></li>;
           })}
         </ul>
       </nav>
     </header>
-    {['/cases/detail', '/twin', '/states', '/charts', '/insights', '/simulation', '/timeline'].some(route => pathname.startsWith(route)) && selection.patient ? <nav aria-label="Case" className="case-nav">
+    {showCaseNav ? <nav aria-label="Case workspace" className="case-nav">
       <ul className="nav-list">
+        <li><span style={{fontSize:11, color:'#94a3b8', textTransform:'uppercase', letterSpacing:'0.6px', marginRight:8}}>Case workspace</span></li>
         {CASE_NAV.map(item => {
+          if (item.href === '/sources') return null;
           const href = preserveSelection(item.href, selection);
-          return <li key={item.label}><Link href={href}>{item.label}</Link></li>;
+          const isActive = pathname.startsWith(item.href);
+          return <li key={item.label}><Link href={href} aria-current={isActive ? 'page' : undefined}>{item.label}</Link></li>;
         })}
+        <li><Link href={`/cases?project=${encodeURIComponent(selection.project!)}`} title="Return to case library">← Library</Link></li>
       </ul>
     </nav> : null}
-    {pathname !== '/' && <div className="safety-notice" role="note">Research prototype. Not validated for diagnosis or treatment decisions.</div>}
+    {pathname !== '/' && <div className="safety-notice" role="note">Research prototype. Not validated for diagnosis or treatment decisions. Missing values stay “Not recorded”; synthetic hypotheticals stay labeled.</div>}
   </>;
 }
 

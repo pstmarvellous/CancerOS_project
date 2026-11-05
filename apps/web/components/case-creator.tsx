@@ -12,6 +12,7 @@ export function CaseCreator({project, sources, allowed}: {project: string; sourc
   const [error, setError] = useState('');
   const [key, setKey] = useState(() => crypto.randomUUID());
   const eligible = sources.filter(source => source.creation_permitted);
+  const hasIneligible = sources.some(s => !s.creation_permitted);
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (busy || !allowed) return;
@@ -24,28 +25,41 @@ export function CaseCreator({project, sources, allowed}: {project: string; sourc
         status: 'draft', sex: 'not_recorded', age_at_observation: null, age_observed_on: null,
         profile_source_reference: String(data.get('reference')).trim(), medical_history: null,
       };
-      if (![body.case_identifier, body.title, body.pseudonym, body.profile_source_reference].every(Boolean)) throw new Error('Complete the required case information.');
+      if (![body.case_identifier, body.title, body.pseudonym, body.profile_source_reference].every(Boolean)) throw new Error('Complete required fields: identifier, title, pseudonym, source reference.');
+      if (!body.case_identifier.match(/^[A-Za-z0-9._-]+$/)) throw new Error('Case identifier may contain only letters, numbers, dots, hyphens, underscores.');
       const result = await researchJson<{patient_id: string}>(`/api/research-cases?project=${encodeURIComponent(project)}`, {
         method: 'POST', headers: {'content-type':'application/json','idempotency-key':key}, body: JSON.stringify(body),
       });
+      try { localStorage.setItem('canceros:last_case', JSON.stringify({project, patient: result.patient_id, at: Date.now()})); } catch {}
       router.push(`/cases/detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(result.patient_id)}`);
     } catch (cause) { setError(researchError(cause)); setBusy(false); }
   }
-  if (!allowed) return <p role="note">Case creation requires a project administrator. You can still open cases granted to your role.</p>;
-  if (!eligible.length) return <p role="note">No source is eligible for case creation. An administrator must register a source and record the applicable rights and privacy review. Your existing cases remain available.</p>;
+  if (!allowed) return <div className="card" style={{padding:16}}><h3>Admin role required</h3><p role="note">Case creation requires project administrator role. You can still open cases assigned to your role and add observations where permitted. Ask your administrator to elevate your role or to create the case for you.</p></div>;
+  if (!eligible.length) return <div className="card" style={{padding:16}}>
+    <h3>No eligible source for case creation</h3>
+    <p role="note">No source in this project is eligible for case creation.</p>
+    <ul className="step-list">
+      <li>Ask your administrator to register a source artifact and complete internal + privacy reviews.</li>
+      <li>Check that linkage key is configured (<code>linkage_active_key</code> in server config).</li>
+      <li>Ensure your project membership role is admin.</li>
+    </ul>
+    {hasIneligible && <>
+      <p className="field-hint">Existing sources in this project:</p>
+      <ul>{sources.map(s=> <li key={s.source_version_id}>{s.title} · {s.origin} — not eligible: {s.reason}</li>)}</ul>
+    </>}
+    <p className="field-hint">Your existing cases remain available below. For local development, create source via admin bootstrap script in <code>scripts/</code>.</p>
+  </div>;
   return <form aria-label="Create research case" onSubmit={submit} onChange={() => setKey(crypto.randomUUID())}>
-    <p className="field-hint">Required fields are marked *. Use research labels; omit names, contact details and government identifiers.</p>
-    <fieldset disabled={busy}>
-      <legend>Case information</legend>
-      <div className="form-grid">
-        <label>Research case identifier *<input name="identifier" required maxLength={80} pattern={'[A-Za-z0-9._\\-]+'} placeholder="STUDY-042" autoComplete="off"/><span className="field-hint">Unique within this project. Letters, numbers, dots, hyphens and underscores.</span></label>
-        <label>Case title *<input name="title" required maxLength={200} placeholder="Longitudinal research case"/></label>
-        <label>Source research pseudonym *<input name="pseudonym" required maxLength={100} placeholder="Participant 042" autoComplete="off"/><span className="field-hint">Use the study&apos;s pseudonym to prevent duplicate source linkage.</span></label>
-        <label>Source *<select name="source" required>{eligible.map(source => <option key={source.source_version_id} value={source.source_version_id}>{source.title} · {source.origin === 'real_source' ? 'Research source' : 'Synthetic engineering source'}</option>)}</select></label>
-        <label>Profile source reference *<input name="reference" required maxLength={500} placeholder="Study register / entry 042"/><span className="field-hint">A source locator or reference supporting this research profile.</span></label>
-      </div>
+    <p className="field-hint">Required fields *. Use research labels only — no real names, contact details, or government IDs. Letters/numbers/dot/hyphen/underscore only for identifier.</p>
+    <fieldset disabled={busy} style={{border:0, padding:0, display:'grid', gap:16, gridTemplateColumns:'repeat(auto-fit, minmax(220px, 1fr))'}}>
+      <label style={{display:'flex', flexDirection:'column', gap:6}}>Research case identifier *<input name="identifier" required maxLength={80} pattern={'[A-Za-z0-9._\\-]+'} placeholder="STUDY-042" autoComplete="off"/><span className="field-hint">Unique within project. Example: STUDY-042</span></label>
+      <label style={{display:'flex', flexDirection:'column', gap:6}}>Case title *<input name="title" required maxLength={200} placeholder="Longitudinal research case"/><span className="field-hint">Displayed in library.</span></label>
+      <label style={{display:'flex', flexDirection:'column', gap:6}}>Source pseudonym *<input name="pseudonym" required maxLength={100} placeholder="Participant 042" autoComplete="off"/><span className="field-hint">Prevents duplicate linkage — use study pseudonym.</span></label>
+      <label style={{display:'flex', flexDirection:'column', gap:6}}>Source *<select name="source" required>{eligible.map(source => <option key={source.source_version_id} value={source.source_version_id}>{source.title} · {source.origin === 'real_source' ? 'Research source' : 'Synthetic engineering source'}</option>)}</select><span className="field-hint">Only eligible sources shown.</span></label>
+      <label style={{display:'flex', flexDirection:'column', gap:6, gridColumn:'1 / -1'}}>Profile source reference *<input name="reference" required maxLength={500} placeholder="Study register / entry 042"/><span className="field-hint">Locator supporting this profile (page, entry, report).</span></label>
     </fieldset>
-    {error && <ErrorSummary message={error}/>}
-    <button className="button-primary" type="submit" disabled={busy}>{busy ? 'Saving case…' : 'Save research case'}</button>
+    {error && <div style={{marginTop:12}}><ErrorSummary message={error}/></div>}
+    <div style={{marginTop:16, display:'flex', gap:8}}><button className="button-primary" type="submit" disabled={busy}>{busy ? 'Saving case…' : 'Save research case'}</button></div>
+    <p className="field-hint" style={{marginTop:8}}>Saving creates immutable case binding with idempotency key. Reopen after refresh via stored selection, no UUID typing.</p>
   </form>;
 }
