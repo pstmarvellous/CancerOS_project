@@ -42,14 +42,14 @@ function initialSelection(params: URLSearchParams): { project: string | null; pa
   return { project: params.get('project'), patient: params.get('patient'), lesion: params.get('lesion') };
 }
 
-export function LesionViewer() {
-  return <Suspense fallback={<LoadingState/>}><LesionViewerFromQuery /></Suspense>;
+export function LesionViewer({ project: overrideProject, patient: overridePatient }: { project?: string | null; patient?: string | null } = {}) {
+  return <Suspense fallback={<LoadingState/>}><LesionViewerFromQuery overrideProject={overrideProject} overridePatient={overridePatient} /></Suspense>;
 }
 
-function LesionViewerFromQuery() {
+function LesionViewerFromQuery({ overrideProject, overridePatient }: { overrideProject?: string | null; overridePatient?: string | null }) {
   const params = useSearchParams();
   const initial = initialSelection(params);
-  return <LesionViewerBody initialProject={initial.project} initialPatient={initial.patient} initialLesion={initial.lesion} />;
+  return <LesionViewerBody initialProject={overrideProject ?? initial.project} initialPatient={overridePatient ?? initial.patient} initialLesion={initial.lesion} />;
 }
 
 function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { initialProject: string | null; initialPatient: string | null; initialLesion: string | null }) {
@@ -208,7 +208,7 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
         <h2>Open a case to inspect its lesion</h2>
         <p>
           The viewer binds to the active case selection. <Link href="/cases">Open an authorized case</Link>, then
-          return here. The browser never guesses a project or patient.
+          open its Imaging & 3D tab. The browser never guesses a project or patient, and no UUID entry is needed.
         </p>
       </section>
     );
@@ -227,9 +227,9 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
         <p>
           Case: {patient.slice(0, 8)}… · Lesion: {lesion ? `${lesion.slice(0, 8)}…` : 'select below'} ·{' '}
           <Link
-            href={`/cases/detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}`}
+            href={`/cases/detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&tab=overview`}
           >
-            Back to case profile
+            Back to case workspace
           </Link>
         </p>
       ) : null}
@@ -237,6 +237,12 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
       {status === 'failed' && !loaded && !blockedMeasurement ? (
         <section className="card">
           <ErrorSummary message={message} />
+          <p>
+            No UUID entry is needed: reopen this case from the{' '}
+            <Link href={project ? `/cases?project=${encodeURIComponent(project)}` : '/cases'}>case library</Link>{' '}
+            and return to its Imaging & 3D tab. If imaging is genuinely absent, the source-mask measurement below
+            stays authoritative.
+          </p>
           <p>
             <button
               type="button"
@@ -254,14 +260,15 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
       ) : null}
       {lesions && lesions.length > 1 ? (
         <p>
-          <label htmlFor="lesion-picker">Lesion </label>
-          <select id="lesion-picker" value={lesion ?? ''} onChange={event => switchLesion(event.target.value)}>
-            {lesions.map(item => (
+          <label htmlFor="lesion-picker">Lesion in this case </label>
+          <select id="lesion-picker" value={lesion ?? ''} onChange={event => switchLesion(event.target.value)} aria-label="Lesion in this case">
+            {lesions.map((item, index) => (
               <option key={item.lesion_id} value={item.lesion_id}>
-                Lesion {item.lesion_id.slice(0, 8)}…
+                Lesion {index + 1} · {item.lesion_id.slice(0, 8)}…
               </option>
             ))}
           </select>
+          <span className="field-hint"> Authorized lesions only; the list comes from the case, not manual entry.</span>
         </p>
       ) : null}
       {blockedMeasurement ? (
@@ -269,14 +276,25 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
           <h2>Source-mask measurement</h2>
           <p>3D geometry is unavailable for this selection. No substitute shape is displayed.</p>
           <p>
-            Mask volume: {blockedMeasurement.values.volume_mm3 ?? 'Unavailable'} mm³. Centroid, RAS:{' '}
+            <strong>Mask volume: {blockedMeasurement.values.volume_mm3 ?? 'Unavailable'} mm³</strong>{' '}
+            ({blockedMeasurement.values.volume_cm3 ?? 'Unavailable'} cm³). Centroid, RAS:{' '}
             {blockedMeasurement.values.centroid_ras_mm?.join(', ') ?? 'Unavailable'} mm. Origin:{' '}
             {blockedMeasurement.origin}. Scientific review: pending.
           </p>
         </div>
       ) : null}
       {loaded ? (
-        <section aria-label="Authorized lesion geometry">
+        <section aria-label="Authorized lesion geometry" className={styles.twinGrid}>
+      <div className={styles.twinSide}>
+          <div className={styles.measureBadge} role="status" aria-label="Server measurement">
+            <strong>
+              Server measurement {loaded.measurement.values.volume_mm3 ?? qc?.mask_volume_mm3 ?? 'Unavailable'} mm³
+            </strong>{' '}
+            <span>
+              server mask measurement · origin {loaded.measurement.origin} ·{' '}
+              {loaded.measurement.source_time_basis === 'not_recorded' ? 'time not recorded' : 'source time private'}
+            </span>
+          </div>
           <div className={styles.notice}>
             <strong>Research geometry · origin {loaded.measurement.origin}</strong>
             <p>
@@ -323,6 +341,8 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
               </button>
             </div>
           )}
+          </div>
+          <div className={styles.twinSide}>
           <div className={styles.tableWrap}>
             <table>
               <caption>Server measurements and physical geometry · source mask is authoritative</caption>
@@ -389,15 +409,17 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
                 id="lesion-picker-bottom"
                 value={lesion ?? ''}
                 onChange={event => switchLesion(event.target.value)}
+                aria-label="Compare another lesion in this case"
               >
-                {lesions.map(item => (
+                {lesions.map((item, index) => (
                   <option key={item.lesion_id} value={item.lesion_id}>
-                    Lesion {item.lesion_id.slice(0, 8)}…
+                    Lesion {index + 1} · {item.lesion_id.slice(0, 8)}…
                   </option>
                 ))}
               </select>
             </p>
           ) : null}
+          </div>
         </section>
       ) : null}
     </div>

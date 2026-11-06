@@ -9,6 +9,7 @@ import { ClinicalHistoryTable } from './clinical-history-table';
 import { ClinicalChartsExplorer } from './clinical-charts-explorer';
 import { ObservationIntake } from './observation-intake';
 import { CaseImaging } from './case-imaging';
+import { LesionViewer } from './lesion-viewer';
 
 type S = components['schemas'];
 type PatientDetail = S['PatientDetail'];
@@ -16,12 +17,12 @@ type VisitPage = S['VisitPage'];
 type ClinicalRecord = S['ClinicalRecord'];
 
 type Status = { kind: 'needs-selection' } | { kind: 'loading' } | { kind: 'failed'; message: string } | { kind: 'ready' };
-type TabId = 'overview' | 'clinical' | 'charts' | 'imaging';
+type TabId = 'overview' | 'clinical' | 'charts' | 'imaging' | 'twin';
 
 function useSelection(): { project: string | null; patient: string | null; tab: TabId } {
   const params = useSearchParams();
   const raw = params.get('tab') as TabId | null;
-  const tab: TabId = ['overview','clinical','charts','imaging'].includes(raw as string) ? (raw as TabId) : 'overview';
+  const tab: TabId = ['overview','clinical','charts','imaging','twin'].includes(raw as string) ? (raw as TabId) : 'overview';
   return { project: params.get('project'), patient: params.get('patient'), tab };
 }
 
@@ -119,6 +120,7 @@ function UnifiedWorkspaceBody() {
     {id:'clinical', label:'Clinical Records', hint:'History, add observations, corrections'},
     {id:'charts', label:'Charts', hint:'Lab small multiples, vitals, symptoms'},
     {id:'imaging', label:'Imaging', hint:'Studies & sources'},
+    {id:'twin', label:'Imaging & 3D', hint:'Authorized lesion viewer routed from this case'},
   ];
 
   return <>
@@ -158,7 +160,7 @@ function UnifiedWorkspaceBody() {
           <li><strong>Overview</strong> (here) — review profile and completeness, edit if admin.</li>
           <li><strong>Clinical Records</strong> — view timeline, add source-backed observations, correct where permitted.</li>
           <li><strong>Charts</strong> — lab small multiples without interpolation, vitals, symptoms.</li>
-          <li><strong>Imaging</strong> — authorized studies list and sources.</li>
+          <li><strong>Imaging & sources</strong> — authorized studies list; continue into the 3D viewer without UUID entry.</li>
         </ol>
         <p><button className="button-primary" onClick={()=>navigateTab('clinical')}>Continue to Clinical Records</button></p>
       </section>
@@ -189,13 +191,19 @@ function UnifiedWorkspaceBody() {
     </>}
 
     {tab==='imaging' && <>
-      <section className="intro" style={{marginTop:20}}><h2>Imaging & sources</h2><p className="lead" style={{fontSize:16}}>Authorized imaging studies linked to this case. Missing stays missing; DCE phases are not visits.</p></section>
+      <section className="intro" style={{marginTop:20}}><h2>Imaging & sources</h2><p className="lead" style={{fontSize:16}}>Authorized imaging studies linked to this case. Missing stays missing; DCE phases are not visits. The 3D viewer below inherits this case — no UUID entry needed.</p></section>
       <CaseImaging project={project} patient={patient}/>
       <section className="card" style={{marginTop:16}}>
-        <h3>About digital twin viewer</h3>
-        <p>The 3D lesion viewer is available from the main navigation when a lesion is selected via imaging studies. For full 3D experience without real data, explore the synthetic demonstration — it uses the same viewer code with precomputed geometry.</p>
-        <p><Link className="button-secondary" href="/demo?view=twin">Open synthetic 3D demo</Link> <Link className="button-ghost" href={`/twin?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}`}>Go to twin with this case (requires lesion selection)</Link></p>
+        <h3>Continue to the 3D viewer</h3>
+        <p>Lesion selection loads automatically from this case. For a synthetic reference using the same viewer code, explore the demonstration.</p>
+        <p><button className="button-primary" onClick={()=>navigateTab('twin')}>Open Imaging & 3D in this workspace</button> <Link className="button-ghost" href="/demo?view=twin">Open synthetic 3D demo</Link></p>
       </section>
+    </>}
+
+    {tab==='twin' && <>
+      <section className="intro" style={{marginTop:20}}><h2>Imaging & 3D — authorized case viewer</h2><p className="lead" style={{fontSize:16}}>The viewer inherits this case from the workspace. Select an authorized lesion; server mask measurements stay authoritative with a prominent overlay.</p></section>
+      <LesionViewer project={project} patient={patient} />
+      <p style={{marginTop:16}}><button className="button-ghost" onClick={()=>navigateTab('imaging')}>← Back to Imaging studies</button></p>
     </>}
   </>;
 }

@@ -106,7 +106,7 @@ describe('COS-075 lesion viewer', () => {
     });
     vi.stubGlobal('fetch', fetchMock);
     render(<LesionViewer />);
-    const picker = await screen.findByLabelText('Lesion', {}, { timeout: 10000 });
+    const picker = await screen.findByLabelText('Lesion in this case', {}, { timeout: 10000 });
     fireEvent.change(picker, { target: { value: second } });
     await waitFor(() => expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining(second), expect.anything()));
     vi.unstubAllGlobals();

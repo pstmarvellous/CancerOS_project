@@ -11,6 +11,11 @@ export default function TwinPage() {
           Rotate, pan, zoom, fit and reset one authorized lesion with labeled keyboard and button controls. Server
           mask measurements stay authoritative; the browser never normalizes or mixes quantities.
         </p>
+        <p className="field-hint">
+          Prefer the case workspace Imaging & 3D tab: open a case from the{' '}
+          <Link href="/cases">case library</Link> and continue without entering UUIDs. This page keeps direct
+          <code>?project=&amp;patient=</code> links working for compatibility.
+        </p>
       </div>
       <LesionViewer />
       <p>
