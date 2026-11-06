@@ -72,6 +72,11 @@ test('create, resume profile and save source observations through real authorize
   await expect(page.getByText('The viewer below inherits this case')).toBeVisible();
   await expect(page.getByText('Your saved case, research profile and clinical observations remain available.')).toBeVisible();
   await page.screenshot({path:`${output}/06-case-twin-tab.png`});
+  await page.getByRole('tab',{name:/Timeline/}).click();
+  await expect(page.getByRole('heading',{name:'Timeline — persisted states and comparisons'})).toBeVisible();
+  await expect(page.getByText('No twin branches are recorded for this authorized case.').first()).toBeVisible({ timeout: 15000 });
+  await page.screenshot({path:`${output}/07-case-timeline-tab.png`});
+  await page.getByRole('tab',{name:/Clinical Records/}).click();
   await page.reload();
   await expect(page.getByRole('tab',{name:/Clinical Records/})).toBeVisible({ timeout: 15000 });
   await page.getByRole('tab',{name:/Clinical Records/}).click({ timeout: 15000 });
