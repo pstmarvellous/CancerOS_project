@@ -39,13 +39,13 @@ function explain(status: number): string {
   return `The authorized read failed (status ${status}).`;
 }
 
-export function StateTimelineExplorer() {
-  return <Suspense fallback={<LoadingState/>}><StateTimelineFromQuery /></Suspense>;
+export function StateTimelineExplorer({ project: overrideProject, patient: overridePatient }: { project?: string | null; patient?: string | null } = {}) {
+  return <Suspense fallback={<LoadingState/>}><StateTimelineFromQuery overrideProject={overrideProject} overridePatient={overridePatient} /></Suspense>;
 }
 
-function StateTimelineFromQuery() {
+function StateTimelineFromQuery({ overrideProject, overridePatient }: { overrideProject?: string | null; overridePatient?: string | null }) {
   const initial = initialParams(useSearchParams());
-  return <StateTimelineBody initialProject={initial.project} initialPatient={initial.patient} initialBranch={initial.branch} initialState={initial.state} initialCompare={initial.compare} />;
+  return <StateTimelineBody initialProject={overrideProject ?? initial.project} initialPatient={overridePatient ?? initial.patient} initialBranch={initial.branch} initialState={initial.state} initialCompare={initial.compare} />;
 }
 
 function StateTimelineBody({ initialProject, initialPatient, initialBranch, initialState, initialCompare }: {
@@ -249,8 +249,8 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
       <section className="card">
         <h2>Open a case to inspect its history</h2>
         <p>
-          The timeline binds to the active case selection. <Link href="/cases">Open an authorized case</Link>, then
-          return here. The browser never guesses a project or patient.
+          The timeline binds to the active workspace case. <Link href="/cases">Open an authorized case</Link>, then
+          use its Timeline tab. The browser never guesses a project or patient, and no UUID entry is needed.
         </p>
       </section>
     );
@@ -268,22 +268,27 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
     <div>
       <p role="status" aria-live="polite">{message}</p>
       <p>
-        Case: {patient.slice(0, 8)}… · Branch: {branch ? `${branch.slice(0, 8)}…` : 'select below'} · State:{' '}
+        Branch: {branch ? `${branch.slice(0, 8)}…` : 'select below'} · State:{' '}
         {stateId ? `${stateId.slice(0, 8)}…` : 'select below'} ·{' '}
-        <Link href={`/cases/detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}`}>Back to case profile</Link>
+        <Link
+          href={`/cases/detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&tab=overview`}
+        >
+          Back to case workspace
+        </Link>
       </p>
       {status === 'loading' && !loaded ? <LoadingState /> : null}
       {status === 'failed' && !loaded ? <ErrorSummary message={message} /> : null}
       {branches && branches.length > 0 ? (
         <p>
-          <label htmlFor="branch-picker">History rail </label>
-          <select id="branch-picker" value={branch ?? ''} onChange={event => switchBranch(event.target.value)}>
+          <label htmlFor="branch-picker">History rail: branch in this case </label>
+          <select id="branch-picker" value={branch ?? ''} onChange={event => switchBranch(event.target.value)} aria-label="History rail: branch in this case">
             {branches.map(item => (
               <option key={item.id} value={item.id}>
-                {item.mode === 'observed' ? 'Real observed history' : `Hypothetical branch ${item.id.slice(0, 8)}…`} · {item.mode}
+                {item.mode === 'observed' ? 'Real observed history' : `Hypothetical branch · ${item.mode}`}
               </option>
             ))}
           </select>
+          <span className="field-hint"> Authorized branches only; no UUID typing.</span>
         </p>
       ) : null}
       {states && states.length > 0 ? (
@@ -312,7 +317,7 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
           </div>
           <p>
             <label htmlFor="state-picker">State list equivalent </label>
-            <select id="state-picker" value={stateId ?? ''} onChange={event => switchState(event.target.value)}>
+            <select id="state-picker" value={stateId ?? ''} onChange={event => switchState(event.target.value)} aria-label="State list equivalent">
               {states.map((item, index) => (
                 <option key={item.snapshot.id} value={item.snapshot.id}>
                   {index + 1}. {describeTime(item.snapshot)} · {item.snapshot.origin} · rev {item.snapshot.input_revision}
@@ -323,7 +328,7 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
           <ol>
             {states.map((item, index) => (
               <li key={item.snapshot.id} aria-current={item.snapshot.id === stateId ? 'true' : undefined}>
-                <button type="button" onClick={() => switchState(item.snapshot.id)}>
+                <button type="button" onClick={() => switchState(item.snapshot.id)} aria-label={`State ${index + 1}: ${describeTime(item.snapshot)}`}>
                   {index + 1}. {describeTime(item.snapshot)}
                 </button>{' '}
                 <ProvenanceBadge origin={item.snapshot.origin} /> · rev {item.snapshot.input_revision} · {item.snapshot.status}
@@ -368,7 +373,7 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
           <p>Comparison uses persisted snapshots only. Server temporal records are authoritative; the browser recomputes no quantities.</p>
           <p>
             <label htmlFor="compare-a">Pin A (current state) </label>
-            <select id="compare-a" value={stateId ?? ''} onChange={event => switchState(event.target.value)}>
+            <select id="compare-a" value={stateId ?? ''} onChange={event => switchState(event.target.value)} aria-label="Pin A (current state)">
               {states.map(item => (
                 <option key={item.snapshot.id} value={item.snapshot.id}>
                   {describeTime(item.snapshot)} · {item.snapshot.id.slice(0, 8)}…
@@ -378,7 +383,7 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
           </p>
           <p>
             <label htmlFor="compare-b">Pin B </label>
-            <select id="compare-b" value={compareId ?? ''} onChange={event => pinComparison(event.target.value || null)}>
+            <select id="compare-b" value={compareId ?? ''} onChange={event => pinComparison(event.target.value || null)} aria-label="Pin B comparison state">
               <option value="">No comparison pinned</option>
               {states.filter(item => item.snapshot.id !== stateId).map(item => (
                 <option key={item.snapshot.id} value={item.snapshot.id}>

@@ -10,6 +10,7 @@ import { ClinicalChartsExplorer } from './clinical-charts-explorer';
 import { ObservationIntake } from './observation-intake';
 import { CaseImaging } from './case-imaging';
 import { LesionViewer } from './lesion-viewer';
+import { StateTimelineExplorer } from './state-timeline-explorer';
 
 type S = components['schemas'];
 type PatientDetail = S['PatientDetail'];
@@ -17,13 +18,13 @@ type VisitPage = S['VisitPage'];
 type ClinicalRecord = S['ClinicalRecord'];
 
 type Status = { kind: 'needs-selection' } | { kind: 'loading' } | { kind: 'failed'; message: string } | { kind: 'ready' };
-type TabId = 'overview' | 'clinical' | 'charts' | 'imaging';
+type TabId = 'overview' | 'clinical' | 'charts' | 'imaging' | 'timeline';
 
 function useSelection(): { project: string | null; patient: string | null; tab: TabId } {
   const params = useSearchParams();
   const raw = params.get('tab');
   const normalized = raw === 'twin' ? 'imaging' : raw;
-  const tab: TabId = ['overview','clinical','charts','imaging'].includes(normalized ?? '') ? (normalized as TabId) : 'overview';
+  const tab: TabId = ['overview','clinical','charts','imaging','timeline'].includes(normalized ?? '') ? (normalized as TabId) : 'overview';
   return { project: params.get('project'), patient: params.get('patient'), tab };
 }
 
@@ -122,6 +123,7 @@ function UnifiedWorkspaceBody() {
     {id:'clinical', label:'Clinical Records', hint:'History, add observations, corrections'},
     {id:'charts', label:'Charts', hint:'Lab small multiples, vitals, symptoms'},
     {id:'imaging', label:'Imaging & 3D', hint:'Studies, sources, and authorized case viewer'},
+    {id:'timeline', label:'Timeline', hint:'Persisted states with baseline pinning and A/B compare'},
   ];
 
   return <>
@@ -161,7 +163,8 @@ function UnifiedWorkspaceBody() {
           <li><strong>Overview</strong> (here) — review profile and completeness, edit if admin.</li>
           <li><strong>Clinical Records</strong> — view timeline, add source-backed observations, correct where permitted.</li>
           <li><strong>Charts</strong> — lab small multiples without interpolation, vitals, symptoms.</li>
-          <li><strong>Imaging & 3D</strong> — authorized studies list with the case viewer inline, no UUID entry.</li>
+          <li><strong>Imaging & 3D</strong> — authorized studies with the case viewer inline.</li>
+          <li><strong>Timeline</strong> — persisted states with baseline pinning and A/B compare.</li>
         </ol>
         <p><button className="button-primary" onClick={()=>navigateTab('clinical')}>Continue to Clinical Records</button></p>
       </section>
@@ -203,6 +206,16 @@ function UnifiedWorkspaceBody() {
         <h3>Need a reference without real data?</h3>
         <p>For a synthetic reference using the same viewer code, explore the demonstration.</p>
         <p><Link className="button-ghost" href="/demo?view=twin">Open synthetic 3D demo</Link></p>
+      </section>
+    </>}
+
+    {tab==='timeline' && <>
+      <section className="intro" style={{marginTop:20}}><h2>Timeline — persisted states and comparisons</h2><p className="lead" style={{fontSize:16}}>Branch picker, discrete state slider with list equivalent, persisted snapshot detail, and pinned A/B comparison. Observations and states stay separate tracks; nothing interpolates or autoplays.</p></section>
+      <StateTimelineExplorer project={project} patient={patient} />
+      <section className="card" style={{marginTop:16}}>
+        <h3>Legacy observation timeline</h3>
+        <p className="field-hint">The exact-window observation timeline remains available as a separate reference. It still requires its own authorized context and does not inherit this tab automatically.</p>
+        <p><Link className="button-ghost" href={`/timeline?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}`}>Open legacy observation timeline</Link> <Link className="button-ghost" href={`/states?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}`}>Open states page</Link></p>
       </section>
     </>}
   </>;
