@@ -33,6 +33,25 @@ function explain(status: number): string {
 
 type LoadedContext = { context: InterpretationContext; fetchedAt: string; stale: boolean };
 
+function shortId(value: string | null | undefined): string {
+  return typeof value === 'string' && value ? `${value.slice(0, 8)}…` : 'not recorded';
+}
+
+function contextTitle(context: InterpretationContext, fetchedAt: string): string {
+  const measurements = context.measurements.length;
+  const passages = context.assertions.length;
+  const missing = (context.missing_modalities ?? []).join(', ') || 'none recorded';
+  return `Snapshot ${shortId(context.context_hash)} · ${measurements} case measurement${measurements === 1 ? '' : 's'} · ${passages} background passage${passages === 1 ? '' : 's'} · missing: ${missing} · loaded ${fetchedAt}`;
+}
+
+function groundingStatus(grounding: GroundingReport | null, report: InterpretationReport | null): string {
+  if (!report) return 'Not generated';
+  if (report.execution_mode === 'rule_based_summary') return 'Rule-based summary · deterministic template, no external model';
+  if (!grounding) return 'Private candidate · grounding not checked yet';
+  if (grounding.verdict === 'published') return `Grounded · ${grounding.supported_claims} supported, ${grounding.unsupported_claims} unsupported`;
+  return `Not published · grounding ${grounding.verdict} · ${grounding.supported_claims} supported, ${grounding.unsupported_claims} unsupported`;
+}
+
 export function InsightsExplorer() {
   return <Suspense fallback={<LoadingState/>}><InsightsFromQuery /></Suspense>;
 }
@@ -173,8 +192,8 @@ function InsightsFromQuery() {
       <section className="card">
         <h2>Open a case to inspect its insights</h2>
         <p>
-          Insights bind to the active case selection. <Link href="/cases">Open an authorized case</Link>, then
-          return here. The browser never guesses a project or patient.
+          Insights bind to the active workspace case. <Link href="/cases">Open an authorized case</Link>, then use
+          its Timeline or Charts tab to pick a state first. The browser never guesses a project or patient.
         </p>
       </section>
     );
@@ -185,18 +204,19 @@ function InsightsFromQuery() {
       <p role="status" aria-live="polite">{message}</p>
       <p>
         Case: {patient.slice(0, 8)}… · State: {stateId ? `${stateId.slice(0, 8)}…` : 'enter below'} ·{' '}
-        <Link href={`/cases/detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}`}>Back to case profile</Link>
+        <Link href={`/cases/detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&tab=overview`}>Back to case workspace</Link>
       </p>
       <section aria-label="Insight scope">
         <h2>Exact insight scope</h2>
         <p>Editors may request a research summary with an explicit permitted execution choice; viewers inspect approved results. Never streams private model tokens.</p>
+        <p className="field-hint">Tip: open the workspace Timeline tab, select a persisted state, then paste its state ID here once. Branch is optional; when omitted the server resolves the owning branch.</p>
         <p>
-          <label htmlFor="insight-branch">Branch UUID (optional) </label>
-          <input id="insight-branch" value={branch ?? ''} onChange={event => setBranch(event.target.value.trim() || null)} spellCheck={false} />
+          <label htmlFor="insight-branch">Branch (optional, authorized list value) </label>
+          <input id="insight-branch" value={branch ?? ''} onChange={event => setBranch(event.target.value.trim() || null)} spellCheck={false} placeholder="Optional branch UUID" />
         </p>
         <p>
-          <label htmlFor="insight-state">State UUID </label>
-          <input id="insight-state" value={stateId ?? ''} onChange={event => setStateId(event.target.value.trim() || null)} spellCheck={false} />
+          <label htmlFor="insight-state">State </label>
+          <input id="insight-state" value={stateId ?? ''} onChange={event => setStateId(event.target.value.trim() || null)} spellCheck={false} placeholder="Persisted state UUID from Timeline" />
           <button type="button" disabled={!stateId || !UUID.test(stateId)} onClick={() => stateId && void loadContext(stateId)}>Load exact context</button>
         </p>
       </section>
@@ -209,13 +229,15 @@ function InsightsFromQuery() {
       ) : null}
       {context ? (
         <section aria-label="Snapshot-bound context">
-          <h2>Snapshot-bound context</h2>
+          <h2>Snapshot context in plain language</h2>
+          <p><strong>{contextTitle(context.context, context.fetchedAt)}</strong></p>
           <p>
-            Snapshot hash: {context.context.context_hash.slice(0, 12)}… · Fetched: {context.fetchedAt} ·{' '}
+            Snapshot hash: {context.context.context_hash.slice(0, 12)}… (advanced reference) ·{' '}
             {context.stale ? 'Superseded for the current timeline; valid for its selected older snapshot. Open the latest view instead of silently changing it.' : 'Current for the selected snapshot.'}
           </p>
-          <p>Measurements: {context.context.measurements.length} · Assertions (unverified): {context.context.assertions.length} · Missing: {(context.context.missing_modalities ?? []).join('; ') || 'None recorded'}</p>
+          <p>Exportable: {context.context.exportable ? 'yes' : 'no; policy or access gates closed'}. Findings stay within this snapshot.</p>
           <p>Supported findings, changes, missing information and limitations stay in this section. Each finding below opens its exact case observation or approved passage.</p>
+          <h3>Case evidence · {context.context.measurements.length} measurement{context.context.measurements.length === 1 ? '' : 's'}</h3>
           <ul>
             {context.context.measurements.map(item => (
               <li key={item.reference_id}>
@@ -230,8 +252,8 @@ function InsightsFromQuery() {
             ))}
           </ul>
           {context.context.assertions.length > 0 ? (
-            <details>
-              <summary>Background evidence · {context.context.assertions.length} unreviewed passages</summary>
+            <details open={false}>
+              <summary>Background evidence · {context.context.assertions.length} unreviewed passage{context.context.assertions.length === 1 ? '' : 's'} (not patient-specific support)</summary>
               <p>Metadata-only sources stay metadata-only; a passage link alone is not patient-specific support.</p>
               <ul>
                 {context.context.assertions.map(item => (
@@ -253,7 +275,7 @@ function InsightsFromQuery() {
           </div>
         </section>
       ) : null}
-      {report ? <InterpretationPanel report={report} /> : null}
+      {report ? <InterpretationPanel report={report} groundingStatus={groundingStatus(grounding, report)} /> : null}
       {report && report.execution_mode !== 'rule_based_summary' ? (
         <section aria-label="Grounding and save">
           <h2>Grounding and save</h2>
@@ -261,7 +283,7 @@ function InsightsFromQuery() {
           <p><button type="button" onClick={() => void checkGrounding()}>Check grounding</button></p>
           {grounding ? (
             <div>
-              <p>Verdict: {grounding.verdict} · Supported: {grounding.supported_claims} · Unsupported: {grounding.unsupported_claims} · Numeric matched: {grounding.numeric_matched}/{grounding.numeric_statements}</p>
+              <p><strong>Grounding status: {grounding.verdict}</strong> · Supported: {grounding.supported_claims} · Unsupported: {grounding.unsupported_claims} · Numeric matched: {grounding.numeric_matched}/{grounding.numeric_statements}</p>
               {grounding.reason_codes.map(reason => <p key={reason}>Grounding reason: {reason}</p>)}
               <p>{grounding.next_action}</p>
             </div>

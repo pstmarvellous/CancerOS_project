@@ -69,9 +69,9 @@ describe('COS-079 insights explorer', () => {
     query.search = `?project=${PROJECT}&patient=${PATIENT}&state=${STATE}`;
     vi.stubGlobal('fetch', stubFetch());
     render(<InsightsExplorer />);
-    fireEvent.change(screen.getByLabelText('State UUID'), { target: { value: STATE } });
+    fireEvent.change(screen.getByLabelText('State'), { target: { value: STATE } });
     fireEvent.click(screen.getByRole('button', { name: 'Load exact context' }));
-    await waitFor(() => expect(screen.getByText(/Snapshot-bound context/)).toBeVisible(), { timeout: 10000 });
+    await waitFor(() => expect(screen.getByText(/Snapshot context in plain language/)).toBeVisible(), { timeout: 10000 });
     fireEvent.click(screen.getByRole('button', { name: 'Generate rule-based summary' }));
     await waitFor(() => expect(screen.getByText('Rule-based summary.')).toBeVisible(), { timeout: 10000 });
     expect(screen.getByText(/Each finding below opens its exact case observation/)).toBeVisible();
