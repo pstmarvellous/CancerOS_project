@@ -96,11 +96,19 @@ function groupKey(record: ClinicalRecord | null, summary: ObservationSummary): s
   return summary.concept;
 }
 
-export function ClinicalChartsExplorer() {
-  return <Suspense fallback={<LoadingState/>}><ClinicalChartsFromQuery /></Suspense>;
+export function recordDay(record: ClinicalRecord | null): number | null {
+  if (!record) return null;
+  const reference = record.item.time?.reference as { basis?: string; value?: unknown } | undefined;
+  if (reference?.basis === 'relative_day' && typeof reference.value === 'number' && Number.isFinite(reference.value)) return reference.value;
+  if (reference?.basis === 'relative_day' && typeof reference.value === 'string' && reference.value.trim() !== '' && Number.isFinite(Number(reference.value))) return Number(reference.value);
+  return null;
 }
 
-function ClinicalChartsFromQuery() {
+export function ClinicalChartsExplorer({ stateFilter }: { stateFilter?: { day: number | null; label: string } | null } = {}) {
+  return <Suspense fallback={<LoadingState/>}><ClinicalChartsFromQuery stateFilter={stateFilter ?? null} /></Suspense>;
+}
+
+function ClinicalChartsFromQuery({ stateFilter }: { stateFilter: { day: number | null; label: string } | null }) {
   const params = useSearchParams();
   const initial = initialParams(params);
   const { project, patient } = initial;
@@ -197,15 +205,22 @@ function ClinicalChartsFromQuery() {
       <section className="card">
         <h2>Open a case to inspect its clinical charts</h2>
         <p>
-          Charts bind to the active case selection. <Link href="/cases">Open an authorized case</Link>, then return
-          here. The browser never guesses a project or patient.
+          Charts bind to the active workspace case. <Link href="/cases">Open an authorized case</Link>, then use its
+          Charts tab. The browser never guesses a project or patient.
         </p>
       </section>
     );
   }
 
   const active = PANELS.find(item => item.key === panel) ?? PANELS[0];
-  const filtered = rows.filter(row => active.kinds.includes(row.summary.kind) && !row.summary.superseded);
+  const inStateWindow = (row: Row): boolean => {
+    if (!stateFilter || stateFilter.day === null) return true;
+    const day = recordDay(row.record);
+    if (day === null) return false;
+    return day <= stateFilter.day;
+  };
+  const scoped = rows.filter(inStateWindow);
+  const filtered = scoped.filter(row => active.kinds.includes(row.summary.kind) && !row.summary.superseded);
   const groups = new Map<string, Row[]>();
   for (const row of filtered) {
     const key = groupKey(row.record, row.summary);
@@ -217,10 +232,11 @@ function ClinicalChartsFromQuery() {
   return (
     <div>
       <p role="status" aria-live="polite">{message}</p>
+      {stateFilter ? <p className="field-hint">Timeline filter: {stateFilter.label}. Records without a relative day stay outside the filtered view; select All records to restore them. Server values, units, and missingness are unchanged.</p> : null}
       <p>
         Case: {patient.slice(0, 8)}… · Pages loaded: {loadedPages} · Records: {total ?? 0} ·{' '}
-        {selectedState ? `Selected state cursor: ${selectedState.slice(0, 8)}… (observations keep their own times)` : 'No state cursor'} ·{' '}
-        <Link href={`/cases/detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}`}>Back to case profile</Link>
+        {selectedState ? `Selected state cursor: ${selectedState.slice(0, 8)}… (observations keep their own times)` : stateFilter ? `Timeline filter: ${stateFilter.label}` : 'All records (no timeline filter)'} ·{' '}
+        <Link href={`/cases/detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&tab=overview`}>Back to case workspace</Link>
       </p>
       {status === 'loading' && rows.length === 0 ? <LoadingState /> : null}
       {status === 'failed' && rows.length === 0 ? (
@@ -231,7 +247,7 @@ function ClinicalChartsFromQuery() {
       ) : null}
       <p>
         <label htmlFor="chart-panel">Chart panel </label>
-        <select id="chart-panel" value={active.key} onChange={event => setPanel(event.target.value)}>
+        <select id="chart-panel" value={active.key} onChange={event => setPanel(event.target.value)} aria-label="Chart panel">
           {PANELS.map(item => <option key={item.key} value={item.key}>{item.title}</option>)}
         </select>
       </p>
@@ -266,7 +282,7 @@ function ClinicalChartsFromQuery() {
               {filtered.map(row => (
                 <tr key={row.summary.record_id}>
                   <th scope="row">
-                    <Link href={`/cases/detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}`}>Open {row.summary.record_id.slice(0, 8)}…</Link>
+                          <Link href={`/cases/detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&tab=clinical`}>Open {row.summary.record_id.slice(0, 8)}…</Link>
                   </th>
                   <td>{row.record ? recordConcept(row.record) : row.summary.concept}</td>
                   <td>{row.record ? recordValue(row.record) : 'Not loaded; no value invented'}</td>

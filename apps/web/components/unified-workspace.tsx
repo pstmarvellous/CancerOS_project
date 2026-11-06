@@ -58,6 +58,7 @@ function UnifiedWorkspaceBody() {
   const [message, setMessage] = useState('Loading research case…');
   const [correction, setCorrection] = useState<ClinicalRecord|null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [timelineFilter, setTimelineFilter] = useState<{ day: number | null; label: string; branch: string | null; state: string | null } | null>(null);
   const pending = useRef<AbortController|null>(null);
   useEffect(()=>()=>{ pending.current?.abort(); }, []);
 
@@ -141,9 +142,10 @@ function UnifiedWorkspaceBody() {
 
     <div className="case-nav" style={{marginTop:16, borderRadius:12, background:'#fff', border:'1px solid var(--border)', padding:'8px 12px'}} aria-label="Workspace tabs">
       <ul className="nav-list" role="tablist">
-        {tabs.map(t=> <li key={t.id}><button role="tab" aria-selected={tab===t.id} className={tab===t.id ? 'button-secondary' : 'button-ghost'} style={{minHeight:36, padding:'8px 14px', fontSize:13}} onClick={()=>navigateTab(t.id)} title={t.hint}>{t.label}</button></li>)}
+        {tabs.map(t=> <li key={t.id}><button role="tab" aria-selected={tab===t.id} aria-label={`${t.label}: ${t.hint}`} className={tab===t.id ? 'button-secondary' : 'button-ghost'} style={{minHeight:36, padding:'8px 14px', fontSize:13}} onClick={()=>navigateTab(t.id)} title={t.hint}>{t.label}</button></li>)}
       </ul>
     </div>
+    {timelineFilter?.state ? <p className="field-hint" style={{marginTop:8}}>Timeline filter active: {timelineFilter.label}. Charts and history honor the selected state&apos;s source window; clear it from the Timeline tab.</p> : null}
 
     {tab==='overview' && <>
       <section className="intro" style={{marginTop:20}}><h2>Research profile & source completeness</h2><p className="lead" style={{fontSize:16}}>Source-backed facts only. Missing values stay “Not recorded”. Synthetic descendants stay simulated. Revision history retained.</p></section>
@@ -189,9 +191,9 @@ function UnifiedWorkspaceBody() {
     </>}
 
     {tab==='charts' && <>
-      <section className="intro" style={{marginTop:20}}><h2>Clinical charts — no invented values</h2><p className="lead" style={{fontSize:16}}>Small multiples per concept+unit, missing and censored labeled, no gap filling or smoothing.</p></section>
-      <p><button className="button-ghost" onClick={()=>navigateTab('clinical')}>← Back to Clinical Records</button></p>
-      <ClinicalChartsExplorer key={`${project}:${patient}:${refreshKey}`} />
+      <section className="intro" style={{marginTop:20}}><h2>Clinical charts — no invented values</h2><p className="lead" style={{fontSize:16}}>Small multiples per concept+unit, missing and censored labeled, no gap filling or smoothing. {timelineFilter ? `Filtered to ${timelineFilter.label}.` : 'Showing all authorized records.'}</p></section>
+      <p><button className="button-ghost" onClick={()=>navigateTab('clinical')}>← Back to Clinical Records</button> <button className="button-ghost" onClick={()=>navigateTab('timeline')}>Open Timeline to change the filter</button></p>
+      <ClinicalChartsExplorer key={`${project}:${patient}:${refreshKey}`} stateFilter={timelineFilter ? { day: timelineFilter.day, label: timelineFilter.label } : null} />
     </>}
 
     {tab==='imaging' && <>
@@ -211,7 +213,17 @@ function UnifiedWorkspaceBody() {
 
     {tab==='timeline' && <>
       <section className="intro" style={{marginTop:20}}><h2>Timeline — persisted states and comparisons</h2><p className="lead" style={{fontSize:16}}>Branch picker, discrete state slider with list equivalent, persisted snapshot detail, and pinned A/B comparison. Observations and states stay separate tracks; nothing interpolates or autoplays.</p></section>
-      <StateTimelineExplorer project={project} patient={patient} />
+      <StateTimelineExplorer project={project} patient={patient} onStateSelect={(selection)=>setTimelineFilter(selection)} />
+      <section className="card" style={{marginTop:16, borderLeft: timelineFilter?.state ? '4px solid #0f766e' : undefined}}>
+        <h3>Chart filter from the selected state</h3>
+        {timelineFilter?.state ? <>
+          <p>Charts are filtered to {timelineFilter.label}. Records without a relative day stay outside the filtered view.</p>
+          <p><button className="button-secondary" onClick={()=>navigateTab('charts')}>Open filtered Charts</button> <button className="button-ghost" onClick={()=>setTimelineFilter(null)}>Clear timeline filter (show all records)</button></p>
+        </> : <>
+          <p>No timeline filter is set. Select a state above to filter Charts to its source window, or keep all records.</p>
+          <p><button className="button-ghost" onClick={()=>navigateTab('charts')}>Open Charts (all records)</button></p>
+        </>}
+      </section>
       <section className="card" style={{marginTop:16}}>
         <h3>Legacy observation timeline</h3>
         <p className="field-hint">The exact-window observation timeline remains available as a separate reference. It still requires its own authorized context and does not inherit this tab automatically.</p>

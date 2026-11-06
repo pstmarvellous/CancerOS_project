@@ -39,17 +39,17 @@ function explain(status: number): string {
   return `The authorized read failed (status ${status}).`;
 }
 
-export function StateTimelineExplorer({ project: overrideProject, patient: overridePatient }: { project?: string | null; patient?: string | null } = {}) {
-  return <Suspense fallback={<LoadingState/>}><StateTimelineFromQuery overrideProject={overrideProject} overridePatient={overridePatient} /></Suspense>;
+export function StateTimelineExplorer({ project: overrideProject, patient: overridePatient, onStateSelect }: { project?: string | null; patient?: string | null; onStateSelect?: (selection: { day: number | null; label: string; branch: string | null; state: string | null } | null) => void } = {}) {
+  return <Suspense fallback={<LoadingState/>}><StateTimelineFromQuery overrideProject={overrideProject} overridePatient={overridePatient} onStateSelect={onStateSelect} /></Suspense>;
 }
 
-function StateTimelineFromQuery({ overrideProject, overridePatient }: { overrideProject?: string | null; overridePatient?: string | null }) {
+function StateTimelineFromQuery({ overrideProject, overridePatient, onStateSelect }: { overrideProject?: string | null; overridePatient?: string | null; onStateSelect?: (selection: { day: number | null; label: string; branch: string | null; state: string | null } | null) => void }) {
   const initial = initialParams(useSearchParams());
-  return <StateTimelineBody initialProject={overrideProject ?? initial.project} initialPatient={overridePatient ?? initial.patient} initialBranch={initial.branch} initialState={initial.state} initialCompare={initial.compare} />;
+  return <StateTimelineBody initialProject={overrideProject ?? initial.project} initialPatient={overridePatient ?? initial.patient} initialBranch={initial.branch} initialState={initial.state} initialCompare={initial.compare} onStateSelect={onStateSelect} />;
 }
 
-function StateTimelineBody({ initialProject, initialPatient, initialBranch, initialState, initialCompare }: {
-  initialProject: string | null; initialPatient: string | null; initialBranch: string | null; initialState: string | null; initialCompare: string | null;
+function StateTimelineBody({ initialProject, initialPatient, initialBranch, initialState, initialCompare, onStateSelect }: {
+  initialProject: string | null; initialPatient: string | null; initialBranch: string | null; initialState: string | null; initialCompare: string | null; onStateSelect?: (selection: { day: number | null; label: string; branch: string | null; state: string | null } | null) => void;
 }) {
   const project = initialProject;
   const patient = initialPatient;
@@ -199,6 +199,8 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
     setLoaded(null);
     setCompared(null);
     setCursor(null);
+    notified.current = null;
+    onStateSelect?.(null);
     setStatus('loading');
     setMessage('Branch changed. Resolving an existing persisted state on the new branch; no day is assumed.');
     void loadStates(project, patient, next, null, key, controller);
@@ -240,9 +242,34 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
     void loadState(project, patient, next, true, key, controller);
   }
 
+  const notified = useRef<string | null>(null);
+
   function describeTime(snapshot: StateView['snapshot']): string {
     return `${snapshot.time.time_domain === 'simulation' ? 'Simulation' : 'Source-relative'} day ${snapshot.time.value}`;
   }
+
+  function describeDay(snapshot: StateView['snapshot'] | null): number | null {
+    if (!snapshot) return null;
+    const value = snapshot.time.value;
+    if (typeof value === 'number' && Number.isFinite(value)) return value;
+    if (typeof value === 'string' && value.trim() !== '' && Number.isFinite(Number(value))) return Number(value);
+    return null;
+  }
+
+  useEffect(() => {
+    if (!onStateSelect) return;
+    if (!loaded || status !== 'ready') return;
+    const key = `${branch ?? ''}:${stateId ?? ''}:${loaded.view.snapshot.input_revision}`;
+    if (notified.current === key) return;
+    notified.current = key;
+    const day = describeDay(loaded.view.snapshot);
+    onStateSelect({
+      day,
+      label: day === null ? `state ${stateId?.slice(0, 8) ?? 'unknown'}… (time not recorded)` : `${describeTime(loaded.view.snapshot)}${loaded.view.snapshot.origin === 'SYNTHETIC_GENERATED' ? ' · synthetic' : ''}`,
+      branch: branch ?? null,
+      state: stateId ?? null,
+    });
+  }, [loaded, status, branch, stateId, onStateSelect]);
 
   if (!project || !patient) {
     return (
