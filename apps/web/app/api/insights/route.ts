@@ -6,6 +6,21 @@ function bad(message: string, status = 400): Response {
   return Response.json({ title: message }, { status });
 }
 
+function interpretationIdOf(bodyText: string): string | null {
+  try {
+    const parsed = JSON.parse(bodyText) as {
+      interpretation_snapshot_id?: unknown;
+      interpretation?: { context_snapshot_id?: unknown };
+    };
+    const direct = parsed.interpretation_snapshot_id;
+    if (typeof direct === 'string' && direct) return direct;
+    const nested = parsed.interpretation?.context_snapshot_id;
+    return typeof nested === 'string' && nested ? nested : null;
+  } catch {
+    return null;
+  }
+}
+
 function stateUrl(project: string, patient: string, state: string, suffix: string): URL | null {
   return caseUrl(project, patient, `/states/${encodeURIComponent(state)}${suffix}`);
 }
@@ -32,25 +47,15 @@ export async function POST(request: Request) {
   }
   if (action === 'ground') {
     if (!state) return bad('Missing state selection');
-    let interpretationId: string | null = null;
-    try {
-      interpretationId = (JSON.parse(bodyText) as { interpretation?: { context_snapshot_id?: string } }).interpretation?.context_snapshot_id ?? null;
-    } catch {
-      interpretationId = null;
-    }
+    const interpretationId = interpretationIdOf(bodyText);
     if (!interpretationId) return bad('Missing interpretation identity');
     const url = stateUrl(project, patient, state, `/interpretations/${encodeURIComponent(interpretationId)}/grounding`);
     if (!url) return bad('Missing project or patient');
-    return proxyCase(request, url, 'POST', bodyText);
+    return proxyCase(request, url, 'POST', JSON.stringify({ interpretation_snapshot_id: interpretationId }));
   }
   if (action === 'save') {
     if (!state) return bad('Missing state selection');
-    let interpretationId: string | null = null;
-    try {
-      interpretationId = (JSON.parse(bodyText) as { interpretation?: { context_snapshot_id?: string } }).interpretation?.context_snapshot_id ?? null;
-    } catch {
-      interpretationId = null;
-    }
+    const interpretationId = interpretationIdOf(bodyText);
     if (!interpretationId) return bad('Missing interpretation identity');
     const url = stateUrl(project, patient, state, `/interpretations/${encodeURIComponent(interpretationId)}/saved-results`);
     if (!url) return bad('Missing project or patient');

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ResearchProject } from '../lib/research-session';
 export type { ResearchProject } from '../lib/research-session';
+import { forgetCase } from '../lib/case-selection';
 
 type SessionResponse = { authenticated: boolean; projects: ResearchProject[]; expiresAt?: string };
 type Props = { selectedProjectId?: string | null; onProjectChange: (projectId: string | null) => void;
@@ -69,6 +70,10 @@ export function ResearchSessionPanel({ selectedProjectId, onProjectChange, onSes
       const response = await fetch('/api/research-session', { method: 'DELETE', cache: 'no-store' });
       if (!response.ok) throw new Error();
       applySession({ authenticated: false, projects: [] });
+      // Signed-out browsers must not retain protected case content or a
+      // restorable selection: clear the stored case and reload into gated states.
+      forgetCase();
+      window.location.reload();
     } catch { setMessage('Sign out could not complete. Retry to close the research session.'); }
     finally { setBusy(false); }
   }

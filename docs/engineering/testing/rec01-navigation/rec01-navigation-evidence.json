@@ -1,0 +1,21 @@
+{
+  "recorded_at": "2026-11-08T07:56:53.775Z",
+  "scope": "Real RS256/SQL/private-storage services; artificial sources and observations only",
+  "case_a": "b5157e4d-3eef-4709-bc6c-84f4e0c5a8b7",
+  "case_b": "a39437bd-47f4-4cf4-a33a-33faf52cbc2c",
+  "project": "4cf7e364-18c0-4c08-886b-d8aa4ce2df14",
+  "journey": [
+    "case-a-created",
+    "clinical-records",
+    "twin-restored",
+    "scenarios-restored",
+    "charts-restored",
+    "refresh-preserved",
+    "back-preserved",
+    "case-b-isolation",
+    "stale-state-graceful",
+    "sign-out-clears-access",
+    "viewer-denied"
+  ],
+  "browser_errors": []
+}

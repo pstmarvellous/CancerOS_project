@@ -17,7 +17,6 @@ type Scope = S['TimelineScope'];
 type Query = S['TimelineQuery'];
 type Page = S['TimelinePage'];
 const Renderer = dynamic(() => import('./mesh-renderer'), {ssr: false, loading: () => <p role="status">Loading geometry renderer…</p>});
-const API = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000';
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export function pointValue(point: TimelinePoint) {
@@ -27,8 +26,13 @@ export function pointValue(point: TimelinePoint) {
   return point.missing_reason ?? (point.numeric_result?.form === 'missing' ? point.numeric_result.missing_reason : point.summary ?? `No numeric value · ${point.availability}`);
 }
 
-export function ObservationTimeline() {
-  const [project, setProject] = useState(''); const [patient, setPatient] = useState(''); const [token, setToken] = useState('');
+export function ObservationTimeline({ project: overrideProject, patient: overridePatient }: { project?: string | null; patient?: string | null } = {}) {
+  const [selection] = useState<{ project: string; patient: string } | null>(
+    overrideProject && overridePatient ? { project: overrideProject, patient: overridePatient } : null,
+  );
+  const timelineBase = selection
+    ? '/api/observation-timeline?project=' + encodeURIComponent(selection.project) + '&patient=' + encodeURIComponent(selection.patient)
+    : '';
   const [mode, setMode] = useState<Scope['mode']>('observed'); const [revision, setRevision] = useState('1');
   const [branch, setBranch] = useState(''); const [run, setRun] = useState(''); const [completion, setCompletion] = useState('');
   const [knowledge, setKnowledge] = useState(''); const [cutoff, setCutoff] = useState(''); const [origin, setOrigin] = useState('');
@@ -46,14 +50,15 @@ export function ObservationTimeline() {
   useEffect(() => () => {pending.current?.abort(); meshPending.current?.abort(); fusionPending.current?.abort();}, []);
   function clearFusion() {fusionPending.current?.abort(); setFusion(null); setFusionState(''); setFusionBusy(false); setFusionMessage('Load an exact state overview to inspect its retained membership.');}
   function changed() {pending.current?.abort(); meshPending.current?.abort(); clearFusion(); setBusy(false); setPage(null); setItems([]); setQuery(null); setTrends(null); setSelected(null); setMesh(null); setMessage('Selection changed. Reload the exact timeline window.');}
-  async function request<T>(path: string, signal: AbortSignal, body?: unknown, idempotencyKey?: string): Promise<T> {
-    const response = await fetch(`${API}/api/v1/projects/${project}/patients/${patient}${path}`, {method: body === undefined ? 'GET' : 'POST', headers: {Authorization: `Bearer ${token.trim()}`, ...(body === undefined ? {} : {'Content-Type': 'application/json'}), ...(idempotencyKey ? {'Idempotency-Key': idempotencyKey} : {})}, body: body === undefined ? undefined : JSON.stringify(body), cache: 'no-store', credentials: 'omit', redirect: 'error', signal});
+  async function request<T>(action: string, signal: AbortSignal, body?: unknown, meshId?: string): Promise<T> {
+    if (!selection || !timelineBase) throw new Error('Open a case first.');
+    const response = await fetch(body === undefined ? `${timelineBase}&mesh=${encodeURIComponent(meshId ?? '')}` : `${timelineBase}&action=${action}`, {method: body === undefined ? 'GET' : 'POST', headers: body === undefined ? {} : {'Content-Type': 'application/json'}, body: body === undefined ? undefined : JSON.stringify(body), cache: 'no-store', credentials: 'omit', redirect: 'error', signal});
     if (!response.ok) throw new Error(response.status === 401 || response.status === 403 ? 'Access denied for this timeline context.' : response.status === 409 ? 'Timeline revision, publication, permissions or cursor changed. Reload this exact window; no partial page is added.' : response.status === 422 ? 'Check revision, context identifiers and timezone-aware knowledge cutoff.' : 'Timeline unavailable. Check the local API and retry.');
     return response.json();
   }
   async function load(next = false) {
     pending.current?.abort(); const controller = new AbortController(); pending.current = controller;
-    if (![project, patient].every(value => UUID.test(value)) || !token.trim()) {setMessage('Enter valid project and patient UUIDs and an authorized token.'); return;}
+    if (!selection) { setMessage('Open a case first; the browser never guesses a project or patient.'); return; }
     if (!next) {setTrends(null); clearFusion();}
     setBusy(true);
     try {
@@ -67,7 +72,7 @@ export function ObservationTimeline() {
         if (cutoff && (mode !== 'simulation' || !UUID.test(origin) || !/^-?\d+(\.\d{1,4})?$/.test(cutoff))) throw new Error('A simulation-day cutoff requires an explicit timeline-origin UUID and a valid relative day.');
         body = {window: {scope: {mode, data_revision: dataRevision, ...(mode === 'simulation' ? {branch_id: branch, run_id: run} : {})}, knowledge_as_of: knowledge, event_cutoff: cutoff ? {basis: 'relative_day', value: cutoff, time_domain: 'simulation', timeline_origin_id: origin, anchor_state_id: null} : null}, completion_id: mode === 'simulation' ? completion : null, limit: 25};
       }
-      const result = await request<Page>('/timeline-queries', controller.signal, body);
+      const result = await request<Page>('timeline', controller.signal, body);
       if (controller.signal.aborted) return;
       if (next) setItems(previous => [...previous, ...result.items.filter(point => !previous.some(existing => existing.id === point.id))]);
       else {meshPending.current?.abort(); setSelected(null); setMesh(null); setItems(result.items); setQuery(body);}
@@ -80,7 +85,7 @@ export function ObservationTimeline() {
     if (!point.geometry_result_id) {setMeshMessage('No geometry at this observation. No previous observation geometry is carried forward.'); return;}
     const controller = new AbortController(); meshPending.current = controller; setMeshMessage('Loading geometry for this exact selected observation…');
     try {
-      const result = await request<S['GeneratedMesh']>(`/synthetic-geometry-results/${point.geometry_result_id}/mesh`, controller.signal);
+      const result = await request<S['GeneratedMesh']>('mesh', controller.signal, undefined, point.geometry_result_id);
       if (controller.signal.aborted) return;
       if (result.geometry_id !== point.id || result.origin !== 'SYNTHETIC_GENERATED') throw new Error('Geometry identity does not match this observation.');
       setMesh({objects: [{segmentation_id: point.id, surface: result.surface}]}); setMeshMessage('Exact selected synthetic region · physical RAS mm · not a follow-up scan or anatomical placement.');
@@ -90,7 +95,7 @@ export function ObservationTimeline() {
     if (!query) return;
     pending.current?.abort(); const controller = new AbortController(); pending.current = controller; setBusy(true); setTrends(null);
     try {
-      const result = await request<TrendReport>('/trend-queries', controller.signal, {timeline: {...query, cursor: null}, tolerance: '0'});
+      const result = await request<TrendReport>('trends', controller.signal, {timeline: {...query, cursor: null}, tolerance: '0'});
       if (!controller.signal.aborted) {setTrends(result); setMessage('Descriptive trends loaded over the exact full window. No hidden generator values or frontend medical calculations are used.');}
     } catch (error) {if (!controller.signal.aborted) setMessage(error instanceof Error ? error.message : 'Trend query unavailable. Retry the exact window.');}
     finally {if (!controller.signal.aborted) setBusy(false);}
@@ -107,7 +112,7 @@ export function ObservationTimeline() {
     fusionPending.current?.abort(); const controller = new AbortController(); fusionPending.current = controller;
     setFusion(null); setFusionBusy(true); setFusionMessage('Loading the exact state membership and retained evidence…');
     try {
-      const result = await request<S['FusionReport']>('/fusion-queries', controller.signal, {state_id: selectedState, timeline: query.window.scope.mode === 'simulation' ? {...query, cursor: null} : null});
+      const result = await request<S['FusionReport']>('fusion', controller.signal, {state_id: selectedState, timeline: query.window.scope.mode === 'simulation' ? {...query, cursor: null} : null});
       if (result.canonical_state.snapshot.id !== selectedState) throw new Error('State overview identity does not match the selected state.');
       if (!controller.signal.aborted) {setFusion(result); setFusionMessage('Exact state overview loaded. Historical members remain historical; missing sections remain missing.');}
     } catch (error) {if (!controller.signal.aborted) setFusionMessage(error instanceof Error ? error.message : 'State overview unavailable. Retry the same authorized state.');}
@@ -116,14 +121,13 @@ export function ObservationTimeline() {
   return <div className={styles.workflow}>
     <div className={styles.notice}><strong>Exact observation history · no imputation or value carry-forward</strong><p>Source and simulation contexts remain separate. Numerical features are deterministic derivatives, not a diagnosis or prediction. Unknown and incomparable times stay unresolved.</p></div>
     <section><h2>Timeline window</h2><form onSubmit={event => {event.preventDefault(); void load();}} autoComplete="off" className={styles.grid}>
-      {([['Project UUID', project, setProject], ['Patient UUID', patient, setPatient]] as const).map(([label, value, setter]) => <label key={label}>{label}<input value={value} onChange={event => {changed(); setter(event.target.value.trim());}} required/></label>)}
-      <label>Access token<input type="password" value={token} onChange={event => {changed(); setToken(event.target.value);}} autoComplete="off" required/></label>
+      {selection ? <p className="field-hint">Authorized case: {selection.project.slice(0, 8)}… · {selection.patient.slice(0, 8)}… — session authorized; switch from the case library.</p> : <p className="field-hint">No case selected.</p>}
       <label>Observation context<select value={mode} onChange={event => {changed(); setMode(event.target.value as Scope['mode']); setCutoff('');}}><option value="observed">Real observed source history</option><option value="source_fixture">Synthetic source fixture history</option><option value="simulation">Published simulation branch</option></select></label>
       <label>Exact data revision<input value={revision} onChange={event => {changed(); setRevision(event.target.value);}} inputMode="numeric" required/></label>
       <label>Knowledge as of (ISO timestamp with timezone)<input value={knowledge} onChange={event => {changed(); setKnowledge(event.target.value);}} placeholder="YYYY-MM-DDTHH:MM:SSZ" required/></label>
       {mode === 'simulation' && <>{([['Branch UUID', branch, setBranch], ['Run UUID', run, setRun], ['Published completion UUID', completion, setCompletion], ['Simulation event cutoff day (optional)', cutoff, setCutoff], ['Timeline origin UUID (for cutoff)', origin, setOrigin]] as const).map(([label, value, setter]) => <label key={label}>{label}<input value={value} onChange={event => {changed(); setter(event.target.value.trim());}}/></label>)}</>}
-      <p>Tokens and loaded observations remain in memory. The knowledge cutoff limits when evidence became available; event-time cutoffs do not invent a calendar anchor. Source histories use the full event window at the selected knowledge cutoff.</p>
-      <div className={styles.controls}><button disabled={busy}>Load exact timeline</button><button type="button" onClick={() => {changed(); setToken(''); setMessage('Private timeline and token cleared.');}}>Clear private view</button></div>
+      <p>Loaded observations remain in memory; the research session cookie authorizes every request. The knowledge cutoff limits when evidence became available; event-time cutoffs do not invent a calendar anchor. Source histories use the full event window at the selected knowledge cutoff.</p>
+      <div className={styles.controls}><button disabled={busy}>Load exact timeline</button><button type="button" onClick={() => {changed(); setMessage('Private timeline cleared.');}}>Clear private view</button></div>
     </form></section>
     <p role="status" aria-live="polite">{message}</p>
     {page && <><section><h2>Observation points</h2><p>{items.length} loaded of {page.total_points} points. Revision {revision} · {page.historical_revision ? 'historical revision' : 'current revision'}. Current patient revision: {page.current_patient_revision}.</p>{page.restrictions.map(reason => <p key={reason}>{reason}</p>)}
@@ -132,7 +136,7 @@ export function ObservationTimeline() {
       <button disabled={busy || !page.next_cursor} onClick={() => void load(true)}>Load next pinned page</button>
       <button disabled={busy || !query} onClick={() => void loadTrends()}>Load descriptive trends for this window</button>
     </section><section><h2>Full-window temporal features</h2><p>Version: {page.features.version}. These features cover the selected window, including points beyond the currently loaded page. Missing counts do not imply a filled value.</p><div className={styles.table}><table><caption>Server-computed intervals and measurement age</caption><thead><tr><th>Series / method</th><th>Usable / missing / censored</th><th>Intervals (days)</th><th>Age (days)</th><th>Lesion / instrument</th></tr></thead><tbody>{page.features.series.map((series, index) => <tr key={index}><td>{series.concept} · {series.unit ?? 'No numeric unit'}<p>{series.method_version}</p></td><td>{series.usable_count} / {series.missing_count} / {series.censored_count}</td><td>{series.interval_days.join(', ') || 'No comparable intervals'}</td><td>{series.age_days ?? 'Unresolved / no valid cutoff'}</td><td>{series.lesion_id ?? 'No lesion link'} · {series.instrument ? `${series.instrument}/${series.instrument_version}` : 'No ordinal instrument'}</td></tr>)}</tbody></table></div><p>Unresolved-time point IDs: {page.features.unresolved_point_ids.join(', ') || 'None'}. Treatment-context point IDs: {page.features.treatment_point_ids.join(', ') || 'None'}.</p></section></>}
-    {page && query && <RevisionUpdatePanel key={`${JSON.stringify(query)}:${selected?.id ?? ''}:${selectedState ?? ''}`} query={query} request={request}/>}
+    {page && query && <RevisionUpdatePanel key={`${timelineBase}:${JSON.stringify(query)}:${selected?.id ?? ''}:${selectedState ?? ''}`} query={query} baseUrl={timelineBase}/>}
     {trends && <TrendView report={trends} onSelect={selectTrendPoint}/>}
     {selected && <section><h2>Selected observation</h2><p>ID: {selected.id} · <TimeLabel time={selected.time.reference}/> · {selected.modality} · <ProvenanceBadge origin={selected.origin}/></p><p>{pointValue(selected)}. Availability: {selected.availability}. Measurement basis: {selected.measurement_basis}.</p><p>Recorded / available at: {selected.recorded_at}. Method: {selected.method_version}. Supersedes: {selected.supersedes_id ?? 'None'}. State IDs: {selected.state_ids.join(', ') || 'No state membership'}.</p>{selected.summary && <p>{selected.summary}</p>}<p role="status">{meshMessage}</p>{mesh && <Renderer key={selected.id} asset={mesh} selected={selected.id} onFailure={failed}/>}
       <h3>Exact state overview</h3>

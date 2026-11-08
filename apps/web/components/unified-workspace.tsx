@@ -11,6 +11,7 @@ import { ObservationIntake } from './observation-intake';
 import { CaseImaging } from './case-imaging';
 import { LesionViewer } from './lesion-viewer';
 import { StateTimelineExplorer } from './state-timeline-explorer';
+import { useCasePermissions } from './use-case-permissions';
 
 type S = components['schemas'];
 type PatientDetail = S['PatientDetail'];
@@ -52,8 +53,9 @@ function UnifiedWorkspaceBody() {
   const [tab, setTab] = useState<TabId>(initialTab);
   const [status, setStatus] = useState<Status>(()=> project && patient ? { kind:'loading' } : { kind:'needs-selection'});
   const [detail, setDetail] = useState<PatientDetail | null>(null);
-  const [sourceOrigin, setSourceOrigin] = useState<'real_source'|'synthetic_engineering_fixture'|null>(null);
-  const [canWrite, setCanWrite] = useState(false);
+  const permissions = useCasePermissions(project, patient);
+  const sourceOrigin = permissions.origin;
+  const canWrite = permissions.canWrite;
   const [visits, setVisits] = useState<VisitPage | null>(null);
   const [message, setMessage] = useState('Loading research case…');
   const [correction, setCorrection] = useState<ClinicalRecord|null>(null);
@@ -149,7 +151,7 @@ function UnifiedWorkspaceBody() {
 
     {tab==='overview' && <>
       <section className="intro" style={{marginTop:20}}><h2>Research profile & source completeness</h2><p className="lead" style={{fontSize:16}}>Source-backed facts only. Missing values stay “Not recorded”. Synthetic descendants stay simulated. Revision history retained.</p></section>
-      <ResearchProfile project={project} patient={patient} onLoaded={(profile, editable)=>{ setSourceOrigin(profile.origin); setCanWrite(editable); }} />
+      <ResearchProfile project={project} patient={patient} />
       <section className="card" aria-label="Completeness" style={{marginTop:16}}>
         <h3>Completeness by capability</h3>
         <p className="field-hint">Describes record availability, not patient health or trust score.</p>
@@ -176,7 +178,8 @@ function UnifiedWorkspaceBody() {
       <section className="intro" style={{marginTop:20}}><h2>Clinical observations & provenance</h2><p className="lead" style={{fontSize:16}}>Enter source-backed values only. Time, units, collection status preserved. Corrections append evidence.</p></section>
       <ClinicalHistoryTable key={`${detail.data_revision}:${refreshKey}`} project={project} patient={patient} onCorrect={canWrite?record=>{ setCorrection(record); setTimeout(()=>document.getElementById('case-observation-entry')?.scrollIntoView({behavior:'smooth'}),0); navigateTab('clinical'); }:undefined} />
       <div id="case-observation-entry" style={{marginTop:24}}>
-        {sourceOrigin && canWrite ? <ObservationIntakeV2
+        {permissions.status === 'failed' ? <div className="card"><ErrorSummary message={permissions.message}/><p><button className="button-ghost" onClick={permissions.reload}>Reload permissions</button></p></div>
+        : sourceOrigin && canWrite ? <ObservationIntakeV2
           key={correction?.id ?? 'new-observation'}
           project={project} patient={patient} revision={detail.data_revision} origin={sourceOrigin}
           correction={correction}
@@ -193,7 +196,7 @@ function UnifiedWorkspaceBody() {
     {tab==='charts' && <>
       <section className="intro" style={{marginTop:20}}><h2>Clinical charts — no invented values</h2><p className="lead" style={{fontSize:16}}>Small multiples per concept+unit, missing and censored labeled, no gap filling or smoothing. {timelineFilter ? `Filtered to ${timelineFilter.label}.` : 'Showing all authorized records.'}</p></section>
       <p><button className="button-ghost" onClick={()=>navigateTab('clinical')}>← Back to Clinical Records</button> <button className="button-ghost" onClick={()=>navigateTab('timeline')}>Open Timeline to change the filter</button></p>
-      <ClinicalChartsExplorer key={`${project}:${patient}:${refreshKey}`} stateFilter={timelineFilter ? { day: timelineFilter.day, label: timelineFilter.label } : null} />
+      <ClinicalChartsExplorer key={`${project}:${patient}:${refreshKey}`} project={project} patient={patient} stateFilter={timelineFilter ? { day: timelineFilter.day, label: timelineFilter.label } : null} />
     </>}
 
     {tab==='imaging' && <>

@@ -201,7 +201,7 @@ export function SimulationBuilder({ project, patient }: { project: string; patie
     if (!saved) return;
     const check = await authorized<Eligibility>(`/api/simulation?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&resource=eligibility`, signal, { config_id: saved.id, capability: saved.config.geometry_policy === 'none' ? 'measurement' : 'anatomical_mesh' });
     setEligibility(check);
-    const sampled = await authorized<Preview>(`/api/simulation?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&resource=preview`, signal, { config_id: saved.id });
+    const sampled = await authorized<Preview>(`/api/simulation?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&resource=preview&config=${encodeURIComponent(saved.id)}`, signal);
     setPreview(sampled);
     setMessage('Eligibility and sampled schedule loaded. Engineering test permission does not establish clinical eligibility.');
   }

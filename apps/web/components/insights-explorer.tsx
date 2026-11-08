@@ -32,6 +32,8 @@ function explain(status: number): string {
 }
 
 type LoadedContext = { context: InterpretationContext; fetchedAt: string; stale: boolean };
+type BranchSummary = S['BranchSummary'];
+type StateView = S['StateView'];
 
 function shortId(value: string | null | undefined): string {
   return typeof value === 'string' && value ? `${value.slice(0, 8)}…` : 'not recorded';
@@ -52,15 +54,19 @@ function groundingStatus(grounding: GroundingReport | null, report: Interpretati
   return `Not published · grounding ${grounding.verdict} · ${grounding.supported_claims} supported, ${grounding.unsupported_claims} unsupported`;
 }
 
-export function InsightsExplorer() {
-  return <Suspense fallback={<LoadingState/>}><InsightsFromQuery /></Suspense>;
+export function InsightsExplorer({ project: overrideProject, patient: overridePatient }: { project?: string | null; patient?: string | null } = {}) {
+  return <Suspense fallback={<LoadingState/>}><InsightsFromQuery overrideProject={overrideProject} overridePatient={overridePatient} /></Suspense>;
 }
 
-function InsightsFromQuery() {
+function InsightsFromQuery({ overrideProject, overridePatient }: { overrideProject?: string | null; overridePatient?: string | null } = {}) {
   const initial = initialParams(useSearchParams());
-  const { project, patient } = initial;
+  const project = overrideProject ?? initial.project;
+  const patient = overridePatient ?? initial.patient;
   const [branch, setBranch] = useState<string | null>(initial.branch);
   const [stateId, setStateId] = useState<string | null>(initial.state);
+  const [branches, setBranches] = useState<BranchSummary[] | null>(null);
+  const [states, setStates] = useState<StateView[] | null>(null);
+  const [scopeStatus, setScopeStatus] = useState('Loading authorized branches…');
   const [context, setContext] = useState<LoadedContext | null>(null);
   const [report, setReport] = useState<InterpretationReport | null>(null);
   const [grounding, setGrounding] = useState<GroundingReport | null>(null);
@@ -84,8 +90,62 @@ function InsightsFromQuery() {
     return (await readJson(response)) as T;
   }
 
+  useEffect(() => {
+    if (!project || !patient) return;
+    const controller = new AbortController();
+    pending.current?.abort();
+    pending.current = controller;
+    void (async () => {
+      try {
+        const response = await fetch(
+          `/api/state-timeline?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&resource=branches`,
+          { cache: 'no-store', signal: controller.signal },
+        );
+        if (!response.ok) throw new Error(explain(response.status));
+        const page = (await readJson(response)) as { items?: BranchSummary[] };
+        if (controller.signal.aborted) return;
+        setBranches(page.items ?? []);
+        setScopeStatus((page.items ?? []).length ? '' : 'No branches are recorded for this authorized case.');
+      } catch (error) {
+        if (!controller.signal.aborted) setScopeStatus(error instanceof Error ? error.message : 'Branches unavailable.');
+      }
+    })();
+    return () => controller.abort();
+  }, [project, patient]);
+
+  async function loadStates(nextBranch: string) {
+    if (!project || !patient) return;
+    setStates(null);
+    setStateId(null);
+    setScopeStatus('Loading persisted states…');
+    const controller = new AbortController();
+    pending.current?.abort();
+    pending.current = controller;
+    try {
+      const response = await fetch(
+        `/api/state-timeline?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&resource=states&branch=${encodeURIComponent(nextBranch)}`,
+        { cache: 'no-store', signal: controller.signal },
+      );
+      if (!response.ok) throw new Error(explain(response.status));
+      const page = (await readJson(response)) as { items?: StateView[] };
+      if (controller.signal.aborted) return;
+      setStates(page.items ?? []);
+      setScopeStatus((page.items ?? []).length ? '' : 'No persisted states on this branch.');
+    } catch (error) {
+      if (!controller.signal.aborted) setScopeStatus(error instanceof Error ? error.message : 'States unavailable.');
+    }
+  }
+
+  useEffect(() => {
+    if (!project || !patient || !initial.state || !UUID.test(initial.state)) return;
+    void loadContext(initial.state);
+    // Deep links (?state=) supply the selected snapshot automatically, once.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [project, patient]);
+
   async function loadContext(nextState: string) {
     if (!project || !patient) return;
+    if (!UUID.test(nextState)) { setMessage('Select a persisted state from the authorized list.'); return; }
     const key = ++requestId.current;
     pending.current?.abort();
     const controller = new AbortController();
@@ -100,7 +160,7 @@ function InsightsFromQuery() {
     try {
       const loaded = await authorized<InterpretationContext>(
         `/api/insights?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&action=context&state=${encodeURIComponent(nextState)}`,
-        { branch_id: branch && UUID.test(branch) ? branch : undefined },
+        { patient_id: patient, snapshot_id: nextState },
         controller.signal,
       );
       if (controller.signal.aborted || key !== requestId.current) return;
@@ -125,7 +185,11 @@ function InsightsFromQuery() {
     try {
       const loaded = await authorized<InterpretationReport>(
         `/api/insights?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&action=interpret&state=${encodeURIComponent(stateId)}`,
-        { mode },
+        {
+          context_snapshot_id: context.context.snapshot_id,
+          expected_context_hash: context.context.context_hash,
+          mode: mode === 'rule_based' ? 'template' : 'external_candidate',
+        },
         controller.signal,
       );
       if (controller.signal.aborted || key !== requestId.current) return;
@@ -153,7 +217,7 @@ function InsightsFromQuery() {
     try {
       const loaded = await authorized<GroundingReport>(
         `/api/insights?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&action=ground&state=${encodeURIComponent(stateId)}`,
-        { interpretation: report },
+        { interpretation_snapshot_id: report.context_snapshot_id },
         controller.signal,
       );
       if (controller.signal.aborted || key !== requestId.current) return;
@@ -171,10 +235,10 @@ function InsightsFromQuery() {
 
   async function saveResult() {
     if (!project || !patient || !stateId || !report) return;
-    const fingerprint = `${stateId}:${report.snapshot_hash}:${report.context_hash}`;
+    const fingerprint = `insight-${stateId}-${report.snapshot_hash.slice(0, 12)}-${report.context_hash.slice(0, 12)}`;
     const response = await fetch(
       `/api/insights?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&action=save&state=${encodeURIComponent(stateId)}`,
-      { method: 'POST', headers: { 'content-type': 'application/json', 'idempotency-key': `insight-${fingerprint}`.slice(0, 80) }, body: JSON.stringify({ interpretation: report }), cache: 'no-store' },
+      { method: 'POST', headers: { 'content-type': 'application/json', 'idempotency-key': fingerprint }, body: JSON.stringify({ interpretation_snapshot_id: report.context_snapshot_id, idempotency_key: fingerprint }), cache: 'no-store' },
     );
     if (!response.ok) {
       setMessage(explain(response.status));
@@ -209,14 +273,21 @@ function InsightsFromQuery() {
       <section aria-label="Insight scope">
         <h2>Exact insight scope</h2>
         <p>Editors may request a research summary with an explicit permitted execution choice; viewers inspect approved results. Never streams private model tokens.</p>
-        <p className="field-hint">Tip: open the workspace Timeline tab, select a persisted state, then paste its state ID here once. Branch is optional; when omitted the server resolves the owning branch.</p>
+        <p className="field-hint">Pick an authorized branch, then a persisted state — no UUID typing. The selected snapshot is supplied automatically.</p>
+        {scopeStatus ? <p role="status" className="field-hint">{scopeStatus}</p> : null}
         <p>
-          <label htmlFor="insight-branch">Branch (optional, authorized list value) </label>
-          <input id="insight-branch" value={branch ?? ''} onChange={event => setBranch(event.target.value.trim() || null)} spellCheck={false} placeholder="Optional branch UUID" />
+          <label htmlFor="insight-branch">Branch </label>
+          <select id="insight-branch" value={branch ?? ''} onChange={event => { const next = event.target.value || null; setBranch(next); setContext(null); setReport(null); if (next) void loadStates(next); else { setStates(null); setStateId(null); } }}>
+            <option value="" disabled>Choose an authorized branch…</option>
+            {(branches ?? []).map(item => <option key={item.branch_id} value={item.branch_id}>{item.branch_id.slice(0, 8)}… · {item.mode}</option>)}
+          </select>
         </p>
         <p>
           <label htmlFor="insight-state">State </label>
-          <input id="insight-state" value={stateId ?? ''} onChange={event => setStateId(event.target.value.trim() || null)} spellCheck={false} placeholder="Persisted state UUID from Timeline" />
+          <select id="insight-state" value={stateId ?? ''} onChange={event => setStateId(event.target.value || null)} disabled={!states?.length}>
+            <option value="" disabled>{states ? 'Choose a persisted state…' : 'Choose a branch first…'}</option>
+            {(states ?? []).map(item => <option key={item.snapshot.id} value={item.snapshot.id}>{item.snapshot.id.slice(0, 8)}… · rev {item.snapshot.input_revision} · {item.snapshot.status}</option>)}
+          </select>
           <button type="button" disabled={!stateId || !UUID.test(stateId)} onClick={() => stateId && void loadContext(stateId)}>Load exact context</button>
         </p>
       </section>
@@ -271,7 +342,7 @@ function InsightsFromQuery() {
           {context.context.limitations.map(reason => <p key={reason}>Limitation: {reason}</p>)}
           <div>
             <button type="button" onClick={() => void generateSummary('rule_based')}>Generate rule-based summary</button>{' '}
-            <button type="button" onClick={() => void generateSummary('external_private')}>Request private candidate (permitted execution only)</button>
+            <button type="button" disabled title="External inference is disabled until its policy gate closes; the server denies this execution.">Request private candidate (gate closed)</button>
           </div>
         </section>
       ) : null}

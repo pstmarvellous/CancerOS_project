@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import { readCaseSelection, withCaseSelection, type CaseSelection } from '../lib/case-selection';
 
 export type Selection = {
   project?: string;
@@ -49,9 +50,11 @@ function preserveSelection(href: string, selection: Selection): string {
 
 function readSelection(params: URLSearchParams): Selection {
   const pick = (key: keyof Selection) => params.get(key) ?? undefined;
+  const stored = readCaseSelection(params);
   return {
-    project: pick('project'), patient: pick('patient'), branch: pick('branch'),
-    run: pick('run'), state: pick('state'), lesion: pick('lesion'),
+    project: pick('project') ?? stored.project ?? undefined,
+    patient: pick('patient') ?? stored.patient ?? undefined,
+    branch: pick('branch'), run: pick('run'), state: pick('state'), lesion: pick('lesion'),
     panel: pick('panel'), compare: pick('compare'),
   };
 }
@@ -87,8 +90,11 @@ function ShellInner() {
               for(const key of ['scenario','state']){const value=params.get(key);if(value)demoQuery.set(key,value);}
               target=`/demo?${demoQuery}`;
             } else if(selection.project && selection.patient) {
-              if (item.href === '/cases/detail') target = preserveSelection(item.href, selection);
+              if (item.href === '/cases/detail') target = withCaseSelection(item.href, selection as CaseSelection);
               else if (item.href === '/cases') target = `/cases?project=${encodeURIComponent(selection.project)}`;
+              else if (['/twin','/charts','/simulation','/insights','/states','/timeline'].includes(item.href)) {
+                target = withCaseSelection(item.href, selection as CaseSelection);
+              }
             } else if(selection.project && item.href === '/cases') {
               target = `/cases?project=${encodeURIComponent(selection.project)}`;
             }

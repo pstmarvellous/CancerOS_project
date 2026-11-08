@@ -104,14 +104,15 @@ export function recordDay(record: ClinicalRecord | null): number | null {
   return null;
 }
 
-export function ClinicalChartsExplorer({ stateFilter }: { stateFilter?: { day: number | null; label: string } | null } = {}) {
-  return <Suspense fallback={<LoadingState/>}><ClinicalChartsFromQuery stateFilter={stateFilter ?? null} /></Suspense>;
+export function ClinicalChartsExplorer({ stateFilter, project: overrideProject, patient: overridePatient }: { stateFilter?: { day: number | null; label: string } | null; project?: string | null; patient?: string | null } = {}) {
+  return <Suspense fallback={<LoadingState/>}><ClinicalChartsFromQuery stateFilter={stateFilter ?? null} overrideProject={overrideProject} overridePatient={overridePatient} /></Suspense>;
 }
 
-function ClinicalChartsFromQuery({ stateFilter }: { stateFilter: { day: number | null; label: string } | null }) {
+function ClinicalChartsFromQuery({ stateFilter, overrideProject, overridePatient }: { stateFilter: { day: number | null; label: string } | null; overrideProject?: string | null; overridePatient?: string | null }) {
   const params = useSearchParams();
   const initial = initialParams(params);
-  const { project, patient } = initial;
+  const project = overrideProject ?? initial.project;
+  const patient = overridePatient ?? initial.patient;
   const [visit] = useState(initial.visit);
   const [rows, setRows] = useState<Row[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
