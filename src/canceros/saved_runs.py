@@ -63,8 +63,10 @@ def persist_validated(
     if not KEY_RE.fullmatch(key):
         raise HTTPException(422)
     from canceros.identity import authorize_project
+    from canceros.patient_linkage import authorize_patient
 
     authorize_project(i, p, "viewer")
+    authorize_patient(c, i, p, context.patient_id)
     if report.context_hash != context.context_hash:
         raise HTTPException(409)
     grounded = validate_publication(context, report)
@@ -72,12 +74,12 @@ def persist_validated(
         raise HTTPException(422)
     known = c.execute(
         text(
-            "SELECT id FROM intelligence.saved_interpretations WHERE project_id=:p AND idempotency_key=:k"
+            "SELECT id FROM intelligence.saved_interpretations WHERE project_id=:p AND patient_id=:u AND idempotency_key=:k"
         ),
-        {"p": p, "k": f"saved-interpretation:{key}"},
+        {"p": p, "u": context.patient_id, "k": f"saved-interpretation:{key}"},
     ).scalar_one_or_none()
     if known:
-        return _view(_row(c, p, known))
+        return read_saved(c, i, p, context.patient_id, known)
     identifier = uuid4()
     c.execute(
         text("""INSERT INTO intelligence.saved_interpretations(
@@ -132,14 +134,19 @@ def persist_validated(
                 "new": identifier,
             },
         )
-    return _view(_row(c, p, identifier))
+    return read_saved(c, i, p, context.patient_id, identifier)
 
 
-def read_saved(c, i, p: UUID, identifier: UUID) -> PersistedInterpretation:
+def read_saved(c, i, p: UUID, u: UUID, identifier: UUID) -> PersistedInterpretation:
     from canceros.identity import authorize_project
+    from canceros.patient_linkage import authorize_patient
 
     authorize_project(i, p, "viewer")
-    return _view(_row(c, p, identifier))
+    authorize_patient(c, i, p, u)
+    row = _row(c, p, identifier)
+    if row["patient_id"] != u:
+        raise HTTPException(404)
+    return _view(row)
 
 
 def reuse_exact(
