@@ -22913,6 +22913,204 @@
         "No backend schema/API/generated-client change; internal bundle v2 requires re-preparation",
         "Fixture SQL rolled back; generated private object-store blobs remain"
       ]
+    },
+    {
+      "id": "COS-REC-00",
+      "purpose": "Security and recovery baseline: saved-interpretation patient-ownership defect",
+      "dependency_ids": [],
+      "requirement_links": [
+        "project/patient/branch ownership invariant",
+        "patient grant checks (access.patient_grants)",
+        "denied-by-default retrieval, no content on denial"
+      ],
+      "allowed_scope": "saved_api/saved_runs authorization only; no product redesign or spec changes",
+      "status": "verified",
+      "status_history": [
+        "planned",
+        "in_progress",
+        "verified"
+      ],
+      "owner_responsibility": "Primary backend/security agent; specialist self-review, no independent reviewer asserted",
+      "actual_touched_files": [
+        "src/canceros/saved_runs.py",
+        "src/canceros/saved_api.py",
+        "tests/test_saved_runs.py",
+        "docs/engineering/checkpoint.md"
+      ],
+      "decisions": [
+        "read_saved signature extended with URL patient; patient binding enforced on stored row",
+        "idempotency lookup scoped by patient to prevent cross-patient key collision",
+        "existing fixture patients created as real rows to model production grants"
+      ],
+      "checks_evidence": [
+        {
+          "check": "defect reproduced with artificial Patients A/B (service layer)",
+          "result": "pass: A-authorized viewer read B result before fix"
+        },
+        {
+          "check": "uv run python -m pytest tests/test_saved_runs.py",
+          "result": "pass: 6 tests"
+        },
+        {
+          "check": "uv run python -m pytest tests/test_patient_linkage.py tests/test_api.py tests/test_security_hardening.py -k 'not frontend_boundary'",
+          "result": "pass: 19 tests"
+        },
+        {
+          "check": "uv run python -m pytest tests/test_interpretation_runs.py tests/test_context_runs.py tests/test_imaging_ingestion.py",
+          "result": "pass: 18 tests"
+        },
+        {
+          "check": "uv run python -m pytest tests/test_demo_cases_synthetic.py tests/test_research_workspace.py",
+          "result": "pass: 20 tests"
+        },
+        {
+          "check": "uv run python scripts/dev.py start foundation + health probes",
+          "result": "pass: API 200, web 200; stopped after"
+        },
+        {
+          "check": "ruff check src/canceros/saved_runs.py src/canceros/saved_api.py",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "id": "COS-REC-01",
+      "purpose": "Unified navigation and case context: single authoritative selection, restored context, canonical scenario/insights contracts",
+      "dependency_ids": [
+        "COS-REC-00"
+      ],
+      "requirement_links": [
+        "one authoritative selection (project/case/scenario/timepoint/permissions)",
+        "no second context store; session never grants unauthorized access",
+        "canonical backend schemas for scenario and insights integrations",
+        "negative tests for inaccessible cases and stale state"
+      ],
+      "allowed_scope": "Frontend navigation/session/proxy layers and their tests; no backend authorization changes; no product redesign",
+      "status": "verified",
+      "status_history": [
+        "planned",
+        "in_progress",
+        "verified"
+      ],
+      "owner_responsibility": "Primary frontend/full-stack agent; specialist self-review, no independent reviewer asserted",
+      "actual_touched_files": [
+        "apps/web/lib/case-selection.ts",
+        "apps/web/components/case-bound-page.tsx",
+        "apps/web/components/use-case-permissions.ts",
+        "apps/web/components/app-shell.tsx",
+        "apps/web/app/twin/page.tsx",
+        "apps/web/app/charts/page.tsx",
+        "apps/web/app/simulation/page.tsx",
+        "apps/web/app/insights/page.tsx",
+        "apps/web/app/states/page.tsx",
+        "apps/web/app/timeline/page.tsx",
+        "apps/web/components/clinical-charts-explorer.tsx",
+        "apps/web/components/insights-explorer.tsx",
+        "apps/web/components/observation-timeline.tsx",
+        "apps/web/components/revision-update-panel.tsx",
+        "apps/web/components/unified-workspace.tsx",
+        "apps/web/components/simulation-builder.tsx",
+        "apps/web/components/research-session.tsx",
+        "apps/web/app/api/insights/route.ts",
+        "apps/web/app/api/simulation/route.ts",
+        "apps/web/app/api/observation-timeline/route.ts",
+        "tests/browser/rec01-navigation.spec.ts",
+        "tests/test_case_navigation_contracts.py"
+      ],
+      "decisions": [
+        "URL remains the selection source of truth; last_case is a restore fallback only, UUID-validated",
+        "Stale last_case never grants access: every read is server-authorized; sign-out clears selection and reloads",
+        "Insights bodies aligned to canonical ContextBuildInput/InterpretationInput/GroundingCheckInput/InterpretationPersistInput; external candidate control disabled with closed-gate label",
+        "Simulation schedule-preview corrected to GET config resource; observation-timeline bound to session proxy with explicit advanced-tool labeling"
+      ],
+      "checks_evidence": [
+        {
+          "check": "npx playwright test tests/browser/rec01-navigation.spec.ts",
+          "result": "pass: 11-step journey (create A, clinical, twin, scenarios, charts, refresh, back, case B isolation, stale state, sign-out, viewer denied) with 8 screenshots and evidence JSON"
+        },
+        {
+          "check": "uv run python -m pytest tests/test_case_navigation_contracts.py",
+          "result": "pass: 3 inaccessible-case and stale-patient negatives"
+        },
+        {
+          "check": "npx vitest run (full frontend suite)",
+          "result": "pass: 175 tests, 30 files"
+        },
+        {
+          "check": "backend suites (saved/patient/security/api/workspace/interpretation/context/fusion/demo)",
+          "result": "pass: 40 + 47 tests"
+        },
+        {
+          "check": "npm run typecheck; npm run lint; production build; ruff",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "id": "COS-REC-02",
+      "purpose": "First-time experience and reliable demo launch: plain homepage, honest availability, idempotent prepare, restart-proof journey",
+      "dependency_ids": [
+        "COS-REC-01"
+      ],
+      "requirement_links": [
+        "plain-language homepage with one primary and one secondary action",
+        "demo entry must not advertise availability when assets are missing",
+        "idempotent documented preparation command with actionable failures",
+        "fresh-session journey after real environment restart"
+      ],
+      "allowed_scope": "Homepage, demo launch/session/error paths, prepare/startup plumbing and their tests; no backend science changes",
+      "status": "verified",
+      "status_history": [
+        "planned",
+        "in_progress",
+        "verified"
+      ],
+      "owner_responsibility": "Primary frontend/product agent; specialist self-review, no independent reviewer asserted",
+      "actual_touched_files": [
+        "apps/web/app/page.tsx",
+        "apps/web/lib/synthetic-demo.ts",
+        "apps/web/app/api/demo-session/route.ts",
+        "apps/web/app/api/demo/route.ts",
+        "apps/web/components/demo-workspace.tsx",
+        "scripts/prepare_synthetic_demo.py",
+        "scripts/dev.py",
+        "scripts/local_services.py",
+        "infrastructure/README.md",
+        "tests/browser/rec02-demo.spec.ts",
+        "tests/browser/shell.spec.ts"
+      ],
+      "decisions": [
+        "Bundle lookup probes both launcher cwd layouts; web process gets CANCEROS_SYNTHETIC_DEMO=1 at normal startup",
+        "Homepage is request-rendered (force-dynamic) so availability never reflects a stale build-time bundle",
+        "prepare defaults to ensure-valid (skip when fresh, refresh inside 24h window); --check validates only; --force rebuilds",
+        "dev.py foundation/data profiles migrate the disposable DB and ensure the bundle before starting API/web"
+      ],
+      "checks_evidence": [
+        {
+          "check": "npx playwright test tests/browser/rec02-demo.spec.ts after full stop/start foundation",
+          "result": "pass: homepage, launch, canvas rotate, scenario SC-03, follow-up, refresh; 5 screenshots and evidence JSON"
+        },
+        {
+          "check": "npx playwright test tests/browser/shell.spec.ts",
+          "result": "pass: new headline, CTAs, narrow layout"
+        },
+        {
+          "check": "uv run python scripts/prepare_synthetic_demo.py --check",
+          "result": "pass: reports validity window and skip/actionable guidance"
+        },
+        {
+          "check": "npx vitest run (full frontend suite)",
+          "result": "pass: 175 tests, 30 files"
+        },
+        {
+          "check": "backend spot suites (navigation contracts, saved, hardening minus pre-existing frontend case)",
+          "result": "pass: 12 tests"
+        },
+        {
+          "check": "npm run typecheck; npm run lint; npm run build; ruff on touched scripts",
+          "result": "pass"
+        }
+      ]
     }
   ],
   "contract_closure": {

@@ -60,6 +60,10 @@ def start_profile(profile):
 
         wait(ready_object, "Private versioned object store")
         wait(lambda: dependencies_ready(settings), "PostgreSQL/storage/queue dependencies")
+        # Demo launch is part of normal startup: ensure a valid synthetic bundle
+        # while services are up, so the homepage never advertises a missing demo.
+        run("scripts/migrate_test.py")
+        run("scripts/prepare_synthetic_demo.py")
     if profile in ("shell", "foundation"):
         start("api")
         start("web")

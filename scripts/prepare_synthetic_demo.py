@@ -4,8 +4,13 @@ Uses the explicitly disposable test database and private object store. No extern
 inference, API credentials, clinical source data or runtime authorization bypass.
 The fixture transaction rolls back; embedded meshes are copied into an ignored,
 expiring local presentation bundle. Source specifications and algorithms are unchanged.
+
+Modes: default ensures a valid bundle (skips rebuild when the present bundle is
+valid with more than 24h remaining); --check validates only and reports actionable
+failures; --force rebuilds unconditionally.
 """
 
+import argparse
 import hashlib
 import json
 import os
@@ -15,6 +20,10 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from sqlalchemy import text
+
+ROOT = Path(__file__).resolve().parents[1]
+BUNDLE_PATH = ROOT / ".local" / "synthetic-demo.json"
+FRESHNESS_SKIP = timedelta(hours=24)
 
 ROOT = Path(__file__).resolve().parents[1]
 # This process prepares local fixtures only, regardless of development .env.
@@ -81,7 +90,56 @@ def surface_digest(surface):
     return digest.hexdigest()
 
 
-def prepare():
+def bundle_status():
+    """Validate the present bundle without touching services or the database."""
+    try:
+        raw = BUNDLE_PATH.read_text(encoding="utf-8")
+    except OSError:
+        return ("missing", "No prepared bundle at .local/synthetic-demo.json.")
+    try:
+        bundle = json.loads(raw)
+    except ValueError:
+        return ("invalid", "Bundle is not valid JSON; remove it and prepare again.")
+    for key in ("version", "syntheticOnly", "caseLabel", "preparedAt", "expiresAt", "scenarios"):
+        if key not in bundle:
+            return ("invalid", f"Bundle is missing {key}; remove it and prepare again.")
+    try:
+        expires = datetime.fromisoformat(bundle["expiresAt"])
+    except ValueError:
+        return ("invalid", "Bundle expiry is unreadable; remove it and prepare again.")
+    now = datetime.now(timezone.utc)
+    if expires <= now:
+        return ("expired", "Bundle expired; prepare again to refresh the 7-day window.")
+    if set(bundle.get("scenarios", {})) != set(FAMILIES):
+        return ("invalid", "Bundle scenario families are incomplete; prepare again.")
+    remaining = expires - now
+    return ("valid", f"Bundle valid for {remaining.days}d {remaining.seconds // 3600}h.")
+
+
+def check():
+    state, message = bundle_status()
+    print(f"Demo bundle state: {state}. {message}")
+    if state != "valid":
+        print("Action: ensure disposable PostgreSQL, storage and queue are running, then run:")
+        print("  uv run python scripts/prepare_synthetic_demo.py")
+        raise SystemExit(1)
+    print("PASS existing synthetic demo bundle is valid; rebuild skipped")
+
+
+def prepare(*, force=False):
+    if not force:
+        state, message = bundle_status()
+        if state == "valid":
+            try:
+                remaining = datetime.fromisoformat(
+                    json.loads(BUNDLE_PATH.read_text(encoding="utf-8"))["expiresAt"]
+                ) - datetime.now(timezone.utc)
+            except (OSError, ValueError, KeyError):
+                remaining = timedelta(0)
+            if remaining > FRESHNESS_SKIP:
+                print(f"PASS {message} Rebuild skipped.")
+                return
+            print(f"{message} Refreshing within 24h of expiry.")
     if not __debug__:
         raise RuntimeError("Synthetic preparation requires Python fixture assertions enabled")
     fixture = registry_db.__wrapped__()
@@ -222,4 +280,11 @@ def prepare():
 
 
 if __name__ == "__main__":
-    prepare()
+    parser = argparse.ArgumentParser(description="Prepare or validate the synthetic demo bundle")
+    parser.add_argument("--check", action="store_true", help="validate the present bundle only")
+    parser.add_argument("--force", action="store_true", help="rebuild even when the bundle is fresh")
+    args = parser.parse_args()
+    if args.check:
+        check()
+    else:
+        prepare(force=args.force)

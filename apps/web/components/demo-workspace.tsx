@@ -139,7 +139,8 @@ export function DemoWorkspace() {
     setFailed3D(false);
   }
 
-  if (error) return <section className="card" role="alert"><h1>Let’s reopen the demo</h1><p>{error}</p>
+  if (error) return <section className="card" role="alert"><h1>The demo could not open</h1><p>{error}</p>
+    <p>If you run this computer, check the demo bundle with <code>uv run python scripts/prepare_synthetic_demo.py --check</code>, then retry. Otherwise, try again later.</p>
     <button onClick={() => { setError(''); setCatalog(null); setScenario(null); setAttempt(n => n + 1); }}>Retry demo</button>{' '}
     <Link href="/">Return to overview</Link></section>;
   if (!catalog) return <section className="card"><h1>Opening the Digital Twin Demo</h1><p role="status">Preparing your read-only synthetic research workspace…</p></section>;

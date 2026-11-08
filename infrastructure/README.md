@@ -28,6 +28,19 @@ both. Stop/restart retains data. No destructive reset command exists. CPU worker
 only by explicit `uv run python -m workers.digest` (bounded engineering queue batch).
 Digest success is a persisted ready result, not published scientific output.
 
+Synthetic demo (token-free): `foundation` and `data` startup automatically ensures a
+valid `.local/synthetic-demo.json` bundle (skips rebuild when valid with 24h+ left;
+refreshes inside the window). To validate only, or rebuild explicitly:
+
+```powershell
+uv run python scripts/prepare_synthetic_demo.py --check
+uv run python scripts/prepare_synthetic_demo.py --force
+```
+
+The bundle expires 7 days after preparation; the homepage enables Explore Interactive
+Demo only when the bundle validates. Normal startup sets `CANCEROS_SYNTHETIC_DEMO=1`
+for the web process, so no manual step is needed after `dev.py start foundation`.
+
 | Component | Private loopback ports / location |
 | --- | --- |
 | Web / API | 3000 / 8000; .local/web.log / api.log |

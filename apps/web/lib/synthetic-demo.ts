@@ -6,7 +6,26 @@ import { onlyKeys, surfaceDigest, validScenario } from './demo-integrity';
 export { surfaceDigest } from './demo-integrity';
 
 export const DEMO_COOKIE = 'canceros-synthetic-demo';
-const FILE = resolve(process.cwd(), '..', '..', '.local', 'synthetic-demo.json');
+function bundleFile(): string {
+  // Next may start with the repository root or apps/web as the working
+  // directory depending on the launcher. Prefer an explicit override, then
+  // probe both layouts so normal startup always finds the prepared bundle.
+  const override = process.env.CANCEROS_SYNTHETIC_DEMO_FILE;
+  if (override) return resolve(override);
+  const candidates = [
+    resolve(process.cwd(), '.local', 'synthetic-demo.json'),
+    resolve(process.cwd(), '..', '..', '.local', 'synthetic-demo.json'),
+  ];
+  for (const candidate of candidates) {
+    try {
+      if (statSync(candidate).isFile()) return candidate;
+    } catch {
+      /* try the next layout */
+    }
+  }
+  return candidates[0];
+}
+const FILE = bundleFile();
 const FAMILIES = ['SC-01', 'SC-02', 'SC-03', 'SC-04', 'SC-05'];
 const memory = globalThis as unknown as {
   cancerosDemoSessions?: Map<string, { expires: number; fingerprint: string }>;
