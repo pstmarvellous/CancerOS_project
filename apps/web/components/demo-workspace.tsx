@@ -5,7 +5,9 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import type { DemoCatalog, DemoScenario } from '../lib/demo-contracts';
+import { familyPresentation, readableConcept, volumeComparison } from '../lib/scenario-presentation';
 import { pointValue, type TimelinePoint } from './observation-timeline';
+import { TermHelp } from './term-help';
 import { TrendView } from './trend-view';
 import styles from './demo-workspace.module.css';
 
@@ -159,8 +161,8 @@ export function DemoWorkspace() {
         <h1>{VIEWS.find(([id]) => id === view)?.[1] ?? 'Digital Twin Demo'}</h1></div><span className={styles.pill}>Synthetic demonstration</span></div>
       <div className={styles.context}>
         <label htmlFor="demo-scenario">Hypothetical scenario<select id="demo-scenario" value={family} onChange={event => navigate({ scenario: event.target.value, state: null })}>
-          {catalog.scenarios.map(s => <option value={s.id} key={s.id}>{s.label}</option>)}</select></label>
-        <p>{current?.description ?? 'Loading this scenario…'} <span>Unvalidated what-if exploration.</span></p>
+          {catalog.scenarios.map(s => <option value={s.id} key={s.id}>{familyPresentation(s.id).plainName}</option>)}</select></label>
+        <p>{current ? familyPresentation(family).explanation : 'Loading this scenario…'} <span>Unvalidated what-if exploration · {family}.</span></p>
       </div>
       {!current ? <p role="status">Loading the selected scenario and its measurements…</p> : !selected ?
         <section className="card"><h2>This state is unavailable</h2><p>The saved selection does not belong to this scenario.</p><Link href={href({ state: null })}>Open the shared baseline</Link></section> : <>
@@ -168,19 +170,20 @@ export function DemoWorkspace() {
         <div className={styles.steps}><p><b>1. Explore</b>Rotate the model and inspect its measurements.</p><p><b>2. Compare</b>Choose a scenario, then select a day on the timeline.</p><p><b>3. Understand</b>Open Clinical Data or AI Research Insights for context.</p></div>
         <Link className="button" href={href({ view: 'twin' })}>Explore the 3D Digital Twin</Link>
         <p className={styles.subtle}>The shared baseline is a geometric phantom, not a real scan. Missing clinical facts stay missing.</p></section>}
-      {view === 'scenarios' && <section className={styles.panel}><h2>Explore a hypothetical scenario</h2><p>Each family shares the same synthetic baseline and has three generated follow-ups. These are demonstrations of assumptions, not patient-specific predictions.</p>
-        <div className={styles.scenarios}>{catalog.scenarios.map(s => <Link key={s.id} href={href({ view: 'twin', scenario: s.id, state: null })} aria-current={s.id === family ? 'true' : undefined}><h3>{s.label}</h3><p>{s.description}</p><span>Explore in 3D →</span></Link>)}</div></section>}
+      {view === 'scenarios' && <section className={styles.panel}><h2>Explore a hypothetical scenario</h2><p>Each family shares the same 216 mm³ synthetic baseline and has three generated follow-ups. These are demonstrations of assumptions, not patient-specific predictions.</p>
+        <div className={styles.scenarios}>{catalog.scenarios.map(s => <Link key={s.id} href={href({ view: 'twin', scenario: s.id, state: null })} aria-current={s.id === family ? 'true' : undefined}><h3>{familyPresentation(s.id).plainName}</h3><p>{familyPresentation(s.id).explanation}</p><span>Explore in 3D →</span></Link>)}</div></section>}
       {(view === 'twin' || view === 'overview') && <div className={styles.twin} data-details={rightOpen ? 'open' : 'collapsed'}>
         <section ref={viewer} tabIndex={-1} role={fullTwin ? 'dialog' : undefined} aria-modal={fullTwin ? true : undefined} className={styles.viewer} aria-label="Selected digital twin" data-maximized={fullTwin ? 'true' : undefined} data-native-fullscreen={nativeFullscreen ? 'true' : undefined}>
-          <div className={styles.viewerHeading}><div><p className="eyebrow">SYNTHETIC TUMOR REGION</p><h2>{name(selected)}</h2></div><span>Relative day {day(selected)} · mm</span></div>
+          <div className={styles.viewerHeading}><div><p className="eyebrow">SYNTHETIC TUMOR REGION · {family}</p><h2>{name(selected)} — {selected.exact_value ?? 'Unavailable'} mm³</h2></div><span>Relative day {day(selected)}</span></div>
           <div className={styles.viewerActions}>
             <button type="button" aria-pressed={fullTwin} onClick={() => setFullTwin(full => !full)}>{fullTwin ? 'Restore layout' : 'Maximize viewer'}</button>
             {fullscreenAvailable && <button type="button" aria-pressed={nativeFullscreen} onClick={() => void toggleFullscreen()}>{nativeFullscreen ? 'Exit fullscreen' : 'Fullscreen'}</button>}
             {!fullTwin && !nativeFullscreen && <button type="button" aria-controls="demo-measurements" aria-expanded={rightOpen} onClick={() => setRightOpen(open => !open)}>{rightOpen ? 'Collapse measurements' : 'Show measurements'}</button>}
-            {(fullTwin || nativeFullscreen) && <label>Scenario<select aria-label="Viewer hypothetical scenario" value={family} onChange={event => navigate({ scenario: event.target.value, state: null })}>{catalog.scenarios.map(s => <option key={s.id} value={s.id}>{s.label}</option>)}</select></label>}
+            {(fullTwin || nativeFullscreen) && <label>Scenario<select aria-label="Viewer hypothetical scenario" value={family} onChange={event => navigate({ scenario: event.target.value, state: null })}>{catalog.scenarios.map(s => <option key={s.id} value={s.id}>{familyPresentation(s.id).plainName}</option>)}</select></label>}
             <span className={styles.inlineMeasurement}>{selected.exact_value ?? 'Unavailable'} mm³ · {name(selected)}</span>
           </div>
           {fullscreenMessage && <p className={styles.subtle} role="status">{fullscreenMessage}</p>}
+          <BaselineComparison points={points} selected={selected} />
           {asset && !failed3D ? <Renderer key={`${family}:${renderAttempt}`} asset={asset} selected={selected.id} onFailure={onFailure} label="Synthetic tumor region · geometric phantom · mm"/> :
             <div className={styles.recovery} role="alert"><h3>The 3D view could not load</h3><p>Your selected measurements remain available. Retry with browser graphics acceleration enabled.</p><button onClick={() => { setFailed3D(false); setRenderAttempt(n => n + 1); }}>Retry 3D viewer</button></div>}
           <div className={styles.timeline} aria-label="Scenario timeline"><div><h3>Explore changes over time</h3><p>Select a measured state. Days are relative to the synthetic baseline.</p></div>
@@ -194,13 +197,14 @@ export function DemoWorkspace() {
           <section className={styles.panel}><h2>Continue exploring</h2><p><Link href={href({ view: 'clinical' })}>Inspect clinical observations →</Link></p><p><Link href={href({ view: 'insights' })}>Read research insights →</Link></p></section>
         </aside>
       </div>}
-      {(view === 'twin' || view === 'clinical') && <section className={styles.panel}><h2>Volume over time</h2><p>Backend measurements for <b>{current.label}</b>. Highlighted point: {name(selected)}.</p><VolumeChart scenario={current} selected={selected.id} onSelect={id => navigate({ state: id })}/></section>}
+      {(view === 'twin' || view === 'clinical') && <section className={styles.panel}><h2>Volume over time</h2><p>Backend measurements for <b>{familyPresentation(family).plainName} ({family})</b>. Highlighted point: {name(selected)} · {selected.exact_value ?? 'Unavailable'} mm³.</p><VolumeChart scenario={current} selected={selected.id} onSelect={id => navigate({ state: id })}/></section>}
       {view === 'clinical' && <section className={styles.panel}><h2>Clinical observations</h2><p>Selected geometry: <b>{name(selected)}</b>. Observations below retain their own collection days; they are not carried forward to this state.</p><p className={styles.subtle}>All available observations here were generated for this synthetic scenario. No authentic laboratory, pathology or treatment records are included.</p>
-        <div className={styles.table}><table><caption>Scenario observations with their actual relative times</caption><thead><tr><th>Observation</th><th>Relative day</th><th>Value or missingness</th><th>Source</th></tr></thead><tbody>{current.timeline.items.filter(p => p.modality !== 'imaging').map(p => <tr key={p.id}><th>{p.concept.replaceAll('_', ' ')}</th><td>{day(p) ?? 'Not recorded'}</td><td>{clinicalValue(p)}</td><td>Synthetic scenario</td></tr>)}</tbody></table></div>
-        <p className={styles.subtle}>Symptom ratings use an unvalidated demonstration scale, not a clinical severity grade.</p>
-        <p>Pathology, receptor status, authentic notes and real longitudinal observations: <b>Not recorded in this demonstration.</b></p></section>}
+        <div className={styles.table}><table><caption>Scenario observations with their actual relative times</caption><thead><tr><th>Observation</th><th>Relative day</th><th>Value or missingness</th><th>Recorded</th><th>Source</th></tr></thead><tbody>{current.timeline.items.filter(p => p.modality !== 'imaging').map(p => <tr key={p.id}><th>{readableConcept(p.concept)}</th><td>{day(p) ?? 'Not recorded'}</td><td>{clinicalValue(p)}</td><td>{formatRecorded(p.recorded_at)}</td><td>Synthetic scenario</td></tr>)}</tbody></table></div>
+        <p className={styles.subtle}>Symptom ratings use an unvalidated demonstration scale, not a clinical severity grade. Missing observations are never filled in from other days.</p>
+        <p>Pathology, receptor status, authentic notes and real longitudinal observations: <b>Not recorded in this demonstration.</b></p>
+        <TermHelp terms={['mm³', 'Relative day', 'Synthetic observation', 'Derived measurement']} /></section>}
       {view === 'insights' && <section className={styles.panel} aria-label="Research interpretation status"><p className="eyebrow">LOCAL DESCRIPTIVE SUMMARY</p><h2>AI Research Insights</h2><p className={styles.status}>Live Meta AI: unavailable in this demo</p><p>This read-only demonstration does not call an external model. Source permissions and provider access must be verified separately.</p>
-        <h3>What the selected data show</h3><p><b>{current.label} · {name(selected)}:</b> the backend reports a synthetic region volume of <b>{selected.exact_value} mm³</b>.</p><p>This text is a local template using the selected backend measurement. It is not a live or saved Meta model result.</p><h3>What remains unknown</h3><p>There is no authentic patient anatomy, independently reviewed clinical interpretation or evidence of treatment benefit. A hypothetical change cannot establish diagnosis, response category or an individual outcome.</p><Link href={href({ view: 'twin' })}>Return to the selected 3D state →</Link></section>}
+        <h3>What the selected data show</h3><p><b>{familyPresentation(family).plainName} ({family}) · {name(selected)}:</b> the backend reports a synthetic region volume of <b>{selected.exact_value} mm³</b>.</p><p>This text is a local template using the selected backend measurement. It is not a live or saved Meta model result.</p><h3>What remains unknown</h3><p>There is no authentic patient anatomy, independently reviewed clinical interpretation or evidence of treatment benefit. A hypothetical change cannot establish diagnosis, response category or an individual outcome.</p><Link href={href({ view: 'twin' })}>Return to the selected 3D state →</Link></section>}
       {view === 'technical' && <section className={styles.panel}><h2>Evaluation and technical details</h2><p>This is a read-only snapshot prepared through the existing private mask, measurement, mesh and simulation pipeline. It contains five hypothetical families with four geometry states each.</p><dl><dt>Prepared</dt><dd>{new Date(catalog.preparedAt).toLocaleString()}</dd><dt>Scientific validation</dt><dd>Not established. Synthetic engineering demonstration only.</dd><dt>Geometry</dt><dd>RAS coordinates in millimeters; source-mask measurements remain authoritative.</dd><dt>Live integrations</dt><dd>No external inference. No authentic patient dataset or clinical source notes.</dd></dl><details><summary>Advanced identifiers and deterministic comparison evidence</summary><p>Branch: {current.timeline.window.scope.branch_id}<br/>Run: {current.timeline.window.scope.run_id}<br/>Selected state: {selected.state_ids.join(', ')}</p><TrendView report={current.trends} onSelect={id => { if (points.some(p => p.id === id)) navigate({ state: id }); }}/></details><p><Link href="/evaluation">Open the full evaluation workspace →</Link></p></section>}
       {!VIEWS.some(([id]) => id === view) && <section className={styles.panel}><h2>Choose a workspace section</h2><Link href={href({ view: 'twin' })}>Open the 3D Digital Twin</Link></section>}
       </>}
@@ -208,8 +212,26 @@ export function DemoWorkspace() {
   </div>;
 }
 
-function VolumeChart({ scenario, selected, onSelect }: { scenario: DemoScenario; selected: string; onSelect: (id: string) => void }) {
-  const series = scenario.trends.series.find(s => s.metric_definition === 'numerical_region_volume');
+function formatRecorded(recordedAt: string | null | undefined): string {
+  if (!recordedAt) return 'Not recorded';
+  const parsed = new Date(recordedAt);
+  if (Number.isNaN(parsed.getTime())) return 'Not recorded';
+  return `Artificial example recorded on ${parsed.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}.`;
+}
+
+function BaselineComparison({ points, selected }: { points: TimelinePoint[]; selected: TimelinePoint }) {
+  const baseline = points.find(p => p.measurement_basis === 'baseline_reference');
+  if (!baseline || baseline.id === selected.id) return null;
+  const comparison = volumeComparison(baseline.exact_value, selected.exact_value);
+  if (!comparison || selected.exact_value == null || baseline.exact_value == null) return null;
+  return (
+    <p role="status" data-testid="demo-comparison">
+      Compared with this scenario&apos;s {baseline.exact_value} mm³ synthetic baseline, the selected region is {comparison} ({selected.exact_value} mm³).
+    </p>
+  );
+}
+
+function VolumeChart({ scenario, selected, onSelect }: { scenario: DemoScenario; selected: string; onSelect: (id: string) => void }) {  const series = scenario.trends.series.find(s => s.metric_definition === 'numerical_region_volume');
   const points = series?.points.filter(p => p.y !== null && p.x_elapsed_days !== null && !p.reason_codes.length) ?? [];
   if (!points.length) return <p>No compatible volume measurements are available for plotting.</p>;
   const maxX = Math.max(...points.map(p => Number(p.x_elapsed_days)), 1);

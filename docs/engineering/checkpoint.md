@@ -163,3 +163,23 @@ layout without horizontal overflow, forced WebGL context loss with recovery pane
 and successful retry; 5 screenshots, zero errors). Full frontend suite 177 passed;
 backend spot suites 14 passed; typecheck/lint/build/ruff clean. Remaining
 limitation: touch-orbit tuning and independent visual-design review stay open.
+
+## 2026-11-08 - COS-REC-04 scenarios, timeline and plain-language data presentation
+
+Branch cos-rec-04-scenario-presentation (from REC-03 viewer work); prior uncommitted
+work preserved. Primary controls now use plain family names (Continuous shrinkage;
+Little or no size change; Continued growth; Shrinks, then grows again; Stable size
+with worsening symptoms) with SC identifiers retained in URLs and metadata; each
+family carries a one-two sentence trajectory-faithful explanation (verified against
+bundle volumes, including the SC-05 rising 1-3-6 fatigue course). Twin heading shows
+state plus volume with a deterministic baseline comparison (null-safe, baseline
+stated); clinical tables use readable names, exact values, own relative days and
+recorded dates labeled as artificial examples; term glossary added; synthetic/
+observed/derived labeling and no-carry-forward statements kept explicit.
+
+Proof: real-browser journey over all five families on restarted foundation
+(timepoints, model/chart/measurement correspondence, observations, missing data,
+back, refresh; measured follow-up volumes 8/216/512/8/216; 3 screenshots, zero
+errors). Full frontend suite 180 passed; backend spot suites 16 passed;
+REC-02 journey re-verified with the updated SC-03 copy; typecheck/lint/build/ruff
+clean. No trajectories, measurements or claims altered.

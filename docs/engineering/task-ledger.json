@@ -23165,6 +23165,65 @@
           "result": "pass"
         }
       ]
+    },
+    {
+      "id": "COS-REC-04",
+      "purpose": "Scenarios, timeline and plain-language data presentation for visitors without medical background",
+      "dependency_ids": [
+        "COS-REC-03"
+      ],
+      "requirement_links": [
+        "human-readable scenario names with SC identifiers retained in metadata",
+        "one-two sentence trajectory-faithful explanations, no new clinical claims",
+        "volume changes with explicit units, baseline labels and deterministic percentages",
+        "readable observation names with exact values, own days and recorded dates",
+        "contextual term help; synthetic/observed/derived distinctions; no silent carry-forward",
+        "all five families in Playwright with missing/back/refresh coverage"
+      ],
+      "allowed_scope": "Presentation copy and its tests only; trajectories, measurements and provenance logic unchanged",
+      "status": "verified",
+      "status_history": [
+        "planned",
+        "in_progress",
+        "verified"
+      ],
+      "owner_responsibility": "Primary UX/frontend agent; specialist self-review, no independent reviewer asserted",
+      "actual_touched_files": [
+        "apps/web/lib/scenario-presentation.ts",
+        "apps/web/lib/scenario-presentation.test.tsx",
+        "apps/web/components/term-help.tsx",
+        "apps/web/components/demo-workspace.tsx",
+        "apps/web/components/simulation-builder.tsx",
+        "tests/browser/rec04-scenarios.spec.ts",
+        "tests/browser/rec02-demo.spec.ts"
+      ],
+      "decisions": [
+        "Family names match prompt vocabulary; explanations verified against bundle trajectories (SC-05 symptom course confirmed rising 1-3-6)",
+        "Percentage helper rounds >=10 to whole percent, labels 'about'-free exact computed value with stated baseline; null when unverifiable",
+        "Recorded dates render actual bundle timestamps labeled as artificial examples"
+      ],
+      "checks_evidence": [
+        {
+          "check": "npx playwright test tests/browser/rec04-scenarios.spec.ts after restart",
+          "result": "pass: all five families, timepoints, correspondence, observations, missing, back, refresh; measured volumes 8/216/512/8/216; 3 screenshots, zero errors"
+        },
+        {
+          "check": "npx playwright test tests/browser/rec02-demo.spec.ts + shell.spec.ts",
+          "result": "pass: homepage journey unaffected apart from updated SC-03 copy assertion"
+        },
+        {
+          "check": "npx vitest run (full frontend suite)",
+          "result": "pass: 180 tests, 31 files"
+        },
+        {
+          "check": "backend spot suites (navigation contracts, saved, demo cases, simulation runs)",
+          "result": "pass: 16 tests"
+        },
+        {
+          "check": "npm run typecheck; npm run lint; npm run build; ruff",
+          "result": "pass"
+        }
+      ]
     }
   ],
   "contract_closure": {

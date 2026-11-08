@@ -18,11 +18,11 @@ type Job = Schema['ImagingJobRecord'];
 type Current = Schema['CurrentRunView'];
 
 const FAMILY: { id: string; label: string; hint: string }[] = [
-  { id: 'SC-01', label: 'Strong simulated reduction', hint: 'Explicit shrinking hypothetical; not a response claim.' },
-  { id: 'SC-02', label: 'Modest reduction or near stable', hint: 'Small change hypothetical; missing stays missing.' },
-  { id: 'SC-03', label: 'Increasing simulated burden', hint: 'Growth hypothetical; not progression staging.' },
-  { id: 'SC-04', label: 'Decline followed by regrowth', hint: 'Two-phase hypothetical; seed and days explicit.' },
-  { id: 'SC-05', label: 'Independent clinical deterioration', hint: 'Clinical-course hypothetical; imaging stays separate.' },
+  { id: 'SC-01', label: 'Continuous shrinkage', hint: 'The modeled region keeps getting smaller. Not a response claim.' },
+  { id: 'SC-02', label: 'Little or no size change', hint: 'The modeled region stays about the same size. Missing stays missing.' },
+  { id: 'SC-03', label: 'Continued growth', hint: 'The modeled region keeps getting larger. Not progression staging.' },
+  { id: 'SC-04', label: 'Shrinks, then grows again', hint: 'Smaller first, then larger again. Seed and days explicit.' },
+  { id: 'SC-05', label: 'Stable size with worsening symptoms', hint: 'Size stays flat while the symptom course changes. Imaging stays separate.' },
 ];
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;

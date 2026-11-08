@@ -49,7 +49,7 @@ test('REC-02 first-time demo: homepage launch, 3D canvas, scenario, follow-up, r
 
   // 4. Select a scenario and inspect a follow-up state.
   await page.getByLabel('Hypothetical scenario').selectOption('SC-03');
-  await expect(page.getByText(/hypothetical increase in region volume/i).first()).toBeVisible({ timeout: 60000 });
+  await expect(page.getByText(/keeps getting larger over time/i).first()).toBeVisible({ timeout: 60000 });
   const followUps = page.getByRole('button', { name: /Day \d+/ });
   await expect(followUps.first()).toBeVisible({ timeout: 30000 });
   await followUps.nth(1).click();
