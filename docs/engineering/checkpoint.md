@@ -141,3 +141,25 @@ journey (homepage, launch, canvas rotate with pixel-diff, SC-03, follow-up, refr
 175 passed; backend spot suites 12 passed; typecheck/lint/build/ruff clean. Remaining
 risk: none blocking; bundle naturally expires 7 days after preparation (startup
 refreshes it automatically).
+
+## 2026-11-08 - COS-REC-03 immersive 3D viewer and visual interaction
+
+Branch cos-rec-03-viewer-interaction (from REC-02 demo launch); prior uncommitted
+work preserved. Renderer upgraded in place (geometry engine, contracts and server
+measurements untouched): compact grouped toolbar Orbit|Pan / Zoom / Fit|Reset /
+Maximize|Fullscreen plus More-steps disclosure with unchanged keyboard map;
+renderer-local maximize and native fullscreen; fill and rim lights added to the
+existing key light (background contrast and honest framing kept, no direction
+markers, no anatomical cues). Viewport default raised (72vh, 940px max) with a
+dedicated maximized mode; twin center column widened. Real-case lesion viewer
+gains collapsible 3D/measurement panels reusing the existing measure badge and
+authoritative table. Camera span stays shared across states; Day-37 selection
+drives both model and measurement with the chart point pressed (server values;
+volume never derived from surface). Phantom labeling retained everywhere.
+
+Proof: real-browser journey on restarted foundation (toolbar, pixel-diff orbit,
+pan, zoom, fit, maximize/restore, Day 37 / 64 mm3 correspondence, refresh, 390px
+layout without horizontal overflow, forced WebGL context loss with recovery panel
+and successful retry; 5 screenshots, zero errors). Full frontend suite 177 passed;
+backend spot suites 14 passed; typecheck/lint/build/ruff clean. Remaining
+limitation: touch-orbit tuning and independent visual-design review stay open.

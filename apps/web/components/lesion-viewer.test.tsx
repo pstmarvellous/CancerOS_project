@@ -111,4 +111,22 @@ describe('COS-075 lesion viewer', () => {
     await waitFor(() => expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining(second), expect.anything()));
     vi.unstubAllGlobals();
   });
+
+  it('collapses and restores the viewer and measurement panels', async () => {
+    query.search = '?project=11111111-1111-1111-1111-111111111111&patient=22222222-2222-2222-2222-222222222222';
+    vi.stubGlobal('fetch', stubFetch());
+    render(<LesionViewer />);
+    await waitFor(() => expect(screen.getByText(/Authorized geometry ready/)).toBeVisible(), { timeout: 10000 });
+    expect(screen.getByText(/source mask is authoritative/)).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: 'Collapse measurements' }));
+    expect(screen.queryByText(/source mask is authoritative/)).toBeNull();
+    expect(screen.getByText(/120\.5/)).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: 'Show measurements' }));
+    expect(screen.getByText(/source mask is authoritative/)).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: 'Collapse 3D viewer' }));
+    expect(screen.getByText(/3D viewer collapsed/)).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: 'Show 3D viewer' }));
+    expect(screen.queryByText(/3D viewer collapsed/)).toBeNull();
+    vi.unstubAllGlobals();
+  });
 });

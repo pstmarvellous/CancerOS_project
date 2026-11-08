@@ -66,6 +66,8 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
   const [message, setMessage] = useState('Lesion, origin and imaging time stay visible while the viewport loads.');
   const [failed3D, setFailed3D] = useState(false);
   const [retry, setRetry] = useState(0);
+  const [measuresOpen, setMeasuresOpen] = useState(true);
+  const [viewerOpen, setViewerOpen] = useState(true);
   const [transfer, setTransfer] = useState<{ bytes: number; started: number } | null>(null);
   const pending = useRef<AbortController | null>(null);
   useEffect(() => () => pending.current?.abort(), []);
@@ -286,6 +288,10 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
       {loaded ? (
         <section aria-label="Authorized lesion geometry" className={styles.twinGrid}>
       <div className={styles.twinSide}>
+          <div className={styles.controls} role="toolbar" aria-label="Viewer panels" style={{marginBottom:12}}>
+            <button type="button" aria-pressed={viewerOpen} onClick={() => setViewerOpen(open => !open)}>{viewerOpen ? 'Collapse 3D viewer' : 'Show 3D viewer'}</button>
+            <button type="button" aria-pressed={measuresOpen} onClick={() => setMeasuresOpen(open => !open)}>{measuresOpen ? 'Collapse measurements' : 'Show measurements'}</button>
+          </div>
           <div className={styles.measureBadge} role="status" aria-label="Server measurement">
             <strong>
               Server measurement {loaded.measurement.values.volume_mm3 ?? qc?.mask_volume_mm3 ?? 'Unavailable'} mm³
@@ -325,13 +331,15 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
               Region geometry does not establish an anatomical tumor. Physical frame: RAS; units: mm.
             </p>
           ) : null}
-          {!failed3D ? (
+          {!failed3D && viewerOpen ? (
             <Renderer
               key={`${loaded.lesionId}-${retry}`}
               asset={loaded.asset}
               selected={selected}
               onFailure={() => setFailed3D(true)}
             />
+          ) : !viewerOpen ? (
+            <div className={styles.notice}><strong>3D viewer collapsed.</strong><p>Measurements stay available. Expand the viewer above to inspect geometry.</p></div>
           ) : (
             <div className={styles.notice} role="alert">
               <strong>3D is unavailable on this device or the graphics context was lost.</strong>
@@ -342,7 +350,7 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
             </div>
           )}
           </div>
-          <div className={styles.twinSide}>
+          {measuresOpen ? <div className={styles.twinSide}>
           <div className={styles.tableWrap}>
             <table>
               <caption>Server measurements and physical geometry · source mask is authoritative</caption>
@@ -419,7 +427,7 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
               </select>
             </p>
           ) : null}
-          </div>
+          </div> : null}
         </section>
       ) : null}
     </div>

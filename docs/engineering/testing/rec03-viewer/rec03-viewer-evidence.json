@@ -1,0 +1,14 @@
+{
+  "recorded_at": "2026-11-08T11:02:56.131Z",
+  "scope": "Fresh demo bundle on restarted foundation; synthetic phantom only, no authentic anatomy",
+  "journey": [
+    "toolbar",
+    "orbit-pan-zoom-fit",
+    "maximize",
+    "day37-correspondence",
+    "refresh",
+    "narrow",
+    "webgl-recovery"
+  ],
+  "browser_errors": []
+}

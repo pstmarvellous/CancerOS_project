@@ -23111,6 +23111,60 @@
           "result": "pass"
         }
       ]
+    },
+    {
+      "id": "COS-REC-03",
+      "purpose": "Immersive 3D viewer: larger canvas, collapsible panels, compact toolbar, lighting, state/measurement binding, recovery",
+      "dependency_ids": [
+        "COS-REC-02"
+      ],
+      "requirement_links": [
+        "dominant viewer with collapsible side panels and bottom timeline",
+        "compact camera toolbar Orbit/Pan/Zoom/Fit/Reset/Fullscreen with keyboard access",
+        "correct physical scaling across states; no volume derived from surface",
+        "loading/missing-mesh/WebGL recovery states; narrow-screen usability"
+      ],
+      "allowed_scope": "Viewer presentation and interaction only; geometry engine, contracts and measurements reused unchanged",
+      "status": "verified",
+      "status_history": [
+        "planned",
+        "in_progress",
+        "verified"
+      ],
+      "owner_responsibility": "Primary visualization/frontend agent; specialist self-review, no independent reviewer asserted",
+      "actual_touched_files": [
+        "apps/web/components/mesh-renderer.tsx",
+        "apps/web/components/mesh-renderer.test.tsx",
+        "apps/web/components/mesh-preview.module.css",
+        "apps/web/components/demo-workspace.module.css",
+        "apps/web/components/lesion-viewer.tsx",
+        "apps/web/components/lesion-viewer.test.tsx",
+        "tests/browser/rec03-viewer.spec.ts"
+      ],
+      "decisions": [
+        "Renderer-local maximize plus native fullscreen; keyboard shortcuts preserved",
+        "Fill and rim lights added; background, frame honesty and no-direction-marker policy unchanged",
+        "Lesion viewer gains collapsible viewer/measurement panels reusing existing measure badge and table",
+        "Camera span stays shared across states (asset rebuild only on family change); chart binding bidirectional as before"
+      ],
+      "checks_evidence": [
+        {
+          "check": "npx playwright test tests/browser/rec03-viewer.spec.ts after foundation restart",
+          "result": "pass: toolbar, orbit/pan/zoom/fit, maximize, Day37 64mm3 correspondence with pressed chart point, refresh, narrow, WebGL loss and retry; 5 screenshots, zero errors"
+        },
+        {
+          "check": "npx vitest run (full frontend suite)",
+          "result": "pass: 177 tests, 30 files"
+        },
+        {
+          "check": "backend spot suites (navigation contracts, saved, hardening, demo cases)",
+          "result": "pass: 14 tests"
+        },
+        {
+          "check": "npm run typecheck; npm run lint; npm run build; ruff",
+          "result": "pass"
+        }
+      ]
     }
   ],
   "contract_closure": {

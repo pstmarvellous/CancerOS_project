@@ -1,0 +1,83 @@
+{
+  "task": "COS-REC-03",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "viewer",
+      "returncode": 0,
+      "output": "\n=== IMG.VIEW Web MRI viewer ===\n OHIF/Cornerstone3D integration or tested alternative for authentic MRI and overlays. \nSources: IMG,REF\n  <-- IMPLEMENTS D.IMG Medical imaging\n  <-- PRECEDES IMG.MESH Mask-to-mesh conversion\n\n=== REF.OHIF OHIF/Cornerstone3D ===\n Investigate reusable browser DICOM viewer and longitudinal mode. \nSources: REF\n  <-- REFERENCES ROOT CancerOS breast cancer digital twin\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "viewer",
+      "returncode": 0,
+      "output": "\nIMG.04 — Physical-coordinate transformations\nDesign: Preserve voxel→patient LPS/RAS→viewer transforms; verify inverses\nAcceptance: Known geometry test phantom; round trip\n  READ A05 ITK Software Guide — Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition — https://itk.org/ITKSoftwareGuide/html/\n  READ A16 DICOM Standard — Image spatial geometry, DICOM SEG and referenced source images; locate exact part/modules for version — https://www.dicomstandard.org/current\n  READ A17 MIT Computer Graphics OpenCourseWare — Transforms and 3D geometry; select exact lecture in course notes — https://ocw.mit.edu/courses/6-837-computer-graphics-fall-2012/pages/lecture-notes/\n  REPO R03 3D Slicer — reference geometry/segmentation/measurement — https://github.com/Slicer/Slicer\n  REPO R06 SimpleITK — physical-space image processing, registration — https://github.com/SimpleITK/SimpleITK\n  PAPER P04 IBSI image biomarker standardisation —  — https://theibsi.github.io/documentation/\n\nIMG.12 — 2D/3D medical browser viewer\nDesign: Display actual scans and segmentations in correct orientation and coordinates\nAcceptance: Image/mask overlay matches 3D surface\n  READ A17 MIT Computer Graphics OpenCourseWare — Transforms and 3D geometry; select exact lecture in course notes — https://ocw.mit.edu/courses/6-837-computer-graphics-fall-2012/pages/lecture-notes/\n  READ A16 DICOM Standard — Image spatial geometry, DICOM SEG and referenced source images; locate exact part/modules for version — https://www.dicomstandard.org/current\n  REPO R04 OHIF Viewer — DICOM viewer, longitudinal measurement tracking — https://github.com/OHIF/Viewers\n  REPO R03 3D Slicer — reference geometry/segmentation/measurement — https://github.com/Slicer/Slicer\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "viewer",
+      "returncode": 0,
+      "output": "\n== IMG.04 Physical-coordinate transformations ==\nIntent: Preserve voxel→patient LPS/RAS→viewer transforms; verify inverses \nTest: Known geometry test phantom; round trip\n BOOK/LECTURE A05 ITK Software Guide | Volume 2 — Image reading/writing, filtering, registration, segmentation and analysis; find exact subchapter in chosen edition | https://itk.org/ITKSoftwareGuide/html/ | verified topical volume; exact chapter pending\n BOOK/LECTURE A16 DICOM Standard | Image spatial geometry, DICOM SEG and referenced source images; locate exact part/modules for version | https://www.dicomstandard.org/current | standard verified; section number pending\n BOOK/LECTURE A17 MIT Computer Graphics OpenCourseWare | Transforms and 3D geometry; select exact lecture in course notes | https://ocw.mit.edu/courses/6-837-computer-graphics-fall-2012/pages/lecture-notes/ | exact lecture pending\n PAPER P04 IBSI image biomarker standardisation | https://theibsi.github.io/documentation/\n REPOSITORY R03 3D Slicer | https://github.com/Slicer/Slicer \n  Inspect: Inspect MRML, Segmentations, Segment Editor, transformations, model/segment statistics \n  Reuse: Use as independent geometry reference; leverage VTK/SimpleITK libraries \n  Avoid: Do not transplant desktop application to web \n  Verify: Compare exported mesh dimensions and mask-derived volume\n REPOSITORY R06 SimpleITK | https://github.com/SimpleITK/SimpleITK \n  Inspect: Inspect ImageRegistrationMethod, Resample, direction/origin/spacing and examples \n  Reuse: Adopt supported registration/resampling and save transforms \n  Avoid: Do not assume registration always valid or comparability equal overlay \n  Verify: Known rigid transform, LPS/RAS roundtrip, failure QC\n REPOSITORY R13 Cornerstone3D | https://github.com/cornerstonejs/cornerstone3D \n  Inspect: Inspect packages/tools, viewport, segmentation loaders and examples \n  Reuse: Evaluate direct library integration rather than all of OHIF \n  Avoid: Do not recode entire DICOM viewport layer \n  Verify: Render known DICOM and overlay matched segmentation\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n\n== IMG.12 2D/3D medical browser viewer ==\nIntent: Display actual scans and segmentations in correct orientation and coordinates \nTest: Image/mask overlay matches 3D surface\n BOOK/LECTURE A17 MIT Computer Graphics OpenCourseWare | Transforms and 3D geometry; select exact lecture in course notes | https://ocw.mit.edu/courses/6-837-computer-graphics-fall-2012/pages/lecture-notes/ | exact lecture pending\n BOOK/LECTURE A16 DICOM Standard | Image spatial geometry, DICOM SEG and referenced source images; locate exact part/modules for version | https://www.dicomstandard.org/current | standard verified; section number pending\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R04 OHIF Viewer | https://github.com/OHIF/Viewers \n  Inspect: Inspect modes/longitudinal, extensions/measurement-tracking, extensions/cornerstone, platform/core \n  Reuse: Prototype OHIF integration versus Cornerstone3D standalone \n  Avoid: Do not assume original longitudinal mode understands synthetic branching \n  Verify: Browser MRI overlay, state switch, correct patient/time, performance\n REPOSITORY R03 3D Slicer | https://github.com/Slicer/Slicer \n  Inspect: Inspect MRML, Segmentations, Segment Editor, transformations, model/segment statistics \n  Reuse: Use as independent geometry reference; leverage VTK/SimpleITK libraries \n  Avoid: Do not transplant desktop application to web \n  Verify: Compare exported mesh dimensions and mask-derived volume\n REPOSITORY R13 Cornerstone3D | https://github.com/cornerstonejs/cornerstone3D \n  Inspect: Inspect packages/tools, viewport, segmentation loaders and examples \n  Reuse: Evaluate direct library integration rather than all of OHIF \n  Avoid: Do not recode entire DICOM viewport layer \n  Verify: Render known DICOM and overlay matched segmentation\n REPOSITORY R14 VTK | https://github.com/Kitware/VTK \n  Inspect: Inspect marching cubes, polydata and mesh export examples \n  Reuse: Adopt supported mesh extraction functions \n  Avoid: Do not infer anatomical truth from smoothing \n  Verify: Known-shape mask-to-mesh geometry test\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "3D viewer interaction visualization",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "3D viewer interaction visualization",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "3D viewer interaction visualization",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "IMG.VIEW",
+    "REF.OHIF"
+  ],
+  "academic_behavior_ids": [
+    "IMG.04",
+    "IMG.12"
+  ],
+  "edges": [
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.VIEW"
+    },
+    {
+      "from_id": "IMG.MESH",
+      "relation": "PRECEDES",
+      "to_id": "IMG.VIEW"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.OHIF"
+    }
+  ],
+  "mapped_source_ids": [
+    "A05",
+    "A16",
+    "A17",
+    "P04",
+    "P05",
+    "R03",
+    "R04",
+    "R06"
+  ],
+  "source_sections_inspected": "Actual source sections inspected"
+}
