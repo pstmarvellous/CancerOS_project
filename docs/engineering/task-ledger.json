@@ -23224,6 +23224,66 @@
           "result": "pass"
         }
       ]
+    },
+    {
+      "id": "COS-REC-05",
+      "purpose": "Complete understandable case-creation and data-entry workflow with enforced authorization",
+      "dependency_ids": [
+        "COS-REC-04"
+      ],
+      "requirement_links": [
+        "New Research Case as the clear primary action with plain-language labels",
+        "structured creation form with authorized source selection, no invented sources",
+        "usable profile editor with retained revisions",
+        "manageable clinical-data entry with exact values, synthetic labeling and term help",
+        "saving, correction, refresh persistence and cross-case isolation in a real browser",
+        "sign-out revokes access"
+      ],
+      "allowed_scope": "Case creator, profile editor, observation intake labels and their tests; backend contracts and authorization unchanged",
+      "status": "verified",
+      "status_history": [
+        "planned",
+        "in_progress",
+        "verified"
+      ],
+      "owner_responsibility": "Primary full-stack/UX agent; specialist self-review, no independent reviewer asserted",
+      "actual_touched_files": [
+        "apps/web/components/case-creator.tsx",
+        "apps/web/components/observation-intake.tsx",
+        "apps/web/components/term-help.tsx",
+        "apps/web/components/case-creation.test.tsx",
+        "apps/web/lib/scenario-presentation.ts",
+        "tests/browser/rec05-cases.spec.ts",
+        "tests/browser/rec01-navigation.spec.ts",
+        "tests/browser/product-workspace.spec.ts"
+      ],
+      "decisions": [
+        "Field labels renamed without touching contract keys (identifier/pseudonym/reference payloads unchanged)",
+        "Record type shown read-only from the selected eligible source; no description field added (unsupported by creation contract)",
+        "Synthetic banner and glossary added to intake; viewer/outsider denial relies on existing enforced editor gates"
+      ],
+      "checks_evidence": [
+        {
+          "check": "npx playwright test tests/browser/rec05-cases.spec.ts on product fixture",
+          "result": "pass: create A, profile, observe 12.3, correct 12.4 with Superseded, refresh retains, Case B isolation, sign-out revokes; 6 screenshots, zero errors"
+        },
+        {
+          "check": "npx playwright test tests/browser/product-workspace.spec.ts + rec01-navigation.spec.ts",
+          "result": "pass: full observation/kind matrix and navigation journey with new labels"
+        },
+        {
+          "check": "npx vitest run (full frontend suite)",
+          "result": "pass: 181 tests, 31 files"
+        },
+        {
+          "check": "backend spot suites (navigation contracts, saved, demo cases, simulation runs)",
+          "result": "pass: 16 tests"
+        },
+        {
+          "check": "npm run typecheck; npm run lint; npm run build; ruff",
+          "result": "pass"
+        }
+      ]
     }
   ],
   "contract_closure": {

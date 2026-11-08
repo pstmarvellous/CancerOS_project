@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { ErrorSummary } from './research';
 import { researchJson, researchError } from '../lib/research-client';
+import { TermHelp } from './term-help';
 import type { components } from '../../../packages/contracts/generated/api';
 
 const concepts = {
@@ -82,7 +83,9 @@ export function ObservationIntake({project,patient,revision,origin,onSaved,corre
       <span className={`badge ${step>=2?'observed':'warning'}`}>2. When & source</span>
       <span className={`badge ${step>=3?'observed':'warning'}`}>3. Values</span>
     </div>
-    <div role="status" className="field-hint" style={{marginBottom:12}}>Currently on step {step} of 3 — Continue buttons advance; Back returns without losing entries.</div>
+    {origin === 'synthetic_engineering_fixture'
+      ? <p role="note" className="field-hint"><strong>Artificial demonstration record.</strong> Saved entries are labeled synthetic and never presented as authentic clinical observations.</p>
+      : <p role="note" className="field-hint"><strong>Source-backed research record.</strong> Enter documented values exactly as written in the source.</p>}    <div role="status" className="field-hint" style={{marginBottom:12}}>Currently on step {step} of 3 — Continue buttons advance; Back returns without losing entries.</div>
     <form onSubmit={save} onChange={()=>setKey(crypto.randomUUID())} aria-label="Save clinical observation">
       <section className="card" style={{padding:16, marginBottom:12}} aria-label="Step 1 — what kind of observation">
         <div style={{display:'flex', gap:8, alignItems:'center'}}><h3 style={{margin:0}}>What kind of observation?</h3><span className="badge observed">Step 1 of 3</span></div>
@@ -135,6 +138,7 @@ export function ObservationIntake({project,patient,revision,origin,onSaved,corre
         <div style={{marginTop:12, display:'flex', gap:8}}><button type="button" className="button-ghost" onClick={()=>setStep(2)}>Back</button><button className="button-primary" type="submit" disabled={busy}>{busy?'Saving…':'Save observation'}</button></div>
         {error&&<div style={{marginTop:12}}><ErrorSummary message={error}/></div>}
         <p className="field-hint" style={{marginTop:12}}>Saving appends evidence with source, time, revision. Corrections retain original. Idempotency key rotates.</p>
+        <TermHelp terms={['Source reference', 'Assertion', 'Revision', 'Missingness', 'Synthetic observation']} />
       </section>
     </form>
   </section>;

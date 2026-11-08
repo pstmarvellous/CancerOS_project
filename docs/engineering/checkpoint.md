@@ -183,3 +183,23 @@ back, refresh; measured follow-up volumes 8/216/512/8/216; 3 screenshots, zero
 errors). Full frontend suite 180 passed; backend spot suites 16 passed;
 REC-02 journey re-verified with the updated SC-03 copy; typecheck/lint/build/ruff
 clean. No trajectories, measurements or claims altered.
+
+## 2026-11-08 - COS-REC-05 simple research case and data management
+
+Branch cos-rec-05-case-management (from REC-04 scenario work); prior uncommitted
+work preserved. Case creation uses plain labels (Case title / Case reference /
+Participant code / Source record / Source reference) with a read-only Record type
+and project line derived from the eligible source; payload keys and backend gates
+unchanged. Observation intake banners artificial demonstration records as synthetic
+and links the term glossary (extended with record type, participant, source,
+assertion, revision, missingness). No description field added: unsupported by the
+creation contract (medical history remains profile-side).
+
+Proof: real-browser acceptance on the product fixture (create Case A, saved profile,
+Hemoglobin 12.3 g/dL saved, corrected to 12.4 with retained Superseded row,
+refresh retains latest, Case B isolation, sign-out revokes cookie/selection/access;
+6 screenshots, zero errors). Product-workspace and REC-01 journeys re-verified with
+the renamed labels/buttons. Full frontend suite 181 passed; backend spot suites 16
+passed; typecheck/lint/build/ruff clean. Demo journeys re-verified after a clean
+rebuild fixed corrupt Next chunks. No quiet authentic-claim creation: synthetic
+labeling is explicit and editor gates still enforced.
