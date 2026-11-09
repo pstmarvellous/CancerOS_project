@@ -42,32 +42,10 @@
       "returncode": 1,
       "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
       "error": ""
-    },
-    {
-      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
-      "query": "safety",
-      "returncode": 0,
-      "output": "\n=== D.GOV Safety and provenance ===\n Licensing, patient de-identification, traceable origin, abstention and research-only boundary. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> ENFORCES GOV.REAL Immutable source truth\n  --> ENFORCES GOV.PROV Five provenance classes\n  --> ENFORCES GOV.PRIV Privacy and access\n  --> ENFORCES GOV.LIC License separation\n  --> ENFORCES GOV.NOCLIN No autonomous care\n  --> ENFORCES GOV.RECIST Formal response boundary\n  --> ENFORCES GOV.CTCAE Adverse-event grading boundary\n  --> ENFORCES GOV.ABSTAIN Disclose unknowns\n\n=== AI.GUARD Output safety validation ===\n Numerical grounding, citation validity, hallucination/unsafe claims, prompt-injection defense, abstention. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- PRECEDES AI.LLM Grounded explanation\n  <-- HAS_STEP WF.AI Evidence linked interpretation\n  <-- WORKFLOW_PRECEDES AI.LLM Grounded explanation\n  --> WORKFLOW_PRECEDES UX.INSIGHT AI insights with evidence\n  <-- CONSTRAINS GOV.NOCLIN No autonomous care\n  <-- CONSTRAINS GOV.ABSTAIN Disclose unknowns\n  <-- VERIFIES EVAL.AI NLP/LLM grounding evaluation\n",
-      "error": ""
-    },
-    {
-      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
-      "query": "safety",
-      "returncode": 0,
-      "output": "No matching behavior. Try a shorter search term.\n",
-      "error": ""
-    },
-    {
-      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
-      "query": "safety",
-      "returncode": 1,
-      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
-      "error": ""
     }
   ],
   "capability_node_ids": [
     "AI.FUSE",
-    "AI.GUARD",
     "AI.LLM",
     "D.GOV",
     "DATA.PROV",
@@ -186,11 +164,6 @@
       "from_id": "D.AI",
       "relation": "IMPLEMENTS",
       "to_id": "AI.LLM"
-    },
-    {
-      "from_id": "D.AI",
-      "relation": "IMPLEMENTS",
-      "to_id": "AI.GUARD"
     },
     {
       "from_id": "AI.NLP",
@@ -398,11 +371,6 @@
       "to_id": "AI.LLM"
     },
     {
-      "from_id": "WF.AI",
-      "relation": "HAS_STEP",
-      "to_id": "AI.GUARD"
-    },
-    {
       "from_id": "AI.FEAT",
       "relation": "WORKFLOW_PRECEDES",
       "to_id": "AI.FUSE"
@@ -421,11 +389,6 @@
       "from_id": "AI.LLM",
       "relation": "WORKFLOW_PRECEDES",
       "to_id": "AI.GUARD"
-    },
-    {
-      "from_id": "AI.GUARD",
-      "relation": "WORKFLOW_PRECEDES",
-      "to_id": "UX.INSIGHT"
     },
     {
       "from_id": "ROOT",
@@ -483,11 +446,6 @@
       "to_id": "IMG.SYNMESH"
     },
     {
-      "from_id": "GOV.NOCLIN",
-      "relation": "CONSTRAINS",
-      "to_id": "AI.GUARD"
-    },
-    {
       "from_id": "GOV.RECIST",
       "relation": "CONSTRAINS",
       "to_id": "AI.LLM"
@@ -498,19 +456,9 @@
       "to_id": "SIM.VALID"
     },
     {
-      "from_id": "GOV.ABSTAIN",
-      "relation": "CONSTRAINS",
-      "to_id": "AI.GUARD"
-    },
-    {
       "from_id": "EVAL.SIM",
       "relation": "VERIFIES",
       "to_id": "SIM.VALID"
-    },
-    {
-      "from_id": "EVAL.AI",
-      "relation": "VERIFIES",
-      "to_id": "AI.GUARD"
     }
   ],
   "mapped_source_ids": [
@@ -523,5 +471,5 @@
     "R04",
     "R07"
   ],
-  "source_sections_inspected": "All twelve source opening authority/scope sections; COS-AUD-001 pp1-4; SPEC-007 p1; SPEC-008 sections1-2; SPEC-010 section1; SPEC-011 sections1-2"
+  "source_sections_inspected": "Actual source sections inspected"
 }

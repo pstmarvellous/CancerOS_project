@@ -1,87 +1,66 @@
-# COS-REVIEW-003 — EXECUTIVE PRODUCT REVIEW
+# Independent product acceptance assessment
 
-**Review ID:** COS-REVIEW-003  
-**Date:** 2026-11-05  
-**Reviewer:** Single-agent multidisciplinary pass (COS-000 persona restored)  
-**Scope:** Full product-to-spec verification, 7-phase implementation, UI/UX priority 40%
+**CancerOS is not ready for acceptance as the originally specified integrated research prototype.** Its strongest delivered experiences are a read-only synthetic geometry demonstration and an administrator workflow for pseudonymous profiles and clinical records. They do not yet compose into authentic MRI → observed twin → hypothetical scenarios → synchronized clinical exploration → grounded interpretation.
 
----
+This conclusion comes from original specifications, fresh code inspection, a fresh production build and current browser attempts. Previous review conclusions were excluded. This is an AI-led expert inspection, with bounded specialist-agent passes, not a human multidisciplinary consultation or a participant study.
 
-## 1. What CancerOS Was Intended to Be
+## What the product was intended to be
 
-Per PRD, SPEC-003–012, SPEC-009 UI, and KMAP-001:
+CancerOS should help researchers inspect how image-derived lesion geometry and available clinical observations change over time, while keeping actual evidence and hypothetical evolution unmistakably separate. It should feel like one case-centered research instrument. It is not a diagnostic or treatment-selection service.
 
-- **Research problem:** Breast cancer temporal heterogeneity — how lesions evolve, relate to clinical observations, and can be explored across labeled hypothetical scenarios grounded in real imaging geometry.
-- **Intended users:** Medical researchers, imaging scientists, evaluators in a pseudonymized research workspace with project/role authorization.
-- **Core workflow:** Create/select research case (admin), enter source-backed clinical observations, import real MRI + verified masks, compute physical measurements (volume, longest diameter in mm using voxel geometry), reconstruct 3D mesh, establish observed baseline, generate/track five scenario families (SC-01 to SC-05) each sharing the baseline plus three synthetic follow-ups, synchronize a timeline with clinical charts, and produce evidence-linked (case-evidence separate from background) AI research insights.
-- **Visual promise:** SPEC-009 requires case-centered workspace, prominent 3D viewer with measurement display, synchronized charts, minimal technical leakage (no UUID homework for new users).
-- **Safety:** Immutable observed history, synthetic never promoted to real, export denied until gated, missing stays missing, DCE phases not conflated with visits.
+| Original product question | Specification-derived answer |
+| --- | --- |
+| Fundamental problem | Bring imaging, clinical history, hypothetical evolution and evidence-linked explanations into one inspectable temporal case. PRD §§1–3, UJ-01–08, pp9–15. |
+| Users | Research viewers/judges, editors/presenters and administrators with different permitted actions. SPEC-009 §3 p2; SPEC-008 §16 p15. |
+| Principal journeys | Import/load a case, inspect geometry, generate scenarios, navigate states, add observations, inspect findings and evaluate limits. PRD §5 pp9–15. |
+| Researcher inputs | Source-backed profile/clinical facts, dates or explicit missing time, quantities with units, records/notes, examination metadata and compatible imaging; supported scenario assumptions. PRD FR-001–028 pp15–17; SPEC-009 §§4.5–4.8 pp5–6. |
+| Derived outputs | Deterministic measurements, source-linked meshes, immutable states, reproducible synthetic follow-ups, calculated changes and grounded descriptions. PRD FR-008–050 pp16–18. |
+| Imaging ingestion | Authorized source and identity linkage, spatial QC, meaningful verified mask, measurement preview and confirmed baseline. PRD UJ-02 pp10–11; SPEC-005 §§7–13. |
+| Twin visualization | A physically scaled, rotatable lesion with time, source, measurement and supported context, connected to the selected state. SPEC-009 §§4.3/7–8 pp3/8–9. |
+| Hypothetical evolution | Five families; one shared authentic observed baseline plus at least three generated follow-ups per family; assumptions and publication are explicit. PRD FR-017–028; SPEC-004; SPEC-009 §4.5. |
+| Clinical relationship | Each modality retains its own collection time and provenance; new labs do not imply new imaging. SPEC-009 §§5/8–9 pp7/9–10. |
+| AI responsibility | Explain returned evidence, identify gaps and compare deterministic facts; never invent measurements. A truthful fallback remains usable. SPEC-006 §§10–14; PRD FR-045; COS-HACK-001 §§5/10 separately requires substantive eligible Meta use. |
+| Finished experience | Case library → coherent case shell, prominent 3D, synchronized timeline/charts and contextual Findings/Records/Evidence, with clear loading, unavailable and recovery states. SPEC-009 §§3–4/11–13. |
+| Minimum acceptable prototype | Approved authentic imaging/mask/3D, five four-position scenario families, clinical updates, evidence-linked interpretation, real repeated-imaging demonstration and actual evaluation. PRD §14 pp31–32, AC-01–12 pp32–35; SPEC-011 §11 p6. |
 
-## 2. What Was Actually Delivered (Evidence)
+Imported reference masks are an acceptable P0 path. Automated segmentation, trained forecasting, a full radiology workstation and simultaneous multi-branch comparison must not become unnecessary prerequisites. Two-state comparison is P0; simultaneous branch comparison is P1 (SPEC-009 §2 p1).
 
-- **Routes:** `/` (home), `/cases`, `/cases/detail`, `/twin`, `/charts`, `/timeline`, `/states`, `/simulation`, `/insights`, `/demo`, `/guided-demo`, `/evaluation`, `/activity`, `/admin`, `/mesh-preview` — 18 route files confirmed.
-- **Frontend components:** ~30 components including `case-library`, `case-creator`, `case-workspace`, `case-imaging`, `lesion-viewer`, `mesh-renderer`, `simulation-workflow`, `clinical-charts-explorer`, `insights-explorer`, `state-timeline-explorer`, `guided-demo`, `research-session`, `research-profile`, `observation-intake`.
-- **Backend:** ~90 Python modules under `src/canceros/` — identity, persistence, imaging_ingestion, preprocessing_runs, measurement_runs, mesh_runs, fusion_runs, timeline_runs, simulation_*, interpretation_*, grounding_*, clinical_api, etc. FastAPI contracts via generated `@canceros/contracts`.
-- **Demo:** `demo-workspace` — only fully usable end-to-end (EVI) product path; uses synthetic catalog, timeline, mesh asset bundling, Three.js orthographic viewer, RAS frame, mm units, fullscreen/maximize controls.
-- **Product workflows:**
-  - **Guided demo exists** but is text-list navigation, not interactive state orchestration.
-  - **Research Cases page** requires auth token (admin JWT) entered into password field, project selection via dropdown that autoclears on sign-out, source eligibility gating, case creation with identifier+title+pseudonym+reference; but UX demands project UUID known externally or sign-in first; no onboarding explainer of token source for first-time researcher.
-  - **Case detail**: loads profile, visit count, observations via paged `/api/case-observations` POST with kind filter, clinical history table, imaging viewer proxy, observation intake form with 7 kinds (lab, vital, symptom, treatment, diagnosis, visit, note) and explicit unit/time handling — genuine scientific integrity preserved (no invention) but form is dense, technical, and behind gated auth.
-  - **3D twin**: `/twin` requires `?project=&patient=&lesion=` URL params — no user discovers this without case-workspace link; viewer uses Three.js orthographic cam, RAS Z-up, shared center translation, 100k vertex/200k triangle guards; camera actions labeled (orbit, pan, fit, reset) exist but button styling scattered in `simulation-workflow.module.css` and `mesh-preview.module.css`; canvas not given sufficient prominence (twin-layout: 1fr + 340px side rail). No anatomical context; it is tumor-region only.
-  - **Simulation**: Requires manual UUID entry for project/patient/branch + admin token pasted into input — engineering-private workflow per page intent but not user-accessible for researchers; config JSON authored by hand, eligibility checks, job polling, publication gates. No scenario-builder UI for SC-01..05 beyond demo.
-  - **Charts**: correct — separate small multiples per concept+unit, preserves missing/censored, time domains, no interpolation — but again behind `project & patient` query param dependency, not discoverable.
-  - **Insights**: requires branch/state context; rule-based + `external_private` modes; grounding report separate; safety-conscious but not visually compelling; requires same URL plumbing.
+One source tension remains explicit: SPEC-006 §21 p32 names Meta interpretation as P0, whereas later SPEC-012 B22/§7 permits a conditional provider and a deterministic or approved saved fallback. The fallback can preserve the research journey; it does not establish full original AI or hackathon completion. No owner adoption record resolving that broader claim was inferred.
 
-## 3. Overall Product Acceptance Verdict
+## What actually exists
 
-| Dimension | Verdict | Rationale |
-|---|---|---|
-| Product Requirements | PARTIAL (40%) | Core data model, provenance, measurement correctness present; user-facing orchestration missing |
-| User Journey Completeness | FAIL | Homepage → case creation → clinical entry → imaging → 3D → scenarios → timeline → insights cannot be traversed without manual URL editing or token knowledge |
-| UI/UX Usability | FAIL | Engineering-first nav, gated auth without onboarding, dense forms, insufficient 3D prominence, weak visual hierarchy |
-| Visual Design Quality | PARTIAL | Tailwind-ish tokens but inconsistent buttons (primary/secondary/ghost scattered, no design system), cards but poor spacing, responsive not validated |
-| Research Case Management | PARTIAL | Backend full, frontend requires admin role; viewer role sees empty; search limited to loaded pages only |
-| Medical Imaging | PARTIAL | Ingestion, preprocessing, measurement, mesh pipeline engineered; /twin requires lesion UUID; viewer minimal |
-| 3D Visualization | PARTIAL | Functional Three.js viewer, correct geometry handling, but not central, no anatomical context, not prominent |
-| Longitudinal Simulation | BACKEND_ONLY | Engine complete (config versioning, eligibility, job, completion, publication); frontend is UUID/manual JSON |
-| Meta AI Integration | PARTIAL | Provider gateway exists, grounding, evidence separation; no live demo without credentialed config; not inviting for researcher |
-| Engineering Quality | PASS (with complexity debt) | 106 tasks, 15 verified foundation, 78 implemented_unverified, 9 blocked; strong safety invariants; over-defensive gating blocks UX |
-| Scientific Integrity | PASS | Distinctions (REAL_OBSERVED vs SYNTHETIC…), immutable history, missingness preserved, mm handling correct |
-| End-to-End Readiness | FAIL | Synthetic demo usable; real research case workflow not usable by naive researcher |
+The fresh build exposes pages for cases, case detail, twin, states, charts, observation timeline, simulation, insights, evaluation, guided demo, admin, activity, mesh preview and demo. Modular FastAPI services, private SQL/object persistence, imaging geometry, measurement, mesh generation and five scenario engines exist.
 
-**Overall:** Engineering implementation substantial but **product delivery incomplete**. Hands-off first-time researcher cannot complete intended research task. Demo is the only coherent product path.
+In the artificial authenticated browser continuation, two cases were created; case A was reopened, its profile revised, a 12.3 g/dL artificial lab saved and corrected to 12.4 g/dL. The corrected value appeared in charts. Case B remained empty. This is real UI-to-API persistence in a **test-mode artificial environment**, not proof of authentic-source operation.
 
-## 4. Most Critical Implementation Gaps (Top 10)
+The opt-in demo renders a labeled geometric phantom, four discrete states in each of five families, state-linked measured volume and a local template explanation. It is coherent enough for an engineering demonstration. It neither imports patient MRI nor lets a researcher run a new simulation. Its baseline is synthetic.
 
-1. **No case creation onboarding** — token source, project creation, source registry unexplained on /cases; first screen blank unless `?project=` present.
-2. **No single workspace orchestrating** project→patient→lesion→branch→state with breadcrumbs that non-engineers understand; AppShell shows raw UUIDs under `<details>`.
-3. **/twin, /charts, /insights require manual URL params** — not linked from case-workspace for many users; deep linking fragility.
-4. **Observation intake** — 7 concept types in two dropdowns, instrument/severity/units scattered; no progressive disclosure, no field organization by clinical workflow.
-5. **Imaging upload** — case-imaging component exists but gated behind roles; no drag-drop, no DCE phase context.
-6. **Simulation workflow** — expects handwritten JSON draft + hash matching; no scenario-family picker, no assumption forms for SC-01..05.
-7. **3D viewer prominence** — occupies <40% viewport; controls split across buttons and keyboard; no measurement overlay panel in viewer.
-8. **Visual design** — inconsistent button hierarchy (multiple primaries per card), muted vs hint styles, excessive card borders, missing empty states.
-9. **Timeline & States** — two competing routes (/timeline vs /states) confuse; StateTimelineExplorer and ObservationTimeline overlap; no single integrated timeline page.
-10. **Evaluation report** — limited to engineering gate stats, not researcher-facing quality.
+## Most consequential gaps
 
-## 5. Critical UX Findings (Summary)
+1. **Broken orchestration:** the scenario route discards context even when its URL contains a selected case. Insights requires a manually pasted state ID and sends bodies incompatible with backend contracts. Primary case-related navigation loses selection. These failures precede external access gates.
+2. **Authentic-source capability is unfinished:** staging, annotation, baseline and publication paths remain explicitly fixture-limited. Closing rights/review paperwork alone cannot enable the required authentic workflow; a controlled implementation path is missing.
+3. **Incomplete clinical workflow:** refresh can indefinitely block observation entry; editor permissions contradict the specified role model; correction lacks the required reason/review and retraction flow in this workspace. Saving records does not complete dependent-state publication.
+4. **Missing administration and processing UI:** authenticated administrators still see a static import placeholder; Activity is also a placeholder. The UI cannot attach an examination or follow processing to a published baseline.
+5. **Weak evidence delivery:** evaluation uses hardcoded fixture claims rather than versioned reports and even relabels original UX acceptance IDs. Genuine longitudinal evidence, qualified scientific review and live application Meta integration remain unverified or unavailable.
+6. **Authorization exception:** saved interpretation detail ignores the patient path and uses project membership only. A fabricated function probe demonstrates metadata retrieval without a patient-grant check. Raw clinical prose disclosure was not demonstrated.
 
-- **Mental model:** Product thinks in UUIDs, not research cases. UI leaks implementation (branch_id, revision, snapshot hash) above the fold.
-- **Navigation:** Primary nav (Overview, Research Cases, Digital Twin, Clinical Data, Hypothetical Scenarios, AI Insights, Evaluation) correct labels, but Digital Twin without context shows "No case loaded" empty state that doesn't link to case creation. Case nav second bar appears only when lesion selected.
-- **Authentication:** Research token entered as password input; error messages generic; no sign-up or project creation for new researcher (requires pre-existing external provisioning).
-- **Guided Demo:** Only genuine beginner path, but only text steps; does not auto-drive UI.
-- **Error states:** Thorough (401/403/404/409/422 explained) but pessimistic, not corrective.
+## Separate acceptance outcomes
 
-## 6. Recommended Recovery Strategy (High Level)
+| Dimension | Independent assessment |
+| --- | --- |
+| Product requirements | Partial; mandatory authentic and integrated workflows unmet |
+| User journeys | Partial case/clinical success; end-to-end journey fails |
+| UI/UX usability | Not ready for a first-time researcher without technical assistance |
+| Visual design | Readable desktop foundations and a useful demo; excessive repeated technical copy, duplicate navigation and mobile entry-card failure |
+| Case/clinical management | Functional artificial administrator slice, incomplete role/update/correction experience |
+| Imaging | Significant processing code; no complete ordinary authentic import journey |
+| 3D | Interactive phantom verified; authentic anatomical reconstruction not established |
+| Longitudinal simulation | Engines exist; ordinary generation UI unusable; demo is prepared playback |
+| Meta AI | Not integrated as a live application research agent; no live call made in this review |
+| Engineering | Fresh build and 119 focused synthetic/unit checks pass; contract/route/ownership defects remain |
+| Scientific integrity | Important provenance and geometry safeguards exist; no qualified clinical validation or authentic longitudinal acceptance |
+| End-to-end readiness | Not accepted |
 
-P0 recovery must create a **case-centered workspace wrapper** that:
+Engineering implementation is substantial but incomplete. Functional product completion and user-experience readiness are not achieved. Scientific validation is not established. Operational readiness is not established by local startup or test fixtures; deployed recovery, real roles, performance and release evidence remain separate.
 
-- After auth, auto-selects single project (or shows project cards with role badges, not dropdown).
-- Lists cases with title, pseudonym, counts; creation form in same page with progressive fields.
-- Clicking case opens **one workspace page** (not 6 top nav links) with tabs: Overview/Profile, Imaging + 3D (split 60/40 viewer prominent), Clinical Observations (timeline left, entry right), Scenarios (family cards, generate), Insights (context-bound), Evaluation.
-- Eliminates manual UUID entry everywhere; simulation uses forms for SC families.
-- Gives 3D viewer >=65% viewport, measurement badge, fullscreen, camera controls labeled with icons.
-- Unifies /timeline and /states into one Timeline component with baseline pin + scenario comparison.
-- Improves visual system: tokenized buttons, typography scale, spacing, empty states with actions.
-
-P1–P2 follow in dedicated recovery plan doc.
+Recover the existing modular product through the [prioritized plan](PRIORITIZED-PRODUCT-RECOVERY-PLAN.md): repair the connected journeys and contract drift first, implement controlled authentic onboarding next, then validate the actual scientific and operational release slice. A visual redesign alone will not close these gaps.

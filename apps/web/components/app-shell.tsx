@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import { readCaseSelection, withCaseSelection, type CaseSelection } from '../lib/case-selection';
 
 export type Selection = {
   project?: string;
@@ -25,13 +26,8 @@ const NAV = [
 ];
 
 const CASE_NAV = [
-  {href: '/cases/detail', label: 'Overview'},
-  {href: '/twin', label: '3D Digital Twin'},
-  {href: '/states', label: 'History & states'},
-  {href: '/charts', label: 'Clinical Data'},
-  {href: '/insights', label: 'AI Research Insights'},
-  {href: '/simulation', label: 'Hypothetical Scenarios'},
-  {href: '/sources', label: 'Sources'},
+  {href: '/cases/detail', label: 'Case overview'},
+  {href: '/states', label: 'Saved timepoints'},
 ];
 
 function preserveSelection(href: string, selection: Selection): string {
@@ -49,9 +45,11 @@ function preserveSelection(href: string, selection: Selection): string {
 
 function readSelection(params: URLSearchParams): Selection {
   const pick = (key: keyof Selection) => params.get(key) ?? undefined;
+  const stored = readCaseSelection(params);
   return {
-    project: pick('project'), patient: pick('patient'), branch: pick('branch'),
-    run: pick('run'), state: pick('state'), lesion: pick('lesion'),
+    project: pick('project') ?? stored.project ?? undefined,
+    patient: pick('patient') ?? stored.patient ?? undefined,
+    branch: pick('branch'), run: pick('run'), state: pick('state'), lesion: pick('lesion'),
     panel: pick('panel'), compare: pick('compare'),
   };
 }
@@ -73,7 +71,7 @@ function ShellInner() {
     <header className="header">
       <div className="brand-row">
         <Link className="brand" href="/">CancerOS <span>Research digital twin</span></Link>
-        {label ? <span className="selection" style={{fontSize:12, color:'#64748b'}}>{label} {pathname.startsWith('/demo') ? '· synthetic demo mode' : ''} — selection persisted via secure cookie + local storage</span> : null}
+        {label ? <span className="selection" style={{fontSize:12, color:'#64748b'}}>{label} {pathname.startsWith('/demo') ? '· synthetic demo mode' : ''} — selection carried in the URL</span> : null}
         {selection.project && selection.patient ? <details className="selection" style={{fontSize:11, color:'#94a3b8'}}><summary>Technical selection reference (advanced)</summary><span>Project {selection.project.slice(0,8)}… · Patient {selection.patient.slice(0,8)}…{selection.lesion?` · Lesion ${selection.lesion.slice(0,8)}…`:''}</span></details> : null}
       </div>
       <nav aria-label="Primary">
@@ -87,8 +85,11 @@ function ShellInner() {
               for(const key of ['scenario','state']){const value=params.get(key);if(value)demoQuery.set(key,value);}
               target=`/demo?${demoQuery}`;
             } else if(selection.project && selection.patient) {
-              if (item.href === '/cases/detail') target = preserveSelection(item.href, selection);
+              if (item.href === '/cases/detail') target = withCaseSelection(item.href, selection as CaseSelection);
               else if (item.href === '/cases') target = `/cases?project=${encodeURIComponent(selection.project)}`;
+              else if (['/twin','/charts','/simulation','/insights','/states','/timeline'].includes(item.href)) {
+                target = withCaseSelection(item.href, selection as CaseSelection);
+              }
             } else if(selection.project && item.href === '/cases') {
               target = `/cases?project=${encodeURIComponent(selection.project)}`;
             }
@@ -101,12 +102,10 @@ function ShellInner() {
       <ul className="nav-list">
         <li><span style={{fontSize:11, color:'#94a3b8', textTransform:'uppercase', letterSpacing:'0.6px', marginRight:8}}>Case workspace</span></li>
         {CASE_NAV.map(item => {
-          if (item.href === '/sources') return null;
           const href = preserveSelection(item.href, selection);
           const isActive = pathname.startsWith(item.href);
           return <li key={item.label}><Link href={href} aria-current={isActive ? 'page' : undefined}>{item.label}</Link></li>;
         })}
-        <li><Link href={`/cases?project=${encodeURIComponent(selection.project!)}`} title="Return to case library">← Library</Link></li>
       </ul>
     </nav> : null}
     {pathname !== '/' && <div className="safety-notice" role="note">Research prototype. Not validated for diagnosis or treatment decisions. Missing values stay “Not recorded”; synthetic hypotheticals stay labeled.</div>}

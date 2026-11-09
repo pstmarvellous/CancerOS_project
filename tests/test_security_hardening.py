@@ -39,7 +39,8 @@ FORBIDDEN_WEB = (
 def web_sources():
     return [
         p
-        for p in (ROOT / "apps" / "web").rglob("*.tsx")
+        for p in (ROOT / "apps" / "web").rglob("*")
+        if p.suffix in (".ts", ".tsx") and ".test." not in p.name
         if ".next" not in p.parts and "node_modules" not in p.parts
     ]
 
@@ -102,6 +103,10 @@ def test_denied_export_makes_zero_transport_calls():
 
 
 def test_security_hardening_report_with_open_deployment_review():
+    # A report-only invocation must not publish success without running its gates.
+    test_frontend_boundary_holds_no_secrets_or_storage()
+    test_no_committed_env_or_restricted_assets()
+    test_denied_export_makes_zero_transport_calls()
     payload = {
         "recorded_at": datetime.now(timezone.utc).isoformat(),
         "platform": platform.platform(),

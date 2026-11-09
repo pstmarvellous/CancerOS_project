@@ -8,12 +8,23 @@ import styles from './mesh-preview.module.css';
 
 type CameraAction = 'left' | 'right' | 'up' | 'down' | 'pan-left' | 'pan-right' | 'pan-up' | 'pan-down' | 'in' | 'out' | 'fit' | 'reset';
 export type RenderableMesh = {objects: Pick<MeshAsset['objects'][number], 'segmentation_id' | 'surface'>[]};
-export default function MeshRenderer({asset, selected, onFailure, label = 'Synthetic region · mm · RAS frame · Z up'}: {asset: RenderableMesh; selected: string; onFailure: () => void; label?: string}) {
+export type ViewerDisplayActions = {
+  maximized: boolean;
+  fullscreen: boolean;
+  fullscreenAvailable: boolean;
+  toggleMaximize: () => void;
+  toggleFullscreen: () => Promise<void>;
+};
+export default function MeshRenderer({asset, selected, onFailure, displayActions, label = 'Synthetic region · mm · RAS frame · Z up'}: {asset: RenderableMesh; selected: string; onFailure: () => void; displayActions?: ViewerDisplayActions; label?: string}) {
   const host = useRef<HTMLDivElement>(null);
+  const frame = useRef<HTMLElement>(null);
   const actions = useRef<((action: CameraAction) => void) | null>(null);
   const interaction = useRef<((enabled: boolean) => void) | null>(null);
   const pointerMode = useRef<((mode: 'orbit' | 'pan') => void) | null>(null);
   const [mode, setMode] = useState<'orbit' | 'pan'>('orbit');
+  const [fullRenderer, setFullRenderer] = useState(false);
+  const [fullscreenError, setFullscreenError] = useState('');
+  const maximized = displayActions?.maximized ?? fullRenderer;
   const helpId = useId();
   const selection = useRef<((id: string) => void) | null>(null);
 
@@ -86,6 +97,12 @@ export default function MeshRenderer({asset, selected, onFailure, label = 'Synth
       const light = new THREE.DirectionalLight('#ffffff', 3);
       light.position.copy(center).add(new THREE.Vector3(span, -span, span));
       scene.add(light);
+      const fill = new THREE.DirectionalLight('#c7d2fe', 0.85);
+      fill.position.copy(center).add(new THREE.Vector3(-span, span, span * 0.4));
+      scene.add(fill);
+      const rim = new THREE.DirectionalLight('#ffffff', 0.6);
+      rim.position.copy(center).add(new THREE.Vector3(0, span * 0.4, -span));
+      scene.add(rim);
       const render = () => {
         if (!disposed && !document.hidden) {
           activeRenderer.render(scene, camera);
@@ -184,21 +201,49 @@ export default function MeshRenderer({asset, selected, onFailure, label = 'Synth
 
   useEffect(() => { selection.current?.(selected); }, [selected, asset]);
   useEffect(() => { pointerMode.current?.(mode); }, [mode, asset]);
+  useEffect(() => {
+    if (!fullRenderer) return;
+    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') setFullRenderer(false); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [fullRenderer]);
+  async function toggleRendererFullscreen() {
+    try {
+      if (displayActions) await displayActions.toggleFullscreen();
+      else if (document.fullscreenElement) await document.exitFullscreen();
+      else await frame.current?.requestFullscreen();
+      setFullscreenError('');
+    } catch { setFullscreenError('Fullscreen is unavailable in this browser. Use Maximize viewer for more space.'); }
+  }
   const steps: [CameraAction, string, string][] = [['left', 'Rotate left', '↶'], ['right', 'Rotate right', '↷'],
     ['pan-left', 'Pan left', '←'], ['pan-right', 'Pan right', '→'], ['in', 'Zoom in', '+'], ['out', 'Zoom out', '−'],
     ['fit', 'Fit view', 'Fit'], ['reset', 'Reset view', 'Reset']];
-  return <section className={styles.renderer} aria-label="3D region controls">
+  return <section ref={frame} className={styles.renderer} aria-label="3D region controls" data-maximized={fullRenderer || undefined}>
     <div className={styles.controls} role="toolbar" aria-label="Camera controls">
       <span role="group" aria-label="Pointer mode">{(['orbit', 'pan'] as const).map(value =>
         <button key={value} type="button" aria-pressed={mode === value} title={`${value === 'orbit' ? 'Orbit' : 'Pan'} with pointer drag`}
           onClick={() => { setMode(value); pointerMode.current?.(value); }}>{value === 'orbit' ? 'Orbit' : 'Pan'}</button>)}</span>
-      <span role="group" aria-label="Camera steps">{steps.map(([action, text, icon]) =>
-        <button key={action} type="button" title={text} aria-label={text} onClick={() => actions.current?.(action)}>{icon}</button>)}</span>
+      <span role="group" aria-label="Zoom">{(['out', 'in'] as const).map(action =>
+        <button key={action} type="button" title={action === 'in' ? 'Zoom in' : 'Zoom out'} aria-label={action === 'in' ? 'Zoom in' : 'Zoom out'}
+          onClick={() => actions.current?.(action)}>{action === 'in' ? '+' : '−'}</button>)}</span>
+      <span role="group" aria-label="Framing">
+        <button type="button" title="Fit view" aria-label="Fit view" onClick={() => actions.current?.('fit')}>Fit</button>
+        <button type="button" title="Reset view" aria-label="Reset view" onClick={() => actions.current?.('reset')}>Reset</button>
+      </span>
+      <span role="group" aria-label="Display size">
+        <button type="button" title={maximized ? 'Restore viewer size' : 'Maximize viewer'} aria-label={maximized ? 'Restore viewer size' : 'Maximize viewer'} aria-pressed={maximized}
+          onClick={() => displayActions ? displayActions.toggleMaximize() : setFullRenderer(open => !open)}>{maximized ? '⤢' : '⛶'}</button>
+        {(!displayActions || displayActions.fullscreenAvailable) && <button type="button" title={displayActions?.fullscreen ? 'Exit fullscreen' : 'Fullscreen viewer'} aria-label={displayActions?.fullscreen ? 'Exit fullscreen' : 'Fullscreen viewer'} aria-pressed={displayActions?.fullscreen}
+          onClick={() => void toggleRendererFullscreen()}>{displayActions?.fullscreen ? 'Exit fullscreen' : 'Fullscreen'}</button>}
+      </span>
       <details className={styles.extraControls}><summary>More camera controls</summary><div>
+        {steps.map(([action, text, icon]) =>
+          <button key={action} type="button" title={text} aria-label={text} onClick={() => actions.current?.(action)}>{icon} {text}</button>)}
         {([['up', 'Rotate up'], ['down', 'Rotate down'], ['pan-up', 'Pan up'], ['pan-down', 'Pan down']] as [CameraAction, string][]).map(([action, text]) =>
-          <button key={action} type="button" onClick={() => actions.current?.(action)}>{text}</button>)}
+          <button key={action} type="button" title={text} aria-label={text} onClick={() => actions.current?.(action)}>{text}</button>)}
       </div></details>
     </div>
+    {fullscreenError && <p role="status">{fullscreenError}</p>}
     <div className={styles.viewport} ref={host} tabIndex={0} role="group" aria-label="Interactive 3D viewport" aria-describedby={helpId}
       onPointerDown={event => { if (event.target instanceof HTMLCanvasElement) event.currentTarget.focus({ preventScroll: true }); }}
       onKeyDown={event => {

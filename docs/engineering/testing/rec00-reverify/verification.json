@@ -1,0 +1,44 @@
+{
+  "task": "COS-REC-00-REVERIFY",
+  "date": "2026-11-08",
+  "timezone": "Africa/Lagos",
+  "result": "PASS",
+  "scope": "Local recovery baseline with artificial data only",
+  "branch": "cos-rec-00-security-reverification",
+  "starting_commit": "12b9502",
+  "backend": {
+    "tests": "70",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "57.544"
+  },
+  "frontend": {
+    "tests": 189,
+    "files": 33,
+    "failed": 0
+  },
+  "browser": {
+    "startTime": "2026-11-08T15:46:48.148Z",
+    "duration": 34671.735,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "static_checks": {
+    "build": "pass, three existing filesystem-tracing warnings",
+    "typescript": "pass",
+    "eslint": "pass",
+    "mypy": "pass, 111 source files",
+    "ruff": "pass, changed Python files",
+    "contract_drift": "pass",
+    "boundaries": "pass",
+    "git_visible_hygiene": "pass"
+  },
+  "limitations": [
+    "Bounded backend suite, not entire Python inventory",
+    "Known-secret scan is not a general PHI/history/dependency audit",
+    "No real-data, scientific, provider, deployment or publication approval"
+  ]
+}

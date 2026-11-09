@@ -5,7 +5,11 @@ import { ErrorSummary, LoadingState } from './research';
 import { researchJson, researchError } from '../lib/research-client';
 type Profile = components['schemas']['ResearchCaseView'];
 
-export function ResearchProfile({project, patient, onLoaded}: {project:string; patient:string; onLoaded?:(profile:Profile, canEdit:boolean)=>void}) {
+type ProfileProps = {project:string; patient:string; onLoaded?:(profile:Profile, canEdit:boolean)=>void};
+export function ResearchProfile(props:ProfileProps) {
+  return <ResearchProfileBody key={`${props.project}:${props.patient}`} {...props}/>;
+}
+function ResearchProfileBody({project, patient, onLoaded}:ProfileProps) {
   const [profile, setProfile] = useState<Profile|null>(null);
   const [error, setError] = useState('');
   const [editing, setEditing] = useState(false);
@@ -15,6 +19,8 @@ export function ResearchProfile({project, patient, onLoaded}: {project:string; p
   const [attempt, setAttempt] = useState(0);
   const [key, setKey] = useState(()=>crypto.randomUUID());
   const loadedCallback = useRef(onLoaded);
+  const active = useRef(true);
+  useEffect(()=>{active.current=true; return ()=>{active.current=false;};},[]);
   useEffect(()=>{loadedCallback.current=onLoaded;},[onLoaded]);
   useEffect(() => {
     const controller = new AbortController();
@@ -36,8 +42,10 @@ export function ResearchProfile({project, patient, onLoaded}: {project:string; p
     setBusy(true); setError(''); setNotice('');
     try {
       const result = await researchJson<Profile>(`/api/research-profile?project=${project}&patient=${patient}`,{method:'POST',headers:{'content-type':'application/json','idempotency-key':key},body:JSON.stringify(body)});
+      if (!active.current) return;
+      loadedCallback.current?.(result,canEdit);
       setProfile(result); setEditing(false); setKey(crypto.randomUUID()); setNotice('Profile saved. Previous revisions are retained.');
-    } catch(cause) {setError(researchError(cause));} finally {setBusy(false);}
+    } catch(cause) {if (active.current) setError(researchError(cause));} finally {if (active.current) setBusy(false);}
   }
   return <section className="card workspace-section" aria-label="Research profile editor">
     <div className="section-heading"><div><h2>Research profile</h2><p className="field-hint" style={{margin:0}}>Pseudonymized, source-backed. Revision history retained; missing stays “Not recorded”.</p></div>

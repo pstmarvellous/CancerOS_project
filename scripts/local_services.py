@@ -41,6 +41,10 @@ def start(name):
     env = os.environ.copy()
     # SeaweedFS binds generic DEBUG as a Boolean; the host uses DEBUG=release.
     env.pop("DEBUG", None)
+    # The token-free synthetic demo is part of normal startup when prepared.
+    if name == "web":
+        env["CANCEROS_SYNTHETIC_DEMO"] = "1"
+        env["EXTERNAL_INFERENCE_ENABLED"] = "false"
     if name == "storage":
         executable = next((LOCAL / "tools/seaweedfs").rglob("weed.exe"), None)
         if executable is None:

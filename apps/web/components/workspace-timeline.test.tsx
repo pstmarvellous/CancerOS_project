@@ -52,7 +52,7 @@ describe('workspace timeline without manual UUID entry', () => {
     vi.stubGlobal('fetch', fetch);
     render(<StateTimelineExplorer project={PROJECT} patient={PATIENT} />);
     await waitFor(() => expect(screen.getByLabelText('History rail: branch in this case')).toBeVisible(), { timeout: 15000 });
-    await waitFor(() => expect(screen.getByText(/Persisted discrete states/)).toBeVisible(), { timeout: 15000 });
+    await waitFor(() => expect(screen.getByText(/Saved discrete timepoints/)).toBeVisible(), { timeout: 15000 });
     expect(screen.getByLabelText('State list equivalent')).toBeVisible();
     expect(screen.getByLabelText('Pin B comparison state')).toBeVisible();
     expect(fetch).toHaveBeenCalledWith(expect.stringContaining(`project=${PROJECT}&patient=${PATIENT}&resource=branches`), expect.anything());

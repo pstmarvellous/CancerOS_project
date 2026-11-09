@@ -83,14 +83,14 @@ describe('COS-076 state timeline explorer', () => {
     expect(screen.getByText(/Open a case to inspect its history/)).toBeVisible();
   });
 
-  it('loads persisted states with a labeled slider and no interpolation', async () => {
+  it('loads saved timepoints with a labeled slider and no interpolation', async () => {
     query.search = `?project=${PROJECT}&patient=${PATIENT}`;
     vi.stubGlobal('fetch', stubFetch());
     render(<StateTimelineExplorer />);
-    await waitFor(() => expect(screen.getByText(/Persisted discrete states/)).toBeVisible(), { timeout: 10000 });
+    await waitFor(() => expect(screen.getByText(/Saved discrete timepoints/)).toBeVisible(), { timeout: 10000 });
     expect(screen.getByLabelText('State slider')).toBeVisible();
     expect(screen.getByText(/Observation sequence 1 of 2/)).toBeVisible();
-    expect(screen.getByText(/Persisted discrete states/)).toBeVisible();
+    expect(screen.getByText(/Saved discrete timepoints/)).toBeVisible();
     vi.unstubAllGlobals();
   });
 

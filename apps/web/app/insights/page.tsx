@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { CaseBoundPage } from '../../components/case-bound-page';
 import { InsightsExplorer } from '../../components/insights-explorer';
 
 export default function InsightsPage() {
@@ -12,7 +15,9 @@ export default function InsightsPage() {
           from background passages; unknown uncertainty is never a confidence gauge.
         </p>
       </div>
-      <InsightsExplorer />
+      <CaseBoundPage>
+        {(selection) => <InsightsExplorer project={selection.project} patient={selection.patient} />}
+      </CaseBoundPage>
       <p>
         <Link href="/cases">← Case library</Link> · <Link href="/states">History &amp; states</Link> · <Link href="/charts">Clinical charts</Link>
       </p>

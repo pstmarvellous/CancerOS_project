@@ -13,7 +13,8 @@ for path in (ROOT / "src/canceros").glob("*.py"):
             assert path.name == "contracts.py", "Duplicate provenance owner"
 web = "\n".join(
     p.read_text(encoding="utf-8")
-    for p in (ROOT / "apps/web").rglob("*.tsx")
+    for p in (ROOT / "apps/web").rglob("*")
+    if p.suffix in (".ts", ".tsx") and ".test." not in p.name
     if ".next" not in p.parts and "node_modules" not in p.parts
 )
 for forbidden in (

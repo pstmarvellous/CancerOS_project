@@ -2,6 +2,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { components } from '../../../packages/contracts/generated/api';
 import type { DemoBundle, DemoScenario } from './demo-contracts';
 import { validateDemoBundle, demoBundle, newDemoSession, hasDemoSession, surfaceDigest } from './synthetic-demo';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { resolve } from 'node:path';
+import { spawnSync } from 'node:child_process';
 
 type Point = components['schemas']['TimelinePoint'];
 type Comparison = components['schemas']['PointComparison'];
@@ -142,6 +146,9 @@ describe('synthetic-only demo integrity boundary', () => {
     ['unknown root field', v => { Object.assign(v, { unexpected: 'untrusted' }); }],
     ['unknown scenario field', v => { Object.assign(scenario(v), { unexpected: 'untrusted' }); }],
     ['expired bundle', v => { v.expiresAt = new Date(Date.now() - 1000).toISOString(); }],
+    ['timezone-free expiry', v => { v.expiresAt = v.expiresAt.replace('Z', ''); }],
+    ['timezone-free preparation', v => { v.preparedAt = v.preparedAt.replace('Z', ''); }],
+    ['non-string expiry', v => { Object.assign(v, { expiresAt: null }); }],
     ['leaked credential', v => { Object.assign(v, { token: 'private' }); }],
     ['remote resource', v => { scenario(v).description = 'https://private.example/asset'; }],
   ];
@@ -152,6 +159,41 @@ describe('synthetic-only demo integrity boundary', () => {
     expect(validateDemoBundle(value)).toBe(false);
   });
   it('rejects absent data', () => { expect(validateDemoBundle(null)).toBe(false); });
+  it('recovers when a missing bundle is prepared after startup and reports safe causes', () => {
+    const directory = mkdtempSync(resolve(tmpdir(), 'canceros-demo-'));
+    const file = resolve(directory, 'bundle.json');
+    const warning = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    vi.stubEnv('CANCEROS_SYNTHETIC_DEMO', '1');
+    vi.stubEnv('CANCEROS_SYNTHETIC_DEMO_FILE', file);
+    try {
+      expect(demoBundle()).toBeNull();
+      expect(warning).toHaveBeenLastCalledWith(expect.stringContaining('missing bundle'));
+      writeFileSync(file, '{private malformed content');
+      expect(demoBundle()).toBeNull();
+      expect(warning).toHaveBeenLastCalledWith(expect.stringContaining('invalid JSON'));
+      expect(warning.mock.calls.flat().join(' ')).not.toContain('private malformed content');
+      writeFileSync(file, JSON.stringify(bundle()));
+      expect(demoBundle()?.bundle.caseLabel).toBe('Research Demo 01');
+      const expired = bundle(); expired.expiresAt = new Date(Date.now() - 1).toISOString();
+      writeFileSync(file, JSON.stringify(expired));
+      expect(demoBundle()).toBeNull();
+      expect(warning).toHaveBeenLastCalledWith(expect.stringContaining('expired bundle'));
+    } finally { warning.mockRestore(); rmSync(directory, { recursive: true }); }
+  });
+  it('uses the serving validator from the preparation CLI without launching services', () => {
+    const directory = mkdtempSync(resolve(tmpdir(), 'canceros-demo-cli-'));
+    const file = resolve(directory, 'bundle.json');
+    const validate = () => spawnSync(process.execPath, [resolve('scripts/serve_synthetic_demo.mjs'), '--validate-bundle', file], { encoding: 'utf8' });
+    try {
+      writeFileSync(file, JSON.stringify(bundle()));
+      expect(validate().status).toBe(0);
+      const corrupt = bundle(); scenario(corrupt).meshes = {};
+      writeFileSync(file, JSON.stringify(corrupt));
+      const result = validate();
+      expect(result.status).toBe(1);
+      expect(JSON.parse(result.stdout).state).toBe('invalid');
+    } finally { rmSync(directory, { recursive: true }); }
+  }, 15000);
   it('binds sessions to the bundle fingerprint, expires them and denies forgeries', () => {
     vi.useFakeTimers();
     const session = newDemoSession('one', new Date(Date.now() + 1000).toISOString());

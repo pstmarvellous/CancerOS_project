@@ -1,0 +1,17 @@
+{
+  "recorded_at": "2026-11-08T16:18:54.669Z",
+  "scope": "Real RS256/SQL/private-storage services; artificial sources and observations only",
+  "case_a": "602d17fa-15af-4f7a-a7cf-13e428e3298d",
+  "case_b": "e7c2e114-bd37-4ea5-a64a-68df66988515",
+  "project": "4b98d7a2-6256-4d30-be74-523cf9eb2fe3",
+  "journey": [
+    "create-a",
+    "profile",
+    "observe",
+    "correct",
+    "refresh",
+    "case-b-isolation",
+    "sign-out"
+  ],
+  "browser_errors": []
+}

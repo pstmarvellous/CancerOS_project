@@ -5,9 +5,16 @@ import type { components } from '../../../packages/contracts/generated/api';
 import { TimeLabel } from './research';
 
 type S = components['schemas'];
-type Request = <T>(path: string, signal: AbortSignal, body?: unknown, idempotencyKey?: string) => Promise<T>;
 
-export function RevisionUpdatePanel({query, request}: {query: S['TimelineQuery']; request: Request}) {
+export function RevisionUpdatePanel({query, baseUrl}: {query: S['TimelineQuery']; baseUrl: string}) {
+  async function request<T>(action: string, signal: AbortSignal, body?: unknown, idempotencyKey?: string): Promise<T> {
+    const headers: Record<string, string> = {};
+    if (body !== undefined) headers['Content-Type'] = 'application/json';
+    if (idempotencyKey) headers['Idempotency-Key'] = idempotencyKey;
+    const response = await fetch(baseUrl + '&action=' + action, {method: body === undefined ? 'GET' : 'POST', headers, body: body === undefined ? undefined : JSON.stringify(body), cache: 'no-store', credentials: 'omit', redirect: 'error', signal});
+    if (!response.ok) throw new Error(response.status === 401 || response.status === 403 ? 'Access denied for this revision update.' : 'Revision update request failed (status ' + response.status + ').');
+    return (await response.json()) as T;
+  }
   const [view, setView] = useState<S['DependentUpdateView'] | null>(null);
   const [receipt, setReceipt] = useState<S['DependentUpdateReceipt'] | null>(null);
   const [job, setJob] = useState<S['ImagingJobRecord'] | null>(null);
@@ -17,7 +24,7 @@ export function RevisionUpdatePanel({query, request}: {query: S['TimelineQuery']
   const retries = useRef(new Map<string, string>());
   useEffect(() => () => {pending.current?.abort();}, []);
   const scope = query.window.scope;
-  const latest = `/dependent-updates/latest${scope.mode === 'simulation' ? `?branch_id=${scope.branch_id}` : ''}`;
+  const latest = 'updates-latest' + (scope.mode === 'simulation' && scope.branch_id ? '&branch_id=' + encodeURIComponent(scope.branch_id) : '');
   async function act(action: (signal: AbortSignal) => Promise<void>) {
     pending.current?.abort(); const controller = new AbortController(); pending.current = controller; setBusy(true);
     try {await action(controller.signal);} catch (error) {if (!controller.signal.aborted) {const detail = error instanceof Error ? error.message : 'Update request unavailable. Keep the loaded exact view and retry this request.'; if (detail.startsWith('Access denied')) {setView(null); setReceipt(null); setJob(null);} setMessage(detail);}}
@@ -34,7 +41,7 @@ export function RevisionUpdatePanel({query, request}: {query: S['TimelineQuery']
     const body: S['DependentUpdateInput'] = {event_id: event.event_id, expected_revision: event.revision, revision_hash: event.revision_hash, timeline: {...query, cursor: null}, state_input: null};
     const fingerprint = JSON.stringify(body);
     if (!retries.current.has(fingerprint)) retries.current.set(fingerprint, crypto.randomUUID());
-    const result = await request<S['DependentUpdateReceipt']>('/dependent-updates', signal, body, retries.current.get(fingerprint));
+    const result = await request<S['DependentUpdateReceipt']>('updates', signal, body, retries.current.get(fingerprint));
     if (signal.aborted) return;
     if (result.event_id !== event.event_id || result.data_revision !== event.revision) throw new Error('Update receipt does not match the selected revision. Keep the loaded exact view.');
     retries.current.delete(fingerprint); setReceipt(result); setJob(null); setMessage(result.next_action);
@@ -43,14 +50,14 @@ export function RevisionUpdatePanel({query, request}: {query: S['TimelineQuery']
   const jobId = view?.job_id ?? receipt?.job_id;
   async function refreshJob(signal: AbortSignal) {
     if (!jobId) return;
-    const result = await request<S['ImagingJobRecord']>(`/imaging-jobs/${jobId}`, signal);
+    const result = await request<S['ImagingJobRecord']>('job&job=' + encodeURIComponent(jobId), signal);
     if (signal.aborted) return;
     if (result.id !== jobId || result.operation !== 'dependent_update') throw new Error('Worker status does not match the revision update. Keep the loaded exact view.');
     setJob(result); await refresh(signal);
   }
   async function cancelJob(signal: AbortSignal) {
     if (!jobId) return;
-    const result = await request<S['ImagingJobRecord']>(`/imaging-jobs/${jobId}/cancellations`, signal, {});
+    const result = await request<S['ImagingJobRecord']>('job-cancel&job=' + encodeURIComponent(jobId), signal, {});
     if (signal.aborted) return;
     if (result.id !== jobId || result.operation !== 'dependent_update') throw new Error('Cancellation receipt does not match the revision update.');
     setJob(result); setMessage(result.cancel_requested && result.status !== 'cancelled' ? 'Cancellation requested. Refresh worker status for server acknowledgement; the loaded view is retained.' : result.next_action);

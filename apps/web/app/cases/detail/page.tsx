@@ -12,9 +12,11 @@ export default function CaseDetailPage() {
         </p>
       </div>
       <UnifiedWorkspace />
-      <p style={{marginTop:24}}>
-        <Link href="/cases">← Case library</Link> · <Link href="/demo">Explore synthetic demo</Link> · <Link href="/guided-demo">Guided demo</Link>
-      </p>
+      <nav className="case-footer-links" aria-label="Continue exploring">
+        <Link href="/cases">← Case library</Link>
+        <Link href="/demo">Explore synthetic demo</Link>
+        <Link href="/guided-demo">Guided demo</Link>
+      </nav>
     </>
   );
 }

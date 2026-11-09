@@ -4,7 +4,7 @@ import base64
 import hashlib
 import json
 from datetime import date
-from typing import Annotated, Literal, Union
+from typing import TYPE_CHECKING, Annotated, Any, Literal, Union
 from uuid import UUID, uuid4
 
 from fastapi import HTTPException
@@ -341,14 +341,15 @@ def update_profile(c, i, p, u, value: ResearchProfileUpdate):
 
 
 def _manual_model(model):
+    fields: dict[str, Any] = {
+        name: (field.annotation, field)
+        for name, field in model.model_fields.items()
+        if name not in {"client_record_key", "source_locator_id"}
+    }
     return create_model(
         "Manual" + model.__name__,
         __base__=Contract,
-        **{
-            name: (field.annotation, field)
-            for name, field in model.model_fields.items()
-            if name not in {"client_record_key", "source_locator_id"}
-        },
+        **fields,
     )
 
 
@@ -361,16 +362,21 @@ class ManualNoteInput(Contract):
     text: SecretStr = Field(min_length=1, max_length=16000, json_schema_extra={"writeOnly": True})
 
 
-ManualItem = Annotated[
-    Union[
-        tuple(
-            _manual_model(m)
-            for m in (VisitInput, NumericInput, DiagnosisInput, TreatmentInput, SymptomInput)
-        )
-        + (ManualNoteInput,)
-    ],
-    Field(discriminator="kind"),
-]
+if TYPE_CHECKING:
+    # Runtime models omit server-owned linkage fields. Their remaining field
+    # types match these canonical inputs; static checkers cannot expand factories.
+    ManualItem = VisitInput | NumericInput | DiagnosisInput | TreatmentInput | SymptomInput | ManualNoteInput
+else:
+    ManualItem = Annotated[
+        Union[
+            tuple(
+                _manual_model(m)
+                for m in (VisitInput, NumericInput, DiagnosisInput, TreatmentInput, SymptomInput)
+            )
+            + (ManualNoteInput,)
+        ],
+        Field(discriminator="kind"),
+    ]
 
 
 class ManualObservationInput(Contract):
@@ -444,7 +450,7 @@ def manual_observation(c, i, p, u, value: ManualObservationInput, key, storage):
         if prior.item.kind != record["kind"]:
             raise HTTPException(422)
     record["client_record_key"] = logical_key
-    if record["kind"] == "note":
+    if value.observation.kind == "note":
         raw = value.observation.text.get_secret_value().encode()
         if not raw.strip():
             raise HTTPException(422)
@@ -505,7 +511,7 @@ def manual_observation(c, i, p, u, value: ManualObservationInput, key, storage):
             source_version_id=entered.id,
             mapping_id=mapping.id,
             sha256=digest,
-            content_base64=base64.b64encode(raw).decode(),
+            content_base64=SecretStr(base64.b64encode(raw).decode()),
             source_reference=SecretStr(value.source_reference),
         ),
         storage,

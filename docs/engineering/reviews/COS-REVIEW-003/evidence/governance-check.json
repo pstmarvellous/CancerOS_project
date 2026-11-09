@@ -1,0 +1,138 @@
+{
+  "current_full_check": "failed",
+  "failure": "Invalid transition planned->implemented",
+  "invalid_transitions": [
+    {
+      "task": "COS-074",
+      "transition": "planned->implemented"
+    },
+    {
+      "task": "COS-074",
+      "transition": "implemented->implemented_unverified"
+    },
+    {
+      "task": "COS-075",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-076",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-077",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-078",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-079",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-080",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-081",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-082",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-083",
+      "transition": "planned->blocked"
+    },
+    {
+      "task": "COS-084",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-085",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-086",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-087",
+      "transition": "planned->blocked"
+    },
+    {
+      "task": "COS-088",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-089",
+      "transition": "planned->blocked"
+    },
+    {
+      "task": "COS-090",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-091",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-092",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-093",
+      "transition": "planned->blocked"
+    },
+    {
+      "task": "COS-094",
+      "transition": "planned->blocked"
+    },
+    {
+      "task": "COS-095",
+      "transition": "planned->blocked"
+    },
+    {
+      "task": "COS-096",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-097",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-098",
+      "transition": "planned->blocked"
+    },
+    {
+      "task": "COS-099",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-100",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-101",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-102",
+      "transition": "planned->implemented_unverified"
+    },
+    {
+      "task": "COS-103",
+      "transition": "planned->blocked"
+    },
+    {
+      "task": "COS-104",
+      "transition": "planned->blocked"
+    }
+  ],
+  "head_baseline_ledger_check": "Invalid transition planned->implemented",
+  "new_review_entry_validation": "passed",
+  "prior_statuses_changed": false,
+  "action": "Record pre-existing governance incompatibility; preserve historical task records"
+}

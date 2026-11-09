@@ -8944,6 +8944,78 @@
         "title": "ImagingStageReceipt",
         "type": "object"
       },
+      "ImportPage": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ImportSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ImportPage",
+        "type": "object"
+      },
+      "ImportSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "format": {
+            "title": "Format",
+            "type": "string"
+          },
+          "import_id": {
+            "format": "uuid",
+            "title": "Import Id",
+            "type": "string"
+          },
+          "issue_codes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Issue Codes",
+            "type": "array"
+          },
+          "next_action": {
+            "default": "review_source_and_provenance_then_confirm_or_run_geometry",
+            "title": "Next Action",
+            "type": "string"
+          },
+          "sequence": {
+            "title": "Sequence",
+            "type": "string"
+          },
+          "series_id": {
+            "format": "uuid",
+            "title": "Series Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "import_id",
+          "study_id",
+          "series_id",
+          "sequence",
+          "format",
+          "status",
+          "issue_codes"
+        ],
+        "title": "ImportSummary",
+        "type": "object"
+      },
       "InheritedAssignment": {
         "additionalProperties": false,
         "properties": {
@@ -9019,6 +9091,14 @@
             "format": "uuid",
             "title": "Branch Id",
             "type": "string"
+          },
+          "comparison_measurements": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ContextMeasurement"
+            },
+            "title": "Comparison Measurements",
+            "type": "array"
           },
           "comparison_snapshot_id": {
             "anyOf": [
@@ -9253,6 +9333,16 @@
       "InterpretationInput": {
         "additionalProperties": false,
         "properties": {
+          "context_input": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ContextBuildInput"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "context_snapshot_id": {
             "format": "uuid",
             "title": "Context Snapshot Id",
@@ -17931,11 +18021,23 @@
             "format": "uuid",
             "title": "Segmentation Id",
             "type": "string"
+          },
+          "source_image_id": {
+            "format": "uuid",
+            "title": "Source Image Id",
+            "type": "string"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
           }
         },
         "required": [
           "segmentation_id",
           "batch_id",
+          "source_image_id",
+          "study_id",
           "label_value",
           "mask_type",
           "qc_status"
@@ -25566,6 +25668,90 @@
         "summary": "Post Simulation Config"
       }
     },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/branches/{branch_id}/simulation-configs/current": {
+      "get": {
+        "operationId": "get_latest_simulation_config_api_v1_projects__project_id__patients__patient_id__branches__branch_id__simulation_configs_current_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "branch_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Branch Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ConfigVersion"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Response Get Latest Simulation Config Api V1 Projects  Project Id  Patients  Patient Id  Branches  Branch Id  Simulation Configs Current Get"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Latest Simulation Config"
+      }
+    },
     "/api/v1/projects/{project_id}/patients/{patient_id}/branches/{branch_id}/simulation-runs": {
       "post": {
         "operationId": "post_simulation_run_api_v1_projects__project_id__patients__patient_id__branches__branch_id__simulation_runs_post",
@@ -26967,6 +27153,72 @@
         "summary": "Preview"
       }
     },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/imaging-imports": {
+      "get": {
+        "operationId": "import_list_api_v1_projects__project_id__patients__patient_id__imaging_imports_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Import List"
+      }
+    },
     "/api/v1/projects/{project_id}/patients/{patient_id}/imaging-imports/{import_id}": {
       "get": {
         "operationId": "detail_api_v1_projects__project_id__patients__patient_id__imaging_imports__import_id__get",
@@ -28203,6 +28455,82 @@
           }
         },
         "summary": "Get Lesion"
+      }
+    },
+    "/api/v1/projects/{project_id}/patients/{patient_id}/lesions/{lesion_id}/geometry": {
+      "get": {
+        "operationId": "get_lesion_geometry_api_v1_projects__project_id__patients__patient_id__lesions__lesion_id__geometry_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "lesion_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Lesion Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeshQCReport"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Lesion Geometry"
       }
     },
     "/api/v1/projects/{project_id}/patients/{patient_id}/manual-observations": {

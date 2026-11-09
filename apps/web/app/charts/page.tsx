@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { CaseBoundPage } from '../../components/case-bound-page';
 import { ClinicalChartsExplorer } from '../../components/clinical-charts-explorer';
 
 export default function ChartsPage() {
@@ -12,7 +15,9 @@ export default function ChartsPage() {
           tables. Missing stays missing; censored values keep their comparator and threshold.
         </p>
       </div>
-      <ClinicalChartsExplorer />
+      <CaseBoundPage>
+        {(selection) => <ClinicalChartsExplorer project={selection.project} patient={selection.patient} />}
+      </CaseBoundPage>
       <p>
         <Link href="/cases">← Case library</Link> · <Link href="/cases/detail">Case profile</Link> · <Link href="/states">History &amp; states</Link>
       </p>

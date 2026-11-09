@@ -1,0 +1,61 @@
+{
+  "recorded_at": "2026-11-09T16:03:31.297Z",
+  "steps": [
+    {
+      "journey": "A",
+      "step": "purpose",
+      "expected": "Purpose understandable without instructions",
+      "actual": "Explore How a Tumor Could Change Over Time",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "A",
+      "step": "launch-demo",
+      "expected": "Demo launches",
+      "actual": "Demo workspace visible",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "A",
+      "step": "manipulate-3d",
+      "expected": "3D camera responds to controls",
+      "actual": "Camera state changed after Rotate left",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "A",
+      "step": "all-scenarios",
+      "expected": "All five scenarios selectable with measurements",
+      "actual": "{\"SC-01\":\"216 mm³\",\"SC-02\":\"216 mm³\",\"SC-03\":\"216 mm³\",\"SC-04\":\"216 mm³\",\"SC-05\":\"216 mm³\"}",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "A",
+      "step": "follow-time",
+      "expected": "Day 37 shows 64 mm³",
+      "actual": "64 mm³",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "A",
+      "step": "observations",
+      "expected": "Scenario observations listed with days",
+      "actual": "1 table(s)",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "A",
+      "step": "research-explanation",
+      "expected": "Clearly labeled local explanation; live marked unavailable",
+      "actual": "local=true live-denied=true",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "A",
+      "step": "narrow-layout",
+      "expected": "No horizontal scrolling at 390px",
+      "actual": "overflow=0px",
+      "verdict": "PASS"
+    }
+  ]
+}

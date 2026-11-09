@@ -23,6 +23,7 @@ from canceros.simulation_runs import (
     SaveConfigInput,
     queue_run,
     read_config,
+    read_latest_config,
     read_run,
     save_config,
 )
@@ -167,6 +168,91 @@ def test_concurrent_draft_edits_have_one_winner(imaging_db):
 
     with ThreadPoolExecutor(max_workers=2) as pool:
         assert sorted(pool.map(edit, ["writer-one", "writer-two"])) == [1, 409]
+
+
+def test_latest_config_reopens_current_revision_and_never_falls_back_after_withdrawal(imaging_db):
+    c, i, p, patient, _, storage, _ = imaging_db
+    u = patient.patient_id
+    branch, config, _ = inputs(imaging_db)
+    assert read_latest_config(c, i, p, u, branch.id) is None
+    first = save_config(
+        c,
+        i,
+        p,
+        u,
+        branch.id,
+        SaveConfigInput(expected_draft_revision=0, config=config),
+        storage,
+        "latest-first",
+        TEST,
+    )
+    second = save_config(
+        c,
+        i,
+        p,
+        u,
+        branch.id,
+        SaveConfigInput(expected_draft_revision=1, config=config.model_copy(update={"seed": 43})),
+        storage,
+        "latest-second",
+        TEST,
+    )
+    reopened = read_latest_config(c, i, p, u, branch.id)
+    assert reopened == second
+    assert reopened.draft_revision == 2 and reopened.config.seed == 43
+    assert read_config(c, i, p, u, first.id) == first
+    for identity, project, person, identifier, status in (
+        (Identity(i.user_id, {p: "editor"}), p, u, branch.id, 403),
+        (i, p, uuid4(), branch.id, 404),
+        (i, uuid4(), u, branch.id, 404),
+        (i, p, u, uuid4(), 404),
+    ):
+        with pytest.raises(HTTPException) as denied:
+            read_latest_config(c, identity, project, person, identifier)
+        assert denied.value.status_code == status
+    withdraw_resource(c, i, p, u, second.id, WithdrawalInput(reason_code="scientific_review"))
+    with pytest.raises(HTTPException) as withdrawn:
+        read_latest_config(c, i, p, u, branch.id)
+    assert withdrawn.value.status_code == 409
+    # Withdrawal does not silently return the still-readable older draft.
+    assert read_config(c, i, p, u, first.id) == first
+
+
+def test_latest_config_http_requires_owned_admin_scope_and_current_source_rights(imaging_db):
+    c, i, p, patient, _, _, _ = imaging_db
+    u = patient.patient_id
+    branch, config, _ = inputs(imaging_db)
+    client, headers = http_session(imaging_db)
+    root = f"/api/v1/projects/{p}/patients/{u}"
+    path = root + f"/branches/{branch.id}/simulation-configs/current"
+    with client:
+        assert client.get(path).status_code == 401
+        empty = client.get(path, headers=headers)
+        assert empty.status_code == 200 and empty.json() is None
+        saved = client.post(
+            root + f"/branches/{branch.id}/simulation-configs",
+            json={"expected_draft_revision": 0, "config": config.model_dump(mode="json")},
+            headers={**headers, "Idempotency-Key": "latest-http-config"},
+        )
+        assert saved.status_code == 201
+        current = client.get(path, headers=headers)
+        assert current.status_code == 200 and current.json() == saved.json()
+        assert client.get(path.replace(str(u), str(uuid4())), headers=headers).status_code == 404
+        assert client.get(path.replace(str(p), str(uuid4())), headers=headers).status_code == 404
+        c.execute(
+            text("UPDATE access.memberships SET role='viewer' WHERE project_id=:p AND user_id=:u"),
+            {"p": p, "u": i.user_id},
+        )
+        c.commit()
+        assert client.get(path, headers=headers).status_code == 403
+        c.execute(
+            text("UPDATE access.memberships SET role='admin' WHERE project_id=:p AND user_id=:u"),
+            {"p": p, "u": i.user_id},
+        )
+        c.commit()
+        withdraw_resource(c, i, p, u, branch.id, WithdrawalInput(reason_code="scientific_review"))
+        c.commit()
+        assert client.get(path, headers=headers).status_code == 409
 
 
 def test_authenticated_configuration_and_run_http(imaging_db):

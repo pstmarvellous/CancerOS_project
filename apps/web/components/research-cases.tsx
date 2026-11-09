@@ -1,5 +1,6 @@
 'use client';
-import { Suspense, useEffect, useState } from 'react';
+import { readCaseSelection } from '../lib/case-selection';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import type { components } from '../../../packages/contracts/generated/api';
@@ -12,7 +13,7 @@ type Case = components['schemas']['ResearchCaseView'];
 type Source = components['schemas']['ResearchCaseSources']['items'][number];
 export function ResearchCases() { return <Suspense fallback={<LoadingState/>}><ResearchCasesBody/></Suspense>; }
 function readLastProject(): string | null {
-  try { const raw = localStorage.getItem('canceros:last_case'); if (!raw) return null; const last = JSON.parse(raw); return typeof last?.project === 'string' ? last.project : null; } catch { return null; }
+  return readCaseSelection(new URLSearchParams()).project;
 }
 function ResearchCasesBody() {
   const params = useSearchParams();
@@ -29,6 +30,8 @@ function ResearchCasesBody() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [attempt, setAttempt] = useState(0);
+  const context = useRef({project,authenticated});
+  useEffect(()=>{context.current = {project,authenticated};},[project,authenticated]);
   useEffect(() => {
     if (!project || !authenticated) return;
     const controller = new AbortController();
@@ -46,23 +49,19 @@ function ResearchCasesBody() {
     return () => controller.abort();
   }, [project, authenticated, attempt]);
   async function loadMore() {
-    if (!project||!cursor||moreBusy)return;setMoreBusy(true);
+    if (!project||!cursor||moreBusy)return;
+    const requestedProject=project;
+    setMoreBusy(true);
     try {
       const page=await researchJson<{items:Case[];next_cursor?:string|null}>(`/api/research-cases?project=${encodeURIComponent(project)}&cursor=${encodeURIComponent(cursor)}`);
+      if (context.current.project!==requestedProject || !context.current.authenticated) return;
       setCases(current=>[...current,...page.items.filter(item=>!current.some(existing=>existing.patient_id===item.patient_id))]);setCursor(page.next_cursor??null);
-    }catch(cause){setError(researchError(cause));}finally{setMoreBusy(false);}
+    }catch(cause){if(context.current.project===requestedProject && context.current.authenticated)setError(researchError(cause));}finally{setMoreBusy(false);}
   }
   const shown = cases.filter(item => `${item.title} ${item.case_identifier} ${item.pseudonym}`.toLowerCase().includes(query.toLowerCase()));
   return <>
     <div id="research-access"><ResearchSessionPanel selectedProjectId={project} onProjectChange={next => {
-      const prev = project;
-      if (prev) try { localStorage.setItem('canceros:last_project', prev); } catch {}
-      const toStore = next ?? '';
-      try {
-        if (toStore) localStorage.setItem('canceros:last_project', toStore);
-        else if (!next) localStorage.removeItem('canceros:last_project');
-      } catch {}
-      setProject(next); setCases([]); setQuery(''); setShowImported(false);
+      setProject(next); setCases([]); setSources([]); setRole(''); setCreate(false); setCursor(null); setQuery(''); setShowImported(false);
     }} onSessionChange={setAuthenticated}/></div>
 
     {!authenticated && !busy && (
@@ -111,7 +110,7 @@ function ResearchCasesBody() {
           {cursor&&<button className="button-secondary" onClick={()=>void loadMore()} disabled={moreBusy} style={{marginTop:12}}>{moreBusy?'Loading…':'Load more cases'}</button>}
         </section>
 
-        {role!=='admin' && cases.length>0 && <p className="field-hint">Only administrators can create cases. As {role}, you can open existing cases and add clinical observations where permitted.</p>}
+        {role!=='admin' && cases.length>0 && <p className="field-hint">Only administrators can create cases. Your {role} role and patient permissions determine which cases and observations you can access.</p>}
       </>}
       <details className="card workspace-section" onToggle={event=>{if((event.target as HTMLDetailsElement).open)setShowImported(true);}} style={{marginTop:16}}><summary>Previously imported case summaries (legacy)</summary><p className="field-hint">Bounded list of imported patient records that may not yet have an editable research profile. Your patient grants apply.</p>{showImported&&<CaseLibrary key={project} initialProject={project}/>}</details>
     </>}

@@ -1,5 +1,9 @@
+export function researchSignal(signal?: AbortSignal | null): AbortSignal {
+  const timeout = AbortSignal.timeout(20000);
+  return signal ? AbortSignal.any([signal, timeout]) : timeout;
+}
 export async function researchJson<T>(url: string, init: RequestInit = {}): Promise<T> {
-  const response = await fetch(url, {...init, cache:'no-store'});
+  const response = await fetch(url, {...init, cache:'no-store', signal:researchSignal(init.signal)});
   if (!response.ok) {
     const detail = await response.json().catch(() => null) as {detail?: unknown; code?: unknown} | null;
     const messages: Record<number,string> = {
@@ -16,4 +20,4 @@ export async function researchJson<T>(url: string, init: RequestInit = {}): Prom
   }
   return response.json() as Promise<T>;
 }
-export function researchError(error: unknown): string { return error instanceof Error ? error.message : 'The request could not be completed. Retry without changing your source record.'; }
+export function researchError(error: unknown): string { if (error instanceof Error && ['TimeoutError','AbortError'].includes(error.name)) return 'The request timed out. Check the connection and retry; entered fields are retained.'; return error instanceof Error ? error.message : 'The request could not be completed. Retry without changing your source record.'; }

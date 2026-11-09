@@ -1,0 +1,7 @@
+{
+  "scope": "Known local configured secrets and private-key markers in public assets, browser static output and fresh artificial browser evidence",
+  "files_scanned": 69,
+  "failures": [],
+  "result": "PASS",
+  "limitations": "Not a general patient-data classifier, historical Git scan, dependency audit or deployment review"
+}

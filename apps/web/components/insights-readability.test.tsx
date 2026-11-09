@@ -21,7 +21,8 @@ function stubFetch() {
           context_hash: HASH, exportable: false,
           limitations: ['Snapshot-bound research context only.'],
           missing_modalities: [], measurements: [{ reference_id: MEASURE, metric_code: 'hemoglobin', value: '9', unit: 'g_dL', member_time: 'Source-relative day 1', origin: 'REAL_OBSERVED', context: 'observed' }],
-          assertions: [{ reference_id: '55555555-5555-5555-5555-555555555555', excerpt: 'Background passage.', source_note_id: 'n1', certainty: 'unknown' }],
+          assertions: [],
+          passages: [{ passage_id: '55555555-5555-5555-5555-555555555555', document_id: MEASURE, corpus_id: MEASURE, excerpt: 'Background passage.', locator: 'paragraph:0-19', semantic_support: 'unreviewed_general_research' }],
           missing: [], conflicts: [],
         }),
       };

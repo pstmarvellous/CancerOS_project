@@ -23,17 +23,17 @@ function trends() {
   return {version: 'temporal-trends/1', tolerance: '0', comparison: null, interpretation: 'descriptive_only_no_clinical_significance_or_response_class', series: [{key: 'hemoglobin', concept: 'hemoglobin', metric_definition: null, unit: 'g/dL', lesion_id: null, method_version: 'fixture/1', origin: 'SYNTHETIC_GENERATED', context: 'SYNTHETIC', instrument: null, instrument_version: null, points: [{point_id: pointB, time: point(pointB).time, x_elapsed_days: '21', y: '12', exact_value: '12', label: 'hemoglobin: 12 g/dL', qualifier: null, reason_codes: [], source_ids: [pointB], origin: 'SYNTHETIC_GENERATED', context: 'SYNTHETIC'}], segments: [], endpoint: null, usable_count: 1, description: 'Descriptive observed changes only.'}]};
 }
 function credentials() {
-  fireEvent.change(screen.getByLabelText('Project UUID'), {target: {value: project}});
-  fireEvent.change(screen.getByLabelText('Patient UUID'), {target: {value: patient}});
-  fireEvent.change(screen.getByLabelText('Access token'), {target: {value: 'fixture-access-token'}});
   fireEvent.change(screen.getByLabelText('Knowledge as of (ISO timestamp with timezone)'), {target: {value: '2026-10-28T13:00:00Z'}});
+}
+function timeline() {
+  return render(<ObservationTimeline project={project} patient={patient}/>);
 }
 afterEach(() => vi.unstubAllGlobals());
 
 describe('exact observation timeline', () => {
   it('pins the same source window across cursor pages and preserves the first page on cursor rejection', async () => {
     const fetch = vi.fn().mockResolvedValueOnce(response(page([point(pointA)], 'pinned-cursor'))).mockResolvedValueOnce(response({}, 409)).mockResolvedValueOnce(response(page([point(pointB)])));
-    vi.stubGlobal('fetch', fetch); render(<ObservationTimeline/>); credentials();
+    vi.stubGlobal('fetch', fetch); timeline(); credentials();
     fireEvent.change(screen.getByLabelText('Observation context'), {target: {value: 'source_fixture'}});
     fireEvent.click(screen.getByRole('button', {name: 'Load exact timeline'}));
     await screen.findByText('1 loaded of 2 points. Revision 1 · historical revision. Current patient revision: 2.');
@@ -52,7 +52,7 @@ describe('exact observation timeline', () => {
   });
   it('uses exact simulation identifiers and removes geometry immediately when selecting a missing laboratory point', async () => {
     const fetch = vi.fn().mockResolvedValueOnce(response(page([point(pointA, true), point(pointB)]))).mockResolvedValueOnce(response({geometry_id: pointA, origin: 'SYNTHETIC_GENERATED', surface: {vertices: []}}));
-    vi.stubGlobal('fetch', fetch); render(<ObservationTimeline/>); credentials();
+    vi.stubGlobal('fetch', fetch); timeline(); credentials();
     fireEvent.change(screen.getByLabelText('Observation context'), {target: {value: 'simulation'}});
     for (const [label, value] of [['Branch UUID', branch], ['Run UUID', run], ['Published completion UUID', completion], ['Simulation event cutoff day (optional)', '30'], ['Timeline origin UUID (for cutoff)', origin]]) fireEvent.change(screen.getByLabelText(label), {target: {value}});
     fireEvent.click(screen.getByRole('button', {name: 'Load exact timeline'}));
@@ -70,17 +70,18 @@ describe('exact observation timeline', () => {
     expect(fetch).toHaveBeenCalledTimes(2);
   });
   it('rejects a naive knowledge timestamp and clears a pending selected view when context changes', async () => {
-    const fetch = vi.fn(); vi.stubGlobal('fetch', fetch); render(<ObservationTimeline/>); credentials();
+    const fetch = vi.fn(); vi.stubGlobal('fetch', fetch); timeline(); credentials();
     fireEvent.change(screen.getByLabelText('Knowledge as of (ISO timestamp with timezone)'), {target: {value: '2026-10-28T12:00:00'}});
     fireEvent.click(screen.getByRole('button', {name: 'Load exact timeline'}));
     await screen.findByText(/Enter a timezone-aware knowledge cutoff/); expect(fetch).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', {name: 'Clear private view'}));
-    await waitFor(() => expect(screen.getByLabelText('Access token')).toHaveValue(''));
+    await screen.findByText(/Private timeline cleared/);
+    expect(screen.getByLabelText('Knowledge as of (ISO timestamp with timezone)')).toHaveValue('2026-10-28T12:00:00');
     expect(screen.queryByRole('heading', {name: 'Observation points'})).toBeNull();
   });
   it('queries trends over the full pinned window and never substitutes geometry for an unloaded point', async () => {
     const fetch = vi.fn().mockResolvedValueOnce(response(page([point(pointA)], 'pinned-cursor'))).mockResolvedValueOnce(response(trends()));
-    vi.stubGlobal('fetch', fetch); render(<ObservationTimeline/>); credentials();
+    vi.stubGlobal('fetch', fetch); timeline(); credentials();
     fireEvent.change(screen.getByLabelText('Observation context'), {target: {value: 'simulation'}});
     for (const [label, value] of [['Branch UUID', branch], ['Run UUID', run], ['Published completion UUID', completion]]) fireEvent.change(screen.getByLabelText(label), {target: {value}});
     fireEvent.click(screen.getByRole('button', {name: 'Load exact timeline'}));
@@ -89,7 +90,7 @@ describe('exact observation timeline', () => {
     await screen.findByRole('heading', {name: 'Descriptive trends'});
     const original = JSON.parse(fetch.mock.calls[0][1].body);
     expect(JSON.parse(fetch.mock.calls[1][1].body)).toEqual({timeline: {...original, cursor: null}, tolerance: '0'});
-    expect(fetch.mock.calls[1][0]).toContain('/trend-queries');
+    expect(fetch.mock.calls[1][0]).toContain('action=trends');
     expect(fetch.mock.calls[1][1].credentials).toBe('omit');
     fireEvent.click(screen.getByRole('button', {name: 'Open point 10000000'}));
     expect(screen.getByText(/is not in the loaded timeline pages/)).toBeVisible();
@@ -99,7 +100,7 @@ describe('exact observation timeline', () => {
   it('aborts a pending trend read and discards its result after context changes', async () => {
     let finish: (value: ReturnType<typeof response>) => void = () => {};
     const fetch = vi.fn().mockResolvedValueOnce(response(page())).mockImplementationOnce(() => new Promise(resolve => {finish = resolve;}));
-    vi.stubGlobal('fetch', fetch); render(<ObservationTimeline/>); credentials();
+    vi.stubGlobal('fetch', fetch); timeline(); credentials();
     fireEvent.click(screen.getByRole('button', {name: 'Load exact timeline'}));
     await screen.findByRole('button', {name: 'Load descriptive trends for this window'});
     fireEvent.click(screen.getByRole('button', {name: 'Load descriptive trends for this window'}));
@@ -114,7 +115,7 @@ describe('exact observation timeline', () => {
   });
   it('requires explicit selection when one observation belongs to several states and posts the pinned simulation window', async () => {
     const fetch = vi.fn().mockResolvedValueOnce(response(page([{...point(pointA), state_ids: [project, patient]}]))).mockResolvedValueOnce(response({canonical_state: {snapshot: {id: patient}}}));
-    vi.stubGlobal('fetch', fetch); render(<ObservationTimeline/>); credentials();
+    vi.stubGlobal('fetch', fetch); timeline(); credentials();
     fireEvent.change(screen.getByLabelText('Observation context'), {target: {value: 'simulation'}});
     for (const [label, value] of [['Branch UUID', branch], ['Run UUID', run], ['Published completion UUID', completion]]) fireEvent.change(screen.getByLabelText(label), {target: {value}});
     fireEvent.click(screen.getByRole('button', {name: 'Load exact timeline'}));
@@ -125,14 +126,14 @@ describe('exact observation timeline', () => {
     fireEvent.click(screen.getByRole('button', {name: 'Load exact state overview'}));
     expect(await screen.findByTestId('state-fusion-context')).toHaveTextContent(patient);
     expect(JSON.parse(fetch.mock.calls[1][1].body)).toEqual({state_id: patient, timeline: {...JSON.parse(fetch.mock.calls[0][1].body), cursor: null}});
-    expect(fetch.mock.calls[1][0]).toContain('/fusion-queries');
+    expect(fetch.mock.calls[1][0]).toContain('action=fusion');
     fireEvent.change(screen.getByLabelText('Exact state membership'), {target: {value: project}});
     expect(screen.queryByTestId('state-fusion-context')).toBeNull();
   });
   it('aborts and clears fusion on a different point or context and never reuses a late result', async () => {
     let finish: (value: ReturnType<typeof response>) => void = () => {};
     const fetch = vi.fn().mockResolvedValueOnce(response(page([point(pointA), {...point(pointB), state_ids: []}]))).mockImplementationOnce(() => new Promise(resolve => {finish = resolve;}));
-    vi.stubGlobal('fetch', fetch); render(<ObservationTimeline/>); credentials();
+    vi.stubGlobal('fetch', fetch); timeline(); credentials();
     fireEvent.change(screen.getByLabelText('Observation context'), {target: {value: 'source_fixture'}});
     fireEvent.click(screen.getByRole('button', {name: 'Load exact timeline'}));
     fireEvent.click(await screen.findByRole('button', {name: 'Inspect 00000000'}));
@@ -150,7 +151,7 @@ describe('exact observation timeline', () => {
   });
   it('keeps authentic observed-state fusion disabled and reports request failure without carrying an old state', async () => {
     const fetch = vi.fn().mockResolvedValueOnce(response(page())).mockResolvedValueOnce(response(page())).mockResolvedValueOnce(response({}, 403));
-    vi.stubGlobal('fetch', fetch); render(<ObservationTimeline/>); credentials();
+    vi.stubGlobal('fetch', fetch); timeline(); credentials();
     fireEvent.click(screen.getByRole('button', {name: 'Load exact timeline'}));
     fireEvent.click(await screen.findByRole('button', {name: 'Inspect 00000000'}));
     expect(screen.getByText(/Authentic observed-state fusion is not established/)).toBeVisible();
@@ -166,7 +167,7 @@ describe('exact observation timeline', () => {
   it.each(['state', 'context'])('discards pending fusion when its %s selection changes', async change => {
     let finish: (value: ReturnType<typeof response>) => void = () => {};
     const fetch = vi.fn().mockResolvedValueOnce(response(page([{...point(pointA), state_ids: [project, patient]}]))).mockImplementationOnce(() => new Promise(resolve => {finish = resolve;}));
-    vi.stubGlobal('fetch', fetch); render(<ObservationTimeline/>); credentials();
+    vi.stubGlobal('fetch', fetch); timeline(); credentials();
     fireEvent.change(screen.getByLabelText('Observation context'), {target: {value: 'source_fixture'}});
     fireEvent.click(screen.getByRole('button', {name: 'Load exact timeline'}));
     fireEvent.click(await screen.findByRole('button', {name: 'Inspect 00000000'}));
@@ -175,14 +176,14 @@ describe('exact observation timeline', () => {
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
     const signal = fetch.mock.calls[1][1].signal;
     if (change === 'state') fireEvent.change(screen.getByLabelText('Exact state membership'), {target: {value: patient}});
-    else fireEvent.change(screen.getByLabelText('Patient UUID'), {target: {value: project}});
+    else fireEvent.change(screen.getByLabelText('Observation context'), {target: {value: 'observed'}});
     expect(signal.aborted).toBe(true);
     finish(response({canonical_state: {snapshot: {id: project}}}));
     await waitFor(() => expect(screen.queryByTestId('state-fusion-context')).toBeNull());
   });
   it('rejects an overview whose canonical identity differs from the explicitly selected state', async () => {
     const fetch = vi.fn().mockResolvedValueOnce(response(page())).mockResolvedValueOnce(response({canonical_state: {snapshot: {id: patient}}}));
-    vi.stubGlobal('fetch', fetch); render(<ObservationTimeline/>); credentials();
+    vi.stubGlobal('fetch', fetch); timeline(); credentials();
     fireEvent.change(screen.getByLabelText('Observation context'), {target: {value: 'source_fixture'}});
     fireEvent.click(screen.getByRole('button', {name: 'Load exact timeline'}));
     fireEvent.click(await screen.findByRole('button', {name: 'Inspect 00000000'}));
@@ -194,7 +195,7 @@ describe('exact observation timeline', () => {
     let finish: (value: ReturnType<typeof response>) => void = () => {};
     const pendingView = {status: 'pending', current_patient_revision: 2, requested_revision: 2, job_id: patient, job_status: 'running', last_ready: null, restrictions: [], baseline_superseded: false, eligible_event: null, next_action: 'Keep the last valid selected view'};
     const fetch = vi.fn().mockResolvedValueOnce(response(page([point(pointA, true), point(pointB)]))).mockResolvedValueOnce(response({geometry_id: pointA, origin: 'SYNTHETIC_GENERATED', surface: {vertices: []}})).mockResolvedValueOnce(response(pendingView)).mockImplementationOnce(() => new Promise(resolve => {finish = resolve;}));
-    vi.stubGlobal('fetch', fetch); render(<ObservationTimeline/>); credentials();
+    vi.stubGlobal('fetch', fetch); timeline(); credentials();
     fireEvent.change(screen.getByLabelText('Observation context'), {target: {value: 'simulation'}});
     for (const [label, value] of [['Branch UUID', branch], ['Run UUID', run], ['Published completion UUID', completion]]) fireEvent.change(screen.getByLabelText(label), {target: {value}});
     fireEvent.click(screen.getByRole('button', {name: 'Load exact timeline'}));

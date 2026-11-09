@@ -1,12 +1,32 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { readFileSync, statSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { basename, dirname, resolve } from 'node:path';
 import type { DemoBundle } from './demo-contracts';
 import { onlyKeys, surfaceDigest, validScenario } from './demo-integrity';
 export { surfaceDigest } from './demo-integrity';
 
 export const DEMO_COOKIE = 'canceros-synthetic-demo';
-const FILE = resolve(process.cwd(), '..', '..', '.local', 'synthetic-demo.json');
+export function bundleFile(): string {
+  // Next may start with the repository root or apps/web as the working
+  // directory depending on the launcher. Prefer an explicit override, then
+  // probe both layouts so normal startup always finds the prepared bundle.
+  const override = process.env.CANCEROS_SYNTHETIC_DEMO_FILE;
+  if (override) return resolve(override);
+  const candidates = [
+    resolve(process.cwd(), '.local', 'synthetic-demo.json'),
+    resolve(process.cwd(), '..', '..', '.local', 'synthetic-demo.json'),
+  ];
+  for (const candidate of candidates) {
+    try {
+      if (statSync(candidate).isFile()) return candidate;
+    } catch {
+      /* try the next layout */
+    }
+  }
+  // The repository layout is stable even when preparation happens after startup.
+  const cwd = process.cwd();
+  return resolve(basename(cwd) === 'web' && basename(dirname(cwd)) === 'apps' ? resolve(cwd, '../..') : cwd, '.local', 'synthetic-demo.json');
+}
 const FAMILIES = ['SC-01', 'SC-02', 'SC-03', 'SC-04', 'SC-05'];
 const memory = globalThis as unknown as {
   cancerosDemoSessions?: Map<string, { expires: number; fingerprint: string }>;
@@ -18,6 +38,8 @@ export function validateDemoBundle(value: unknown): value is DemoBundle {
     const bundle = value as DemoBundle;
     if (!onlyKeys(bundle, 'version syntheticOnly sourceOrigin caseLabel preparedAt expiresAt scenarios') || bundle.version !== 'synthetic-demo/2' || bundle.syntheticOnly !== true ||
       bundle.sourceOrigin !== 'synthetic_engineering_fixture' || bundle.caseLabel !== 'Research Demo 01' ||
+      typeof bundle.preparedAt !== 'string' || !/(?:Z|[+-]\d{2}:\d{2})$/.test(bundle.preparedAt) ||
+      typeof bundle.expiresAt !== 'string' || !/(?:Z|[+-]\d{2}:\d{2})$/.test(bundle.expiresAt) ||
       !Number.isFinite(Date.parse(bundle.preparedAt)) || Date.parse(bundle.preparedAt) > Date.now() + 60000 ||
       !Number.isFinite(Date.parse(bundle.expiresAt)) || Date.parse(bundle.expiresAt) <= Date.now() ||
       Date.parse(bundle.expiresAt) <= Date.parse(bundle.preparedAt) ||
@@ -42,19 +64,30 @@ export function validateDemoBundle(value: unknown): value is DemoBundle {
     return true;
   } catch { return false; }
 }
+let lastDiagnostic = '';
+function unavailable(reason: string) {
+  if (lastDiagnostic !== reason) console.warn(`[synthetic-demo] ${reason}; run npm run demo:prepare, then retry.`);
+  lastDiagnostic = reason;
+  return null;
+}
 export function demoBundle() {
-  if (process.env.CANCEROS_SYNTHETIC_DEMO !== '1') return null;
+  if (process.env.CANCEROS_SYNTHETIC_DEMO !== '1') return unavailable('disabled: use the supported demo or foundation launcher');
   try {
-    const info = statSync(FILE);
-    if (info.size > 20 * 1024 * 1024) return null;
-    const stamp = `${info.mtimeMs}:${info.size}`;
-    if (cached?.stamp === stamp) return Date.parse(cached.bundle.expiresAt) > Date.now() ? cached : null;
-    const raw = readFileSync(FILE, 'utf8');
+    const file = bundleFile();
+    const info = statSync(file);
+    if (info.size > 20 * 1024 * 1024) return unavailable('oversized bundle');
+    const stamp = `${file}:${info.mtimeMs}:${info.size}`;
+    if (cached?.stamp === stamp) return Date.parse(cached.bundle.expiresAt) > Date.now() ? cached : unavailable('expired bundle');
+    const raw = readFileSync(file, 'utf8');
     const bundle: unknown = JSON.parse(raw);
-    if (!validateDemoBundle(bundle)) return null;
+    if (bundle && typeof bundle === 'object' && 'expiresAt' in bundle && typeof bundle.expiresAt === 'string' && Date.parse(bundle.expiresAt) <= Date.now()) return unavailable('expired bundle');
+    if (!validateDemoBundle(bundle)) return unavailable('invalid bundle schema, provenance or artifact integrity');
     cached = { stamp, bundle, fingerprint: createHash('sha256').update(raw).digest('hex') };
+    lastDiagnostic = '';
     return cached;
-  } catch { return null; }
+  } catch (error) {
+    return unavailable(error instanceof SyntaxError ? 'invalid JSON' : (error as NodeJS.ErrnoException)?.code === 'ENOENT' ? 'missing bundle' : 'unreadable bundle');
+  }
 }
 function sessions() { return memory.cancerosDemoSessions ??= new Map(); }
 export function newDemoSession(fingerprint: string, expiresAt: string) {

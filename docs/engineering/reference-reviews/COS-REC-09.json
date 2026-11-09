@@ -1,0 +1,1615 @@
+{
+  "task": "COS-REC-09",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "acceptance",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "acceptance",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "acceptance",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "verification",
+      "returncode": 0,
+      "output": "\n=== INF.CI Continuous verification ===\n Unit/integration/e2e tests, static checks, version pinning and audit logs. \nSources: ARCH,API,ROAD\n  <-- IMPLEMENTS D.INFRA Platform infrastructure\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "verification",
+      "returncode": 0,
+      "output": "\nSIM.08 — Simulation credibility tests\nDesign: Distinguish program verification, fit/calibration, external validation and context of use\nAcceptance: Report independent synthetic and real-case metrics\n  READ A09 Stan User’s Guide — Posterior and Prior Predictive Checks — https://mc-stan.org/docs/stan-users-guide/ppcs.html\n  READ A15 FDA Computational Model Credibility Guidance — Context of use; model verification, validation and credibility assessment — https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions\n  REPO R10 Stan — probabilistic model reference — https://github.com/stan-dev/stan\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "verification",
+      "returncode": 0,
+      "output": "\n== SIM.08 Simulation credibility tests ==\nIntent: Distinguish program verification, fit/calibration, external validation and context of use \nTest: Report independent synthetic and real-case metrics\n BOOK/LECTURE A09 Stan User’s Guide | Posterior and Prior Predictive Checks | https://mc-stan.org/docs/stan-users-guide/ppcs.html | verified section\n BOOK/LECTURE A15 FDA Computational Model Credibility Guidance | Context of use; model verification, validation and credibility assessment | https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions | applicability limited to intended guidance scope\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "journeys",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "journeys",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "journeys",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "AI.FALLBACK",
+    "AI.FEAT",
+    "AI.FORECAST",
+    "AI.FUSE",
+    "AI.GUARD",
+    "AI.KNOW",
+    "AI.LLM",
+    "AI.NLP",
+    "AI.RETR",
+    "AI.TEMP",
+    "D.AI",
+    "D.DATA",
+    "D.EVAL",
+    "D.GOV",
+    "D.IMG",
+    "D.INFRA",
+    "D.SIM",
+    "D.TWIN",
+    "D.UX",
+    "DATA.ARTIFACT",
+    "DATA.BRANCH",
+    "DATA.DIAGNOSIS",
+    "DATA.LABS",
+    "DATA.LESION",
+    "DATA.MEASURE",
+    "DATA.NOTE",
+    "DATA.OUTCOME",
+    "DATA.PATIENT",
+    "DATA.PROV",
+    "DATA.RUN",
+    "DATA.SEG",
+    "DATA.SERIES",
+    "DATA.SOURCE",
+    "DATA.STUDY",
+    "DATA.SYMPTOM",
+    "DATA.TREAT",
+    "DATA.VISIT",
+    "DATA.VITAL",
+    "EVAL.AI",
+    "EVAL.E2E",
+    "EVAL.PHANTOM",
+    "EVAL.REAL",
+    "EVAL.REPORT",
+    "EVAL.SEG",
+    "EVAL.SIM",
+    "GOV.ABSTAIN",
+    "GOV.CTCAE",
+    "GOV.LIC",
+    "GOV.NOCLIN",
+    "GOV.PRIV",
+    "GOV.PROV",
+    "GOV.REAL",
+    "GOV.RECIST",
+    "IMG.INGEST",
+    "IMG.MASK",
+    "IMG.MESH",
+    "IMG.MODEL",
+    "IMG.PRE",
+    "IMG.REG",
+    "IMG.SYNMESH",
+    "IMG.TRACK",
+    "IMG.VIEW",
+    "IMG.VOL",
+    "INF.API",
+    "INF.CI",
+    "INF.DB",
+    "INF.DEPLOY",
+    "INF.JOBS",
+    "INF.OBJECT",
+    "REF.DCMQI",
+    "REF.IDC",
+    "REF.LIT",
+    "REF.MAMA",
+    "REF.MONAI",
+    "REF.NNUNET",
+    "REF.OHIF",
+    "REF.SLICER",
+    "ROOT",
+    "SIM.BATCH",
+    "SIM.ELIG",
+    "SIM.EXPOSURE",
+    "SIM.LATENT",
+    "SIM.OBS",
+    "SIM.PROGRESS",
+    "SIM.REGROW",
+    "SIM.RESPONSE",
+    "SIM.SEED",
+    "SIM.STABLE",
+    "SIM.TOXIC",
+    "SIM.VALID",
+    "TWIN.BASELINE",
+    "TWIN.BRANCH",
+    "TWIN.COMPARE",
+    "TWIN.HISTORY",
+    "TWIN.REAL",
+    "TWIN.STATE",
+    "TWIN.TIME",
+    "UX.3D",
+    "UX.CASE",
+    "UX.CHART",
+    "UX.EVAL",
+    "UX.FAIL",
+    "UX.IMPORT",
+    "UX.INSIGHT",
+    "UX.PROFILE",
+    "UX.SCENARIO",
+    "UX.TIMELINE",
+    "WF.AI",
+    "WF.NEW",
+    "WF.REAL",
+    "WF.REALVAL",
+    "WF.RELEASE",
+    "WF.SIM",
+    "X.CARE",
+    "X.DRUG",
+    "X.GENOME",
+    "X.HOSP",
+    "X.MULTI",
+    "X.PHOTOMRI",
+    "X.SURV",
+    "X.WHOLE"
+  ],
+  "academic_behavior_ids": [
+    "DAT.01",
+    "DAT.02",
+    "DAT.03",
+    "DAT.04",
+    "IMG.01",
+    "IMG.02",
+    "IMG.03",
+    "IMG.04",
+    "IMG.05",
+    "IMG.06",
+    "IMG.07",
+    "IMG.08",
+    "IMG.09",
+    "IMG.10",
+    "IMG.11",
+    "IMG.12",
+    "IMG.13",
+    "TWIN.01",
+    "TWIN.02",
+    "TWIN.03",
+    "SIM.01",
+    "SIM.02",
+    "SIM.03",
+    "SIM.04",
+    "SIM.05",
+    "SIM.06",
+    "SIM.07",
+    "SIM.08",
+    "SIM.09",
+    "AI.01",
+    "AI.02",
+    "AI.03",
+    "AI.04",
+    "AI.05",
+    "AI.06",
+    "EVAL.01",
+    "EVAL.02",
+    "EVAL.03",
+    "UX.01",
+    "OPS.01"
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.DATA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.IMG"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.TWIN"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.SIM"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.AI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.UX"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.EVAL"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.INFRA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.GOV"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SOURCE"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.DIAGNOSIS"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.STUDY"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SERIES"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SEG"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.LESION"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.MEASURE"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.LABS"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.VITAL"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SYMPTOM"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.TREAT"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.NOTE"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.OUTCOME"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.PROV"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.BRANCH"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.RUN"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.ARTIFACT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.DIAGNOSIS"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.STUDY"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.BRANCH"
+    },
+    {
+      "from_id": "DATA.STUDY",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.SERIES"
+    },
+    {
+      "from_id": "DATA.STUDY",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.SEG"
+    },
+    {
+      "from_id": "DATA.SEG",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.LESION"
+    },
+    {
+      "from_id": "DATA.SEG",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.MEASURE"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.LABS"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.VITAL"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.SYMPTOM"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.NOTE"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.TREAT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.OUTCOME"
+    },
+    {
+      "from_id": "DATA.BRANCH",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.RUN"
+    },
+    {
+      "from_id": "DATA.SOURCE",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.ARTIFACT"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MODEL"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.VIEW"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "PRECEDES",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "IMG.PRE",
+      "relation": "PRECEDES",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "IMG.MASK",
+      "relation": "PRECEDES",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "IMG.MASK",
+      "relation": "PRECEDES",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "IMG.VOL",
+      "relation": "PRECEDES",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "IMG.REG",
+      "relation": "PRECEDES",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "IMG.MESH",
+      "relation": "PRECEDES",
+      "to_id": "IMG.VIEW"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.BASELINE"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.TIME"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.COMPARE"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.REAL"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.ELIG"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.RESPONSE"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.STABLE"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.PROGRESS"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.REGROW"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.TOXIC"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.EXPOSURE"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.LATENT"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.SEED"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.BATCH"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.RESPONSE"
+    },
+    {
+      "from_id": "SIM.RESPONSE",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.STABLE"
+    },
+    {
+      "from_id": "SIM.STABLE",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.PROGRESS"
+    },
+    {
+      "from_id": "SIM.PROGRESS",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.REGROW"
+    },
+    {
+      "from_id": "SIM.REGROW",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "GUARDS",
+      "to_id": "SIM.TOXIC"
+    },
+    {
+      "from_id": "SIM.TOXIC",
+      "relation": "PRODUCES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FEAT"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.NLP"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.TEMP"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.KNOW"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.RETR"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FALLBACK"
+    },
+    {
+      "from_id": "AI.NLP",
+      "relation": "PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.RETR",
+      "relation": "PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.LLM",
+      "relation": "PRECEDES",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.CASE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.PROFILE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.SCENARIO"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.CHART"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.IMPORT"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.EVAL"
+    },
+    {
+      "from_id": "D.UX",
+      "relation": "IMPLEMENTS",
+      "to_id": "UX.FAIL"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.API"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.DB"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.OBJECT"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.JOBS"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.CI"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.SEG"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.REAL"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.SIM"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.REAL"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.LIC"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.NOCLIN"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.RECIST"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.CTCAE"
+    },
+    {
+      "from_id": "D.GOV",
+      "relation": "ENFORCES",
+      "to_id": "GOV.ABSTAIN"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.WHOLE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.MULTI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.CARE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.SURV"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.GENOME"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.HOSP"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.DRUG"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.PHOTOMRI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.MAMA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.NNUNET"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.SLICER"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.OHIF"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.MONAI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.IDC"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.DCMQI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.LIT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.SOURCE"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "DATA.SOURCE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "IMG.PRE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "IMG.MASK",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "IMG.VOL",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "IMG.MESH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "UX.3D",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.SIM"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.BASELINE"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.ELIG"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.LATENT"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "TWIN.BASELINE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.ELIG"
+    },
+    {
+      "from_id": "SIM.ELIG",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.LATENT"
+    },
+    {
+      "from_id": "SIM.LATENT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "SIM.OBS",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "IMG.SYNMESH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "SIM.VALID",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "TWIN.BRANCH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.NEW"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "UX.IMPORT"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.COMPARE"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FEAT"
+    },
+    {
+      "from_id": "WF.NEW",
+      "relation": "HAS_STEP",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "UX.IMPORT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "DATA.VISIT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "TWIN.HISTORY",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.COMPARE"
+    },
+    {
+      "from_id": "TWIN.COMPARE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.FEAT"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.AI"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.NLP"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FEAT"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.RETR"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "AI.NLP",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.FEAT"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.RETR"
+    },
+    {
+      "from_id": "AI.RETR",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.LLM",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "AI.GUARD",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REALVAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.REAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "IMG.INGEST",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "IMG.REG",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "IMG.TRACK",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.REAL"
+    },
+    {
+      "from_id": "TWIN.REAL",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.REAL"
+    },
+    {
+      "from_id": "EVAL.REAL",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.RELEASE"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "EVAL.AI",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "GOV.PROV"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "GOV.PRIV"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "INF.DEPLOY"
+    },
+    {
+      "from_id": "INF.DEPLOY",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.REPORT"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.PROV"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.STATE"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "UX.TIMELINE"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "GOV.REAL",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.BASELINE"
+    },
+    {
+      "from_id": "GOV.REAL",
+      "relation": "CONSTRAINS",
+      "to_id": "TWIN.HISTORY"
+    },
+    {
+      "from_id": "GOV.REAL",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.ARTIFACT"
+    },
+    {
+      "from_id": "GOV.NOCLIN",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "GOV.NOCLIN",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.ELIG"
+    },
+    {
+      "from_id": "GOV.NOCLIN",
+      "relation": "CONSTRAINS",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "GOV.RECIST",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.MEASURE"
+    },
+    {
+      "from_id": "GOV.RECIST",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.RESPONSE"
+    },
+    {
+      "from_id": "GOV.RECIST",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "GOV.CTCAE",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.TOXIC"
+    },
+    {
+      "from_id": "GOV.CTCAE",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "GOV.ABSTAIN",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "GOV.ABSTAIN",
+      "relation": "CONSTRAINS",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "GOV.ABSTAIN",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "GOV.LIC",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.SOURCE"
+    },
+    {
+      "from_id": "GOV.LIC",
+      "relation": "CONSTRAINS",
+      "to_id": "REF.MAMA"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "CONSTRAINS",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "CONSTRAINS",
+      "to_id": "INF.OBJECT"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.NLP"
+    },
+    {
+      "from_id": "EVAL.PHANTOM",
+      "relation": "VERIFIES",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "EVAL.PHANTOM",
+      "relation": "VERIFIES",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "EVAL.SEG",
+      "relation": "VERIFIES",
+      "to_id": "IMG.MODEL"
+    },
+    {
+      "from_id": "EVAL.REAL",
+      "relation": "VERIFIES",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "EVAL.SIM",
+      "relation": "VERIFIES",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "EVAL.AI",
+      "relation": "VERIFIES",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.SIM"
+    }
+  ],
+  "mapped_source_ids": [
+    "A01",
+    "A02",
+    "A03",
+    "A04",
+    "A05",
+    "A06",
+    "A07",
+    "A08",
+    "A09",
+    "A10",
+    "A11",
+    "A12",
+    "A13",
+    "A14",
+    "A15",
+    "A16",
+    "A17",
+    "A18",
+    "P01",
+    "P02",
+    "P03",
+    "P04",
+    "P05",
+    "R01",
+    "R02",
+    "R03",
+    "R04",
+    "R05",
+    "R06",
+    "R07",
+    "R10",
+    "R11"
+  ],
+  "source_sections_inspected": "prompt_10 independent acceptance; SPEC-011 evaluation; authority-and-scope"
+}

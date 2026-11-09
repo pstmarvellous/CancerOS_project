@@ -14,6 +14,7 @@ from test_source_registry import registry_db
 from canceros.annotation_import import import_annotations
 from canceros.imaging_discovery import (
     discovery_segmentations,
+    list_imports,
     list_studies,
     read_acquisition,
 )
@@ -30,8 +31,13 @@ def previewed(imaging_data):
     from canceros.storage import PrivateStorage
 
     report = preview_imaging(
-        c, i, p, patient.patient_id, preview_command(patient, receipt),
-        PrivateStorage(Settings(mode="test")), config,
+        c,
+        i,
+        p,
+        patient.patient_id,
+        preview_command(patient, receipt),
+        PrivateStorage(Settings(mode="test")),
+        config,
     )
     return c, i, p, patient, report
 
@@ -99,7 +105,65 @@ def test_closure_http_study_acquisition_and_discovery_paths(imaging_db):
         assert "signed" not in acquired.text and "credential" not in acquired.text.lower()
         discovered = client.get(root + "/segmentation-discoveries", headers=headers)
         assert discovered.status_code in (200, 404)
+        listed = client.get(root + "/imaging-imports", headers=headers)
+        assert listed.status_code == 200, listed.text
+        assert [item["import_id"] for item in listed.json()["items"]] == [str(report.id)]
+        assert listed.json()["items"][0]["study_id"] == str(report.study_id)
+        assert "credential" not in listed.text.lower()
+        assert client.get(root + "/imaging-imports").status_code == 401
+        with pytest.raises(HTTPException) as stranger:
+            list_imports(c, i, p, uuid4())
+        assert stranger.value.status_code == 404
         missing = client.get(root + f"/acquisitions/{uuid4()}", headers=headers)
         assert missing.status_code in (404, 409)
         denied = client.get(root + "/studies", headers={"Authorization": "Bearer invalid"})
         assert denied.status_code in (401, 403, 404, 422)
+
+
+def test_lesion_geometry_resolves_actual_reports_with_scope_and_withdrawal(imaging_db):
+    from test_mesh_quality_runs import mesh_source
+
+    from canceros.imaging_discovery import lesion_geometry
+    from canceros.lesion_tracking import LesionInput, create_lesion
+    from canceros.lineage import WithdrawalInput, withdraw_resource
+    from canceros.mesh_quality_runs import MeshQCInput, create_mesh_qc
+
+    c, i, p, patient, _, storage, _ = imaging_db
+    measured, mesh = mesh_source(imaging_db)
+    qc = create_mesh_qc(
+        c, i, p, patient.patient_id, MeshQCInput(mesh_run_id=mesh.id), storage, "lookup-qc"
+    )
+    lesion = create_lesion(
+        c,
+        i,
+        p,
+        patient.patient_id,
+        LesionInput(
+            baseline_segmentation_id=measured.selections[0].segmentation_id,
+            evidence_sha256="a" * 64,
+            expected_revision=1,
+        ),
+        storage,
+        "lookup-lesion",
+    )
+    assert qc.id not in (lesion.id, lesion.baseline_segmentation_id)
+    assert lesion_geometry(c, i, p, patient.patient_id, lesion.id).id == qc.id
+    client, headers = http_session(imaging_db)
+    path = f"/api/v1/projects/{p}/patients/{patient.patient_id}/lesions/{lesion.id}/geometry"
+    with client:
+        assert client.get(path).status_code == 401
+        result = client.get(path, headers=headers)
+        assert result.status_code == 200, result.text
+        assert result.json()["id"] == str(qc.id)
+        assert (
+            client.get(
+                path.replace(str(patient.patient_id), str(uuid4())), headers=headers
+            ).status_code
+            == 404
+        )
+    withdraw_resource(
+        c, i, p, patient.patient_id, qc.id, WithdrawalInput(reason_code="scientific_review")
+    )
+    with pytest.raises(HTTPException) as withdrawn:
+        lesion_geometry(c, i, p, patient.patient_id, lesion.id)
+    assert withdrawn.value.status_code == 409

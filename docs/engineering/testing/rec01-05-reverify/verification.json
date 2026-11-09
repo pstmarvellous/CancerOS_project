@@ -1,0 +1,61 @@
+{
+  "task": "COS-REC-01-05-REVERIFY",
+  "date": "2026-11-08",
+  "timezone": "Africa/Lagos",
+  "branch": "cos-rec-01-05-reverification",
+  "result": "PASS",
+  "scope": "Five local remediation gates, artificial data only",
+  "stages": {
+    "COS-REC-01": "PASS",
+    "COS-REC-02": "PASS",
+    "COS-REC-03": "PASS",
+    "COS-REC-04": "PASS",
+    "COS-REC-05": "PASS"
+  },
+  "frontend": {
+    "tests": 203,
+    "files": 36,
+    "failures": 0
+  },
+  "backend": {
+    "main_suite": 41,
+    "adjacent_configuration_interpretation_context_suite": 16,
+    "total_nonoverlapping_test_files": 57,
+    "failures": 0,
+    "skipped": 0
+  },
+  "browser": {
+    "startTime": "2026-11-08T16:17:55.149Z",
+    "duration": 60103.173,
+    "expected": 5,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "scenario_states_verified": 20,
+  "startup": {
+    "supported_command": "uv run python scripts/dev.py start foundation",
+    "test_input": "Prepared bundle version deliberately changed to synthetic-demo/1 after preserving original bytes privately",
+    "repaired_version": "synthetic-demo/2",
+    "repaired_at": "2026-11-08T16:15:26.108078+00:00",
+    "families": 5,
+    "private_dependency_readiness": true,
+    "api_and_web_restarted": true,
+    "subsequent_check_and_idempotent_skip": true
+  },
+  "static_checks": {
+    "build": "PASS with existing filesystem-tracing warnings",
+    "typescript": "PASS",
+    "eslint": "PASS",
+    "mypy": "PASS,111 source files",
+    "ruff": "PASS focused changed files",
+    "contract_drift": "PASS,FastAPI wire schemas unchanged",
+    "boundaries": "PASS",
+    "hygiene": "PASS"
+  },
+  "limits": [
+    "Synthetic geometric phantom only",
+    "No full Python suite, real mobile device or deployment verification",
+    "Source-rights,scientific,provider and publication gates unchanged"
+  ]
+}

@@ -22,8 +22,18 @@ export async function GET(request: Request) {
     if (!url) return missingSelection();
     return proxyCase(request, url, 'GET');
   }
+  if (resource === 'preview' && config) {
+    const url = caseUrl(project, patient, `/simulation-configs/${encodeURIComponent(config)}/schedule-preview`);
+    if (!url) return missingSelection();
+    return proxyCase(request, url, 'GET');
+  }
   if (resource === 'branch' && branch) {
     const url = caseUrl(project, patient, `/branches/${encodeURIComponent(branch)}`);
+    if (!url) return missingSelection();
+    return proxyCase(request, url, 'GET');
+  }
+  if (resource === 'latest-config' && branch) {
+    const url = caseUrl(project, patient, `/branches/${encodeURIComponent(branch)}/simulation-configs/current`);
     if (!url) return missingSelection();
     return proxyCase(request, url, 'GET');
   }
@@ -69,8 +79,9 @@ export async function POST(request: Request) {
   };
 
   if (resource === 'config' && branch) return forward(`/branches/${encodeURIComponent(branch)}/simulation-configs`);
+  if (resource === 'origin') return forward('/timeline-origins');
+  if (resource === 'branch') return forward('/branches');
   if (resource === 'run' && branch) return forward(`/branches/${encodeURIComponent(branch)}/simulation-runs`);
-  if (resource === 'preview') return forward('/schedule-preview');
   if (resource === 'eligibility') return forward('/eligibility-checks');
   if (resource === 'job') return forward('/imaging-jobs');
   if (resource === 'complete') {

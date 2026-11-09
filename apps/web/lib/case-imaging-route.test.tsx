@@ -6,7 +6,7 @@ const project = '00000000-0000-4000-8000-000000000001';
 const patient = '00000000-0000-4000-8000-000000000002';
 const base = `http://127.0.0.1:3001/api/case-imaging?project=${project}&patient=${patient}`;
 const study = { study_id: 'study', import_count: 2, series_count: 3, status: 'associated', next_action: 'review' };
-const mask = { segmentation_id: 'mask', batch_id: 'batch', label_value: 1, mask_type: 'verified_lesion', qc_status: 'pending', next_action: 'review' };
+const mask = { segmentation_id: 'mask', batch_id: 'batch', source_image_id: 'volume', study_id: 'study', label_value: 1, mask_type: 'verified_lesion', qc_status: 'pending', next_action: 'review' };
 const fetch = vi.fn();
 const request = (url = base, authorized = true) => new Request(url, { headers: authorized ? { authorization: 'Bearer test-credential' } : {} });
 beforeEach(() => { fetch.mockReset(); vi.stubGlobal('fetch', fetch); vi.stubEnv('API_BASE_URL', 'http://127.0.0.1:8000'); });

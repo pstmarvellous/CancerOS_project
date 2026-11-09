@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import type { components } from '../../../packages/contracts/generated/api';
 import { ErrorSummary, LoadingState } from './research';
+import { researchSignal } from '../lib/research-client';
 import { clinicalTime, clinicalValue } from '../lib/clinical-presentation';
 
 type S = components['schemas'];
@@ -104,15 +105,21 @@ export function recordDay(record: ClinicalRecord | null): number | null {
   return null;
 }
 
-export function ClinicalChartsExplorer({ stateFilter }: { stateFilter?: { day: number | null; label: string } | null } = {}) {
-  return <Suspense fallback={<LoadingState/>}><ClinicalChartsFromQuery stateFilter={stateFilter ?? null} /></Suspense>;
+export function ClinicalChartsExplorer({ stateFilter, project: overrideProject, patient: overridePatient }: { stateFilter?: { day: number | null; label: string } | null; project?: string | null; patient?: string | null } = {}) {
+  return <Suspense fallback={<LoadingState/>}><ClinicalChartsFromQuery stateFilter={stateFilter ?? null} overrideProject={overrideProject} overridePatient={overridePatient} /></Suspense>;
 }
 
-function ClinicalChartsFromQuery({ stateFilter }: { stateFilter: { day: number | null; label: string } | null }) {
+function ClinicalChartsFromQuery(props: { stateFilter: { day: number | null; label: string } | null; overrideProject?: string | null; overridePatient?: string | null }) {
+  const params = useSearchParams();
+  return <ClinicalChartsCase key={`${props.overrideProject ?? params.get('project')}:${props.overridePatient ?? params.get('patient')}:${params.get('visit')}`} {...props}/>;
+}
+
+function ClinicalChartsCase({ stateFilter, overrideProject, overridePatient }: { stateFilter: { day: number | null; label: string } | null; overrideProject?: string | null; overridePatient?: string | null }) {
   const params = useSearchParams();
   const initial = initialParams(params);
-  const { project, patient } = initial;
-  const [visit] = useState(initial.visit);
+  const project = overrideProject ?? initial.project;
+  const patient = overridePatient ?? initial.patient;
+  const visit = initial.visit;
   const [rows, setRows] = useState<Row[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [total, setTotal] = useState<number | null>(null);
@@ -127,9 +134,9 @@ function ClinicalChartsFromQuery({ stateFilter }: { stateFilter: { day: number |
 
   useEffect(() => {
     if (project && patient) void loadAll(project, patient, visit);
-    // One-shot case bind; later filtering uses panel pickers, not repeated case guessing.
+    return () => pending.current?.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [project, patient, visit]);
 
   async function fetchPage(nextProject: string, nextPatient: string, nextVisit: string | null, nextCursor: string | null, signal: AbortSignal): Promise<ObservationPage> {
     const response = await fetch(
@@ -139,7 +146,7 @@ function ClinicalChartsFromQuery({ stateFilter }: { stateFilter: { day: number |
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ kind: null, concept: null, visit_id: nextVisit && UUID.test(nextVisit) ? nextVisit : null, cursor: nextCursor, limit: 100 }),
         cache: 'no-store',
-        signal,
+        signal: researchSignal(signal),
       },
     );
     if (!response.ok) throw new Error(explain(response));
@@ -150,7 +157,7 @@ function ClinicalChartsFromQuery({ stateFilter }: { stateFilter: { day: number |
     try {
       const response = await fetch(
         `/api/case-record?project=${encodeURIComponent(nextProject)}&patient=${encodeURIComponent(nextPatient)}&record=${encodeURIComponent(recordId)}`,
-        { cache: 'no-store', signal },
+        { cache: 'no-store', signal: researchSignal(signal) },
       );
       if (!response.ok) return null;
       return (await readJson(response)) as ClinicalRecord;
@@ -220,7 +227,8 @@ function ClinicalChartsFromQuery({ stateFilter }: { stateFilter: { day: number |
     return day <= stateFilter.day;
   };
   const scoped = rows.filter(inStateWindow);
-  const filtered = scoped.filter(row => active.kinds.includes(row.summary.kind) && !row.summary.superseded);
+  const tableRows = scoped.filter(row => active.kinds.includes(row.summary.kind));
+  const filtered = tableRows.filter(row => !row.summary.superseded);
   const groups = new Map<string, Row[]>();
   for (const row of filtered) {
     const key = groupKey(row.record, row.summary);
@@ -279,7 +287,7 @@ function ClinicalChartsFromQuery({ stateFilter }: { stateFilter: { day: number |
               </tr>
             </thead>
             <tbody>
-              {filtered.map(row => (
+              {tableRows.map(row => (
                 <tr key={row.summary.record_id}>
                   <th scope="row">
                           <Link href={`/cases/detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&tab=clinical`}>Open {row.summary.record_id.slice(0, 8)}…</Link>

@@ -1,0 +1,32 @@
+{
+  "scope": "Actual browser layout, synthetic data only",
+  "measurements": [
+    {
+      "width": 1440,
+      "height": 900,
+      "overflow": 0,
+      "controlCount": 40,
+      "overlaps": [],
+      "clipped": [],
+      "screenshot": "04-twin-1440.png"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": 0,
+      "controlCount": 40,
+      "overlaps": [],
+      "clipped": [],
+      "screenshot": "04-twin-390.png"
+    },
+    {
+      "width": 320,
+      "height": 740,
+      "overflow": 0,
+      "controlCount": 40,
+      "overlaps": [],
+      "clipped": [],
+      "screenshot": "04-twin-320.png"
+    }
+  ]
+}

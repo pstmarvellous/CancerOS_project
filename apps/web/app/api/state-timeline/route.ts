@@ -32,11 +32,17 @@ export async function GET(request: Request) {
     if (!url) return bad('Missing project or patient');
     return proxyCase(request, url, 'GET');
   }
-  if (resource === 'fusion') {
-    if (!state) return bad('Missing state selection');
-    const url = caseUrl(project, patient, '/fusion-queries');
-    if (!url) return bad('Missing project or patient');
-    return proxyCase(request, url, 'POST', JSON.stringify({ state_id: state }));
-  }
   return bad('Unknown state timeline resource');
+}
+
+// Keep the browser query a POST so its real Origin reaches the existing
+// cookie-session CSRF guard. A GET forwarded as POST lacks that Origin.
+export async function POST(request: Request) {
+  const { project, patient } = caseParams(request);
+  const incoming = new URL(request.url);
+  const state = incoming.searchParams.get('state');
+  if (!project || !patient || !state || incoming.searchParams.get('resource') !== 'fusion') return bad('Missing state fusion selection');
+  const url = caseUrl(project, patient, '/fusion-queries');
+  if (!url) return bad('Missing project or patient');
+  return proxyCase(request, url, 'POST', JSON.stringify({ state_id: state }));
 }

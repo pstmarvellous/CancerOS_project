@@ -3,13 +3,14 @@
 from contextlib import contextmanager
 from uuid import UUID
 
-from fastapi import APIRouter, Header
+from fastapi import APIRouter, Header, HTTPException
 
 from canceros.context_runs import build_context
 from canceros.identity import authenticate
 from canceros.interpretation_contracts import InterpretationInput, InterpretationReport
 from canceros.interpretation_runs import build_interpretation
 from canceros.persistence import engine_for
+from canceros.storage import PrivateStorage
 
 
 def interpretation_routes(config, memberships):
@@ -39,12 +40,18 @@ def interpretation_routes(config, memberships):
         with session(authorization) as (c, i):
             from canceros.context_contracts import ContextBuildInput
 
+            context_input = value.context_input or ContextBuildInput(
+                patient_id=patient_id, snapshot_id=state_id
+            )
+            if context_input.patient_id != patient_id or context_input.snapshot_id != state_id:
+                raise HTTPException(404)
             context = build_context(
                 c,
                 i,
                 project_id,
                 patient_id,
-                ContextBuildInput(patient_id=patient_id, snapshot_id=state_id),
+                context_input,
+                storage=PrivateStorage(config),
             )
             return build_interpretation(context, value)
 

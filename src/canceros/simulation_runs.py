@@ -137,6 +137,22 @@ def read_config(c, i, p, u, identifier):
     return _read(c, i, p, u, "simulation_config_versions", identifier, ConfigVersion)
 
 
+def read_latest_config(c, i, p, u, branch_id):
+    authorize_project(i, p, "admin")
+    branch = read_branch(c, i, p, u, branch_id)
+    _usable(c, i, p, u, branch.id)
+    identifier = c.execute(
+        text(
+            "SELECT id FROM imaging.simulation_config_versions WHERE project_id=:p AND patient_id=:u AND branch_id=:b ORDER BY draft_revision DESC LIMIT 1"
+        ),
+        {"p": p, "u": u, "b": branch_id},
+    ).scalar_one_or_none()
+    if identifier is None:
+        return None
+    _usable(c, i, p, u, identifier)
+    return read_config(c, i, p, u, identifier)
+
+
 def read_run(c, i, p, u, identifier):
     return _read(c, i, p, u, "simulation_runs", identifier, SimulationRun)
 

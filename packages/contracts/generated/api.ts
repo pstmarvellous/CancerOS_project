@@ -634,6 +634,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/branches/{branch_id}/simulation-configs/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Latest Simulation Config */
+        get: operations["get_latest_simulation_config_api_v1_projects__project_id__patients__patient_id__branches__branch_id__simulation_configs_current_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/branches/{branch_id}/simulation-runs": {
         parameters: {
             query?: never;
@@ -940,6 +957,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/imaging-imports": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Import List */
+        get: operations["import_list_api_v1_projects__project_id__patients__patient_id__imaging_imports_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{project_id}/patients/{patient_id}/imaging-imports/{import_id}": {
         parameters: {
             query?: never;
@@ -1156,6 +1190,23 @@ export interface paths {
         };
         /** Get Lesion */
         get: operations["get_lesion_api_v1_projects__project_id__patients__patient_id__lesions__lesion_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{project_id}/patients/{patient_id}/lesions/{lesion_id}/geometry": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Lesion Geometry */
+        get: operations["get_lesion_geometry_api_v1_projects__project_id__patients__patient_id__lesions__lesion_id__geometry_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -6567,6 +6618,42 @@ export interface components {
              */
             status: "privately_staged";
         };
+        /** ImportPage */
+        ImportPage: {
+            /** Items */
+            items: components["schemas"]["ImportSummary"][];
+        };
+        /** ImportSummary */
+        ImportSummary: {
+            /** Format */
+            format: string;
+            /**
+             * Import Id
+             * Format: uuid
+             */
+            import_id: string;
+            /** Issue Codes */
+            issue_codes: string[];
+            /**
+             * Next Action
+             * @default review_source_and_provenance_then_confirm_or_run_geometry
+             */
+            next_action: string;
+            /** Sequence */
+            sequence: string;
+            /**
+             * Series Id
+             * Format: uuid
+             */
+            series_id: string;
+            /** Status */
+            status: string;
+            /**
+             * Study Id
+             * Format: uuid
+             */
+            study_id: string;
+        };
         /** InheritedAssignment */
         InheritedAssignment: {
             /** Demo Exposed */
@@ -6614,6 +6701,11 @@ export interface components {
              * Format: uuid
              */
             branch_id: string;
+            /**
+             * Comparison Measurements
+             * @default []
+             */
+            comparison_measurements: components["schemas"]["ContextMeasurement"][];
             /** Comparison Snapshot Id */
             comparison_snapshot_id?: string | null;
             /** Comparison Stale */
@@ -6718,6 +6810,7 @@ export interface components {
         };
         /** InterpretationInput */
         InterpretationInput: {
+            context_input?: components["schemas"]["ContextBuildInput"] | null;
             /**
              * Context Snapshot Id
              * Format: uuid
@@ -10419,6 +10512,16 @@ export interface components {
              * Format: uuid
              */
             segmentation_id: string;
+            /**
+             * Source Image Id
+             * Format: uuid
+             */
+            source_image_id: string;
+            /**
+             * Study Id
+             * Format: uuid
+             */
+            study_id: string;
         };
         /** SegmentationMetrics */
         SegmentationMetrics: {
@@ -13743,6 +13846,41 @@ export interface operations {
             };
         };
     };
+    get_latest_simulation_config_api_v1_projects__project_id__patients__patient_id__branches__branch_id__simulation_configs_current_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                branch_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfigVersion"] | null;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     post_simulation_run_api_v1_projects__project_id__patients__patient_id__branches__branch_id__simulation_runs_post: {
         parameters: {
             query?: never;
@@ -14405,6 +14543,40 @@ export interface operations {
             };
         };
     };
+    import_list_api_v1_projects__project_id__patients__patient_id__imaging_imports_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     detail_api_v1_projects__project_id__patients__patient_id__imaging_imports__import_id__get: {
         parameters: {
             query?: never;
@@ -14973,6 +15145,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LesionIdentity"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_lesion_geometry_api_v1_projects__project_id__patients__patient_id__lesions__lesion_id__geometry_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                project_id: string;
+                patient_id: string;
+                lesion_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MeshQCReport"];
                 };
             };
             /** @description Validation Error */

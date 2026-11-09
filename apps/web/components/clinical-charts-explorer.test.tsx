@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { ClinicalChartsExplorer } from './clinical-charts-explorer';
 
@@ -56,4 +56,29 @@ describe('COS-077 clinical charts explorer', () => {
     expect(screen.getAllByText(/9.123456789/).length).toBeGreaterThan(0);
     vi.unstubAllGlobals();
   }, 15000);
+});
+
+it('rebinds to a changed case and ignores the old delayed chart batch', async()=>{
+  query.search='';
+  let finish!: (response:Response)=>void;
+  const fetcher=vi.fn((url:unknown)=>String(url).includes(`patient=${PATIENT}`) ? new Promise<Response>(resolve=>{finish=resolve;}) : Promise.resolve(Response.json({items:[],snapshot_cursor:null})));
+  vi.stubGlobal('fetch',fetcher);
+  const view=render(<ClinicalChartsExplorer project={PROJECT} patient={PATIENT}/>);
+  view.rerender(<ClinicalChartsExplorer project={PROJECT} patient="44444444-4444-4444-4444-444444444444"/>);
+  expect(await screen.findByText(/No laboratory, vital, symptom or treatment records/)).toBeVisible();
+  await act(async()=>finish(Response.json({items:[{record_id:RECORD,kind:'laboratory',concept:'stale protected concept'}]})));
+  expect(screen.queryByText(/stale protected concept/)).not.toBeInTheDocument();
+  expect(fetcher).toHaveBeenCalledTimes(2);
+  vi.unstubAllGlobals();
+});
+
+it('retains superseded revisions in the exact table while omitting them from plots',async()=>{
+  query.search=`?project=${PROJECT}&patient=${PATIENT}`;
+  const original=stubFetch();
+  vi.stubGlobal('fetch',vi.fn(async (input:unknown)=>String(input).includes('clinical-charts') ? Response.json({items:[{record_id:RECORD,kind:'laboratory',concept:'hemoglobin',superseded:true}],snapshot_cursor:null}) : original(input)));
+  render(<ClinicalChartsExplorer/>);
+  expect(await screen.findByText(/REAL_OBSERVED · superseded/)).toBeVisible();
+  expect(screen.getByRole('table')).toHaveTextContent('9.123456789');
+  expect(screen.queryByRole('img',{name:/observations; exact values/})).not.toBeInTheDocument();
+  vi.unstubAllGlobals();
 });

@@ -6,7 +6,7 @@ const MAX_SESSIONS = 512;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export type ResearchProject = { project_id: string; name: string; role: 'viewer' | 'editor' | 'admin' };
 export type ResearchWorkspace = { projects: ResearchProject[] };
-type Session = { token: string; expires: number };
+type Session = { token: string; expires: number; lastCase?: { project: string; patient: string } };
 const memory = globalThis as unknown as { cancerosResearchSessions?: Map<string, Session> };
 const sessions = () => memory.cancerosResearchSessions ??= new Map();
 

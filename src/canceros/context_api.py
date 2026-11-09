@@ -9,6 +9,7 @@ from canceros.context_contracts import ContextBuildInput, InterpretationContext
 from canceros.context_runs import build_context, context_export_view, record_context_build
 from canceros.identity import authenticate
 from canceros.persistence import engine_for
+from canceros.storage import PrivateStorage
 
 
 def context_routes(config, memberships):
@@ -35,7 +36,9 @@ def context_routes(config, memberships):
         authorization: str | None = Header(default=None),
     ):
         with session(authorization) as (c, i):
-            context = build_context(c, i, project_id, patient_id, value)
+            context = build_context(
+                c, i, project_id, patient_id, value, storage=PrivateStorage(config)
+            )
             record_context_build(c, project_id, context)
             return context
 
@@ -50,7 +53,9 @@ def context_routes(config, memberships):
         authorization: str | None = Header(default=None),
     ):
         with session(authorization) as (c, i):
-            context = build_context(c, i, project_id, patient_id, value)
+            context = build_context(
+                c, i, project_id, patient_id, value, storage=PrivateStorage(config)
+            )
             return context_export_view(context)
 
     return router

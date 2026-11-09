@@ -75,9 +75,8 @@ def saved_routes(config, memberships):
         saved_id: UUID,
         authorization: str | None = Header(default=None),
     ):
-        _ = patient_id
         with session(authorization) as (c, i):
-            return read_saved(c, i, project_id, saved_id)
+            return read_saved(c, i, project_id, patient_id, saved_id)
 
     @router.post(
         "/states/{state_id}/saved-result-queries",

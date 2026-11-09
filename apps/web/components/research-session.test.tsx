@@ -19,7 +19,7 @@ describe('research session panel', () => {
     expect(credential).toHaveAttribute('type', 'password');
     fireEvent.change(credential, { target: { value: 'existing-credential' } });
     fireEvent.click(screen.getByRole('button', { name: 'Sign in to research workspace' }));
-    expect(await screen.findByRole('option', { name: 'Authorized study · Editor — can add clinical observations' })).toBeVisible();
+    expect(await screen.findByRole('option', { name: 'Authorized study · Editor — observation access depends on patient permissions' })).toBeVisible();
     expect(credential).toHaveValue('');
     expect(onProjectChange).toHaveBeenLastCalledWith(project.project_id);
     expect(onSessionChange).toHaveBeenLastCalledWith(true);

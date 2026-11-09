@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as THREE from 'three';
 import MeshRenderer, { type RenderableMesh } from './mesh-renderer';
@@ -38,6 +38,18 @@ beforeEach(() => {
   vi.stubGlobal('ResizeObserver', class { observe() {} disconnect() {} });
 });
 describe('3D camera interaction', () => {
+  it('offers a compact toolbar with zoom, fit, reset, maximize and fullscreen', () => {
+    render(<MeshRenderer asset={asset()} selected="first" onFailure={vi.fn()}/>);
+    expect(screen.getByRole('button', { name: 'Maximize viewer' })).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: 'Maximize viewer' }));
+    expect(screen.getByRole('button', { name: 'Restore viewer size' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Fullscreen viewer' })).toBeVisible();
+    const zoom = screen.getByRole('group', { name: 'Zoom' });
+    expect(within(zoom).getByRole('button', { name: 'Zoom in' })).toBeVisible();
+    const framing = screen.getByRole('group', { name: 'Framing' });
+    expect(within(framing).getByRole('button', { name: 'Fit view' })).toBeVisible();
+    expect(within(framing).getByRole('button', { name: 'Reset view' })).toBeVisible();
+  });
   it('starts with direct interaction and switches pointer mode without changing geometry', () => {
     const data = asset(), before = structuredClone(data), failure = vi.fn();
     render(<MeshRenderer asset={data} selected="first" onFailure={failure}/>);
@@ -49,6 +61,30 @@ describe('3D camera interaction', () => {
     fireEvent.click(screen.getByRole('button', { name: /^Orbit$/ }));
     expect(fixtures.controls[0].mouseButtons.LEFT).toBe(THREE.MOUSE.ROTATE);
     expect(data).toEqual(before);
+  });
+  it('delegates display size to the enclosing state viewer without maximizing only its canvas', async () => {
+    const toggleMaximize = vi.fn(), toggleFullscreen = vi.fn().mockResolvedValue(undefined);
+    const props = { asset: asset(), selected: 'first', onFailure: vi.fn(), displayActions: {
+      maximized: false, fullscreen: false, fullscreenAvailable: true, toggleMaximize, toggleFullscreen,
+    } };
+    const { rerender } = render(<MeshRenderer {...props}/>);
+    fireEvent.click(screen.getByRole('button', { name: 'Maximize viewer' }));
+    expect(toggleMaximize).toHaveBeenCalledOnce();
+    expect(screen.getByRole('region', { name: '3D region controls' })).not.toHaveAttribute('data-maximized');
+    fireEvent.click(screen.getByRole('button', { name: 'Fullscreen viewer' }));
+    expect(toggleFullscreen).toHaveBeenCalledOnce();
+    rerender(<MeshRenderer {...props} displayActions={{ ...props.displayActions, maximized: true, fullscreen: true }}/>);
+    expect(screen.getByRole('button', { name: 'Restore viewer size' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Exit fullscreen' })).toHaveAttribute('aria-pressed', 'true');
+  });
+  it('reports rejected fullscreen requests and preserves maximize as recovery', async () => {
+    render(<MeshRenderer asset={asset()} selected="first" onFailure={vi.fn()} displayActions={{
+      maximized: false, fullscreen: false, fullscreenAvailable: true, toggleMaximize: vi.fn(),
+      toggleFullscreen: vi.fn().mockRejectedValue(new Error('Unavailable')),
+    }}/>);
+    fireEvent.click(screen.getByRole('button', { name: 'Fullscreen viewer' }));
+    expect(await screen.findByRole('status')).toHaveTextContent('Fullscreen is unavailable');
+    expect(screen.getByRole('button', { name: 'Maximize viewer' })).toBeVisible();
   });
   it('supports keyboard orbit, pan, zoom, reset and resuming after Escape', () => {
     render(<MeshRenderer asset={asset()} selected="first" onFailure={vi.fn()}/>);

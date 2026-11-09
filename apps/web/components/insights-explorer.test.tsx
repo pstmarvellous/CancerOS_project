@@ -14,7 +14,8 @@ const MEASURE = '44444444-4444-4444-4444-444444444444';
 const HASH = 'a'.repeat(64);
 
 function stubFetch() {
-  return vi.fn(async (input: unknown) => {
+  return vi.fn(async (input: unknown, init?: { body?: unknown }) => {
+    void init;
     const url = String(input);
     if (url.includes('action=context')) {
       return {
@@ -30,6 +31,7 @@ function stubFetch() {
             missing_modalities: [],
             measurements: [{ reference_id: MEASURE, metric_code: 'hemoglobin', value: '9', unit: 'g_dL', member_time: 'Source-relative day 1', origin: 'REAL_OBSERVED', context: 'observed' }],
             assertions: [],
+            passages: [],
             missing: [],
             conflicts: [],
           }),
@@ -67,11 +69,14 @@ describe('COS-079 insights explorer', () => {
 
   it('loads snapshot-bound context and labels rule-based execution', async () => {
     query.search = `?project=${PROJECT}&patient=${PATIENT}&state=${STATE}`;
-    vi.stubGlobal('fetch', stubFetch());
+    const fetch = stubFetch();
+    vi.stubGlobal('fetch', fetch);
     render(<InsightsExplorer />);
-    fireEvent.change(screen.getByLabelText('State'), { target: { value: STATE } });
-    fireEvent.click(screen.getByRole('button', { name: 'Load exact context' }));
     await waitFor(() => expect(screen.getByText(/Snapshot context in plain language/)).toBeVisible(), { timeout: 10000 });
+    const contextCall = fetch.mock.calls.find(call => String(call[0]).includes('action=context'));
+    expect(contextCall).toBeDefined();
+    if (!contextCall) throw new Error('context request missing');
+    expect(JSON.parse(String(contextCall[1]?.body))).toMatchObject({ patient_id: PATIENT, snapshot_id: STATE, comparison_snapshot_id: null });
     fireEvent.click(screen.getByRole('button', { name: 'Generate rule-based summary' }));
     await waitFor(() => expect(screen.getByText('Rule-based summary.')).toBeVisible(), { timeout: 10000 });
     expect(screen.getByText(/Each finding below opens its exact case observation/)).toBeVisible();

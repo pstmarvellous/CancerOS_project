@@ -1,9 +1,12 @@
 'use client';
+import { rememberCase } from '../lib/case-selection';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { components } from '../../../packages/contracts/generated/api';
 import { researchJson, researchError } from '../lib/research-client';
 import { ErrorSummary } from './research';
+import { TermHelp } from './term-help';
+const RECORD_TYPE_HELP = ['Case reference', 'Participant code', 'Source record', 'Source reference', 'Record type'] as const;
 type Source = components['schemas']['ResearchCaseSources']['items'][number];
 
 export function CaseCreator({project, sources, allowed}: {project: string; sources: Source[]; allowed: boolean}) {
@@ -13,6 +16,9 @@ export function CaseCreator({project, sources, allowed}: {project: string; sourc
   const [key, setKey] = useState(() => crypto.randomUUID());
   const eligible = sources.filter(source => source.creation_permitted);
   const hasIneligible = sources.some(s => !s.creation_permitted);
+  const [sourceId, setSourceId] = useState<string>(eligible[0]?.source_version_id ?? '');
+  const selectedSource = eligible.find(source => source.source_version_id === sourceId) ?? eligible[0] ?? null;
+  const recordType = selectedSource == null ? null : selectedSource.origin === 'real_source' ? 'Source-backed research record' : 'Artificial demonstration';
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (busy || !allowed) return;
@@ -30,7 +36,7 @@ export function CaseCreator({project, sources, allowed}: {project: string; sourc
       const result = await researchJson<{patient_id: string}>(`/api/research-cases?project=${encodeURIComponent(project)}`, {
         method: 'POST', headers: {'content-type':'application/json','idempotency-key':key}, body: JSON.stringify(body),
       });
-      try { localStorage.setItem('canceros:last_case', JSON.stringify({project, patient: result.patient_id, at: Date.now()})); } catch {}
+      rememberCase(project, result.patient_id);
       router.push(`/cases/detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(result.patient_id)}`);
     } catch (cause) { setError(researchError(cause)); setBusy(false); }
   }
@@ -50,16 +56,21 @@ export function CaseCreator({project, sources, allowed}: {project: string; sourc
     <p className="field-hint">Your existing cases remain available below. For local development, create source via admin bootstrap script in <code>scripts/</code>.</p>
   </div>;
   return <form aria-label="Create research case" onSubmit={submit} onChange={() => setKey(crypto.randomUUID())}>
-    <p className="field-hint">Required fields *. Use research labels only — no real names, contact details, or government IDs. Letters/numbers/dot/hyphen/underscore only for identifier.</p>
+    <p className="field-hint">Required fields *. Use research labels only — no real names, contact details, or government IDs. Letters/numbers/dot/hyphen/underscore only for the reference.</p>
+    <dl className="profile-facts" style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(220px, 1fr))', gap:12, margin:'0 0 16px'}}>
+      <div><dt>Research project</dt><dd>Currently selected project — the case is created here and nowhere else.</dd></div>
+      <div><dt>Record type</dt><dd>{recordType ?? 'Determined by the selected source below.'}{recordType === 'Artificial demonstration' ? ' Entries in this case are labeled synthetic, never authentic.' : ''}</dd></div>
+    </dl>
     <fieldset disabled={busy} style={{border:0, padding:0, display:'grid', gap:16, gridTemplateColumns:'repeat(auto-fit, minmax(220px, 1fr))'}}>
-      <label style={{display:'flex', flexDirection:'column', gap:6}}>Research case identifier *<input name="identifier" required maxLength={80} pattern={'[A-Za-z0-9._\\-]+'} placeholder="STUDY-042" autoComplete="off"/><span className="field-hint">Unique within project. Example: STUDY-042</span></label>
-      <label style={{display:'flex', flexDirection:'column', gap:6}}>Case title *<input name="title" required maxLength={200} placeholder="Longitudinal research case"/><span className="field-hint">Displayed in library.</span></label>
-      <label style={{display:'flex', flexDirection:'column', gap:6}}>Source pseudonym *<input name="pseudonym" required maxLength={100} placeholder="Participant 042" autoComplete="off"/><span className="field-hint">Prevents duplicate linkage — use study pseudonym.</span></label>
-      <label style={{display:'flex', flexDirection:'column', gap:6}}>Source *<select name="source" required>{eligible.map(source => <option key={source.source_version_id} value={source.source_version_id}>{source.title} · {source.origin === 'real_source' ? 'Research source' : 'Synthetic engineering source'}</option>)}</select><span className="field-hint">Only eligible sources shown.</span></label>
-      <label style={{display:'flex', flexDirection:'column', gap:6, gridColumn:'1 / -1'}}>Profile source reference *<input name="reference" required maxLength={500} placeholder="Study register / entry 042"/><span className="field-hint">Locator supporting this profile (page, entry, report).</span></label>
+      <label style={{display:'flex', flexDirection:'column', gap:6}}>Case title *<input name="title" required maxLength={200} placeholder="Breast Cancer Research Example A"/><span className="field-hint">Displayed in the library.</span></label>
+      <label style={{display:'flex', flexDirection:'column', gap:6}}>Case reference *<input name="identifier" required maxLength={80} pattern={'[A-Za-z0-9._\\-]+'} placeholder="DEMO-001" autoComplete="off"/><span className="field-hint">Unique within the project. Example: DEMO-001</span></label>
+      <label style={{display:'flex', flexDirection:'column', gap:6}}>Participant code *<input name="pseudonym" required maxLength={100} placeholder="Participant 042" autoComplete="off"/><span className="field-hint">Study code that prevents duplicate linkage — never a real name.</span></label>
+      <label style={{display:'flex', flexDirection:'column', gap:6}}>Source record *<select name="source" required value={selectedSource?.source_version_id ?? ''} onChange={event => setSourceId(event.target.value)}>{eligible.map(source => <option key={source.source_version_id} value={source.source_version_id}>{source.title} · {source.origin === 'real_source' ? 'Research source' : 'Artificial demonstration source'}</option>)}</select><span className="field-hint">Only eligible sources shown. The record type above follows this choice.</span></label>
+      <label style={{display:'flex', flexDirection:'column', gap:6, gridColumn:'1 / -1'}}>Source reference *<input name="reference" required maxLength={500} placeholder="Study register / entry 042"/><span className="field-hint">Locator supporting this profile (page, entry, report).</span></label>
     </fieldset>
     {error && <div style={{marginTop:12}}><ErrorSummary message={error}/></div>}
-    <div style={{marginTop:16, display:'flex', gap:8}}><button className="button-primary" type="submit" disabled={busy}>{busy ? 'Saving case…' : 'Save research case'}</button></div>
-    <p className="field-hint" style={{marginTop:8}}>Saving creates immutable case binding with idempotency key. Reopen after refresh via stored selection, no UUID typing.</p>
+    <div style={{marginTop:16, display:'flex', gap:8}}><button className="button-primary" type="submit" disabled={busy}>{busy ? 'Saving case…' : 'Create Case'}</button></div>
+    <p className="field-hint" style={{marginTop:8}}>Saving creates an immutable case binding with idempotency key and opens the saved case overview. Reopen after refresh via stored selection, no UUID typing.</p>
+    <TermHelp terms={[...RECORD_TYPE_HELP]} />
   </form>;
 }

@@ -1,0 +1,56 @@
+{
+  "task": "COS-REC-05",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "cases",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "cases",
+      "returncode": 0,
+      "output": "\nSIM.03 — Clinical treatment compatibility\nDesign: Guard endocrine/HER2/immunotherapy cases by documented subtype and setting\nAcceptance: Invalid eligibility blocked; unknown not invented\n  READ A12 NCI Breast Cancer Treatment PDQ — Stage-specific treatment, receptor status and neoadjuvant therapy sections — https://www.cancer.gov/types/breast/hp/breast-treatment-pdq\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "cases",
+      "returncode": 0,
+      "output": "\n== SIM.03 Clinical treatment compatibility ==\nIntent: Guard endocrine/HER2/immunotherapy cases by documented subtype and setting \nTest: Invalid eligibility blocked; unknown not invented\n BOOK/LECTURE A12 NCI Breast Cancer Treatment PDQ | Stage-specific treatment, receptor status and neoadjuvant therapy sections | https://www.cancer.gov/types/breast/hp/breast-treatment-pdq | verified document; topic-specific revision required\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "research case creation observation entry",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "research case creation observation entry",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "research case creation observation entry",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [],
+  "academic_behavior_ids": [
+    "SIM.03"
+  ],
+  "edges": [],
+  "mapped_source_ids": [
+    "A12"
+  ],
+  "source_sections_inspected": "Actual source sections inspected"
+}

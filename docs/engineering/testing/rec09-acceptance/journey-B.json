@@ -1,0 +1,56 @@
+{
+  "recorded_at": "2026-11-09T16:04:00.870Z",
+  "case_a": "ea039a09-1f85-41ab-b36e-289d44ff417f",
+  "case_b": "166e6b4a-e32f-4f9f-8a47-19487321353d",
+  "steps": [
+    {
+      "journey": "B",
+      "step": "signin",
+      "expected": "Admin signs in",
+      "actual": "New research case visible",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "B",
+      "step": "create-case",
+      "expected": "Case created and opened",
+      "actual": "patient=ea039a09",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "B",
+      "step": "enter-observation",
+      "expected": "Artificial observation saved and listed",
+      "actual": "9.1 g/dL visible",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "B",
+      "step": "save-reopen",
+      "expected": "Refresh retains the observation",
+      "actual": "9.1 g/dL after reload",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "B",
+      "step": "correct-value",
+      "expected": "Correction appends with retained revision",
+      "actual": "9.2 g/dL + Superseded",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "B",
+      "step": "chart",
+      "expected": "Corrected value appears in chart parity table",
+      "actual": "9.2 g/dL in chart",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "B",
+      "step": "isolation",
+      "expected": "Case B sees none of Case A data",
+      "actual": "isolated=true",
+      "verdict": "PASS"
+    }
+  ]
+}

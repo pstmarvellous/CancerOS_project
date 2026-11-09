@@ -6,7 +6,8 @@ type S = components['schemas'];
 
 export function InterpretationPanel({report, groundingStatus}: {report: S['InterpretationReport'] | null; groundingStatus?: string}) {
   if (!report) return <section aria-label="Research interpretation"><h3>Research interpretation</h3><p>No interpretation has been generated for this snapshot. Generate a rule-based summary first; external candidates stay private until grounding and safety review pass.</p></section>;
-  const mode = report.execution_mode === 'rule_based_summary' ? 'Rule-based summary · deterministic template' : 'Saved result';
+  if (report.visibility === 'private_candidate' || report.execution_mode === 'external_candidate_private') return <section aria-label="Research interpretation"><h3>Research interpretation · Private external candidate · unpublished</h3><p>Candidate prose is withheld. A saved record does not establish a verified live result; grounding, publication and permitted provider execution must be verified separately.</p>{groundingStatus ? <p>{groundingStatus}</p> : null}</section>;
+  const mode = 'Rule-based summary · deterministic local template';
   return <section aria-label="Research interpretation"><h3>Research interpretation · {mode}</h3>
     <p>{report.summary}</p>
     <p><strong>Snapshot {report.snapshot_hash.slice(0, 8)}… · context {report.context_hash.slice(0, 8)}… · {report.findings.length} finding{report.findings.length === 1 ? '' : 's'}</strong>{groundingStatus ? <> · <span className="badge simulated">Grounding: {groundingStatus}</span></> : null}</p>

@@ -1,145 +1,83 @@
-# USER JOURNEY FAILURE MAP — COS-REVIEW-003
+# User journey results and reproduction map
 
-**Date:** 2026-11-05  
-**Method:** Code inspection + manual logical walkthrough (no live backend in review env, but path reproduction based on code).
+Expert inspection, 6 November 2026 WAT. These are task attempts by an AI reviewer, not participant-study results. Obstacle counts below count distinct observed failure types, not a statistical usability score. Source requirements and U-numbers link to the [deep review](UI-UX-DEEP-REVIEW.md).
 
----
+## Test environments
 
-## Journey 1: First-time researcher tries to understand CancerOS
+The README native path was built and started on `127.0.0.1:3000` with API 8000. A separate repository-provided opt-in product preview ran on 3001 with the artificial product API on 8001. It used existing private local services and an explicitly disposable database. This fixture creates artificial source/access records; it grants no real source permissions. The first-use sequence started at `/` in a fresh browser context, then clicked visible links. Authenticated testing used its credential through the ordinary sign-in form, without preloading a cookie or editing a case URL.
 
-| Step | Action | Expected | Actual | Obstacle | Severity | Reproduction |
-|---|---|---|---|---|---|---|
-|1|Open `/`|Sees explainer, two clear next steps: try demo or create real case with guide|Duplicate CTAs, no guide|No onboarding differentiation "I have data vs I want to explore"|Medium|`apps/web/app/page.tsx` has two CTAs both visible, demo link preserved as field-hint inline|
-|2|Click Create Research Case|Landing explaining token/project/source|Goes to `/cases` which shows password box|Token source undefined|P0 blocker|Open `/cases` without auth → ResearchSessionPanel password input. No link to bootstrap script|
+**Full intended sequence:** Open application → create/select case → add clinical observation → import examination → inspect derived lesion → generate scenario → compare states/charts → inspect grounded insights. The current research journey reached saved clinical records, then stopped at absent import/lesion workflow. Additional attempts assessed the later entry points independently. A separate prepared-demo journey reached phantom viewing, family/state changes, clinical tables and local descriptive insights.
 
----
+## J01 — first-time demonstration
 
-## Journey 2: Researcher with valid token but no case
+Start: native homepage, fresh unauthenticated browser. Click Launch synthetic demo. Actual: “The synthetic demo is not ready”; Retry cannot enable its server flag or prepare a bundle. One obstacle: advertised capability not deployed. Outcome: failed in the documented default profile; P1, U01, SPEC-009 §15.1/UX-17. Screenshots [01](evidence/01-fresh-home.png), [02](evidence/02-default-demo-unavailable.png).
 
-Assume token procured (via external admin).
+Authorized alternative: open the separately enabled preview from its homepage and click the same action. The phantom renders. This is a successful **opt-in synthetic viewing task**, not a successful real case workflow.
 
-| Step | Action | Expected | Actual | Obstacle | Severity |
-|---|---|---|---|---|---|
-|1|Enter token in `/cases`|Signs in, shows projects dropdown|Shows project select but if single project, still dropdown|Minor|Medium|
-|2|Select project|Case library auto loads with title, counts|Loads via `/api/research-cases?project=` but requires admin role for source options|If viewer role, source list empty|P0 for creators|
-|3|Click Create Research Case button|Form with title etc|Form requires source select from eligible list; if no source eligible shows message "An administrator must register a source and record the applicable rights and privacy review. Your existing cases remain available."|No CTA to register source|P0|
-|4|Fill form + save|Saves case, moves to detail|Saves via POST `/api/research-cases?project=` with idempotency key, pushes to `/cases/detail?project=&patient=`|Works if source exists|Pass when source present|
-|5|Case detail|Overview with profile edit, clinical intake, imaging|Overview leads with what known/missing|Requires separate fetches `/api/case-detail`, `/api/case-visits`, `/api/case-observations` POST|Partial pass|
+## J02 — create, save and reopen a case
 
-**Evidence files:**
-- `research-cases.tsx` lines search-filtered loadMore etc
-- `case-creator.tsx` eligible filtering
-- `case-workspace.tsx` useSelection + load()
+Start: opt-in preview homepage. Open research case library → use artificial administrator credential → Create first case. Enter an artificial identifier/title/pseudonym, select the artificial eligible source and supply its artificial locator → Save research case. Actual: persistent profile opens; a fresh signed-in browser can reopen it from the library. Edit profile → add artificial history → save revision also works.
 
----
+Outcome: successful artificial admin slice, with one usability obstacle: inside the workspace the primary label becomes a generated technical code rather than the saved title. U04, PRD FR-001–007. Screenshots [07](evidence/07-admin-case-library.png), [08](evidence/08-created-case.png). No authentic patient onboarding, source-rights review or all-role trial was established.
 
-## Journey 3: Enter clinical observation
+## J03 — enter and correct a laboratory observation
 
-| Step | Action | Expected | Actual | Obstacle | Severity |
-|---|---|---|---|---|---|
-|1|In case detail, find Add observation|Prominent add button|Section header "SOURCE-BACKED DATA ENTRY — Add a clinical observation" with field-hint + form|Form dense but present|Medium|
-|2|Pick kind/lab concept|Dropdowns|Two selects: kind then concept list|Concepts technical codes, no search|Medium|
-|3|Enter value/unit/time/source|Grouped|Grouped: term*, source*, time precision, time input, value/unit etc + optional fields conditional|Field order not workflow natural; timestamp regex expects seconds+TZ ISO|Medium|
-|4|Save|Accepted count toast|Calls `/api/research-observations?project=&patient=` + expected_revision + source_ref + observation JSON|Error handling present but revision may have changed causing 409|Medium|
-|5|See result in history table|Table updates|Should reload via onSaved callback but manual refresh may be needed (check case-workspace onSaved refreshes list?)|Needs verify|Medium|
+Start: case A Overview. Click Clinical Records. Select laboratory/hemoglobin; enter artificial source label/locator, date 2026-11-01, 12.3 g/dL → Save observation. Actual: record appears with synthetic origin. Click Correct → change to 12.4 → save. Actual: active history/chart shows 12.4; retained observation count becomes two. Click Charts: exact date/unit/origin table and plotted active value appear.
 
----
+Outcome: partial success; three workflow obstacles: all form steps remain expanded, there is no final submission review, and correction has no explicit reason/original-replacement review. The path does not surface retraction or dependent-state job/publication. P1 U09/U10, SPEC-009 §4.6. Screenshots [09](evidence/09-clinical-entry.png), [10](evidence/10-case-charts.png). Only laboratory and profile history were saved; other category options were inspected only.
 
-## Journey 4: Imaging ingestion & 3D viewer
+## J04 — resume clinical work after refresh
 
-| Step | Action | Expected | Actual | Obstacle | Severity |
-|---|---|---|---|---|---|
-|1|In case detail, open imaging section|Upload DICOM/NIfTI + DCE phase context|Component `CaseImaging` — code not inspected fully but likely list + upload|Upload maybe gated, no drag-drop|P0-P1|
-|2|See lesion list|Picker with scan date + modality|LesionViewer loads lesions via fetch but shows needs-selection without context|User must discover lesion UUID via prior call|P0|
-|3|Rotate/zoom tumor|Prominent viewer 60%+ viewport|Viewer host inside lesion-viewer body, controls separate buttons|Canvas too small, no scale bar, no measurement badge inside|P0|
-|4|See measurements|Volume mm³ prominent|MeasurementReport presumably beside but in code `blockedMeasurement` separate|Measurement not inside viewport|P1|
+Start: working Clinical Records tab in A. Reload the current browser URL. Wait for the case/history to finish loading. Actual: “Loading observation permissions…” remains, with no input form. Recheck after another operation: still present. Click Overview and wait for Profile, then Clinical Records: form returns.
 
-**Repro file:** `lesion-viewer.tsx` `initialSelection(params)` reads project/patient/lesion query. `loadLesions` called on mount. `explain` maps status codes. 3D canvas failure shows "Retry 3D viewer" with graphics acceleration hint.
+Outcome: failed normal resume, one repeated blocker with a developer-inferred workaround. P0 U07, SPEC-009 §11/UX-01/11. Screenshot [11](evidence/11-clinical-refresh-stuck.png). Cause is tab-dependent permission loading, established in source. Do not classify this as a deliberate scientific gate.
 
----
+## J05 — attach imaging and create a baseline
 
-## Journey 5: Hypothetical scenarios (real, not demo)
+Start: saved case A. Click Imaging & 3D. Actual: no associated studies or lesion identities; no upload/import action; the page explains that importing requires a separate reviewed workflow. The empty-state/error combination offers Retry and returning to the library, neither of which attaches imaging.
 
-| Step | Action | Expected | Actual | Obstacle | Severity |
-|---|---|---|---|---|---|
-|1|Click Hypothetical Scenarios tab|Shows 5 families cards, baseline picker, assumption forms|Shows `/simulation` page titled "Configure a hypothetical research branch" with token + UUID inputs and draft textarea|Manual UUID entry required|P0 blocker — usability fail|
-|2|Enter config JSON|Form|Must write JSON matching baseline_hash, branch_id etc|JSON authoring exclusive to engineers|P0|
-|3|Save draft|Immutable version|Calls `/branches/{branchId}/simulation-configs` POST expected_draft_revision + config|Works but revision handling manual|Medium|
-|4|Inspect eligibility + schedule|Shows capability + sample dates|inspect() fetches eligibility + schedule-preview|Report display via StateFusionView? Not prominent|P1|
-|5|Freeze run + poll job|Progress|freeze() calls `/branches/{branchId}/simulation-runs`|No auto-poll UI loop, token manual each request|P0|
-|6|Publish with attestation|Checkbox + save|Attestation + reviewed fields|Unpublished stays hidden — user may think generation failed|P1|
+Diagnostic continuation: manually visit `/admin` while still signed in as administrator. Actual: static unavailable placeholder, without source/import/QC/publication controls. This manual route visit is not a successful discoverability test.
 
-**Evidence:** `simulation-workflow.tsx` lines 44-146 require `UUID.test(project) && patient && branchId && token.trim()` before any act. Draft revision text input string '0' converted via Number. CONFIG treatment category gated.
+Outcome: blocked/incomplete; two implementation obstacles (no ingest surface, placeholder administration) plus absent authentic data/review. P0 U06, PRD UJ-02/FR-008–016, SPEC-009 §4.8. Screenshots [12](evidence/12-imaging-no-import.png), [22](evidence/22-admin-placeholder.png). No file was uploaded and no privacy control was bypassed. Prepared phantom viewing was the authorized alternative, explicitly separated from anatomy.
 
----
+## J06 — continue into the 3D viewer using primary navigation
 
-## Journey 6: Demo (synthetic) — SUCCESS path
+Start: an opened case with project/patient in its URL. Click primary Digital Twin. Wait for `/twin` to settle. Actual: URL contains no case selection; page asks to open a case, although one was just opened. Secondary 3D Digital Twin carries selection but is competing navigation.
 
-| Step | Action | Expected | Actual |
-|---|---|---|---|
-|1|Open `/demo`|Synthetic workspace opens|Calls POST `/api/demo-session` then GET `/api/demo` catalog|
-|2|Pick scenario|Family SC-01 default|Select value family triggers navigate pushState + fetch scenario mesh|
-|3|Rotate 3D|Orbit controls|OrbitControls with pan mode toggle|
-|4|Pick timeline point|Buttons day 0, day X etc with volume|State buttons aria-pressed, inline measurement|
-|5|Switch views|Overview, Twin, Scenarios, Clinical, Insights, Technical|VIEWS mapping preserved in URL `?view=twin` etc|
-|6|Maximize/Fullscreen|Large viewer|FullTwin boolean + native fullscreen API with trap + body overflow hidden|
+Outcome: failed handoff; one selection-loss blocker. P0 U03, SPEC-009 §3/UX-01. Screenshot [14](evidence/14-primary-nav-loses-case.png). Reproduction does not require an imaging dataset; losing the selection itself is the defect.
 
-**Works** when API available returning DemoCatalog with 5 scenarios + meshes.
+## J07 — run an ordinary hypothetical scenario
 
-**Why it works:** Single workspace component orchestrates selection internally, no external UUID homework, no role gates, precomputed assets.
+Start: an opened case. Use the secondary case Hypothetical Scenarios link, which preserves project/patient. Actual: route still says “Open a case ... first”. Click Retry loading branches. Actual: error changes to “Select an authorized branch”, but no branch list appears.
 
-**Lesson:** Real workspace should clone this pattern.
+Outcome: failed before baseline eligibility can be assessed; two connected obstacles (route ignores context, recovery itself needs a branch). P0 U14, SPEC-009 §4.5/UX-12. Screenshot [13](evidence/13-case-scenario-context-failure.png). Contract probes separately show further builder/proxy failures; they were not forced through UI using injected IDs.
 
----
+## J08 — inspect temporal changes and two selected research states
 
-## Journey 7: Clinical charts & timeline sync
+Start: case A Timeline tab. Actual: artificial case has saved observations but no published state/branch; legacy timeline link explicitly says it does not inherit the tab automatically. A populated persisted A/B pair was therefore not browser-verified. Code shows textual pinning without an A→B comparison request or viewer synchronization.
 
-| Step | Action | Expected | Actual | Obstacle | Severity |
-|---|---|---|---|---|---|
-|1|Open Clinical Data with project/patient|Shows lab small multiples, vitals, symptoms, treatments|ClinicalChartsExplorer loads 100 records via ObservationPage POST + grouped by concept+unit|Requires project+patient query|P1|
-|2|Switch panel|lab/vitals/symptom/treatment tabs|Panel state via useState panel key plus description field|Panels present|Pass|
-|3|Timeline sync|Click point filters charts etc|ObservationTimeline / StateTimelineExplorer separate components using project/patient/state query|Two timeline pages confuse|P1|
-|4|Compare two states|Pin second|State timeline explorer may have compare feature (compare query param)|compare param supported in preserveSelection but UI not clear|P1|
+Outcome: research comparison blocked/not verified, P1 U15. Requirement: SPEC-009 §§7.3/8–9. Do not report the absence of a branch on a newly created case as a broken comparison algorithm; the missing process from saved observations/baseline to published state is the relevant workflow gap.
 
----
+Prepared alternative: in the demo use Previous/Next and discrete state buttons. SC-01 changes 216→64 mm³ and its chart highlights the selected state. All five prepared families load four positions after waiting for their selected-family data. This establishes sample discrete playback, not new simulation or genuine longitudinal comparison. Screenshots [03](evidence/03-demo-twin.png), [04](evidence/04-demo-followup.png), [21](evidence/21-sc05-clinical.png).
 
-## Journey 8: AI insights
+## J09 — inspect AI findings for the selected case
 
-| Step | Action | Expected | Actual | Obstacle | Severity |
-|---|---|---|---|---|---|
-|1|Open Insights with project/patient/state|Context loads bound to snapshot hash|InsightsExplorer loadContext POST action=context|Needs state param, else needs-selection|P0|
-|2|Generate rule-based summary|Button|Rule-based mode POST action=interpret mode rule_based|Generates|Partial|
-|3|Inspect grounding|Open grounding report|Request action=ground? (not fully inspected) display separate|Technical hash display|P1|
-|4|Private Meta candidate|External private mode|Requires private policy gate, external API key model gateway|Blocked until policy evidence|Intentional essential blocker but not explained UX-wise|P1|
+Start: reopened case A. Click secondary AI Research Insights. Actual: a State text field and instruction to paste a Timeline state ID; no available-state selector or automatically bound snapshot. One immediate blocker: internal identifier handoff. Outcome: incomplete, P0 U17, PRD UJ-07/FR-056; screenshot [15](evidence/15-insights-state-uuid.png).
 
----
+No live inference was attempted. Independently validating emitted request shapes shows that context, generation, grounding and saving would fail the actual schemas. The prepared demo instead displays a correctly labeled local template with no live Meta result, screenshot [06](evidence/06-demo-insights.png). That truthful fallback does not establish the research insight workflow.
 
-## Journey 9: Guided demo 7 steps
+## J10 — use the guided tour, activity and evaluation
 
-| Step | Action | Expected | Actual | Obstacle |
-|---|---|---|---|---|
-|1|Open `/guided-demo`|List 7 steps with where/href/what/check|Steps array static in component, navigation buttons Previous/Next disabled without checkbox confirmed|Text only, does not drive real UI|
-|2|Step navigation|Automated walkthrough|Only link via href, not state passing|Checkbox gate "I understand read-only" before Next|
-|3|Exit|Return overview|Link to `/` present|Pass|
+From Evaluation click Follow guided demo. Choose step two. Its link is bare `/twin`, not a pinned case/state. Preflight is explanatory prose and a confirmation checkbox, not readiness verification. Outcome: guide not accepted, P1 U19; [17](evidence/17-guided-tour.png). Direct diagnostic visit to Activity in the signed-in admin session returns a placeholder ([23](evidence/23-activity-placeholder.png)).
 
-**Verdict:** Guided demo correct as safety placeholder but not genuine interactive tour.
+Evaluation is reachable and states missing scientific evidence. It also hardcodes fixture success claims and maps UX IDs to meanings different from original §18. Outcome: accessible information page, not a verified report-delivery workflow; P1 U18, screenshot [16](evidence/16-evaluation.png).
 
----
+## J11 — mobile and non-canvas interaction
 
-## Cross-cutting failure patterns
+At 320 CSS pixels load the homepage from `/`: two narrow entry columns make ordinary onboarding difficult; document width is 329. At the same width, the authenticated case library measured 320 with no page overflow. At 390, the demo measured 390 and its canvas 324×464. Outcome: specific homepage reflow failure, not a global mobile rejection. P1 U20, SPEC-009 §§4.3/13/UX-15. Screenshots [18](evidence/18-mobile-home-320.png), [24](evidence/24-mobile-case-library.png), [25](evidence/25-mobile-demo.png).
 
-1. **UUID leak:** User must handle UUIDs when URL query lacks them. No human-friendly slugs. AppShell hides raw selection under details but still raw.
-2. **Empty state not actionable:** "No project selected — Add ?project=id to URL" tells engineer what to do but not researcher how to get project id. Should say "Sign in, then select a project from list" (fix exists after auth but before auth it's manual).
-3. ** Role confusion:** Many pages say "An administrator can review imports; a viewer can follow the guided demo instead." User may be viewer intentionally but product still reports as error.
-4.  **Two sources of truth for case list:** `/api/cases` (PatientPage) vs `/api/research-cases`. Both similar but not same counts.
-5. **No deep linking preservation on direct nav:** Clicking primary nav while on `/cases/detail?project=&patient=` loses patient unless preserveSelection applied — AppShell applies preserveSelection only for certain demos and when patient present, but not uniformly. Simulation link preserves? Cases detail via preserveSelection copies selection, but Overview link to "/" loses context.
-6. **Offline:** When API down, every page shows same ambiguous "Research access could not be checked". Not differentiated per page.
-7. **3D failure recovery:** Only demo has failed3D with retry button; case twin retry exists per lesion-viewer but less visible.
+Camera buttons and keyboard actions executed; fullscreen entered; maximize enlarged the view. Actual touchscreen behavior, screen-reader announcements, browser zoom and contrast were not verified. The initial `touchAction:none` policy is a confirmed implementation concern requiring physical-device testing. No full accessibility pass is claimed.
 
----
+## J12 — switch between two cases
 
-## Severity ratings used
-
-- P0: blocks core research journey; first-time user cannot succeed
-- P1: major usability degradation but workaround exists
-- P2: polish / refinement / secondary audience
+Create artificial B through the same visible form. It has zero observations. Return to library, select A by its title and open Clinical Records: its corrected 12.4 g/dL value remains. Outcome: simple library switching succeeded without observed record mixing. This does not test delayed responses, query-only same-component changes or every authorization endpoint. Source inspection still identifies stale-selection risks requiring a focused race test. Saved-result patient authorization is a separate confirmed code/function-probe finding, not inferred from these ordinary browser actions.

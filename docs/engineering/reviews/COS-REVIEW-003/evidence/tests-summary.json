@@ -1,0 +1,17 @@
+{
+  "review": "COS-REVIEW-003",
+  "scope": "Bounded synthetic/unit and MockTransport regression checks; no authentic patient validation or live model call.",
+  "command": ".venv/Scripts/python.exe -m pytest tests/test_physical_measurements.py tests/test_mesh_reconstruction.py tests/test_imaging_geometry.py tests/test_provider_gateway.py tests/test_scenario_families.py -q",
+  "python": "3.12.14",
+  "platform": "Windows",
+  "started_at_utc": "2026-11-06T18:31:07.770381+00:00",
+  "completed_at_utc": "2026-11-06T18:31:12.375641+00:00",
+  "exit_code": 0,
+  "stdout": "........................................................................ [ 60%]\n...............................................                          [100%]\n119 passed in 3.03s\n",
+  "stderr": "",
+  "limitations": [
+    "No full test suite was run by this specialist.",
+    "No PostgreSQL, private-storage or Redis integration check was performed by this specialist.",
+    "Fixture tests do not establish clinical validation, authentic baseline readiness, frontend accessibility or live Meta inference."
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "task": "COS-REC-04",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "presentation",
+      "returncode": 0,
+      "output": "\n=== D.IMG Medical imaging ===\n MRI loading, preprocessing, masks, measurements, geometric representations and spatial quality. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS IMG.INGEST DICOM and NIfTI ingestion\n  --> IMPLEMENTS IMG.PRE MRI preprocessing\n  --> IMPLEMENTS IMG.MASK Mask classification and import\n  --> IMPLEMENTS IMG.MODEL Optional automated segmentation\n  --> IMPLEMENTS IMG.VOL Quantitative measurement\n  --> IMPLEMENTS IMG.REG Longitudinal registration\n  --> IMPLEMENTS IMG.TRACK Cross-visit lesion identity\n  --> IMPLEMENTS IMG.MESH Mask-to-mesh conversion\n  --> IMPLEMENTS IMG.SYNMESH Synthetic lesion geometry\n  --> IMPLEMENTS IMG.VIEW Web MRI viewer\n\n=== AI.KNOW Clinical knowledge representation ===\n Versioned source-linked relationships among observed patient entities and curated medical concepts. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "presentation",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "presentation",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "scenario timeline plain language",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "scenario timeline plain language",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "scenario timeline plain language",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "AI.KNOW",
+    "D.IMG"
+  ],
+  "academic_behavior_ids": [],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.IMG"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MODEL"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.VIEW"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.KNOW"
+    }
+  ],
+  "mapped_source_ids": [],
+  "source_sections_inspected": "Actual source sections inspected"
+}

@@ -54,6 +54,7 @@ from canceros.simulation_runs import (
     preview_config_schedule,
     queue_run,
     read_config,
+    read_latest_config,
     read_run,
     read_run_sampling,
     read_run_targets,
@@ -445,6 +446,18 @@ def state_routes(config, memberships):
                 f"/api/v1/projects/{project_id}/patients/{patient_id}/simulation-configs/{result.id}"
             )
             return result
+
+    @router.get(
+        "/branches/{branch_id}/simulation-configs/current", response_model=ConfigVersion | None
+    )
+    def get_latest_simulation_config(
+        project_id: UUID,
+        patient_id: UUID,
+        branch_id: UUID,
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (c, i):
+            return read_latest_config(c, i, project_id, patient_id, branch_id)
 
     @router.get("/simulation-configs/{config_id}", response_model=ConfigVersion)
     def get_simulation_config(

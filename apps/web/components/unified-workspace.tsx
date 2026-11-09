@@ -1,4 +1,5 @@
 'use client';
+import { rememberCase } from '../lib/case-selection';
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -9,8 +10,10 @@ import { ClinicalHistoryTable } from './clinical-history-table';
 import { ClinicalChartsExplorer } from './clinical-charts-explorer';
 import { ObservationIntake } from './observation-intake';
 import { CaseImaging } from './case-imaging';
+import { CaseImagingWorkflow } from './case-imaging-workflow';
 import { LesionViewer } from './lesion-viewer';
 import { StateTimelineExplorer } from './state-timeline-explorer';
+import { useCasePermissions } from './use-case-permissions';
 
 type S = components['schemas'];
 type PatientDetail = S['PatientDetail'];
@@ -44,16 +47,22 @@ function explain(response: Response): string {
 }
 
 export function UnifiedWorkspace() {
-  return <Suspense fallback={<LoadingState/>}><UnifiedWorkspaceBody/></Suspense>;
+  return <Suspense fallback={<LoadingState/>}><BoundWorkspace/></Suspense>;
+}
+
+function BoundWorkspace() {
+  const { project, patient } = useSelection();
+  return <UnifiedWorkspaceBody key={`${project}/${patient}`}/>;
 }
 
 function UnifiedWorkspaceBody() {
   const { project, patient, tab: initialTab } = useSelection();
-  const [tab, setTab] = useState<TabId>(initialTab);
+  const tab = initialTab;
   const [status, setStatus] = useState<Status>(()=> project && patient ? { kind:'loading' } : { kind:'needs-selection'});
   const [detail, setDetail] = useState<PatientDetail | null>(null);
-  const [sourceOrigin, setSourceOrigin] = useState<'real_source'|'synthetic_engineering_fixture'|null>(null);
-  const [canWrite, setCanWrite] = useState(false);
+  const permissions = useCasePermissions(project, patient);
+  const sourceOrigin = permissions.origin;
+  const canWrite = permissions.canWrite;
   const [visits, setVisits] = useState<VisitPage | null>(null);
   const [message, setMessage] = useState('Loading research case…');
   const [correction, setCorrection] = useState<ClinicalRecord|null>(null);
@@ -79,8 +88,8 @@ function UnifiedWorkspaceBody() {
       setDetail(detailBody);
       setVisits(visitBody);
       setStatus({kind:'ready'});
-      setMessage(`Research case loaded · ${detailBody.observation_count} observations in ${detailBody.visit_count} visits. Session will persist after refresh via secure cookie + last-case local storage.`);
-      try { localStorage.setItem('canceros:last_case', JSON.stringify({project, patient, at:Date.now()})); } catch {}
+      setMessage(`Research case loaded · ${detailBody.observation_count} observations in ${detailBody.visit_count} visits. Refresh preserves this case through its URL; your secure session authorizes every request.`);
+      rememberCase(project, patient);
     } catch (e) {
       if (controller.signal.aborted) return;
       setStatus({kind:'failed', message: e instanceof Error ? e.message : 'The case could not load.'});
@@ -100,17 +109,16 @@ function UnifiedWorkspaceBody() {
   }, [load, refreshKey]);
 
   function navigateTab(next: TabId) {
-    setTab(next);
     const url = new URL(window.location.href);
     url.searchParams.set('tab', next);
     url.searchParams.delete('lesion');
-    window.history.replaceState(null, '', url.toString());
+    window.history.pushState(null, '', url.toString());
   }
 
   if (!project || !patient) {
     return <section className="card">
       <h2>Select a research case</h2>
-      <p>Open a case from the <Link href="/cases">research case library</Link>. The workspace keeps your project selection in secure cookie and restores the last case from local storage after refresh — no UUID typing required.</p>
+      <p>Open a case from the <Link href="/cases">research case library</Link>. Your URL preserves the case after refresh, and your secure server session can restore the last authorized case — no UUID typing required.</p>
       <p className="field-hint">If you arrived here directly, you need project and patient identifiers in the URL: <code>?project=&lt;id&gt;&amp;patient=&lt;id&gt;</code>. Use the case library to generate those automatically by clicking “Open case”.</p>
       <p><Link className="button-primary" href="/cases">Go to case library</Link> <Link className="button-secondary" href="/demo">Explore synthetic demo without token</Link></p>
     </section>;
@@ -124,7 +132,7 @@ function UnifiedWorkspaceBody() {
     {id:'clinical', label:'Clinical Records', hint:'History, add observations, corrections'},
     {id:'charts', label:'Charts', hint:'Lab small multiples, vitals, symptoms'},
     {id:'imaging', label:'Imaging & 3D', hint:'Studies, sources, and authorized case viewer'},
-    {id:'timeline', label:'Timeline', hint:'Persisted states with baseline pinning and A/B compare'},
+    {id:'timeline', label:'Timeline', hint:'saved timepoints with baseline pinning and A/B compare'},
   ];
 
   return <>
@@ -132,7 +140,7 @@ function UnifiedWorkspaceBody() {
       <div>
         <p className="eyebrow" style={{margin:0}}>RESEARCH CASE · {detail.display_code ?? detail.patient_id.slice(0,8)}</p>
         <p role="status" aria-live="polite" style={{margin:0, fontSize:14, color:'var(--muted)'}}>{message}</p>
-        <p className="field-hint" style={{margin:'4px 0 0'}}>Reopening after refresh works — last selection stored locally, auth via secure httpOnly cookie. No UUID entry required.</p>
+        <p className="field-hint" style={{margin:'4px 0 0'}}>Refresh preserves the case URL. Your last authorized selection stays in the server session behind an HttpOnly cookie. No UUID entry required.</p>
       </div>
       <div style={{display:'flex', gap:8, flexWrap:'wrap'}}>
         <Link className="button-ghost" href={`/cases?project=${encodeURIComponent(project)}`}>← Case library</Link>
@@ -149,7 +157,7 @@ function UnifiedWorkspaceBody() {
 
     {tab==='overview' && <>
       <section className="intro" style={{marginTop:20}}><h2>Research profile & source completeness</h2><p className="lead" style={{fontSize:16}}>Source-backed facts only. Missing values stay “Not recorded”. Synthetic descendants stay simulated. Revision history retained.</p></section>
-      <ResearchProfile project={project} patient={patient} onLoaded={(profile, editable)=>{ setSourceOrigin(profile.origin); setCanWrite(editable); }} />
+      <ResearchProfile project={project} patient={patient} />
       <section className="card" aria-label="Completeness" style={{marginTop:16}}>
         <h3>Completeness by capability</h3>
         <p className="field-hint">Describes record availability, not patient health or trust score.</p>
@@ -166,7 +174,7 @@ function UnifiedWorkspaceBody() {
           <li><strong>Clinical Records</strong> — view timeline, add source-backed observations, correct where permitted.</li>
           <li><strong>Charts</strong> — lab small multiples without interpolation, vitals, symptoms.</li>
           <li><strong>Imaging & 3D</strong> — authorized studies with the case viewer inline.</li>
-          <li><strong>Timeline</strong> — persisted states with baseline pinning and A/B compare.</li>
+          <li><strong>Timeline</strong> — saved timepoints with baseline pinning and A/B compare.</li>
         </ol>
         <p><button className="button-primary" onClick={()=>navigateTab('clinical')}>Continue to Clinical Records</button></p>
       </section>
@@ -176,7 +184,8 @@ function UnifiedWorkspaceBody() {
       <section className="intro" style={{marginTop:20}}><h2>Clinical observations & provenance</h2><p className="lead" style={{fontSize:16}}>Enter source-backed values only. Time, units, collection status preserved. Corrections append evidence.</p></section>
       <ClinicalHistoryTable key={`${detail.data_revision}:${refreshKey}`} project={project} patient={patient} onCorrect={canWrite?record=>{ setCorrection(record); setTimeout(()=>document.getElementById('case-observation-entry')?.scrollIntoView({behavior:'smooth'}),0); navigateTab('clinical'); }:undefined} />
       <div id="case-observation-entry" style={{marginTop:24}}>
-        {sourceOrigin && canWrite ? <ObservationIntakeV2
+        {permissions.status === 'failed' ? <div className="card"><ErrorSummary message={permissions.message}/><p><button className="button-ghost" onClick={permissions.reload}>Reload permissions</button></p></div>
+        : sourceOrigin && canWrite ? <ObservationIntakeV2
           key={correction?.id ?? 'new-observation'}
           project={project} patient={patient} revision={detail.data_revision} origin={sourceOrigin}
           correction={correction}
@@ -193,11 +202,12 @@ function UnifiedWorkspaceBody() {
     {tab==='charts' && <>
       <section className="intro" style={{marginTop:20}}><h2>Clinical charts — no invented values</h2><p className="lead" style={{fontSize:16}}>Small multiples per concept+unit, missing and censored labeled, no gap filling or smoothing. {timelineFilter ? `Filtered to ${timelineFilter.label}.` : 'Showing all authorized records.'}</p></section>
       <p><button className="button-ghost" onClick={()=>navigateTab('clinical')}>← Back to Clinical Records</button> <button className="button-ghost" onClick={()=>navigateTab('timeline')}>Open Timeline to change the filter</button></p>
-      <ClinicalChartsExplorer key={`${project}:${patient}:${refreshKey}`} stateFilter={timelineFilter ? { day: timelineFilter.day, label: timelineFilter.label } : null} />
+      <ClinicalChartsExplorer key={`${project}:${patient}:${refreshKey}`} project={project} patient={patient} stateFilter={timelineFilter ? { day: timelineFilter.day, label: timelineFilter.label } : null} />
     </>}
 
     {tab==='imaging' && <>
-      <section className="intro" style={{marginTop:20}}><h2>Imaging & 3D — authorized case viewer</h2><p className="lead" style={{fontSize:16}}>Authorized imaging studies linked to this case. Missing stays missing; DCE phases are not visits. The viewer below inherits this case — select an authorized lesion, no UUID entry needed.</p></section>
+      <section className="intro" style={{marginTop:20}}><h2>Imaging & 3D — authorized case viewer</h2><p className="lead" style={{fontSize:16}}>Authorized imaging studies linked to this case. Missing stays missing; DCE phases are not visits. The workflow below inherits this case — select an authorized study, no UUID entry needed.</p></section>
+      <CaseImagingWorkflow project={project} patient={patient}/>
       <CaseImaging project={project} patient={patient}/>
       <section className="card" style={{marginTop:24}} aria-label="Authorized case 3D viewer">
         <h3>3D viewer for this case</h3>
@@ -212,7 +222,7 @@ function UnifiedWorkspaceBody() {
     </>}
 
     {tab==='timeline' && <>
-      <section className="intro" style={{marginTop:20}}><h2>Timeline — persisted states and comparisons</h2><p className="lead" style={{fontSize:16}}>Branch picker, discrete state slider with list equivalent, persisted snapshot detail, and pinned A/B comparison. Observations and states stay separate tracks; nothing interpolates or autoplays.</p></section>
+      <section className="intro" style={{marginTop:20}}><h2>Timeline — saved timepoints and comparisons</h2><p className="lead" style={{fontSize:16}}>Branch picker, discrete state slider with list equivalent, persisted snapshot detail, and pinned A/B comparison. Observations and states stay separate tracks; nothing interpolates or autoplays.</p></section>
       <StateTimelineExplorer project={project} patient={patient} onStateSelect={(selection)=>setTimelineFilter(selection)} />
       <section className="card" style={{marginTop:16, borderLeft: timelineFilter?.state ? '4px solid #0f766e' : undefined}}>
         <h3>Chart filter from the selected state</h3>

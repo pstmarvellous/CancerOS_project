@@ -66,6 +66,7 @@ class InterpretationContext(Contract):
     comparison_snapshot_id: UUID | None = None
     comparison_stale: bool | None = None
     measurements: tuple[ContextMeasurement, ...] = ()
+    comparison_measurements: tuple[ContextMeasurement, ...] = ()
     assertions: tuple[ContextAssertion, ...] = ()
     passages: tuple[ContextPassage, ...] = ()
     treatment_history: tuple[str, ...] = ()

@@ -27,8 +27,10 @@ function segmentations(value: unknown): Segmentation[] | null {
   for (const item of value) {
     if (!item || typeof item.segmentation_id !== 'string' || typeof item.batch_id !== 'string' ||
       !Number.isSafeInteger(item.label_value) || item.label_value < 0 || typeof item.mask_type !== 'string' ||
+      typeof item.source_image_id !== 'string' || typeof item.study_id !== 'string' ||
       typeof item.qc_status !== 'string' || typeof item.next_action !== 'string') return null;
     selected.push({ segmentation_id: item.segmentation_id, batch_id: item.batch_id,
+      source_image_id: item.source_image_id, study_id: item.study_id,
       label_value: item.label_value, mask_type: item.mask_type, qc_status: item.qc_status, next_action: item.next_action });
   }
   return selected;

@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-06 WAT",
+  "browser": "156.0.8078.4",
+  "type": "AI expert inspection using artificial fixtures; no participant study",
+  "native": "http://127.0.0.1:3000",
+  "preview": "http://127.0.0.1:3001",
+  "checks": {
+    "freshHomepage": true,
+    "defaultDemoUnavailable": true,
+    "optInDemo": true,
+    "fivePreparedFamiliesFourStates": true,
+    "createTwoArtificialCases": true,
+    "reopenCaseA": true,
+    "caseBEmpty": true,
+    "labSaved": "12.3 g/dL",
+    "correctionSaved": "12.4 g/dL",
+    "profileRevisionSaved": true,
+    "chartReflectsCorrection": true,
+    "clinicalRefreshPermissionsStuck": true,
+    "scenarioContextFailure": true,
+    "retryChangesErrorWithoutRecovery": true,
+    "primaryTwinLosesSelection": true,
+    "insightsRequiresManualStateUUID": true,
+    "adminPlaceholderDespiteSignedIn": true,
+    "activityPlaceholder": true,
+    "guideContextlessTwinLink": true,
+    "defaultViewer1440": {
+      "width": 860,
+      "height": 620
+    },
+    "maximizedViewer1440": {
+      "width": 1382,
+      "height": 600
+    },
+    "fullscreenEntered": true,
+    "cameraButtonActionsExecuted": true,
+    "keyboardActionsExecuted": true,
+    "initialCanvasTouchAction": "none",
+    "mobileHome320ScrollWidth": 329,
+    "mobileLibrary320ScrollWidth": 320,
+    "mobileDemo390ScrollWidth": 390
+  },
+  "limits": [
+    "No authentic patient source",
+    "No live model call",
+    "No editor-role browser trial",
+    "No actual touchscreen hardware",
+    "No assistive technology session",
+    "No 200 percent browser zoom trial",
+    "No performance benchmark",
+    "No full HTTP security exploit test",
+    "No full clinical-validation exercise"
+  ]
+}

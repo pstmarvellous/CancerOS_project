@@ -103,9 +103,7 @@ def test_interpretation_http_template_and_auth_boundary(imaging_db, monkeypatch)
         }
     )
     monkeypatch.setattr("canceros.interpretation_api.build_context", lambda *a, **k: object())
-    monkeypatch.setattr(
-        "canceros.interpretation_api.build_interpretation", lambda *a, **k: fake
-    )
+    monkeypatch.setattr("canceros.interpretation_api.build_interpretation", lambda *a, **k: fake)
     client, headers = http_session((c, i, p, patient, None, None, keys()))
     state_id = uuid4()
     root = f"/api/v1/projects/{p}/patients/{patient.patient_id}/states/{state_id}/interpretations"
@@ -123,6 +121,23 @@ def test_interpretation_http_template_and_auth_boundary(imaging_db, monkeypatch)
 
 def test_interpretation_input_rejects_unknown_fields():
     with pytest.raises(ValidationError):
-        InterpretationInput(
-            context_snapshot_id=uuid4(), mode="template", unknown_field="no"
-        )
+        InterpretationInput(context_snapshot_id=uuid4(), mode="template", unknown_field="no")
+
+
+def test_template_explicitly_reports_omitted_comparison_findings(monkeypatch):
+    built = context(monkeypatch)
+    member = built.measurements[0]
+    many = built.model_copy(
+        update={
+            "measurements": tuple(
+                member.model_copy(update={"reference_id": uuid4()}) for _ in range(21)
+            ),
+            "comparison_measurements": (member.model_copy(update={"reference_id": uuid4()}),),
+            "missing_modalities": (),
+        }
+    )
+    report = render_template(many)
+    assert len(report.findings) == 20
+    assert any("2 eligible findings were omitted" in reason for reason in report.limitations)
+    assert report.next_action == "narrow_scope_or_inspect_complete_context"
+    assert len(many.measurements) == 21 and len(many.comparison_measurements) == 1

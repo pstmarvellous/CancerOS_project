@@ -17,10 +17,10 @@ describe('Research case creation and clinical entry',()=>{
     const fetch=vi.fn().mockResolvedValueOnce(new Response('{}',{status:409})).mockResolvedValueOnce(new Response(JSON.stringify({patient_id:'20000000-0000-0000-0000-000000000002'})));
     vi.stubGlobal('fetch',fetch);
     render(<CaseCreator project="p" sources={[source]} allowed/>);
-    fireEvent.change(screen.getByLabelText(/Research case identifier/),{target:{value:'STUDY-042'}});
+    fireEvent.change(screen.getByLabelText(/Case reference/),{target:{value:'STUDY-042'}});
     fireEvent.change(screen.getByLabelText(/Case title/),{target:{value:'Research label'}});
-    fireEvent.change(screen.getByLabelText(/Source pseudonym/),{target:{value:'Participant 042'}});
-    fireEvent.change(screen.getByLabelText(/Profile source reference/),{target:{value:'Register row 42'}});
+    fireEvent.change(screen.getByLabelText(/Participant code/),{target:{value:'Participant 042'}});
+    fireEvent.change(screen.getByLabelText(/Source reference/),{target:{value:'Register row 42'}});
     fireEvent.submit(screen.getByRole('form',{name:'Create research case'}));
     await screen.findByText(/identifier already exists/);
     expect(screen.getByDisplayValue('STUDY-042')).toBeVisible();
@@ -73,5 +73,12 @@ describe('Research case creation and clinical entry',()=>{
     fireEvent.change(screen.getByLabelText(/Measured value/),{target:{value:'13.2'}});
     fireEvent.submit(screen.getByRole('form',{name:'Save clinical observation'}));
     await screen.findByText(/not added/);expect(onSaved).not.toHaveBeenCalled();
+  });
+  it('labels artificial demonstration entries as synthetic, never authentic', async () => {
+    const fetch = vi.fn();
+    vi.stubGlobal('fetch', fetch);
+    render(<ObservationIntake project="p" patient="u" revision={1} origin="synthetic_engineering_fixture" onSaved={vi.fn()}/>);
+    expect(screen.getByText(/Artificial demonstration record/)).toBeVisible();
+    expect(screen.getByRole('note').textContent).toContain('never presented as authentic');
   });
 });
