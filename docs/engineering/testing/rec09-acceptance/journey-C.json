@@ -1,0 +1,55 @@
+{
+  "recorded_at": "2026-11-09T16:03:51.184Z",
+  "scope": "synthetic fixture only; authentic MRI gate blocked",
+  "steps": [
+    {
+      "journey": "C",
+      "step": "open-workflow",
+      "expected": "Imaging workflow opens in the selected case",
+      "actual": "Add Imaging Study visible",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "C",
+      "step": "associate-review",
+      "expected": "Study and import selected with provenance",
+      "actual": "Provenance step reached",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "C",
+      "step": "geometry",
+      "expected": "Geometry derived from verified metadata",
+      "actual": "valid grid reported",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "C",
+      "step": "no-mask-message",
+      "expected": "Absent mask reported honestly, none synthesized",
+      "actual": "required message shown",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "C",
+      "step": "refresh-retains",
+      "expected": "Case retains the study association after refresh",
+      "actual": "imaging_study=b003369c-0127-4d81-9543-0a18f812fe27",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "C",
+      "step": "mask-qc",
+      "expected": "Compatible mask selected; QC passes",
+      "actual": "QC pass message shown",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "C",
+      "step": "mesh-3d",
+      "expected": "Case 3D viewer displays validated mesh for the QC-passed chain",
+      "actual": "Twin workspaceInspect the lesion in physical scaleRotate, pan, zoom, fit and reset one authorized lesion with labeled keyboard and button controls. Server mask measurements stay authoritative; the browser never normalize",
+      "verdict": "FAIL"
+    }
+  ]
+}

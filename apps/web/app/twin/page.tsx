@@ -9,9 +9,9 @@ export default function TwinPage() {
     <>
       <div className="intro">
         <p className="eyebrow">Twin workspace</p>
-        <h1>Inspect the lesion in physical scale</h1>
+        <h1>Inspect the source region in physical scale</h1>
         <p className="lead">
-          Rotate, pan, zoom, fit and reset one authorized lesion with labeled keyboard and button controls. Server
+          Rotate, pan, zoom, fit and reset one authorized source region with labeled keyboard and button controls. Server
           mask measurements stay authoritative; the browser never normalizes or mixes quantities.
         </p>
       </div>

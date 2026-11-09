@@ -78,7 +78,7 @@ export function ObservationIntake({project,patient,revision,origin,onSaved,corre
     <h2>Add a clinical observation</h2>
     <p className="field-hint">All sections remain visible so nothing is hidden from assistive tech; the stepper highlights where you are. Enter documented values only. Source, time, revision retained.</p>
     {correction&&<p role="status">Correcting {correction.item.original_term}. Saving appends replacement; original retained. <button className="button-ghost" onClick={onCancelCorrection}>Cancel correction</button></p>}
-    <div style={{display:'flex', gap:8, marginBottom:16}} aria-hidden="true">
+    <div style={{display:'flex', flexWrap:'wrap', gap:8, marginBottom:16}} aria-hidden="true">
       <span className={`badge ${step>=1?'observed':'warning'}`}>1. What</span>
       <span className={`badge ${step>=2?'observed':'warning'}`}>2. When & source</span>
       <span className={`badge ${step>=3?'observed':'warning'}`}>3. Values</span>
@@ -88,10 +88,9 @@ export function ObservationIntake({project,patient,revision,origin,onSaved,corre
       : <p role="note" className="field-hint"><strong>Source-backed research record.</strong> Enter documented values exactly as written in the source.</p>}    <div role="status" className="field-hint" style={{marginBottom:12}}>Currently on step {step} of 3 — Continue buttons advance; Back returns without losing entries.</div>
     <form onSubmit={save} onChange={()=>setKey(crypto.randomUUID())} aria-label="Save clinical observation">
       <section className="card" style={{padding:16, marginBottom:12}} aria-label="Step 1 — what kind of observation">
-        <div style={{display:'flex', gap:8, alignItems:'center'}}><h3 style={{margin:0}}>What kind of observation?</h3><span className="badge observed">Step 1 of 3</span></div>
-        <h3>What kind of observation?</h3>
+        <div style={{display:'flex', flexWrap:'wrap', gap:8, alignItems:'center'}}><h3 style={{margin:0}}>What kind of observation?</h3><span className="badge observed">Step 1 of 3</span></div>
         <p className="field-hint">Pick category, then specific concept. Lab = blood work, vital = physiology, etc.</p>
-        <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(180px,1fr))', gap:8, marginTop:12}}>
+        <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(180px,100%),1fr))', gap:8, marginTop:12}}>
           {(Object.keys(labels) as Kind[]).map(k=> <button type="button" key={k} className={kind===k ? 'button-secondary' : 'button-ghost'} style={{textAlign:'left', minHeight:72, display:'flex', flexDirection:'column', alignItems:'flex-start', gap:2}} onClick={()=>{setKind(k); setConcept(concepts[k][0]); setError('');}}>
             <strong>{labels[k].label}</strong><span style={{fontSize:11, color:'var(--muted)', fontWeight:400, textAlign:'left'}}>{labels[k].hint}</span>
           </button>)}
@@ -103,8 +102,7 @@ export function ObservationIntake({project,patient,revision,origin,onSaved,corre
       </section>
 
       <section className="card" style={{padding:16, marginBottom:12}} aria-label="Step 2 — when and source">
-        <div style={{display:'flex', gap:8, alignItems:'center'}}><h3 style={{margin:0}}>When and where documented?</h3><span className="badge observed">Step 2 of 3</span></div>
-        <h3>When and where documented?</h3>
+        <div style={{display:'flex', flexWrap:'wrap', gap:8, alignItems:'center'}}><h3 style={{margin:0}}>When and where documented?</h3><span className="badge observed">Step 2 of 3</span></div>
         <p className="field-hint">Original term = exact label from report. Source ref = page/entry locator.</p>
         <div className="form-grid">
           <label>Source original term *<input name="term" required maxLength={300} placeholder="e.g., HGB 13.2 g/dL" defaultValue={initial?.original_term}/><span className="field-hint">Exact observed label.</span></label>
@@ -114,12 +112,11 @@ export function ObservationIntake({project,patient,revision,origin,onSaved,corre
           <label>Certainty<select name="certainty" defaultValue={initial?.certainty??'documented'}><option value="documented">Documented</option><option value="reported">Reported</option><option value="uncertain">Uncertain</option><option value="unknown">Unknown</option></select></label>
           <label>Assertion<select name="negation" defaultValue={initial?.negation??'affirmed'}><option value="affirmed">Affirmed</option><option value="negated">Negated</option><option value="unspecified">Unspecified</option></select></label>
         </div>
-        <div style={{display:'flex', gap:8, marginTop:12}}><button type="button" className="button-ghost" onClick={()=>setStep(1)}>Back</button><button type="button" className="button-primary" onClick={()=>setStep(3)}>Continue to values</button></div>
+        <div style={{display:'flex', flexWrap:'wrap', gap:8, marginTop:12}}><button type="button" className="button-ghost" onClick={()=>setStep(1)}>Back</button><button type="button" className="button-primary" onClick={()=>setStep(3)}>Continue to values</button></div>
       </section>
 
       <section className="card" style={{padding:16}} aria-label="Step 3 — values">
-        <div style={{display:'flex', gap:8, alignItems:'center'}}><h3 style={{margin:0}}>Enter values</h3><span className="badge simulated">Step 3 of 3</span></div>
-        <h3>Enter values</h3>
+        <div style={{display:'flex', flexWrap:'wrap', gap:8, alignItems:'center'}}><h3 style={{margin:0}}>Enter values</h3><span className="badge simulated">Step 3 of 3</span></div>
         <fieldset disabled={busy} style={{border:0, padding:0}}>
           <legend style={{fontSize:14, fontWeight:600}}>Values for {labels[kind].label.toLowerCase()}</legend>
           {numeric&&<div className="form-grid"><label>Result type<select value={result} onChange={e=>setResult(e.target.value)}><option value="exact">Exact value</option><option value="censored">Censored / threshold</option><option value="missing">Missing / not collected</option></select></label>
@@ -135,7 +132,7 @@ export function ObservationIntake({project,patient,revision,origin,onSaved,corre
           {kind==='visit'&&<label style={{display:'flex', flexDirection:'column', gap:6}}>Visit label *<input name="label" required maxLength={200} placeholder="Clinical visit 2025-06-12"/><span className="field-hint">Records occasion; MRI import separate.</span></label>}
           {kind==='note'&&<label style={{display:'flex', flexDirection:'column', gap:6}}>Research note *<textarea name="note" required maxLength={16000} rows={5} placeholder="Research summary, no direct identifiers"/><span className="field-hint">Stored privately; no external AI.</span></label>}
         </fieldset>
-        <div style={{marginTop:12, display:'flex', gap:8}}><button type="button" className="button-ghost" onClick={()=>setStep(2)}>Back</button><button className="button-primary" type="submit" disabled={busy}>{busy?'Saving…':'Save observation'}</button></div>
+        <div style={{marginTop:12, display:'flex', flexWrap:'wrap', gap:8}}><button type="button" className="button-ghost" onClick={()=>setStep(2)}>Back</button><button className="button-primary" type="submit" disabled={busy}>{busy?'Saving…':'Save observation'}</button></div>
         {error&&<div style={{marginTop:12}}><ErrorSummary message={error}/></div>}
         <p className="field-hint" style={{marginTop:12}}>Saving appends evidence with source, time, revision. Corrections retain original. Idempotency key rotates.</p>
         <TermHelp terms={['Source reference', 'Assertion', 'Revision', 'Missingness', 'Synthetic observation']} />

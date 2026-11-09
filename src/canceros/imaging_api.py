@@ -24,9 +24,12 @@ from canceros.annotation_import import (
 from canceros.identity import authenticate
 from canceros.imaging_discovery import (
     AcquisitionSummary,
+    ImportPage,
     SegmentationDiscovery,
     StudyPage,
     discovery_segmentations,
+    lesion_geometry,
+    list_imports,
     list_studies,
     read_acquisition,
 )
@@ -183,6 +186,15 @@ def imaging_routes(config, memberships):
         with session(authorization) as (connection, identity):
             return list_studies(connection, identity, project_id, patient_id)
 
+    @router.get("/imaging-imports", response_model=ImportPage)
+    def import_list(
+        project_id: UUID,
+        patient_id: UUID,
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (connection, identity):
+            return list_imports(connection, identity, project_id, patient_id)
+
     @router.get("/acquisitions/{import_id}", response_model=AcquisitionSummary)
     def acquisition_detail(
         project_id: UUID,
@@ -193,9 +205,7 @@ def imaging_routes(config, memberships):
         with session(authorization) as (connection, identity):
             return read_acquisition(connection, identity, project_id, patient_id, import_id)
 
-    @router.get(
-        "/segmentation-discoveries", response_model=list[SegmentationDiscovery]
-    )
+    @router.get("/segmentation-discoveries", response_model=list[SegmentationDiscovery])
     def segmentation_discovery(
         project_id: UUID,
         patient_id: UUID,
@@ -609,6 +619,16 @@ def imaging_routes(config, memberships):
     ):
         with session(authorization) as (connection, identity):
             return read_lesion(connection, identity, project_id, patient_id, lesion_id)
+
+    @router.get("/lesions/{lesion_id}/geometry", response_model=MeshQCReport)
+    def get_lesion_geometry(
+        project_id: UUID,
+        patient_id: UUID,
+        lesion_id: UUID,
+        authorization: str | None = Header(default=None),
+    ):
+        with session(authorization) as (connection, identity):
+            return lesion_geometry(connection, identity, project_id, patient_id, lesion_id)
 
     @router.post("/lesion-associations", response_model=AssociationEvent, status_code=201)
     def post_lesion_association(

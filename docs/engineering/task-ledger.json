@@ -23284,6 +23284,399 @@
           "result": "pass"
         }
       ]
+    },
+    {
+      "id": "COS-REC-00-REVERIFY",
+      "purpose": "Reverify and complete the prior security/recovery baseline",
+      "dependency_ids": [
+        "COS-REC-00"
+      ],
+      "requirement_links": [
+        "COS-SPEC-008 sections 3,5,12",
+        "COS-SPEC-010 section 9",
+        "docs/remediation_prompts/prompt_1.md acceptance gate"
+      ],
+      "allowed_scope": "Saved-result authorization, recovery regression and startup evidence; no product redesign or publication",
+      "status": "verified",
+      "status_history": [
+        "in_progress",
+        "verified"
+      ],
+      "owner_responsibility": "Primary agent; specialist security/backend/verification self-review, no independent review asserted",
+      "decisions": [
+        "Reuse must recheck current patient grants even with a retained context",
+        "Patient-scoped SQL lookup provides defense in depth",
+        "Last authorized case stays in existing server session; backend authorization rechecked on restore; no persistent browser case writes",
+        "Existing dynamic Pydantic runtime schema unchanged; static typing repaired"
+      ],
+      "checks_evidence": [
+        {
+          "check": "backend regression",
+          "result": "70 passed; 0 failures/errors/skips; 21 overlapping case checks repeated after final Python adjustment"
+        },
+        {
+          "check": "frontend",
+          "result": "189 passed in 33 files"
+        },
+        {
+          "check": "Chromium journeys",
+          "result": "4 passed; no skips"
+        },
+        {
+          "check": "build/typecheck/lint/mypy/ruff/contracts/boundaries/hygiene",
+          "result": "passed; see recovery report for commands and existing warnings"
+        },
+        {
+          "check": "foundation startup",
+          "result": "private dependency roundtrip/readiness and API/web reachability verified"
+        }
+      ],
+      "evidence_paths": [
+        "docs/engineering/testing/rec00-reverify/RECOVERY-REPORT.md",
+        "docs/engineering/testing/rec00-reverify/verification.json",
+        "docs/engineering/testing/rec00-reverify/artifact-scan.json",
+        "docs/engineering/reference-reviews/COS-REC-00-REVERIFY.md"
+      ],
+      "remaining_risks": [
+        "Dynamic demo filesystem tracing needs deployment-package review",
+        "Known-secret checks do not prove arbitrary PHI absence",
+        "Source rights, authentic baseline/longitudinal data, qualified review, live-provider and publication gates remain open"
+      ],
+      "supersession_note": "Prior COS-REC-00 detail-route correction remains valid; its broader recovery completion claim omitted a failing storage gate and a reuse service check."
+    },
+    {
+      "id": "COS-REC-01-05-REVERIFY",
+      "purpose": "Correct and reverify user-reported unresolved remediation prompts 2-6",
+      "dependency_ids": [
+        "COS-REC-00-REVERIFY"
+      ],
+      "requirement_links": [
+        "COS-REC-01",
+        "COS-REC-02",
+        "COS-REC-03",
+        "COS-REC-04",
+        "COS-REC-05",
+        "COS-SPEC-009 sections 3,11-14"
+      ],
+      "allowed_scope": "Assigned local navigation,synthetic demo,viewer,presentation and case workflows; source documents and scientific algorithms unchanged",
+      "status": "verified",
+      "status_history": [
+        "in_progress",
+        "verified"
+      ],
+      "owner_responsibility": "Root integration and acceptance; three actual delegated bounded AI technical reviews/implementations; no independent clinical approval",
+      "stage_results": {
+        "COS-REC-01": "PASS",
+        "COS-REC-02": "PASS",
+        "COS-REC-03": "PASS",
+        "COS-REC-04": "PASS",
+        "COS-REC-05": "PASS"
+      },
+      "checks_evidence": [
+        {
+          "check": "frontend",
+          "result": "203 tests passed,36 files"
+        },
+        {
+          "check": "backend",
+          "result": "41+16 tests passed in nonoverlapping test files"
+        },
+        {
+          "check": "real Chromium",
+          "result": "5 journeys passed; all20 mesh/value/chart states, native fullscreen,WebGL recovery,profile edit/correction/history and cross-case denial"
+        },
+        {
+          "check": "normal supported restart with invalid bundle",
+          "result": "rebuilt all5 families automatically; shared validator and subsequent idempotent skip passed"
+        },
+        {
+          "check": "static/contracts/hygiene",
+          "result": "build,lint,typescript,mypy111,focused ruff,contract drift,boundaries,known-secret scan passed"
+        }
+      ],
+      "evidence_paths": [
+        "docs/engineering/testing/rec01-05-reverify/RECOVERY-REPORT.md",
+        "docs/engineering/testing/rec01-05-reverify/verification.json",
+        "docs/engineering/reference-reviews/COS-REC-01-05-REVERIFY.md"
+      ],
+      "remaining_risks": [
+        "Known Next filesystem-tracing deployment warnings",
+        "Real mobile assistive technology and deployed performance unverified",
+        "Synthetic phantom is not authentic anatomy; authentic sources,scientific review,live-provider and publication gated"
+      ],
+      "supersession_note": "Earlier completion records lacked same-route reactive selection,shared preparation/serving validation,native fullscreen/all-state browser proof,and actual profile edits and retained chart history."
+    },
+    {
+      "id": "COS-REC-06",
+      "purpose": "Guided case-bound imaging import and 3D reconstruction workflow with enforced authorization",
+      "dependency_ids": [
+        "COS-REC-01-05-REVERIFY"
+      ],
+      "requirement_links": [
+        "docs/remediation_prompts/prompt_7.md acceptance gate",
+        "Authorized input reaches private storage",
+        "Image and mask alignment checks execute",
+        "Physical geometry derived from verified metadata",
+        "Measurement engine produces outputs",
+        "Supported 3D mesh renders in browser",
+        "Case retains study association after refresh",
+        "Invalid or mismatched inputs fail safely",
+        "No cross-patient access"
+      ],
+      "allowed_scope": "Read-only owned import list endpoint, Next.js case proxies, guided workflow panel and tests; backend services, guards and scientific algorithms unchanged",
+      "status": "verified",
+      "status_history": [
+        "planned",
+        "in_progress",
+        "verified"
+      ],
+      "owner_responsibility": "Primary full-stack agent; specialist architecture/imaging-computation/data-integrity/verification self-review, no independent reviewer asserted",
+      "actual_touched_files": [
+        "src/canceros/imaging_discovery.py",
+        "src/canceros/imaging_api.py",
+        "scripts/generate_contracts.py",
+        "packages/contracts/generated/openapi.json",
+        "packages/contracts/generated/api.ts",
+        "apps/web/app/api/case-imaging-workflow/route.ts",
+        "apps/web/components/case-imaging-workflow.tsx",
+        "apps/web/components/case-imaging-workflow.test.tsx",
+        "apps/web/components/unified-workspace.tsx",
+        "tests/test_imaging_closure.py",
+        "docs/engineering/reference-reviews/COS-REC-06.md",
+        "apps/web/app/api/case-imaging-workflow/route.test.tsx"
+      ],
+      "decisions": [
+        "New GET /imaging-imports list endpoint over existing imaging.associations; no new table or contract beyond owned ImportSummary/ImportPage",
+        "Workflow panel only calls existing endpoints; file staging and mask association stay administrator workflows",
+        "Import progress from real backend status polling; no simulated progress presented as computation",
+        "No compatible mask shows the required message verbatim; no mask is synthesized",
+        "Geometry/QC failures keep original bytes unchanged; case association persists via backend with URL-keyed refresh restore and idempotent re-submit",
+        "Preprocessing job payload uses owned PreprocessingConfig with sequence fallback other_mr for unknown"
+      ],
+      "checks_evidence": [
+        {
+          "check": "backend imaging regression (ingestion, volumes, jobs, measurements, mesh, alignment, annotation, segmentation QC, lesion tracking, closure)",
+          "result": "pass: 41 + 4 tests, disposable PostgreSQL/private storage/queue"
+        },
+        {
+          "check": "frontend vitest run (full suite)",
+          "result": "pass: 212 tests, 39 files including 5 workflow and 4 route tests"
+        },
+        {
+          "check": "npm run typecheck; npm run lint; npm run build",
+          "result": "pass"
+        },
+        {
+          "check": "ruff on touched Python files; mypy; boundary/structure/reference-map checks",
+          "result": "pass (grounding_runs.py import-sort finding is pre-existing and untouched)"
+        },
+        {
+          "check": "uv run python scripts/check_contract_drift.py",
+          "result": "pass: new endpoint allowlisted and generated TypeScript in sync"
+        }
+      ],
+      "remaining_risks": [
+        "Authentic MRI acceptance gate blocked: real source rights, de-identification, geometry/annotation verification, qualified review and longitudinal data unavailable; synthetic pipeline result must not be read as authentic verification",
+        "No live-browser journey executed in this session (no product browser fixture present); workflow verified through component tests with mocked authorized fetches and backend HTTP tests",
+        "COS-074 planned->implemented ledger transition invalid (pre-existing, untouched)"
+      ]
+    },
+    {
+      "id": "COS-REC-07",
+      "purpose": "Working research interpretation workflow correctly connected to the selected case and data",
+      "dependency_ids": [
+        "COS-REC-06"
+      ],
+      "requirement_links": [
+        "docs/remediation_prompts/prompt_8.md acceptance gate",
+        "No manual UUID entry in the normal research workflow",
+        "Selected state derived from the authorized case workspace",
+        "Request/schema mismatches repaired",
+        "Evidence-context assembly and snapshot binding verified",
+        "Deterministic local explanation path with exact selected values",
+        "Meta provider path identified as blocked with verified status",
+        "Readable results with supporting data references",
+        "Local, cached, live and unavailable results clearly identified",
+        "Recoverable errors disclosing no secrets"
+      ],
+      "allowed_scope": "Timeline-to-insights deep link, verified provider-status proxy and panel, branch preselect; backend services, contracts and scientific algorithms unchanged",
+      "status": "verified",
+      "status_history": [
+        "planned",
+        "in_progress",
+        "verified"
+      ],
+      "owner_responsibility": "Primary full-stack agent; specialist AI-infrastructure/backend/security/UX self-review, no independent reviewer asserted",
+      "actual_touched_files": [
+        "apps/web/components/state-timeline-explorer.tsx",
+        "apps/web/components/state-timeline-insights-link.test.tsx",
+        "apps/web/app/api/provider-capabilities/route.ts",
+        "apps/web/app/api/provider-capabilities/route.test.tsx",
+        "apps/web/components/insights-explorer.tsx",
+        "apps/web/components/insights-workspace.test.tsx",
+        "docs/engineering/reference-reviews/COS-REC-07.md"
+      ],
+      "decisions": [
+        "No backend or contract changes: context/interpret/ground/save payloads verified consistent with proxies; external candidates denied server-side by existing 409",
+        "Timeline deep link carries branch+state; insights page already honored one-shot state and now preselects the linked branch",
+        "Live status read from verified server capabilities instead of a hardcoded claim; external action stays disabled and server-denied",
+        "Deterministic local path unchanged (template findings carry exact values with refs); demo local-summary prose left untouched"
+      ],
+      "checks_evidence": [
+        {
+          "check": "backend interpretation chain (context, interpretation, grounding, saved)",
+          "result": "pass: 25 tests on disposable PostgreSQL/private storage/queue"
+        },
+        {
+          "check": "frontend vitest run (full suite)",
+          "result": "pass: 221 tests, 41 files including 9 new REC-07 tests"
+        },
+        {
+          "check": "npm run typecheck; npm run lint",
+          "result": "pass"
+        },
+        {
+          "check": "provider status probe (Settings + read_policy)",
+          "result": "EXTERNAL_INFERENCE_ENABLED=false, no export policy; read_policy raises EXTERNAL_PROCESSING_NOT_ALLOWED"
+        }
+      ],
+      "remaining_risks": [
+        "Live Meta verification beyond the closed gate unavailable: no export authorization, versioned policy, or account access; reported separately from the passed local path",
+        "No live-browser journey in this session; workflow verified through component tests with authorized fetch stubs and backend HTTP tests",
+        "Two-patient negative coverage relies on existing backend tests; no new patient-scoping backend code was added"
+      ]
+    },
+    {
+      "id": "COS-REC-08",
+      "purpose": "Coherent professional product experience for non-medical users while preserving scientific functionality",
+      "dependency_ids": [
+        "COS-REC-07"
+      ],
+      "requirement_links": [
+        "docs/remediation_prompts/prompt_9.md acceptance gate",
+        "No inaccessible core actions",
+        "No manual UUID input in normal workflows",
+        "No overlapping or clipped primary controls",
+        "Clear loading and recovery messages",
+        "Working keyboard navigation for core controls",
+        "Correct technical details available when requested",
+        "Browser regression tests for functional workflows"
+      ],
+      "allowed_scope": "User-facing timepoint copy, dedicated browser harness and usability probe; backend services, contracts, scientific algorithms and other specs untouched",
+      "status": "verified",
+      "status_history": [
+        "planned",
+        "in_progress",
+        "verified"
+      ],
+      "owner_responsibility": "Primary full-stack agent; specialist product-design/UX/accessibility/frontend self-review, no independent reviewer asserted",
+      "actual_touched_files": [
+        "apps/web/app/states/page.tsx",
+        "apps/web/components/state-timeline-explorer.tsx",
+        "apps/web/components/state-timeline-explorer.test.tsx",
+        "apps/web/components/insights-explorer.tsx",
+        "apps/web/components/unified-workspace.tsx",
+        "apps/web/components/guided-demo.tsx",
+        "apps/web/components/workspace-timeline.test.tsx",
+        "playwright.rec08.config.ts",
+        "tests/browser/rec08-usability.spec.ts",
+        "docs/engineering/reference-reviews/COS-REC-08.md"
+      ],
+      "decisions": [
+        "Swapped only user-facing persisted-state labels to saved timepoint; kept authorized/source-backed/fixture-tested/snapshot-hash/persisted-snapshot where they carry access, provenance, technical or contract meaning",
+        "No layout CSS changes: real-browser probe measured zero overflow/overlap at 1440 and 390px, so no defect to fix",
+        "REC-08 spec asserts current copy; pre-existing ux-recovery.spec.ts drift left to its owning workstream",
+        "Demo 503 under the default Playwright config traced to missing CANCEROS_SYNTHETIC_DEMO=1 (harness, not UI); dedicated rec08 config mirrors the remediation harness"
+      ],
+      "checks_evidence": [
+        {
+          "check": "real Chromium probe (homepage + demo Day 37 + gated cases, 1440 and 390px)",
+          "result": "pass: zero errors, zero overflow, zero overlaps/clips, zero UUID-entry fields, keyboard focus lands on link/button; 5 screenshots retained"
+        },
+        {
+          "check": "frontend vitest run (full suite)",
+          "result": "pass: 221 tests, 41 files including updated copy assertions"
+        },
+        {
+          "check": "npm run typecheck; npm run lint; npm run build",
+          "result": "pass"
+        }
+      ],
+      "remaining_risks": [
+        "Live authenticated journeys need the product API and fixture bundle; covered by unit/component/route tests plus the public-surface browser probe",
+        "UX-04/05/07/08/09 manual sessions and UX-18 measurements remain open per the existing UX checklist",
+        "Full 8-screen before/after pairs not produced; after-shots retained for homepage, demo (both widths) and gated cases"
+      ]
+    },
+    {
+      "id": "COS-REC-09",
+      "purpose": "Independent product acceptance and portfolio readiness with separate per-area verdicts",
+      "dependency_ids": [
+        "COS-REC-08"
+      ],
+      "requirement_links": [
+        "docs/remediation_prompts/prompt_10.md acceptance gates and verdicts",
+        "Journey A first-time visitor synthetic demo",
+        "Journey B research case management with isolation",
+        "Journey C imaging on eligible synthetic data",
+        "Journey D simulation workflow",
+        "Journey E AI interpretation local vs live",
+        "Authorization boundaries and negative cases",
+        "Separate synthetic vs authentic verification"
+      ],
+      "allowed_scope": "Acceptance probes, fixture seeds, viewer session-auth fix, report and backlog; no scientific, rights, or scope changes",
+      "status": "verified",
+      "status_history": [
+        "planned",
+        "in_progress",
+        "verified"
+      ],
+      "owner_responsibility": "Primary agent as independent QA; specialist QA/acceptance/UX self-review, no independent reviewer asserted",
+      "actual_touched_files": [
+        "apps/web/app/api/lesion-viewer/route.ts",
+        "playwright.rec09.config.ts",
+        "tests/browser/rec09-acceptance.spec.ts",
+        "scripts/seed_rec09_imaging.py",
+        "scripts/seed_rec09_fullchain.py",
+        "scripts/probe_rec09_negatives.py",
+        "scripts/attempt_rec09_simulation.py",
+        "docs/engineering/testing/rec09-acceptance/ACCEPTANCE-REPORT.md",
+        "docs/engineering/reference-reviews/COS-REC-09.md"
+      ],
+      "decisions": [
+        "No combined score: A PASS, B PASS, C PARTIAL (viewer defect D-01), D BLOCKED past branch creation, E local PASS / live BLOCKED-closed",
+        "D-02 viewer cookie-session 401 fixed in-session with researchAuthorization; verified by 401->409 progression and green suite",
+        "D-01 left open with API proof and reproduction: viewer probes mesh-qc IDs that can never match uuid4 reports",
+        "Authentic-data, live-Meta and clinical-release questions recorded as blocked/unassessed, never passed"
+      ],
+      "checks_evidence": [
+        {
+          "check": "real Chromium journeys A+B+C on disposable fixture stack",
+          "result": "pass except C mesh-3d FAIL (recorded defect); per-step JSON plus 13 screenshots"
+        },
+        {
+          "check": "backend suites re-run (imaging 41, simulation/interpretation/twin 65)",
+          "result": "pass: 106 tests on disposable PostgreSQL/private storage/queue"
+        },
+        {
+          "check": "authorization probes (viewer-create, outsider, cross-patient) and closed-gate probe",
+          "result": "pass: exact 403/404/403; read_policy raises EXTERNAL_PROCESSING_NOT_ALLOWED"
+        },
+        {
+          "check": "frontend vitest run (full suite after viewer fix)",
+          "result": "pass: 221 tests, 41 files"
+        },
+        {
+          "check": "npm run typecheck; npm run lint; npm run build",
+          "result": "pass"
+        }
+      ],
+      "remaining_risks": [
+        "D-01 open: case 3D viewer unreachable for genuine backend chains; needs an owned lesion-to-mesh-QC lookup (backend contract decision, out of acceptance scope)",
+        "D browser generation and E case insights on generated states blocked on the full twin-state apparatus",
+        "Fixture tokens expire (~45 min); seeds must be regenerated per session (scripts retained)",
+        "Stale ux-recovery.spec.ts selectors left to owning workstream (D-03)"
+      ]
     }
   ],
   "contract_closure": {

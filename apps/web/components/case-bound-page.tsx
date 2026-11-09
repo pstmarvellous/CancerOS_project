@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Suspense, type ReactNode } from 'react';
+import { Fragment, Suspense, type ReactNode } from 'react';
 import { rememberCase, useRestoredCaseSelection, type CaseSelection } from '../lib/case-selection';
 import { LoadingState } from './research';
 
@@ -35,7 +35,9 @@ function CaseBoundInner({
             still authorized by the server — switch cases from the <Link href="/cases">case library</Link>.
           </p>
         ) : null}
-        {children({ ...selection, restored })}
+        <Fragment key={[project, patient, selection.branch, selection.state, selection.run, selection.lesion].join('/')}>
+          {children({ ...selection, restored })}
+        </Fragment>
       </>
     );
   }

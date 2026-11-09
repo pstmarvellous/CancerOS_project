@@ -1,172 +1,74 @@
-# PRIORITIZED PRODUCT RECOVERY PLAN — COS-REVIEW-003
+# Prioritized product recovery plan
 
-**Date:** 2026-11-05  
-**Principle:** Minimal effective changes, reuse existing backend, preserve safety invariants, clone demo workspace success pattern to real cases.
+The target is the original CancerOS research journey, within the current modular architecture. This is a plan produced by the review, not authorization to implement it or publish the project. Preserve source specifications, patient history, source rights, qualified review and external transmission gates.
 
----
+## R0 — contain authorization and misleading readiness claims
 
-## P0 — Product usability blockers (must fix for researcher to complete journey)
+**Priority:** P0 release. **Owners:** backend/security and product/QA. **Dependencies:** none for bounded fixes.
 
-### P0-01: Unified Case-Centered Workspace (single page with tabs)
-**Gap:** 7 separate top pages requiring manual ?project=&patient=&lesion=&branch=&state= query param plumbing.  
-**Fix files:** Create `apps/web/components/workspace.tsx` + `apps/web/app/workspace/page.tsx` or refactor `case-workspace.tsx` to include sub-tabs rendered in-place (not navigating away).  
-**Steps:**
-- After auth and project selection, list cases (reuse ResearchCases).
-- Clicking case opens workspace with state selector held in component local state (not URL) but syncs to URL query using history.replaceState for deep linking.
-- Tabs: Overview (profile + facts), Imaging & 3D (split 65% viewer / 35% measurements + lesion picker), Clinical (timeline left + observation table + intake collapsible), Scenarios (families SC-01..05 cards + builder forms + job list), Insights (context-bound + grounding), Evaluation (compact report).
-- Preserve existing route pages as wrappers that redirect to workspace with params for backward compatibility.
-- Reuse `demo-workspace.module.css` layout pattern (rail left, content, right rail collapsible).
-**Acceptance:** First-time researcher can click "Open case" once and reach 3D viewer without editing URL. No UUID typing.
+Repair saved-result reads so project, requested patient, actual result owner, patient grant and applicable current restrictions are checked. Keep historical immutable records; do not delete history to avoid the check. Replace hardcoded fixture-success claims with linked evidence scope or Not evaluated, and restore the original UX acceptance IDs. Advertise the demo only when configured/prepared, or make startup preparation a real operator preflight.
 
-### P0-02: Onboarding & Token/Project Procurement Explanation
-**Gap:** Token source unknown, project creation invisible.  
-**Fix:**
-- In `ResearchSessionPanel`, add details element explaining: dev mode `scripts/bootstrap_tools.py` (if present) or contact admin, plus link to `/admin` if role admin allows project creation (check if admin route exists).
-- When session not authenticated, show two cards side-by-side: "I want to try synthetic demo" → `/demo` prominent, and "I have research access" → sign-in form with help.
-- After auth, if no projects, show onboarding: "You are signed in but no projects assigned — ask admin for project access." Link to guided-demo.
-- Fix collapsed "Previously imported case summaries" details: auto-open after auth if research cases empty but imported summaries exist.
-**Files:** `research-session.tsx`, `research-cases.tsx`, `app.tsx page`
+Acceptance: a viewer with a grant to A cannot read B's saved metadata by changing the patient path or knowing a result ID; authorized A still works. Evaluation preserves the original requirement meanings and links actual versions. Default startup has no primary action promising an unavailable demo. Run the focused negative API tests and homepage journey; no real data needed.
 
-### P0-03: Eliminate Manual UUID Inputs Everywhere
-**Gap:** `/simulation` demands UUIDs + token paste; `/twin` demands lesion UUID.  
-**Fix:**
-- In workspace, lesion picker populated from server list `GET /api/v1/projects/{pid}/patients/{pat}/lesions` (or similar) returning `[{lesion_id, display?}]`. Currently `lesion-viewer.tsx` loads via `/api/cases?project=` heuristic; refactor to proper lesions endpoint already exist? Inspect `imaging_discovery` endpoints; if missing, add proxy.
-- Simulation builder: project, patient, branch selectors as dropdowns from loaded context, not text inputs. Branch list from `/branches` list endpoint. Token hidden: reuse ResearchSessionPanel session cookie instead of manual token input; `simulation-workflow.tsx` should call new proxy `/api/simulation/*` that reuses session auth instead of `Authorization: Bearer ${token}` from input. Remove token field.
-**Files:** `simulation-workflow.tsx`, `lesion-viewer.tsx`, `case-workspace.tsx`
+## R1 — one case-centered workspace and working API contracts
 
-### P0-04: 3D Viewer Prominence & Measurement Overlay
-**Gap:** Viewer too small, measurement outside, no scale/axes.  
-**Fix:**
-- CSS: workspace twin layout `grid-template-columns: minmax(0, 1.6fr) 380px` min-height 60vh. Viewer host `min-height: 560px`.
-- Inside viewer, overlay badge top-left with exact volume + unit + measurement_basis (baseline_reference etc), plus fit/reset buttons floating bottom-right with icons (use inline SVG).
-- Add scale reference: small ruler or "mm grid" toggle (optional, low priority but P0 needs at least mm label visible).
-- Reuse demo-workspace viewer heading pattern for case twin too (previously only demo had maximize/fullscreen).
-- Add maximize button in case twin similar to demo: `fullTwin` boolean expands viewer to overlay full viewport, collapses right rail.
-**Files:** `lesion-viewer.tsx`, `mesh-renderer.tsx`, `globals.css`, maybe new `twin-viewer.module.css`
+**Priority:** P0 product. **Owners:** frontend, backend/contracts and QA. **Dependencies:** R0 for security-sensitive release claims; can develop independently.
 
-### P0-05: Clinical Observation Entry UX Simplification
-**Gap:** Dense single form with 7 kinds, many conditional fields.  
-**Fix:**
-- Group into steps: 1) What kind? (cards with icons: Lab, Vital, Symptom, Treatment, Diagnosis, Visit, Note). 2) Which concept? (searchable select, not long list). 3) Values (dynamic per kind). 4) Time + Source.
-- Field order: Source reference, collection time, concept, original term, value/unit, additional context (instrument etc).
-- Progressive disclosure: only show severity when presence symptomatic etc.
-- Keep existing validation but surface field-level error near input, not only ErrorSummary after submit.
-- Maintain source-backed + missing handling.
-**Files:** `observation-intake.tsx`
+1. Give the case shell one authorized selection/capability source. Keep case label/history/time visible. Make primary and secondary destinations preserve that selection. Fetch source origin and action permissions independently of mounted tabs; clear stale state on case changes.
+2. Fix the scenario page's context wrapper and remove dead-end retries. Discover or create an authorized branch from an approved baseline. Use registered definition versions, current input revision, required family parameters and correct preview/publication contracts. Preserve idempotency across lost-response retries.
+3. Supply Insights with the selected snapshot/context automatically. Correct context, template generation, grounding and persistence bodies against generated input models. Keep external generation unavailable until its gate is actually closed. Offer exact record/evidence views rather than UUID entry.
+4. Add a small browser-to-real-artificial-API acceptance suite covering the actual routes, not only directly mounted components with mocked success responses. Include action-role and delayed-response tests.
 
-### P0-06: Scenario Builder Replacing Manual JSON
-**Gap:** Simulation workflow JSON handwriting.  
-**Fix:**
-- Forms: pick shared observed baseline from state list (dropdown showing day + measurement), pick scenario family SC-01..05 (cards with description from FAMILY dict), pick geometry policy none vs anatomical_mesh, schedule (days list — three follow-ups default but editable), assumptions text (free text for engineering policy, but treatment category locked to no_specific_assumption with visible explanation).
-- On save, generate JSON conforming to `SimulationConfig` contract programmatically, then call same save endpoints. Reuse preview eligibility display.
-- Job list: table with run_id, family, creation time, status (running/succeeded/failed), completion report link, publish button with attestation textarea + reviewed checkbox.
-**Files:** `simulation-workflow.tsx` major rewrite or new `scenario-builder.tsx`
+Acceptance: start at `/` with no preloaded storage, sign in through the visible form, create/select an artificial case, use every case destination, reload Clinical Records, select a published artificial state, generate the local summary and open its evidence. For each family submit a supported configuration against the real test API, follow durable status, validate and separately publish. Every currently reproduced schema/registry mismatch disappears; no endpoint weakens patient/source controls. Fixture success is labeled as such and does not close authentic-source acceptance.
 
-### P0-07: Actionable Empty & Error States
-**Gap:** Generic "The authorized read failed" + "Add ?project=id" leakage.  
-**Fix:**
-- For each data load, differentiate: no-auth (show sign-in card), no-project (show project picker), no-case (show create-case CTA), no-lesion (show lesion picker CTA), no-branch (show create branch CTA with baseline), blocked QC (show source-mask measurement fallback explicitly).
-- Replace "Add ?project=... to the URL" with "Select a project above; project list shown after signing in."
-**Files:** All `explain()` functions + components.
+## R2 — finish clinical submission and dependent update
 
----
+**Priority:** P0/P1 usability. **Owners:** clinical informatics, frontend, backend and QA. **Dependencies:** common selection/permission layer from R1.
 
-## P1 — Functional product completion
+Align editor actions with the original role model at both API and UI, retaining patient grants. Make source evidence selection practical. Use actual dictionary concepts/units and distinct timestamp/date/relative-day/unknown choices. Build a clear submission review, field-linked validation, safe draft retention and correction/retraction review with reasons. Show saved receipt → current processing/validation state → optional Open new snapshot. Keep the currently displayed snapshot unchanged until chosen.
 
-### P1-01: Unify Timeline Routes (/timeline & /states → single component)
-- Merge `observation-timeline.test.tsx`/`observation-timeline.tsx` + `state-timeline-explorer.tsx` + `state-fusion-view.tsx` into one Timeline page component with two tracks: observation markers + state snapshots.
-- Baseline pinning + compare mode via `compare` query param already partially supported in `preserveSelection`.
-- Use single URL `/workspace` tab "Timeline".
-**Files:** `timeline\page.tsx`, `states\page.tsx`, `observation-timeline.tsx`, `state-timeline-explorer.tsx`
+Acceptance: lab, vital, symptom, treatment, diagnosis, visit and permitted note paths each have positive and negative task evidence. Missing/censored and original times remain exact. Refresh and 412/422 retain safe input. Correction/retraction preserve history and update only appropriate heads. An editor succeeds on an authorized case; a viewer cannot write. Saved lab-only updates do not manufacture a new MRI. No free-form entry can select authentic provenance or accepted status.
 
-### P1-02: Imaging Upload & DCE Phase UI
-- Add drag-drop zone in case-imaging for DICOM/NIfTI, showing study/series metadata: modality, acquisition date, slice count, spacing, orientation, phase label.
-- Distinguish DCE phases vs visits visually (badge: phase 1..n, not visit).
-- Progress indicator for imaging_jobs.
-**Files:** `case-imaging.tsx`, `imaging_api.py` proxy
+## R3 — implement controlled authentic imaging onboarding
 
-### P1-03: Clinical Charts Synchronization with Timeline Selection
-- Charts explorer currently separate; embed in workspace Clinical tab with timeline filter: selected state filters chart window, or date brush.
-- Small multiples already good; add concept filter search, unit toggle if duplicates.
-**Files:** `clinical-charts-explorer.tsx`, `trend-view.tsx`
+**Priority:** P0 product/science. **Owners:** data/rights, imaging, security and qualified imaging reviewer. **Dependencies:** real authorized source and review evidence plus R1 selection; UI preparation can proceed while evidence is pending.
 
-### P1-04: Insights Evidence Drill-down Improvement
-- Replace hash slices with human readable "Snapshot from [date] — run [short id]".
-- Show evidence cards grouped: case evidence vs background passages, each with source link + open observation.
-- Show grounding status badge: grounded vs ungrounded + reasons.
-- Show model identity badge when external_private used (e.g., "Meta Llama — private candidate").
-**Files:** `insights-explorer.tsx`, `interpretation-panel.tsx`
+Complete the administrator import screen: source-release/rights summary → pseudonymous identity association → bounded private upload/manifest → spatial and annotation QC → measurements/mesh preview → separate baseline publication. Implement the missing nonfixture path behind explicit reviewed records; do not flip fixture flags or relabel artifacts. Use private upload sessions/streaming suited to a representative study instead of relying on the tiny JSON/base64 staging transport.
 
-### P1-05: Evaluation & Technical Details Researcher-Friendly
-- Current `/evaluation` unknown content; factor into two panels: researcher summary (what twin states exist, which scenarios available, provenance colors) + engineering details (jobs, versions, blocked gates).
-- Surface external dependency blocks (segmentation checkpoint missing) as "Optional — using approved reference masks".
+Acceptance: one authorized genuine breast MRI and suitable verified mask reaches an immutable observed baseline and browser-derived lesion through this workflow. Independently inspect source/mask alignment and compute reference physical measurements, with declared method/tolerance. Invalid geometry, wrong patient, insufficient rights, unsupported annotation and withdrawn source remain blocked with safe useful explanations. Reference masks work without automated segmentation. No source patient bytes, secrets or protected mappings enter public evidence.
 
-### P1-06: Case Library Search & Server Pagination
-- Extend backend to support title/identifier/pseudonym search server-side, or document current client-only search limitation clearly.
-- Show loaded count vs total count if API returns total.
-**Files:** `research-cases.tsx`
+If rights/reviewer evidence is unavailable, keep this capability blocked and continue R1/R2/R4 with labeled artificial records. Do not call the complete product accepted.
 
-### P1-07: Security Session Persistence
-- Replace in-memory Map with Redis or at least filesystem fallback for multi-replica; or at least document single-instance limitation. Not P0 but prevents deployment logout surprises.
+## R4 — synchronize viewer, timeline, charts and findings
 
----
+**Priority:** P0 coherent research experience. **Owners:** frontend/3D, temporal data and scientific QA. **Dependencies:** R1; authentic acceptance additionally needs R3.
 
-## P2 — Presentation & refinement
+Make the selected immutable state drive header, lesion, exact member records, chart cursor and interpretation freshness atomically. Preserve actual collection times and compatible time domains. Replace record-order plots with actual temporal charts; keep exact tables. Bind A/B comparison explicitly to both states and validated metrics. P0 may use sequential A/B; spatial overlay requires registration evidence. Add the missing Sources/Records/Evidence inspector.
 
-### P2-01: Design System Tokenization
-- Consolidate button classes into single module `components/ui/button.tsx` with variants primary/secondary/ghost/danger + sizes.
-- Typography: define scale for h1 (44), h2 (21), h3 (17), eyebrow (12), lead (18), body (16), hint (13).
-- Spacing: use 8pt scale tokens: gap 8,16,24,32.
-- Badge system: component `<Badge origin={}/>` with color + symbol + label + accessible title.
-- EmptyState component `<EmptyState title description action />`.
+Keep the useful maximize/fullscreen controls. Reduce repeated technical prose and competing navigation. Pass origin/time/frame into renderer labels. Implement opt-in touch interaction and a touch exit. Reflow the homepage into stacked entry cards at narrow widths and complete tab/focus/error semantics.
 
-### P2-02: Layout Polish
-- Homepage feature cards: align grid, remove duplicate "Demo link preserved" inline hint inside actions span (should be separate note).
-- Header brand + selection details: avoid UUID detail summary for non-engineers; instead show breadcrumb trail "Project / Case / Lesion" with human names, only advanced UUID under engineering disclosure.
-- Footer technical disclaimer minimal.
+Acceptance: rapid selections with delayed responses never mix header, mesh, chart or evidence; case switching clears old data immediately. Calendar/relative/unknown times are not merged or silently excluded. Larger comparable geometry retains a consistent physical camera scale. At 320 CSS pixels and tested browser zoom, non-3D tasks remain readable and usable. Complete keyboard/screen-reader and actual touchscreen trials; record device/browser, failures and fixes rather than claim conformance from screenshots.
 
-### P2-03: Responsive & Touch
-- Ensure 3D viewer touch: OrbitControls touchAction none already; test pan/zoom on tablet.
-- Two-column workspace collapses to single-column below 900px (right rail below). Demo-workspace already handles leftOpen/rightOpen collapsed.
+## R5 — close scientific and intelligence evidence separately
 
-### P2-04: Accessibility
-- Add `aria-label` to lesion picker, scenario cards, timeline buttons (current has aria-pressed but not label).
-- Ensure color contrast #92400e outline meets 3:1 etc; badges not color-only (symbols help but need label).
-- Keyboard navigation through workspace tabs with roving tablist.
+**Priority:** P0 full research/hackathon acceptance. **Owners:** imaging/oncology research, biostatistics, AI/evidence and privacy. **Dependencies:** R3/R4 for authentic claims; R1 local fallback can precede it.
 
-### P2-05: Performance & LOD
-- Mesh guard 100k verts / 200k tris ok; add loading skeleton for viewer.
-- Demo catalog may be large; prefetch scenario meshes lazy.
+Deliver the genuine repeated-imaging case with verified lesion/examination correspondence, not DCE phases. Execute SPEC-011 release-case independent geometry/measurement checks, five-family multi-seed protocol and grounded-language challenge suite with actual denominators/review. Keep hypothetical curves, clinical condition, uncertainty and treatment exposure distinct from causal outcomes.
 
-### P2-06: Optional Slice Viewer (OHIF)
-- Evaluate if OHIF/Cornerstone integration still required vs mesh-only sufficient for finalist demo; if kept optional, add page explaining "MRI slice view available via imported data" but not block twin.
+Restore deterministic fallback as an ordinary application journey. For substantive Meta integration, first verify actual official API/model access, terms, export scope and costs. Then integrate the bounded read-only research agent through owned tools; record actual model identity and numerical/evidence grounding, timeout/outage behavior and denied exports. Resolve the original named-Meta versus conditional-fallback acceptance tension in a recorded owner decision if a full-product claim depends on it.
 
----
+Acceptance: authentic longitudinal and synthetic cases each produce inspectable evidence-linked summaries, with measured numerical/origin fidelity and prohibited-claim handling. No live claim is based on cached/local/mock output. External source-data transmission remains separately authorized; this review grants none. Optional forecasts remain disabled without their separate evidence.
 
-## Dependency Order for Implementation After Review
+## R6 — make evaluation, guide and operations real
 
-1. P0-02 onboarding fix (small)
-2. P0-07 empty states (small, pervasive)
-3. P0-01 unified workspace shell (medium — new component, reuses existing)
-4. P0-03 eliminate UUID inputs (medium)
-5. P0-04 viewer prominence (small-medium)
-6. P0-06 scenario builder (medium-large)
-7. P0-05 clinical entry simplification (medium)
-8. P1-01 timeline unification (medium)
-9. P1-02 imaging upload (medium)
-10. Remaining P1 then P2 polish
+**Priority:** P0 release. **Owners:** product, platform and QA with source/science owners. **Dependencies:** preceding accepted slices.
 
-**Do NOT start implementation until review is accepted.** This review preserves source documents unmodified; recovery plan only proposes changes.
+Publish authorized versioned evaluation artifacts and retrieve them through the application. Pin the guide to actual approved resources, perform preflight, keep missing steps unavailable and implement only the reset behavior promised. Connect Activity to real authorized job references/results. Measure declared hardware, errors, cold/warm load and interaction performance. Exercise deployed identity, private object access, worker restart and backup/restore. Rehearse the research demonstration and the separately timed competition artifact using verified current rules.
 
----
+Acceptance is separate for engineering checks, functional product tasks, user-experience trials, scientific evidence and operations. A release report names which passed and which remain unmet. Full product acceptance requires the original authentic vertical slice and genuine longitudinal evidence; a polished synthetic demo earns only its narrower demonstration label.
 
-## How to Verify Recovery
+## Delivery discipline
 
-- First-time user (token provided by admin) can in single browser session:
-  Open / → Create Research Case (source must pre-exist? admin creates source via /admin) → Open case → See Overview profile → Add 2 clinical observations (lab + vital) → See them in history table → Open Imaging & 3D tab → See lesion list + rotate tumor → Open Scenarios → Pick SC-01 → Generate with form (no JSON) → See job progress → See new states in Timeline → Select state → See measurement update synchronized in viewer + charts → Open Insights → Generate rule-based summary → Grounding shows evidence.
+Assign each recovery item an owner, exact requirement/U/J links, dependencies, changed contracts and observable acceptance evidence. Complete one bounded journey at a time; retain the current engines and private storage. Do not add a microservice, graph database, Kubernetes, large model training, diagnosis or therapy recommendation to compensate for integration gaps.
 
-- Synthetic demo still works unchanged.
-
-- Number of manual URL edits required: zero.
-
-- Number of UUID typing required: zero (beyond auto-filled hidden values).
+The first reviewable milestone is **R0 + R1's connected artificial journey**, not another visual-only homepage pass. The next is **R2 + R3's authorized authentic baseline/update workflow**. The final milestone is **R4–R6's scientific and operational acceptance**, with real data/review/provider gates explicitly retained until closed. No effort estimate is invented without implementation discovery and actual external availability.

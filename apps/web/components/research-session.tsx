@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ResearchProject } from '../lib/research-session';
 export type { ResearchProject } from '../lib/research-session';
+import { researchSignal } from '../lib/research-client';
 import { forgetCase } from '../lib/case-selection';
 
 type SessionResponse = { authenticated: boolean; projects: ResearchProject[]; expiresAt?: string };
@@ -28,7 +29,7 @@ export function ResearchSessionPanel({ selectedProjectId, onProjectChange, onSes
 
   useEffect(() => {
     const controller = new AbortController();
-    void fetch('/api/research-session', { cache: 'no-store', signal: controller.signal })
+    void fetch('/api/research-session', { cache: 'no-store', signal: researchSignal(controller.signal) })
       .then(async response => {
         if (!response.ok) throw new Error('Research access could not be checked. Retry signing in when the API is available.');
         const value = await response.json() as SessionResponse;
@@ -53,7 +54,7 @@ export function ResearchSessionPanel({ selectedProjectId, onProjectChange, onSes
     if (!token) { setMessage('Enter the access token provided by your research administrator.'); return; }
     setBusy(true); setMessage('');
     try {
-      const response = await fetch('/api/research-session', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token }), cache: 'no-store' });
+      const response = await fetch('/api/research-session', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token }), cache: 'no-store', signal: researchSignal() });
       if (credential.current) credential.current.value = '';
       if (!response.ok) {
         setMessage(response.status === 502 ? 'The research API is unavailable. Your credential was not saved. Retry when it is available.' : 'Sign in failed. Check your current authorized research access token. Contact your administrator if you do not have a token.');
@@ -67,7 +68,7 @@ export function ResearchSessionPanel({ selectedProjectId, onProjectChange, onSes
   async function signOut() {
     setBusy(true); setMessage('');
     try {
-      const response = await fetch('/api/research-session', { method: 'DELETE', cache: 'no-store' });
+      const response = await fetch('/api/research-session', { method: 'DELETE', cache: 'no-store', signal: researchSignal() });
       if (!response.ok) throw new Error();
       applySession({ authenticated: false, projects: [] });
       // Signed-out browsers must not retain protected case content or a
@@ -79,8 +80,8 @@ export function ResearchSessionPanel({ selectedProjectId, onProjectChange, onSes
   }
 
   function roleLabel(role: string) {
-    if (role === 'admin') return 'Administrator — can create cases and edit profiles';
-    if (role === 'editor') return 'Editor — can add clinical observations';
+    if (role === 'admin') return 'Administrator — case and profile access depends on patient permissions';
+    if (role === 'editor') return 'Editor — observation access depends on patient permissions';
     return 'Viewer — read only';
   }
 
@@ -128,7 +129,7 @@ export function ResearchSessionPanel({ selectedProjectId, onProjectChange, onSes
       </div>
       <form onSubmit={event => void signIn(event)} autoComplete="off" className="card" style={{padding:20}}>
         <label htmlFor="research-credential">Research access token</label>
-        <input id="research-credential" ref={credential} type="password" autoComplete="off" spellCheck={false} maxLength={16384} disabled={busy} placeholder="Paste your RS256 JWT research token" aria-describedby="research-credential-help" />
+        <input id="research-credential" ref={credential} type="password" autoComplete="off" spellCheck={false} maxLength={16384} disabled={busy} placeholder="Paste your research access token" aria-describedby="research-credential-help" />
         <p id="research-credential-help" className="muted">Provided by your research administrator. The browser stores only a short-lived, httpOnly session cookie, not the raw token.</p>
         <div style={{display:'flex', gap: 8, flexWrap:'wrap', alignItems:'center'}}>
           <button type="submit" className="button-primary" disabled={busy}>{busy ? 'Signing in…' : 'Sign in to research workspace'}</button>

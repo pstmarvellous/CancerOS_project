@@ -1,184 +1,85 @@
-# ARCHITECTURE AND INTEGRATION REVIEW — COS-REVIEW-003
+# Architecture, science, authorization and delivery
 
-**Date:** 2026-11-05  
-**Scope:** Backend/frontend integration, API contracts, DB models, imaging pipelines, simulation services, AI provider, auth, persistence, worker orchestration, provenance, error handling, complexity.
+The established modular architecture can support recovery. The immediate problem is that browser routes, request bodies, published-state ownership and capability enablement do not form one working product. Replacing FastAPI, workers, Next.js, PostgreSQL or private storage would add work without addressing the demonstrated failures.
 
----
+## Current system and integration seams
 
-## 1. Backend/Frontend Integration
+Current source includes identity and patient linkage, source registry/rights, clinical records, private imaging import, geometry/alignment/QC, measurements/mesh, twin snapshots/fusion, scenario definitions/configuration/runs, generated clinical observations, temporal updates, note extraction, corpus/retrieval, interpretation contexts/templates/grounding and saved results. These modules are more substantial than empty scaffolds, but availability is often restricted to synthetic engineering fixtures.
 
-**Pattern:** Next.js `apps/web` proxies via `app/api/*` routes to FastAPI at `http://127.0.0.1:8000` (or env API_BASE_URL). Proxy in `research-session.ts` validates RS256, origin checks, secure transport (https or localhost only). Session cookie short-lived 30min, in-memory Map max 512.
+The browser adds server-side proxy routes and separate clients with handwritten JSON. Central OpenAPI/Pydantic/generated TypeScript exist, yet successful compilation does not validate those JSON bodies against the receiving models. The current failures are concrete:
 
-Frontend fetches with `cache:no-store`, AbortController signal, `idempotency-key` header rotating on form change (crypto.randomUUID). Good idempotency practice.
+| Seam | Current mismatch | Independent evidence |
+| --- | --- | --- |
+| Scenario route → builder | `simulation/page.tsx:5` passes empty project/patient; unused context wrapper exists | Browser J07 and source |
+| Builder → registry | `sc-01-explicit/1` and `sc-03-explicit/1` differ from registered `sc01-explicit/1`, `sc03-explicit/1` | Executable registry probes |
+| Family payloads | SC-02/04/05 omit required family parameter objects; missing targets use unsupported null/extra key | Pydantic probes |
+| Revision binding | Builder hardcodes `input_revision=1` | `simulation-builder.tsx:165` source |
+| Schedule preview | Proxy POSTs `/schedule-preview`; backend defines GET `/simulation-configs/{config_id}/schedule-preview` | `app/api/simulation/route.ts:73`; `state_api.py:233` |
+| Publication | UI/proxy sends extra `completion_id` forbidden by `PublishRunInput` | Schema probe and route source |
+| Insight context | `{branch_id}` instead of required patient/snapshot IDs | `insights-explorer.tsx:103`; schema probe |
+| Insight generation | `rule_based`/`external_private` and missing context snapshot instead of owned modes/ID | `insights-explorer.tsx:128`; schema probe |
+| Grounding and save | `{interpretation: report}` instead of interpretation snapshot ID and persistence idempotency key | `insights-explorer.tsx:156/177`; schema probes |
 
-Contract generation: `packages/contracts/generated/api.ts` + `openapi.json` via `scripts/generate_contracts.py` -> check_contract_drift guard.
+The [reproducible probe](evidence/contract-probes.py) rejects nine fabricated request variants; two basic scenario configurations pass schema validation but fail registry version resolution. These are request/registry checks, not completed HTTP scenarios. The publication mismatch remains relevant even if earlier configuration failures currently prevent reaching it.
 
-**Integration gaps:**
-- API base hard-coded fallback localhost — no discovery; for deployed demo, must supply env.
-- `app/api/cases/route.ts` thin proxy over generated `PatientPage` contract but returns display_code + data_revision only, loses counts visible in `ResearchCases` composite (which uses `/api/research-cases` separate).
-- Two different case listings: `/api/cases` vs `/api/research-cases` confusing.
-- Many routes bypass proxy, directly call `API` constant `process.env.NEXT_PUBLIC_API_BASE_URL || http://127.0.0.1:8000` from browser (simulation-workflow). Cross-origin not allowed per `isSameResearchOrigin` else? Inconsistent.
+Use generated request types at the actual fetch boundary and a small set of browser-to-real-test-API acceptance journeys. Do not create another endpoint catalog or hide failures in a permissive proxy translation layer. Contract changes must update owned models, OpenAPI, generated clients and affected negative tests together.
 
-**Recommendation:** Unify all research reads through same-origin `/api/*` proxies, preserve session cookie centrally, remove direct browser-to-API calls.
+## Capability gates versus missing implementation
 
----
+| Category | Current example | Required response |
+| --- | --- | --- |
+| Essential restriction | Source rights, pseudonymous linkage, patient grants, genuine mask semantics and external export permission | Preserve; close with real evidence and accountable review |
+| Correct restriction, poor presentation | An unpublished baseline or missing source returns generic conflict/unavailable text | Return safe owned reasons and role-specific recovery, without disclosing private internals |
+| Missing workflow integration | Saved observation/outbox has no finished job/new-snapshot handoff; timeline does not drive viewer/insights | Compose existing services inside one case selection |
+| Unnecessary local complexity | Duplicate global/case/inner/legacy navigation; handwritten request contracts beside generated schemas | Consolidate ownership and typed boundaries, not services |
+| Genuine capability gap | Authentic imaging and observed baseline cannot be enabled by evidence alone because code is fixture-only | Implement a narrowly controlled reviewed-source path before claiming authentic operation |
 
-## 2. API Contracts
+`imaging_ingestion.py:148` explicitly rejects nonfixture origin; artifact origin is synthetic. `annotation_import.py:42,104,243` fixes synthetic/fixture semantics. `twin_states.py:51,157–158,361–363` keeps observed verification false and synthetic-only branches/snapshots. Simulation/clinical-generation/geometry execution is also restricted outside test mode (`simulation_execution.py:173/338`, `simulation_runs.py:436`, `clinical_generation_runs.py:56`, `synthetic_geometry.py:98`).
 
-**Source:** `packages/contracts/` with `foundation.ts`, `clinical.ts`, `api.ts` generated.
+These are defensible limits for an engineering stage. They are not a finished production path waiting only for a license checkbox. Recovery needs a real source-release/rights/identity/QC/review contract, an authentic measurement/baseline path and negative acceptance tests. Never substitute an artificial permission assertion or relabel synthetic artifacts as real.
 
-**Strengths:**
-- Typed FoundationEnvelope with origin enum, time basis (date/timestamp/relative_day/unknown), time_domain (source_calendar, simulation, source_shifted).
-- Clinical contracts exhaustive: laboratory/vital with exact/censored/missing forms, units, original values preserved.
-- Symptom with presence/reporter/severity/instrument.
-- Treatment with event_type/exposure_status/regimen.
-- Diagnosis with ER/PR/HER2/side/stage.
+The staging transport is also intentionally small: base64 input is capped at 900,000 characters, with additional file/decoded/voxel limits. ADR-013 documents that large-study streaming is not implemented. A reviewed multipart/private-object upload-session workflow with bounded manifests is the smallest credible route to representative studies; lifting every bound is not a solution.
 
-**Gaps:**
-- Contract drift check exists (`scripts/check_contract_drift.py`) — green per phase execution notes but not re-verified this review.
-- Frontend sometimes casts `components['schemas']['PatientSummary']` without null guard; backend returns `PatientPage` with items maybe outside type.
+## Scientific and medical research assessment
 
----
+The inspected arithmetic has appropriate foundations for its declared engineering scope. Physical volume uses the selected-label voxel count and absolute determinant of the spatial affine (`physical_measurements.py:42`), including nonorthogonal grids. Mesh extraction pads labels, extracts a 0.5 isosurface, transforms coordinates once and corrects winding on reflection (`mesh_reconstruction.py:54–83`). Explicit DCE-phase handling does not manufacture follow-up examinations (`imaging_formats.py:132–161`).
 
-## 3. Database Models
+The bounded test command passed 119 checks. These establish synthetic arithmetic, geometry, scenario behavior and mock provider behavior. They do not establish authentic segmentation quality, independently inspected MRI/mask alignment, clinical realism, calibrated uncertainty, treatment benefit, real cohort performance or a genuine longitudinal endpoint.
 
-**Foundational:** Migrations `0001_foundation.sql`, `env.py`, alembic. Models in `source` schema: patient_revisions with input_manifest jsonb + hash. Captures immutable revisions. Science hash verification `science_hash(manifest)!=hash → integrity failure`.
+Actual source reading supports the distinction between array indices and spatial images: [SimpleITK Fundamental Concepts, Images](https://simpleitk.readthedocs.io/en/master/fundamentalConcepts.html) describes origin, spacing, direction and physical extent. Its relevance here is geometric representation, not proof that a particular CancerOS import is clinically correct. [Stan 2.40 predictive checks](https://mc-stan.org/docs/stan-users-guide/posterior-predictive-checks.html) distinguishes replicated-data checks from comparison with observed data; scenario reproducibility alone is not external validation.
 
-**Observations:** ObservationPage snapshot cursor for pagination. Good.
+SPEC-011 §§6/11 still requires independent release-case overlay/measurement validation and genuine repeated imaging. No qualified oncology/radiology/biostatistical consultation occurred. Synthetic clinical ratings remain unvalidated demonstration values. The reviewer did not inspect private source patient data or claim authentic benchmark results.
 
-**Patient linkage:** Private versioned key ring, namespace/digest idempotent, confidence, review.
+Clinical save/correction retains source/time/unit/provenance in the exercised artificial slice. `clinical_ingestion.py:545–567` increments revision and emits an outbox event; `dependent_updates.py:94/111` still needs explicit administrative exact-revision publication. The product must expose this as saved → processing/review → published state, retaining the earlier snapshot. A saved row is not a synchronized twin update.
 
-**Branch/Run:** Simulation configs versioned draft_revision, baseline_hash, config_version id. Expected draft revision optimistic concurrency (409). Good.
+## AI and evidence
 
-**Lesion:** Lesion identity persistent, UUID.
+The application does not currently supply a live Meta research agent. `provider_gateway.py:157` restricts the transport to test/MockTransport; `execute_private:306` rejects other modes and has no app route caller. `interpretation_runs.py:114` rejects external candidates. A separate authorized live-test script is a harness, not evidence of application integration or a live call in this review.
 
-**Complexities:** Overly many run tables: preprocessing_runs, measurement_runs, mesh_runs, fusion_runs, timeline_runs, registration_runs, alignment_runs, simulation_runs, grounding_runs, evidence_runs, etc. Each with similar pattern — suggests need for general run framework but implemented as separate modules (code duplication). Could be simplified.
+Deterministic context/template/grounding modules exist, with immutable snapshot and evidence references. The demo correctly labels its local descriptive template. However, ordinary Insights cannot complete even local context/generation because of the schema drift above. Restore that usable fallback independently of external provider access. Then implement a bounded read-only agent only after actual provider documentation/access, export permissions, costs and model identity can be evidenced. Numerical measurements remain deterministic.
 
----
+The original source tension is material: SPEC-006 §21 calls Meta interpretation P0, SPEC-012 permits provider-conditional fallback, and COS-HACK separately requires substantive Meta use. Report fallback usability, original AI fulfillment and hackathon eligibility separately. No current organizer-rule or entitlement verification was performed for submission.
 
-## 4. Imaging Pipeline
+## Authorization and persistence
 
-Flow: ingest → discovery → volumes → preprocessing → mask alignment → measurement → mesh → QC → lesion tracking → registration.
+**High-priority patient-boundary exception:** the saved interpretation detail handler ignores `patient_id` (`saved_api.py:88–92`). `saved_runs.read_saved:138–142` checks project viewer membership and `_row:21–32` selects by project/saved ID, without a patient-grant/path match. The reproducible fabricated connection probe returns another fabricated patient's result metadata using one project-only query. Returned scope is patient/context UUIDs, hashes, mode, counts and status; this review did not demonstrate raw clinical prose disclosure or a full HTTP exploit.
 
-Modules tracked runs; each run produces report.
+Fix by resolving the row under the requested project/patient, enforcing the current patient's grant before returning any result, and applying the same relevant withdrawal/lineage restrictions as other reads. Add negative HTTP tests with two patients, a project viewer with only one grant, wrong patient path and withdrawn resources. Knowing an opaque result ID must never replace ownership authorization. Treat closure as a release prerequisite.
 
-**Integration gap:**
-- Imaging worker Dockerfiles exist `infrastructure/Dockerfile.api`, `Dockerfile.worker`, `Dockerfile.web` but orchestration local? `scripts/local_services.py`, `scripts/ci_services.py`.
-- Imaging jobs `imaging_jobs.py` create durable jobs, but frontend `case-imaging.tsx` only displays results; upload workflow not visible.
-- Mask types (analysis ROI vs anatomical contour vs bbox) distinguished in code but not in UI selector.
+Normal browser switching between two artificial cases did not mix the observed records. That does not disprove the saved-result exception or selection-race risks. `useEffect([])` initial binding in some viewer/state components and retained workspace permissions/filter on case changes warrant targeted delayed-response tests. Those races are identified risks, not proven cross-patient leaks.
 
-**Measurement correctness:**
-- `physical_measurements.py` preserves origin, orientation, spacing, affine, units — correct per invariant.
-- No voxel-mm confusion observed (verified earlier). Good.
+## Root-cause analysis
 
----
+The most supported cause is a missing acceptance layer across the seams. `simulation-builder.test.tsx:29–33` fabricates successful fetch responses instead of validating emitted payloads against the real API. Similar insights tests preload state context. Shell tests check labels/visibility rather than following context-preserving destinations. The resulting code can compile and render while the ordinary route and receiving contracts disagree.
 
-## 5. Simulation Services
+Git history shows incremental implementation/verification commits for timeline, chart synchronization, insights readability and evaluation summary. That establishes the sequence of local changes, not the quality of a prior audit or blame for a particular agent/model. Current ledger statuses retain substantial unverified scope. It is therefore unsupported to claim that seven phases were all accepted and then regressed solely through visual styling.
 
-**Flow:** eligibility-checks (capability measurement vs anatomical_mesh) → config_version saved immutable → schedule preview (SampledObservations) → run creation (expect revision) → job polling (ImagingJobRecord) → completion report → separate private publication with attestation + review checkbox.
+A second supported cause is incomplete source-enablement ownership: synthetic fixture branches were expanded before a controlled authentic baseline path became usable. A third is navigation/state ownership split across component-local state, URL parameters, local last-case selection and independent screens. Safety gates themselves are not the demonstrated root cause of the empty scenario props or invalid Insights payloads.
 
-Plugins `simulation_plugins.py` likely strategy pattern per family.
+The repository governance check also fails on historical ledger transitions, beginning with COS-074's `planned → implemented`. The same ledger validator fails on committed HEAD; the newly appended review entry validates independently. This is a pre-existing record/tool incompatibility, preserved in [governance-check.json](evidence/governance-check.json). It reinforces the need to reconcile evidence machinery with actual statuses; it is not a passing overall governance result.
 
-**Eligibility:** `simulation_eligibility.py` separate engineering test permission vs clinical eligibility — good distinction but not explained UX.
+## Operations and smallest recovery
 
-**Publication gate:** `current-simulation` pointer + publication requires attestation text + reviewed flag — honest.
+The fresh build and local data/shell/fixture launch succeeded. No deployment, backup/restore, restricted production-role audit, sustained performance or browser/device matrix was verified. Native local startup and artificial fixture helpers must not become an administrator provisioning experience.
 
-**Gap:** Publish separate private? Yet `/simulation` intro says "separate private publication". Means even after generation, run not automatically visible to evaluators — requires explicit publish action. But no UI indicating unpublished runs count.
-
-**Branch ownership:** Enforced in backend `authorize_project` + branch_id check.
-
----
-
-## 6. AI Provider Architecture
-
-`provider_api.py` routes, `provider_gateway.py` handles Meta API `https://api.meta.ai/v1` per spec but actual provider not verified here (requires MODEL_API_KEY). Gateway likely wraps model identity check, tool grounding, export policy.
-
-Also `knowledge_api.py`, `knowledge_runs.py`, `evidence_api.py` for curated retrieval.
-
-Grounding API `grounding_api.py` returns GroundingReport with reason, evidence spans.
-
-**Strengths:** Provider-neutral interface, deterministic source-of-truth flag, export denials respected.
-
-**Gaps:**
-- No frontend display of actual model identity or cost.
-- `interpretation_job_api.py` vs `interpretation_api.py` duplication?
-- Rate limit/timeout/bound not visible.
-
----
-
-## 7. Patient & Case Authorization
-
-`identity.py`: authenticate JWT RS256, issuer/audience/time claims, memberships. `authorize_project` role check.
-
-`patient_api.py`: list/detail scoped to project. `context_api.py` likely similar.
-
-`research_api.py`: research cases view requires project membership; source eligibility.
-
-Frontend `ResearchSessionPanel` signs in via POST `/api/research-session` which calls `checkResearchWorkspace` to `/api/v1/workspace` on backend; returns projects[]. Then stores in-memory session Map, returns cookie.
-
-**Integration:** Secure transport check only allows https or localhost loopback (`secureResearchTransport`). Good security.
-
-**UX implication:** Because session stored in server memory (Node process), restart loses sessions; no DB persistence. Acceptable for dev but not for deployment with multiple replicas. Should be Redis? However out of scope for this review.
-
-**Missing:** No project creation API exposed to UI; admin must use backend directly or bootstrap script.
-
----
-
-## 8. Worker Orchestration
-
-`jobs.py` central job framework; `workers/` directory. `infrastructure/compose.yaml` + `compose.staging.yaml`. Workers likely process preprocessing, segmentation QC, simulation, interpretation, grounding.
-
-Modules: `imaging_jobs.py`, `interpretation_jobs.py`, `forecast_runs.py`, `evaluation_splits.py`, `temporal_timeline.py`, etc.
-
-**Gap:** Job status polling loop in frontend `simulation-workflow.tsx` uses request per polling? Implementation shows `act` single request pattern, not automatic polling loop described; likely run polling requires manual refresh or effect not seen due to truncation.
-
----
-
-## 9. Provenance & Lineage
-
-`lineage.py`, `source_registry.py`, `persistence.py` provide `REAL_OBSERVED`, `REAL_DERIVED`, `SYNTHETIC_GENERATED`, `INTERPOLATED`, `MODEL_PREDICTED` distinctions.
-
-Frontend `ProvenanceBadge` renders symbol + label + kind (observed/derived/simulated/warning). Time label shows basis. Good.
-
-**Gap:** Badge color-only complement with symbols — symbols help but need explicit legend page. `ResearchCases` card uses badge but not full legend.
-
----
-
-## 10. Error Handling
-
-Thorough 401/403/404/409/412/422 explanations per component (`explain` functions per file). Messages tailored: "Sign in with an authorized session", "This project restricted for your role", "Record unavailable in this context", "Current QC or source permission blocks display", "Record or revision changed — reload", "Configuration rejected".
-
-Idempotency key per request prevents double-save.
-
-**Gap:** Errors pessimistic, not corrective enough (do not say how to obtain token or create source). Retry buttons exist but limited.
-
----
-
-## 11. Essential vs Excessive Complexity Classification
-
-| Item | Classification | Justification |
-|---|---|---|
-| RS256 JWT + session + secure transport + same-origin check | Essential | Safety requirement |
-| Provenance five kinds + immutable revision + hash | Essential | Scientific integrity |
-| Treatment assumption gate blocked | Essential (with poor UX) | Prevents unsupported claims |
-| Separate private publication with attestation | Essential (with poor UX) | Evaluation integrity |
-| UUIDs in UI under details | Unnecessary complexity — should be hidden | Leaks internal IDs |
-| Two timeline routes `/timeline` vs `/states` | Unnecessary duplication | Should merge |
-| Many run tables without generic framework | Unnecessary complexity | Framework would simplify |
-| Manual UUID inputs in `/simulation` | Missing workflow integration, not essential complexity | Should be picker |
-| Direct browser-to-API calls alongside same-origin proxies | Unnecessary complexity | Unify proxy |
-| `preserveSelection` trying to keep 6 query params across nav | Necessary but fragile | Better single workspace route |
-| Multiple button classes without design system | Unnecessary complexity | Tokenize |
-| Case library inside `<details>` collapsed even after auth | Missing integration — not intentional | Should auto-open |
-
----
-
-## 12. Recommended Architectural Changes (Minimal Effective)
-
-1. **Single workspace route** `/workspace?project=&patient=` rendering tabs instead of separate top pages; reduce preserveSelection fragility.
-2. **Proxy unification:** All API reads via `/api/*` same-origin, delete direct `NEXT_PUBLIC_API_BASE_URL` usage from client.
-3. **Run framework abstraction:** Generic `run_record` table + typed payload, reduce duplication.
-4. **Project/source bootstrap UI:** Add `/admin` page features to create source, invite token generation (dev only) — even if admin-only.
-5. **3D viewer prominence:** Make viewer component accept `className` 65% viewport, measurement badge inside.
-6. **Scenario builder:** Replace JSON draft with form: family select → assumption cards → schedule preview → eligibility → freeze.
-
+Keep the current architecture. Repair patient authorization and real request contracts; make one case/state/capability owner; integrate observation/import/job publication; add controlled authentic source enablement; then execute the original scientific/operational acceptance bundle. No new microservice, graph database, Kubernetes deployment or trained forecaster is justified by this review.

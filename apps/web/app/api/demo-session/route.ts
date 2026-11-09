@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ title: 'Launch the demo from CancerOS.' }, { status: 403 });
   }
   const prepared = demoBundle();
-  if (!prepared) return NextResponse.json({ title: 'The synthetic demo is not ready yet. If you run this computer, prepare it with: uv run python scripts/prepare_synthetic_demo.py --check. Otherwise, try again later or explore the research cases.' },
+  if (!prepared) return NextResponse.json({ title: 'The interactive demo is temporarily unavailable. Try again shortly, or create or open a research case.' },
     { status: 503, headers: { 'Cache-Control': 'private, no-store' } });
   const session = newDemoSession(prepared.fingerprint, prepared.bundle.expiresAt);
   const response = NextResponse.json({ synthetic: true }, { headers: { 'Cache-Control': 'private, no-store' } });

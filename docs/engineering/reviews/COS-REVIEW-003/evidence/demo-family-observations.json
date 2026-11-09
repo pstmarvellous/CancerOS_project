@@ -1,0 +1,47 @@
+[
+  {
+    "family": "SC-01",
+    "states": [
+      "Shared baseline216 mm3",
+      "Day 3764 mm3",
+      "Day 568 mm3",
+      "Day 901 mm3"
+    ]
+  },
+  {
+    "family": "SC-02",
+    "states": [
+      "Shared baseline216 mm3",
+      "Day 7216 mm3",
+      "Day 35216 mm3",
+      "Day 91216 mm3"
+    ]
+  },
+  {
+    "family": "SC-03",
+    "states": [
+      "Shared baseline216 mm3",
+      "Day 37343 mm3",
+      "Day 56512 mm3",
+      "Day 90729 mm3"
+    ]
+  },
+  {
+    "family": "SC-04",
+    "states": [
+      "Shared baseline216 mm3",
+      "Day 1964 mm3",
+      "Day 268 mm3",
+      "Day 5264 mm3"
+    ]
+  },
+  {
+    "family": "SC-05",
+    "states": [
+      "Shared baseline216 mm3",
+      "Day 7216 mm3",
+      "Day 35216 mm3",
+      "Day 91216 mm3"
+    ]
+  }
+]

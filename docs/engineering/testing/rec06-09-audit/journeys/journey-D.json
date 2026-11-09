@@ -1,0 +1,27 @@
+{
+  "recorded_at": "2026-11-09T16:57:57.598Z",
+  "scope": "Actual isolated synthetic engine, measurement-only mode; authentic gate remains blocked",
+  "steps": [
+    {
+      "journey": "D",
+      "step": "configure",
+      "expected": "Explicit supported scenario saved and inspected",
+      "actual": "SC-01 targets13/8/1; days10/30/60; hypothetical hemoglobin12/11/10",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "D",
+      "step": "engine",
+      "expected": "Actual worker generates a complete run",
+      "actual": "Worker completed; completion ready, no prepared-demo playback",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "D",
+      "step": "states",
+      "expected": "Generated measurements and observations align at Day30",
+      "actual": "Day30 has target volume8 mm³ and hypothetical hemoglobin11 g/dL",
+      "verdict": "PASS"
+    }
+  ]
+}

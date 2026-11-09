@@ -27,7 +27,7 @@ const STEPS: Step[] = [
     check: 'Preflight: QC-validated geometry present; expired or blocked geometry shows tables with Retry 3D, never a placeholder tumor.',
   },
   {
-    title: 'Select and compare persisted states',
+    title: 'Select and compare saved timepoints',
     where: 'History & states',
     href: '/states',
     what: 'Move the discrete state slider or pick Previous/Next, then pin a second state for sequential comparison.',

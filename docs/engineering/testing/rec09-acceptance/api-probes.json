@@ -1,0 +1,20 @@
+{
+  "recorded_at": "2026-11-09",
+  "probes": [
+    {
+      "probe": "viewer-case-create-denied",
+      "status": 403,
+      "verdict": "PASS"
+    },
+    {
+      "probe": "outsider-case-hidden",
+      "status": 404,
+      "verdict": "PASS"
+    },
+    {
+      "probe": "cross-patient-denied",
+      "status": 403,
+      "verdict": "PASS"
+    }
+  ]
+}

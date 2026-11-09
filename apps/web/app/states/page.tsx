@@ -9,10 +9,10 @@ export default function StatesPage() {
     <>
       <div className="intro">
         <p className="eyebrow">Synchronized history</p>
-        <h1>Inspect one persisted state at a time</h1>
+        <h1>Inspect one saved timepoint at a time</h1>
         <p className="lead">
           One URL-owned branch and state stays synchronized across the header, mesh, measurements, charts and
-          interpretation scope. Only persisted discrete snapshots load; nothing morphs, interpolates or autoplays.
+          interpretation scope. Only saved discrete snapshots load; nothing morphs, interpolates or autoplays.
         </p>
       </div>
       <CaseBoundPage>

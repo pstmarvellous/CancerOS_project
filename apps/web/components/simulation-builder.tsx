@@ -1,6 +1,8 @@
 'use client';
+import { readCaseSelection } from '../lib/case-selection';
 
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import type { components } from '../../../packages/contracts/generated/api';
 import { ErrorSummary, LoadingState } from './research';
@@ -41,15 +43,22 @@ function explain(response: Response): string {
   return `The authorized request failed (status ${response.status}).`;
 }
 
-export function SimulationBuilder({ project, patient }: { project: string; patient: string }) {
+export function SimulationBuilder({ project, patient, selectedBranch }: { project: string; patient: string; selectedBranch?: string | null }) {
   const [branches, setBranches] = useState<BranchSummary[]>([]);
-  const [branchId, setBranchId] = useState('');
+  const [branchId, setBranchId] = useState(selectedBranch ?? '');
   const [branch, setBranch] = useState<Branch | null>(null);
   const [family, setFamily] = useState('SC-01');
   const [geometry, setGeometry] = useState<'none' | 'anatomical_mesh'>('none');
   const [days, setDays] = useState('10, 30, 60');
   const [seed, setSeed] = useState('7');
-  const [target, setTarget] = useState('120.5');
+  const [target, setTarget] = useState('');
+  const [caseRevision, setCaseRevision] = useState<number | null>(null);
+  const [stabilityAbsolute, setStabilityAbsolute] = useState('0');
+  const [stabilityRelative, setStabilityRelative] = useState('0');
+  const [changePoint, setChangePoint] = useState('');
+  const [nadir, setNadir] = useState('');
+  const [clinicalValues, setClinicalValues] = useState('');
+  const [fatigueRatings, setFatigueRatings] = useState('');
   const [missingReason, setMissingReason] = useState('');
   const [revision, setRevision] = useState('0');
   const [savedId, setSavedId] = useState('');
@@ -65,8 +74,11 @@ export function SimulationBuilder({ project, patient }: { project: string; patie
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<'loading' | 'ready' | 'failed'>('loading');
   const [message, setMessage] = useState('Loading authorized branches for this case. No UUID entry is needed.');
-  const branchIdRef = useRef('');
+  const branchIdRef = useRef(selectedBranch ?? '');
   const pending = useRef<AbortController | null>(null);
+  const params = useSearchParams();
+  const baseline = params.get('baseline_measurement');
+  const baselineMesh = params.get('baseline_mesh_qc');
   useEffect(() => () => pending.current?.abort(), []);
 
   useEffect(() => {
@@ -80,12 +92,19 @@ export function SimulationBuilder({ project, patient }: { project: string; patie
     }
     void (async () => {
       setStatus('loading');
+      if (selectedBranch) { branchIdRef.current = selectedBranch; setBranchId(selectedBranch); }
+      setBranch(null); setSaved(null); setPreview(null); setEligibility(null); setRun(null); setJob(null); setCompletion(null); setReviewed(false); setBusy(false);
       try {
         const response = await fetch(`/api/simulation?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&resource=branches`, { cache: 'no-store', signal: controller.signal });
         if (!response.ok) throw new Error(explain(response));
         const page = (await readJson(response)) as BranchPage;
         if (controller.signal.aborted) return;
         setBranches(page.items ?? []);
+        if (selectedBranch && !page.items?.some(item => item.branch_id === selectedBranch)) {
+          setStatus('failed');
+          setMessage('The selected branch is unavailable in this authorized case. Return to the case history to choose an accessible branch.');
+          return;
+        }
         if (page.items?.length && !branchIdRef.current) {
           branchIdRef.current = page.items[0].branch_id;
           setBranchId(page.items[0].branch_id);
@@ -99,7 +118,7 @@ export function SimulationBuilder({ project, patient }: { project: string; patie
       }
     })();
     return () => controller.abort();
-  }, [project, patient]);
+  }, [project, patient, selectedBranch]);
 
   async function reloadBranches(signal: AbortSignal) {
     const response = await fetch(`/api/simulation?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&resource=branches`, { cache: 'no-store', signal });
@@ -123,8 +142,8 @@ export function SimulationBuilder({ project, patient }: { project: string; patie
     return (await readJson(response)) as T;
   }
 
-  async function act(action: (signal: AbortSignal) => Promise<void>) {
-    if (!UUID.test(branchId)) { setMessage('Select an authorized branch from the list. No manual UUID entry is needed.'); return; }
+  async function act(action: (signal: AbortSignal) => Promise<void>, needsBranch = true) {
+    if (needsBranch && !UUID.test(branchId)) { setMessage('Select an authorized branch from the list. No manual UUID entry is needed.'); return; }
     pending.current?.abort();
     const controller = new AbortController();
     pending.current = controller;
@@ -133,16 +152,41 @@ export function SimulationBuilder({ project, patient }: { project: string; patie
     finally { if (!controller.signal.aborted) setBusy(false); }
   }
 
+  async function createBranch(signal: AbortSignal) {
+    if (!baseline || !UUID.test(baseline) || (baselineMesh && !UUID.test(baselineMesh))) throw new Error('Return to Imaging and select a completed measurement first.');
+    const origin = await authorized<{ id: string }>(`/api/simulation?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&resource=origin`, signal, { reference_meaning: 'Explicit hypothetical scenario origin', time_domain: 'simulation' });
+    const value = await authorized<Branch>(`/api/simulation?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&resource=branch`, signal, { baseline_measurement_id: baseline, baseline_mesh_qc_report_id: baselineMesh || null, timeline_origin_id: origin.id, run_id: crypto.randomUUID() });
+    await reloadBranches(signal);
+    branchIdRef.current = value.id;
+    setBranchId(value.id);
+    setBranch(null);
+    setRevision('0');
+    setMessage('Hypothetical engineering branch created from the selected measurement. Load it to configure explicit assumptions. This does not verify an authentic baseline.');
+  }
+
   async function loadBranch(signal: AbortSignal) {
     setSaved(null); setPreview(null); setEligibility(null); setRun(null); setJob(null); setCompletion(null); setReviewed(false);
     const value = await authorized<Branch>(`/api/simulation?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&resource=branch&branch=${encodeURIComponent(branchId)}`, signal);
     const pointer = await authorized<Current>(`/api/simulation?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&resource=current&branch=${encodeURIComponent(branchId)}`, signal);
+    const detail = await authorized<Schema['ResearchCaseView']>(`/api/case-detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}`, signal);
+    setCaseRevision(detail.data_revision);
     setBranch(value); setCurrent(pointer);
-    setMessage('Branch loaded. The builder generates explicit assumptions below; no clinical defaults are supplied.');
+    const latest = await authorized<Saved | null>(`/api/simulation?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&resource=latest-config&branch=${encodeURIComponent(branchId)}`, signal);
+    setRevision(String(latest?.draft_revision ?? 0));
+    setMessage('Branch loaded with the current draft revision. Enter and save your explicit assumptions below; existing drafts and runs remain immutable.');
+  }
+
+  function editDraft() {
+    pending.current?.abort();
+    setBusy(false); setSaved(null); setPreview(null); setEligibility(null); setRun(null); setJob(null); setCompletion(null); setReviewed(false);
+    setMessage('Assumptions changed. Save and inspect a new draft before generating. Previously frozen runs remain immutable.');
   }
 
   function parseDays(): string[] {
-    return days.split(',').map(part => part.trim()).filter(part => /^-?(0|[1-9]\d*)(\.\d{1,9})?$/.test(part));
+    const values = days.split(',').map(part => part.trim());
+    if (values.some(part => !/^(0|[1-9]\d*)(\.\d{1,9})?$/.test(part))) throw new Error('Every follow-up day must be a positive decimal; remove invalid entries.');
+    if (values.some((day, index) => Number(day) <= 0 || (index > 0 && Number(day) <= Number(values[index - 1])))) throw new Error('Follow-up days must be positive and strictly increasing.');
+    return values;
   }
 
   function buildConfig(): Record<string, unknown> {
@@ -153,30 +197,44 @@ export function SimulationBuilder({ project, patient }: { project: string; patie
     if (!branch) throw new Error('Load a branch before generating a configuration.');
     if (dayList.length < 3) throw new Error('Enter at least three follow-up days, for example 10, 30, 60.');
     if (!Number.isSafeInteger(seedValue) || seedValue < 0 || seedValue > 4294967295) throw new Error('Enter an integer seed from 0 to 4294967295.');
-    if (!hasMissing && !/^-?(0|[1-9]\d*)(\.\d{1,9})?$/.test(targetValue)) throw new Error('Enter an explicit decimal target volume in mm³, or a missing reason.');
+    const targets = targetValue.split(',').map(part => part.trim());
+    if (!hasMissing && (targets.length !== dayList.length || targets.some(part => !/^(0|[1-9]\d*)(\.\d{1,9})?$/.test(part)))) throw new Error('Enter one explicit target volume for each follow-up day, separated by commas.');
     if (!branch.baseline_hash) throw new Error('Branch baseline hash is unavailable. Reload the branch.');
-    const detailRevision = 1;
+    if (!caseRevision) throw new Error('Reload the baseline branch to resolve the current case revision.');
+    const detailRevision = caseRevision;
     const slots = dayList.map((day, index) => ({ slot_id: `slot-${index + 1}`, modality: 'imaging', relative_day: day }));
-    const explicitTarget = hasMissing ? null : targetValue;
-    return {
+    const labs = clinicalValues.trim() ? clinicalValues.split(',').map(part => part.trim()) : [];
+    if (labs.length && (labs.length !== dayList.length || labs.some(part => !/^(0|[1-9]\d*)(\.\d{1,9})?$/.test(part)))) throw new Error('Enter one hypothetical hemoglobin value per follow-up day or leave all blank.');
+    const clinicalSlots = labs.map((_, index) => ({ slot_id: `lab-${index + 1}`, modality: 'laboratory', relative_day: dayList[index] }));
+    const config: Record<string, unknown> = {
       baseline_state_id: branch.baseline_state_id ?? null,
       baseline_hash: branch.baseline_hash,
       branch_id: branch.id,
       input_revision: detailRevision,
-      scenario: { family, definition_version: `${family.toLowerCase()}-explicit/1` },
+      scenario: { family, definition_version: `${family.toLowerCase().replace('-', '')}-explicit/1` },
       treatment: { exposure: 'none' },
-      schedule: { slots },
+      schedule: { slots: [...slots, ...clinicalSlots] },
       tumor_profile: {
         metric: 'numerical_region_volume',
         unit: 'mm3',
-        points: slots.map(slot => hasMissing ? { slot_id: slot.slot_id, target_mm3: null, missing_reason: missingReason.trim() } : { slot_id: slot.slot_id, target_mm3: explicitTarget }),
+        points: slots.map((slot, index) => hasMissing ? { slot_id: slot.slot_id, target_mm3: null, missing_reason: missingReason.trim() } : { slot_id: slot.slot_id, target_mm3: targets[index] }),
       },
-      clinical_profile: { configuration: 'stable' },
+      clinical_profile: { configuration: family === 'SC-05' ? 'mild_deterioration' : 'stable', points: clinicalSlots.map((slot, index) => ({ slot_id: slot.slot_id, code: 'hemoglobin', unit: 'g/dL', value: labs[index] })) },
       noise: { mode: 'none' },
       missingness: { mode: 'none' },
       geometry_policy: geometry === 'anatomical_mesh' ? 'isotropic-fixed-grid/1' : 'none',
       seed: seedValue,
     };
+    if (family === 'SC-02' || family === 'SC-05') config.sc02_parameters = { mode: 'near_stable', max_absolute_change_mm3: stabilityAbsolute, max_relative_change: stabilityRelative };
+    if (family === 'SC-04') config.sc04_parameters = { change_point_day: changePoint, nadir_mm3: nadir };
+    if (family === 'SC-05') {
+      const ratings = fatigueRatings.split(',').map(part => part.trim());
+      if (ratings.length !== dayList.length || ratings.some(part => !/^(?:[0-9]|10)$/.test(part))) throw new Error('Enter one explicit fatigue rating from 0 to 10 per follow-up day.');
+      const symptomSlots = dayList.map((day, index) => ({ slot_id: `fatigue-${index + 1}`, modality: 'symptom', relative_day: day }));
+      config.schedule = { slots: [...slots, ...clinicalSlots, ...symptomSlots] };
+      config.sc05_parameters = { profile_version: 'clinical-condition/1', tumor_family: 'SC-02', affected_concepts: [{ concept: 'fatigue' }], onset_day: dayList[0], recovery_day: null, internal_severity: 'mild', symptom_course: symptomSlots.map((slot, index) => ({ slot_id: slot.slot_id, concept: 'fatigue', rating: Number(ratings[index]), scale: 'simulation_0_10', presence: ratings[index] === '0' ? 'absent' : 'present' })) };
+    }
+    return config;
   }
 
   async function save(signal: AbortSignal) {
@@ -236,6 +294,7 @@ export function SimulationBuilder({ project, patient }: { project: string; patie
     if (!completion) return;
     await authorized(`/api/simulation?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&resource=complete`, signal, { completion_id: completion.id, expected_config_hash: completion.config_hash, expected_patient_revision: completion.input_revision, expected_association_head: completion.association_head, expected_current_run_id: current?.publication?.run_id ?? null, engineering_attestation_sha256: attestation });
     setMessage('Complete run published privately as an engineering fixture. Scientific review remains pending.');
+    setCurrent(await authorized<Current>(`/api/simulation?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&resource=current&branch=${encodeURIComponent(branchId)}`, signal));
   }
 
   const canFreeze = !!saved?.summary.available_actions.includes('freeze_isolated_test_run');
@@ -253,9 +312,10 @@ export function SimulationBuilder({ project, patient }: { project: string; patie
 
     <section className="card" style={{ marginTop: 16 }}>
       <h2>1. Select an authorized branch</h2>
+      {baseline ? <p><button className="button-secondary" disabled={busy} onClick={() => void act(createBranch, false)}>Create hypothetical branch from selected measurement</button><span className="field-hint">Uses the case measurement selected in Imaging. The server verifies its ownership, source permission and quality.</span></p> : <p className="field-hint">To create a branch, open <Link href={`/cases/detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&tab=imaging`}>Imaging &amp; 3D</Link>, finish a measurement, then choose Explore a hypothetical scenario.</p>}
       {branches.length ? (
         <label>Branch in this case
-          <select value={branchId} onChange={event => { setBranchId(event.target.value); setBranch(null); setSaved(null); setPreview(null); setEligibility(null); setRun(null); setJob(null); setCompletion(null); }} aria-label="Branch in this case">
+          <select value={branchId} onChange={event => { setBranchId(event.target.value); branchIdRef.current = event.target.value; const url = new URL(window.location.href); url.searchParams.set('branch', event.target.value); url.searchParams.delete('state'); url.searchParams.delete('run'); window.history.pushState(null, '', url); setBranch(null); setSaved(null); setPreview(null); setEligibility(null); setRun(null); setJob(null); setCompletion(null); }} aria-label="Branch in this case">
             {branches.map((item, index) => <option key={item.branch_id} value={item.branch_id}>Branch {index + 1} · observed baseline {String(item.observed_baseline_verified)} · {item.mode}</option>)}
           </select>
           <span className="field-hint">Branches come from the authorized case list; no UUID typing.</span>
@@ -272,12 +332,16 @@ export function SimulationBuilder({ project, patient }: { project: string; patie
       <h2>2. Explicit scenario and schedule</h2>
       <p className="field-hint">Pick a family and schedule; the builder generates owned SimulationConfig JSON. Paste is never required.</p>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(200px,1fr))', gap: 8, margin: '12px 0' }}>
-        {FAMILY.map(item => <button key={item.id} type="button" className={family === item.id ? 'button-secondary' : 'button-ghost'} style={{ textAlign: 'left' }} onClick={() => setFamily(item.id)} aria-pressed={family === item.id} aria-label={`Scenario family ${item.id}: ${item.label}`}><strong>{item.id}</strong> · {item.label}<span className="field-hint" style={{ display: 'block' }}>{item.hint}</span></button>)}
+        {FAMILY.map(item => <button key={item.id} type="button" className={family === item.id ? 'button-secondary' : 'button-ghost'} style={{ textAlign: 'left' }} onClick={() => { editDraft(); setFamily(item.id); }} aria-pressed={family === item.id} aria-label={`Scenario family ${item.id}: ${item.label}`}><strong>{item.id}</strong> · {item.label}<span className="field-hint" style={{ display: 'block' }}>{item.hint}</span></button>)}
       </div>
-      <div className="form-grid">
+      <div className="form-grid" onChange={editDraft}>
         <label>Geometry policy<select value={geometry} onChange={event => setGeometry(event.target.value as 'none' | 'anatomical_mesh')}><option value="none">Measurement only</option><option value="anatomical_mesh">Anatomical mesh</option></select><span className="field-hint">Measurement-only skips mesh regeneration.</span></label>
         <label>Follow-up days (relative)<input value={days} onChange={event => setDays(event.target.value)} inputMode="text" placeholder="10, 30, 60" /><span className="field-hint">Comma-separated relative days, not calendar dates.</span></label>
-        <label>Explicit target volume mm³<input value={target} onChange={event => setTarget(event.target.value)} inputMode="decimal" placeholder="120.5" /><span className="field-hint">Positive mm³ per target, or set a missing reason.</span></label>
+        <label>Explicit target volumes mm³<input value={target} onChange={event => setTarget(event.target.value)} inputMode="text" placeholder="One volume per day, comma-separated" /><span className="field-hint">Enter every hypothetical target explicitly in day order. Values must match the chosen family; these are assumptions, not predictions.</span></label>
+        <label>Hypothetical hemoglobin values g/dL (optional)<input value={clinicalValues} onChange={event => setClinicalValues(event.target.value)} placeholder="One value per day, or leave blank" /><span className="field-hint">Explicit artificial observations synchronized to the selected days. Blank stays missing.</span></label>
+        {(family === 'SC-02' || family === 'SC-05') && <><label>Maximum absolute size change mm³<input value={stabilityAbsolute} onChange={event => setStabilityAbsolute(event.target.value)} inputMode="decimal" /></label><label>Maximum relative size change (0–1)<input value={stabilityRelative} onChange={event => setStabilityRelative(event.target.value)} inputMode="decimal" /><span className="field-hint">Both bounds apply to the near-stable tumor course. Zero requires unchanged volume.</span></label></>}
+        {family === 'SC-04' && <><label>Turnaround day<input value={changePoint} onChange={event => setChangePoint(event.target.value)} inputMode="decimal" /></label><label>Smallest target volume mm³<input value={nadir} onChange={event => setNadir(event.target.value)} inputMode="decimal" /><span className="field-hint">The explicit targets must shrink to this value at the turnaround, then grow.</span></label></>}
+        {family === 'SC-05' && <label>Hypothetical fatigue ratings (0–10)<input value={fatigueRatings} onChange={event => setFatigueRatings(event.target.value)} placeholder="One rating per follow-up day" /><span className="field-hint">Internal simulation ratings, not clinical grades. The tumor course is explicitly near-stable.</span></label>}
         <label>Missing reason (optional)<input value={missingReason} onChange={event => setMissingReason(event.target.value)} placeholder="not_acquired" /><span className="field-hint">When set, targets stay missing with this reason.</span></label>
         <label>Seed (integer)<input value={seed} onChange={event => setSeed(event.target.value)} inputMode="numeric" /><span className="field-hint">Reproducibility seed recorded in assumptions.</span></label>
         <label>Expected current draft revision<input value={revision} onChange={event => setRevision(event.target.value)} inputMode="numeric" /><span className="field-hint">Optimistic concurrency; reload on 409.</span></label>
@@ -296,7 +360,7 @@ export function SimulationBuilder({ project, patient }: { project: string; patie
 
     <section className="card" style={{ marginTop: 16 }}>
       <h2>3. Generate and validate</h2>
-      {!canFreeze && <p className="field-hint">Generation stays disabled until the server advertises an isolated test run for an authentic accepted baseline. This is a scientific-policy gate, not a UI error.</p>}
+      {!canFreeze && <p className="field-hint">Save and inspect a draft first. Generation is available only when the server permits an isolated engineering test. Authentic baseline and qualified scientific review gates remain separate.</p>}
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
         <button className="button-secondary" disabled={busy || !canFreeze || !preview || !eligibility || !reviewed || !!run} onClick={() => void act(freeze)}>Freeze isolated test run</button>
         <button className="button-secondary" disabled={busy || !run || !!job} onClick={() => void act(generate)}>Generate complete engineering run</button>
@@ -304,6 +368,7 @@ export function SimulationBuilder({ project, patient }: { project: string; patie
       </div>
       {job && <p>Worker: {job.status} · stage {job.stage}. {job.next_action}{job.error_code && ` Error: ${job.error_code}. Preserve the previous publication; inspect failure evidence and create a new run if frozen inputs changed.`}</p>}
       {completion && <><p>Completion: {completion.status} · stage {completion.stage}. {completion.next_action}</p>{completion.validation && <table><caption>Software validation · qualified scientific review pending</caption><thead><tr><th>Level</th><th>Status</th><th>Finding</th></tr></thead><tbody>{completion.validation.findings.map((finding, index) => <tr key={index}><td>{finding.level}</td><td>{finding.status}</td><td>{finding.code}</td></tr>)}</tbody></table>}</>}
+      {completion?.status === 'ready' && <p><Link className="button-secondary" href={`/states?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&branch=${encodeURIComponent(branchId)}&run=${encodeURIComponent(completion.run_id)}`}>Inspect generated timepoints</Link></p>}
     </section>
 
     <section className="card" style={{ marginTop: 16 }}>
@@ -325,15 +390,8 @@ function SimulationBuilderFromQuery() {
 }
 
 function readLastCase(): { project: string; patient: string } | null {
-  try {
-    const raw = localStorage.getItem('canceros:last_case');
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as { project?: unknown; patient?: unknown };
-    if (typeof parsed.project === 'string' && typeof parsed.patient === 'string' && UUID.test(parsed.project) && UUID.test(parsed.patient)) {
-      return { project: parsed.project, patient: parsed.patient };
-    }
-    return null;
-  } catch { return null; }
+  const selection = readCaseSelection(new URLSearchParams(window.location.search));
+  return selection.project && selection.patient ? { project: selection.project, patient: selection.patient } : null;
 }
 
 function SimulationBuilderShell() {
@@ -344,7 +402,7 @@ function SimulationBuilderShell() {
   const applyContext = (value: { project: string; patient: string }) => setContext(value);
   return (
     <div>
-      <p className="field-hint">The builder inherits the last opened case from the workspace. Open a case once — no UUID paste needed — or enter the workspace identifiers below a single time. This one-time entry is stored only to route the same authorized case; the research session cookie still authorizes every request.</p>
+      <p className="field-hint">Open scenarios from a research case to carry its selection in the URL, or enter workspace identifiers below. Your research session authorizes every request.</p>
       <form onSubmit={event => { event.preventDefault(); if (UUID.test(project) && UUID.test(patient)) applyContext({ project, patient }); }} className="card">
         <label>Project (one-time routing)<input value={project} onChange={event => setProject(event.target.value.trim())} placeholder="Selected automatically after opening a case" /></label>
         <label>Patient (one-time routing)<input value={patient} onChange={event => setPatient(event.target.value.trim())} placeholder="Selected automatically after opening a case" /></label>

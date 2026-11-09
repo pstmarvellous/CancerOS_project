@@ -74,8 +74,8 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function authorized<T>(path: string, signal: AbortSignal): Promise<T> {
-    const response = await fetch(path, { cache: 'no-store', signal });
+  async function authorized<T>(path: string, signal: AbortSignal, query?: object): Promise<T> {
+    const response = await fetch(path, { cache: 'no-store', signal, ...(query ? { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(query) } : {}) });
     if (!response.ok) {
       const error = new Error(explain(response.status)) as Error & { status: number };
       error.status = response.status;
@@ -128,7 +128,7 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
       setCursor(page.next_cursor);
       if (!combined.length) {
         setStatus('failed');
-        setMessage('This branch has no persisted discrete states. Drag preview and autoplay are unavailable by design.');
+        setMessage('This branch has no saved discrete timepoints. Drag preview and autoplay are unavailable by design.');
         return;
       }
       const valid = requested && combined.some(item => item.snapshot.id === requested) ? requested : null;
@@ -163,6 +163,7 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
         fusion = await authorized<S['FusionReport']>(
           `/api/state-timeline?project=${encodeURIComponent(nextProject)}&patient=${encodeURIComponent(nextPatient)}&resource=fusion&state=${encodeURIComponent(target)}`,
           controller.signal,
+          { state_id: target },
         );
       } catch {
         fusion = null;
@@ -202,7 +203,7 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
     notified.current = null;
     onStateSelect?.(null);
     setStatus('loading');
-    setMessage('Branch changed. Resolving an existing persisted state on the new branch; no day is assumed.');
+    setMessage('Branch changed. Resolving an existing saved timepoint on the new branch; no day is assumed.');
     void loadStates(project, patient, next, null, key, controller);
   }
 
@@ -283,7 +284,7 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
     );
   }
 
-  const indexLabel = states && states.length ? `Observation sequence ${slider + 1} of ${states.length}` : 'No persisted states';
+  const indexLabel = states && states.length ? `Observation sequence ${slider + 1} of ${states.length}` : 'No saved timepoints';
   const comparisonTarget = compareId && states ? states.find(item => item.snapshot.id === compareId) ?? null : null;
   const comparability = loaded && compared
     ? loaded.view.snapshot.branch_id === compared.view.snapshot.branch_id
@@ -319,8 +320,8 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
         </p>
       ) : null}
       {states && states.length > 0 ? (
-        <section aria-label="Persisted state selection">
-          <h2>Persisted discrete states</h2>
+        <section aria-label="Saved timepoint selection">
+          <h2>Saved discrete timepoints</h2>
           <p>{indexLabel}. Branch begins at the shared observed baseline followed by labeled simulated follow-ups. Lab-only states carry no current scan.</p>
           <div>
             <button type="button" onClick={() => step(-1)} disabled={slider <= 0}>Previous state</button>
@@ -375,7 +376,7 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
                   void loadStates(project, patient, branch, stateId, key, controller, cursor);
                 }}
               >
-                Load more persisted states
+                Load more saved timepoints
               </button>
             </p>
           ) : null}
@@ -391,6 +392,14 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
           <p>DCE phases and examinations use separate selectors; phase changes never create visits. Historical geometry is opt-in with its own source time.</p>
           {loaded.view.stale ? <p>Historical revision or association head; current use is restricted.</p> : null}
           {loaded.view.restrictions.map(reason => <p key={reason}>Restriction: {reason}</p>)}
+          <p>
+            <Link
+              href={`/insights?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}${branch ? `&branch=${encodeURIComponent(branch)}` : ''}&state=${encodeURIComponent(loaded.view.snapshot.id)}`}
+            >
+              Explain this state in Insights →
+            </Link>
+          </p>
+          <p className="field-hint">Opens the authorized case workspace selection with this exact state; no UUID copying.</p>
           {loaded.fusion ? <StateFusionView report={loaded.fusion} /> : <p>Exact state overview is unavailable for this state. No state is inferred.</p>}
         </section>
       ) : null}
@@ -419,10 +428,10 @@ function StateTimelineBody({ initialProject, initialPatient, initialBranch, init
               ))}
             </select>
           </p>
-          {comparability ? <p>{comparability}</p> : <p>Pin a second persisted state to compare. Unregistered views state that spatial alignment is not established.</p>}
+          {comparability ? <p>{comparability}</p> : <p>Pin a second saved timepoint to compare. Unregistered views state that spatial alignment is not established.</p>}
           {compared && comparisonTarget ? (
             <div>
-              <h3>Side-by-side persisted states</h3>
+              <h3>Side-by-side saved timepoints</h3>
               <p>
                 A: {loaded?.view.snapshot.id.slice(0, 8) ?? '—'} · {loaded ? describeTime(loaded.view.snapshot) : '—'} ·{' '}
                 {loaded ? <ProvenanceBadge origin={loaded.view.snapshot.origin} /> : null}

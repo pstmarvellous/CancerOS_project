@@ -17,7 +17,7 @@ export default function SimulationPage() {
       </div>
       <Suspense fallback={<LoadingState />}>
         <CaseBoundPage>
-          {(selection) => <SimulationBuilder project={selection.project!} patient={selection.patient!} />}
+          {(selection) => <SimulationBuilder project={selection.project!} patient={selection.patient!} selectedBranch={selection.branch} />}
         </CaseBoundPage>
       </Suspense>
     </>

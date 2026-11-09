@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-11-09",
+  "steps": [
+    {
+      "journey": "D",
+      "step": "select-case",
+      "expected": "Case with eligible baseline selected",
+      "actual": "3b1b2889",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "D",
+      "step": "configure-scenario",
+      "expected": "Branch configured on measured baseline",
+      "actual": "1d7301c3",
+      "verdict": "PASS"
+    }
+  ]
+}

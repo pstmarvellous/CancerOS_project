@@ -1,5 +1,56 @@
 # Execution checkpoint
 
+## 2026-11-08 — prompts 2–6 corrected and reverified
+
+`cos-rec-01-05-reverification`: five bounded local artificial-data acceptance gates
+PASS. Repaired reactive query/case binding, empty-imaging state, requested branch
+restoration, shared preparation/serving validation and late bundle recovery,
+integrated viewer maximize/fullscreen, stale profile/chart/request lifecycles,
+bounded research fetches and retained chart history. Existing geometry engine,
+backend schemas, source documents and original maps unchanged.
+
+Actual normal foundation restart rebuilt a deliberately obsolete-version bundle
+after its original bytes were privately preserved. No manual preparation was
+needed after startup. Shared validation and a second idempotent preparation passed.
+Final checks: 203 frontend tests/36 files; 41 main +16 adjacent backend tests;
+5 real Chromium journeys, all20 scenario meshes/values/chart states, native
+fullscreen, WebGL recovery, edited/reopened profile, observation correction and
+retained history, refresh/back, inaccessible/stale selection and sign-out.
+Build/lint/types/mypy111/focused Ruff/contract drift/boundaries/hygiene passed.
+
+See [per-prompt report](testing/rec01-05-reverify/RECOVERY-REPORT.md) for exact
+files, commands, screenshots, failed attempts and limits. Three actual delegated
+AI technical reviews were integrated by root; no clinical approval is asserted.
+No commit/push/deployment/real-source transmission or live inference occurred.
+The geometric phantom stays labeled synthetic. Existing deployment tracing
+warnings, authentic source/scientific/provider/publication gates remain open.
+
+## 2026-11-08 — COS-REC-00 recovery reverification
+
+Bounded local artificial-data recovery baseline PASS on
+`cos-rec-00-security-reverification` from `12b9502`. Prior detail-route fix was
+already present and its original six tests passed; remaining service-only
+`reuse_exact` patient-grant omission reproduced and fixed. Detail SQL now scopes
+by patient too. Expanded actual HTTP tests verify A/B URL/result isolation,
+appropriate grants, denial content, no authentication and removed membership.
+Browser-storage security failure resolved using existing server-session selection
+plus URL preservation and backend reauthorization on restore. Generated Pydantic
+runtime contracts preserved while existing mypy errors corrected.
+
+Executed: 70 backend tests; 189 frontend tests/33 files; 4 Chromium journeys;
+21 overlapping case checks repeated after final Python type/discriminator fix.
+Build, TypeScript, ESLint, mypy (111 source files), focused Ruff, contract drift,
+boundaries, hygiene and known-secret public/browser artifact checks passed.
+Foundation startup/readiness verified; no database reset, discarded initial user
+work, commit, push, deployment, live inference or real-data transmission.
+
+See [recovery report](testing/rec00-reverify/RECOVERY-REPORT.md) for exact files,
+commands, failed attempts, fresh screenshots and limits. Earlier REC-00 completion
+was too broad: it omitted a failing storage check and remaining reuse boundary.
+Current PASS is only for the exercised local recovery scope. Existing Next.js
+filesystem-tracing deployment warnings and authentic-source, scientific-review,
+provider and release gates remain open.
+
 Phase4 owner-authorized2026-10-30; prompt-by-prompt implementation continues.
 COS-057–061 implemented with synthetic engineering verification; task statuses
 remain implemented_unverified for real/live/scientific review.

@@ -1,0 +1,815 @@
+{
+  "task": "COS-REC-06-09-AUDIT",
+  "queries": [
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "imaging",
+      "returncode": 0,
+      "output": "\n=== ROOT CancerOS breast cancer digital twin ===\n Research-only, time-indexed, provenance-aware breast cancer imaging, simulation and interpretation prototype. NOT validated clinical decision support. \nSources: PRD\n  --> HAS_DOMAIN D.DATA Clinical research data\n  --> HAS_DOMAIN D.IMG Medical imaging\n  --> HAS_DOMAIN D.TWIN Digital twin\n  --> HAS_DOMAIN D.SIM Synthetic longitudinal engine\n  --> HAS_DOMAIN D.AI Multimodal intelligence\n  --> HAS_DOMAIN D.UX Researcher experience\n  --> HAS_DOMAIN D.EVAL Scientific evaluation\n  --> HAS_DOMAIN D.INFRA Platform infrastructure\n  --> HAS_DOMAIN D.GOV Safety and provenance\n  --> EXCLUDES X.WHOLE Whole-body digital twin\n  --> EXCLUDES X.MULTI Multiple cancers\n  --> EXCLUDES X.CARE Clinical diagnosis/prescription\n  --> EXCLUDES X.SURV Validated prognosis/survival prediction\n  --> EXCLUDES X.GENOME Whole-genome/cell-scale simulation\n  --> EXCLUDES X.HOSP Production EHR/hospital integrations\n  --> EXCLUDES X.DRUG Drug discovery or causal therapy optimization\n  --> EXCLUDES X.PHOTOMRI Synthetic follow-up scans represented as authentic MRI\n  --> REFERENCES REF.MAMA MAMA-MIA\n  --> REFERENCES REF.NNUNET nnU-Net\n  --> REFERENCES REF.SLICER 3D Slicer\n  --> REFERENCES REF.OHIF OHIF/Cornerstone3D\n  --> REFERENCES REF.MONAI MONAI\n  --> REFERENCES REF.IDC IDC Index\n  --> REFERENCES REF.DCMQI dcmqi\n  --> REFERENCES REF.LIT Textbook and clinical standards\n  --> HAS_WORKFLOW WF.REAL Real imaging vertical slice\n  --> HAS_WORKFLOW WF.SIM Synthetic scenario vertical slice\n  --> HAS_WORKFLOW WF.NEW Add observation\n  --> HAS_WORKFLOW WF.AI Evidence linked interpretation\n  --> HAS_WORKFLOW WF.REALVAL Actual longitudinal evaluation\n  --> HAS_WORKFLOW WF.RELEASE Demo readiness\n\n=== D.DATA Clinical research data ===\n Authentic patient, imaging and clinical evidence, normalized but source-preserving. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> OWNS DATA.SOURCE Dataset and licensing registry\n  --> OWNS DATA.PATIENT ResearchPatient\n  --> OWNS DATA.DIAGNOSIS CancerDiagnosis\n  --> OWNS DATA.VISIT ClinicalVisit\n  --> OWNS DATA.STUDY ImagingStudy\n  --> OWNS DATA.SERIES ImagingSeries\n  --> OWNS DATA.SEG SegmentationArtifact\n  --> OWNS DATA.LESION Lesion\n  --> OWNS DATA.MEASURE TumorMeasurement\n  --> OWNS DATA.LABS LaboratoryResult\n  --> OWNS DATA.VITAL VitalSign\n  --> OWNS DATA.SYMPTOM SymptomObservation\n  --> OWNS DATA.TREAT TreatmentEvent\n  --> OWNS DATA.NOTE ClinicalNote\n  --> OWNS DATA.OUTCOME OutcomeObservation\n  --> OWNS DATA.PROV ProvenanceRecord\n  --> OWNS DATA.BRANCH SimulationBranch\n  --> OWNS DATA.RUN SimulationRun\n  --> OWNS DATA.ARTIFACT Artifact\n\n=== D.IMG Medical imaging ===\n MRI loading, preprocessing, masks, measurements, geometric representations and spatial quality. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS IMG.INGEST DICOM and NIfTI ingestion\n  --> IMPLEMENTS IMG.PRE MRI preprocessing\n  --> IMPLEMENTS IMG.MASK Mask classification and import\n  --> IMPLEMENTS IMG.MODEL Optional automated segmentation\n  --> IMPLEMENTS IMG.VOL Quantitative measurement\n  --> IMPLEMENTS IMG.REG Longitudinal registration\n  --> IMPLEMENTS IMG.TRACK Cross-visit lesion identity\n  --> IMPLEMENTS IMG.MESH Mask-to-mesh conversion\n  --> IMPLEMENTS IMG.SYNMESH Synthetic lesion geometry\n  --> IMPLEMENTS IMG.VIEW Web MRI viewer\n\n=== DATA.STUDY ImagingStudy ===\n Study with modality, source UID, scan date and acquisition context. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- RELATES_TO DATA.PATIENT ResearchPatient\n  --> RELATES_TO DATA.SERIES ImagingSeries\n  --> RELATES_TO DATA.SEG SegmentationArtifact\n\n=== DATA.SERIES ImagingSeries ===\n Acquisition/contrast phase with orientation, spacing, origin and physical coordinate transform. \nSources: DATA,API\n  <-- OWNS D.DATA Clinical research data\n  <-- RELATES_TO DATA.STUDY ImagingStudy\n\n=== TWIN.REAL Genuine longitudinal viewing ===\n At least one real repeated-imaging case, kept separate from hypothetical trajectories. \nSources: PRD,IMG,SIM\n  <-- IMPLEMENTS D.TWIN Digital twin\n  <-- HAS_STEP WF.REALVAL Actual longitudinal evaluation\n  <-- WORKFLOW_PRECEDES IMG.TRACK Cross-visit lesion identity\n  --> WORKFLOW_PRECEDES EVAL.REAL Authentic longitudinal case evaluation\n\n=== SIM.OBS Observation simulation ===\n Timestamped labs, vitals, symptoms, imaging geometry, notes, irregular sampling and missingness. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES SIM.LATENT Latent evolution state\n  --> WORKFLOW_PRECEDES IMG.SYNMESH Synthetic lesion geometry\n\n=== AI.FUSE Late multimodal fusion ===\n Combine imaging, labs, vitals, symptoms, notes, treatment and missingness with provenance, conflict status. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- PRECEDES AI.NLP Clinical note extraction\n  <-- PRECEDES AI.FEAT Deterministic multimodal features\n  --> PRECEDES AI.LLM Grounded explanation\n  <-- HAS_STEP WF.AI Evidence linked interpretation\n  <-- WORKFLOW_PRECEDES AI.FEAT Deterministic multimodal features\n  --> WORKFLOW_PRECEDES AI.RETR Evidence retrieval\n\n=== INF.OBJECT Imaging/object storage ===\n Private originals, derivatives, meshes, signed read paths and checksums. \nSources: ARCH,API,ROAD\n  <-- IMPLEMENTS D.INFRA Platform infrastructure\n  <-- CONSTRAINS GOV.PRIV Privacy and access\n\n=== INF.JOBS Async imaging jobs ===\n Bounded-memory CPU preparation, remote GPU when needed, status, retry and idempotence. \nSources: ARCH,API,ROAD\n  <-- IMPLEMENTS D.INFRA Platform infrastructure\n\n=== EVAL.SEG Imaging segmentation metrics ===\n Dice, HD95, measured volume error on relevant held-out expert masks, no unsupported claims. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  --> VERIFIES IMG.MODEL Optional automated segmentation\n\n=== REF.IDC IDC Index ===\n Reproducible imaging manifests and subset acquisition. \nSources: REF\n  <-- REFERENCES ROOT CancerOS breast cancer digital twin\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "imaging",
+      "returncode": 0,
+      "output": "\nAI.04 — Multimodal fusion\nDesign: Combine observed imaging, labs, notes, symptoms and treatments with conflict/provenance markers\nAcceptance: Cross-source conflicts surfaced\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  READ A11 Longitudinal Data Analysis — Wiley — Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles — https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486\n  PAPER P03 TRIPOD-LLM reporting guideline —  — https://www.nature.com/articles/s41591-024-03425-5\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "imaging",
+      "returncode": 0,
+      "output": "\n== AI.04 Multimodal fusion ==\nIntent: Combine observed imaging, labs, notes, symptoms and treatments with conflict/provenance markers \nTest: Cross-source conflicts surfaced\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n BOOK/LECTURE A11 Longitudinal Data Analysis — Wiley | Mixed-effects models, repeated-measure correlation and missing longitudinal observations; confirm edition-specific chapter titles | https://onlinelibrary.wiley.com/doi/book/10.1002/0470036486 | precise chapter pending\n PAPER P03 TRIPOD-LLM reporting guideline | https://www.nature.com/articles/s41591-024-03425-5\n REPOSITORY R15 MONAI Deploy App SDK | https://github.com/Project-MONAI/monai-deploy-app-sdk \n  Inspect: Inspect examples/apps and operator contracts \n  Reuse: Study preprocessing/inference/postprocessing pipeline pattern \n  Avoid: Do not require heavyweight SDK on local laptop \n  Verify: CPU sample chain smoke test\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "interpretation",
+      "returncode": 0,
+      "output": "\n=== ROOT CancerOS breast cancer digital twin ===\n Research-only, time-indexed, provenance-aware breast cancer imaging, simulation and interpretation prototype. NOT validated clinical decision support. \nSources: PRD\n  --> HAS_DOMAIN D.DATA Clinical research data\n  --> HAS_DOMAIN D.IMG Medical imaging\n  --> HAS_DOMAIN D.TWIN Digital twin\n  --> HAS_DOMAIN D.SIM Synthetic longitudinal engine\n  --> HAS_DOMAIN D.AI Multimodal intelligence\n  --> HAS_DOMAIN D.UX Researcher experience\n  --> HAS_DOMAIN D.EVAL Scientific evaluation\n  --> HAS_DOMAIN D.INFRA Platform infrastructure\n  --> HAS_DOMAIN D.GOV Safety and provenance\n  --> EXCLUDES X.WHOLE Whole-body digital twin\n  --> EXCLUDES X.MULTI Multiple cancers\n  --> EXCLUDES X.CARE Clinical diagnosis/prescription\n  --> EXCLUDES X.SURV Validated prognosis/survival prediction\n  --> EXCLUDES X.GENOME Whole-genome/cell-scale simulation\n  --> EXCLUDES X.HOSP Production EHR/hospital integrations\n  --> EXCLUDES X.DRUG Drug discovery or causal therapy optimization\n  --> EXCLUDES X.PHOTOMRI Synthetic follow-up scans represented as authentic MRI\n  --> REFERENCES REF.MAMA MAMA-MIA\n  --> REFERENCES REF.NNUNET nnU-Net\n  --> REFERENCES REF.SLICER 3D Slicer\n  --> REFERENCES REF.OHIF OHIF/Cornerstone3D\n  --> REFERENCES REF.MONAI MONAI\n  --> REFERENCES REF.IDC IDC Index\n  --> REFERENCES REF.DCMQI dcmqi\n  --> REFERENCES REF.LIT Textbook and clinical standards\n  --> HAS_WORKFLOW WF.REAL Real imaging vertical slice\n  --> HAS_WORKFLOW WF.SIM Synthetic scenario vertical slice\n  --> HAS_WORKFLOW WF.NEW Add observation\n  --> HAS_WORKFLOW WF.AI Evidence linked interpretation\n  --> HAS_WORKFLOW WF.REALVAL Actual longitudinal evaluation\n  --> HAS_WORKFLOW WF.RELEASE Demo readiness\n\n=== D.AI Multimodal intelligence ===\n Deterministic analysis, constrained NLP, retrieval and validated narrative interpretation. \nSources: PRD,ARCH\n  <-- HAS_DOMAIN ROOT CancerOS breast cancer digital twin\n  --> IMPLEMENTS AI.FEAT Deterministic multimodal features\n  --> IMPLEMENTS AI.NLP Clinical note extraction\n  --> IMPLEMENTS AI.FUSE Late multimodal fusion\n  --> IMPLEMENTS AI.TEMP Temporal analysis\n  --> IMPLEMENTS AI.FORECAST Optional future-state forecasts\n  --> IMPLEMENTS AI.KNOW Clinical knowledge representation\n  --> IMPLEMENTS AI.RETR Evidence retrieval\n  --> IMPLEMENTS AI.LLM Grounded explanation\n  --> IMPLEMENTS AI.GUARD Output safety validation\n  --> IMPLEMENTS AI.FALLBACK AI outage tolerance\n\n=== SIM.VALID Simulation validation ===\n Reject structural, temporal, unit, cross-modal, geometry, provenance and unsafe interpretation failures. \nSources: SIM,DATA\n  <-- IMPLEMENTS D.SIM Synthetic longitudinal engine\n  <-- HAS_STEP WF.SIM Synthetic scenario vertical slice\n  <-- WORKFLOW_PRECEDES IMG.SYNMESH Synthetic lesion geometry\n  --> WORKFLOW_PRECEDES TWIN.BRANCH Scenario branch isolation\n  <-- CONSTRAINS GOV.CTCAE Adverse-event grading boundary\n  <-- VERIFIES EVAL.SIM Simulation integrity evaluation\n\n=== AI.LLM Grounded explanation ===\n Structured interpretation referencing exact measurements, provenance, evidence, uncertainty and limits. \nSources: AI,SAF\n  <-- IMPLEMENTS D.AI Multimodal intelligence\n  <-- PRECEDES AI.FUSE Late multimodal fusion\n  <-- PRECEDES AI.RETR Evidence retrieval\n  --> PRECEDES AI.GUARD Output safety validation\n  <-- HAS_STEP WF.AI Evidence linked interpretation\n  <-- WORKFLOW_PRECEDES AI.RETR Evidence retrieval\n  --> WORKFLOW_PRECEDES AI.GUARD Output safety validation\n  <-- CONSTRAINS GOV.PROV Five provenance classes\n  <-- CONSTRAINS GOV.RECIST Formal response boundary\n\n=== EVAL.E2E End-to-end demo ===\n One MRI → mask → measurable mesh → five synthetic scenarios → timeline → AI interpretation. \nSources: TEST\n  <-- TESTS D.EVAL Scientific evaluation\n  <-- HAS_STEP WF.RELEASE Demo readiness\n  --> WORKFLOW_PRECEDES EVAL.AI NLP/LLM grounding evaluation\n  --> VERIFIES WF.REAL Real imaging vertical slice\n  --> VERIFIES WF.SIM Synthetic scenario vertical slice\n\n=== WF.AI Evidence linked interpretation ===\n Ordered sequence; inspect dependent nodes before implementation. \nSources: PRD,ROAD\n  <-- HAS_WORKFLOW ROOT CancerOS breast cancer digital twin\n  --> HAS_STEP AI.NLP Clinical note extraction\n  --> HAS_STEP AI.FEAT Deterministic multimodal features\n  --> HAS_STEP AI.FUSE Late multimodal fusion\n  --> HAS_STEP AI.RETR Evidence retrieval\n  --> HAS_STEP AI.LLM Grounded explanation\n  --> HAS_STEP AI.GUARD Output safety validation\n  --> HAS_STEP UX.INSIGHT AI insights with evidence\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "interpretation",
+      "returncode": 0,
+      "output": "\nAI.06 — Interpretation output guard\nDesign: Evidence-constrained summaries, validation, provenance and no individualized prescriptions\nAcceptance: Unsupported numeric and medical claims rejected\n  READ A14 TRIPOD-LLM — Model/data/evaluation reporting checklist; consult full checklist and elaboration — https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/\n  READ A12 NCI Breast Cancer Treatment PDQ — Stage-specific treatment, receptor status and neoadjuvant therapy sections — https://www.cancer.gov/types/breast/hp/breast-treatment-pdq\n  PAPER P03 TRIPOD-LLM reporting guideline —  — https://www.nature.com/articles/s41591-024-03425-5\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "interpretation",
+      "returncode": 0,
+      "output": "\n== AI.06 Interpretation output guard ==\nIntent: Evidence-constrained summaries, validation, provenance and no individualized prescriptions \nTest: Unsupported numeric and medical claims rejected\n BOOK/LECTURE A14 TRIPOD-LLM | Model/data/evaluation reporting checklist; consult full checklist and elaboration | https://pmc.ncbi.nlm.nih.gov/articles/PMC12104976/ | verified publication\n BOOK/LECTURE A12 NCI Breast Cancer Treatment PDQ | Stage-specific treatment, receptor status and neoadjuvant therapy sections | https://www.cancer.gov/types/breast/hp/breast-treatment-pdq | verified document; topic-specific revision required\n PAPER P03 TRIPOD-LLM reporting guideline | https://www.nature.com/articles/s41591-024-03425-5\n REPOSITORY R15 MONAI Deploy App SDK | https://github.com/Project-MONAI/monai-deploy-app-sdk \n  Inspect: Inspect examples/apps and operator contracts \n  Reuse: Study preprocessing/inference/postprocessing pipeline pattern \n  Avoid: Do not require heavyweight SDK on local laptop \n  Verify: CPU sample chain smoke test\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "usability",
+      "returncode": 1,
+      "output": "",
+      "error": "No matching nodes\n"
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "usability",
+      "returncode": 0,
+      "output": "No matching behavior. Try a shorter search term.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "usability",
+      "returncode": 1,
+      "output": "No mapped behavior found; use source specifications and record an unmapped task.\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_1/query_map.py",
+      "query": "verification",
+      "returncode": 0,
+      "output": "\n=== INF.CI Continuous verification ===\n Unit/integration/e2e tests, static checks, version pinning and audit logs. \nSources: ARCH,API,ROAD\n  <-- IMPLEMENTS D.INFRA Platform infrastructure\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/Knowlage_map_2/query_academic_map.py",
+      "query": "verification",
+      "returncode": 0,
+      "output": "\nSIM.08 — Simulation credibility tests\nDesign: Distinguish program verification, fit/calibration, external validation and context of use\nAcceptance: Report independent synthetic and real-case metrics\n  READ A09 Stan User’s Guide — Posterior and Prior Predictive Checks — https://mc-stan.org/docs/stan-users-guide/ppcs.html\n  READ A15 FDA Computational Model Credibility Guidance — Context of use; model verification, validation and credibility assessment — https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions\n  REPO R10 Stan — probabilistic model reference — https://github.com/stan-dev/stan\n  PAPER P05 Breast MRI clinical trial image collections —  — https://www.cancerimagingarchive.net/collection/ispy2/\n",
+      "error": ""
+    },
+    {
+      "script": "docs/Agent_knowledge_map/CancerOS_Repository_and_Scientific_Knowledge_Maps/reference-maps/shared/query_references.py",
+      "query": "verification",
+      "returncode": 0,
+      "output": "\n== SIM.08 Simulation credibility tests ==\nIntent: Distinguish program verification, fit/calibration, external validation and context of use \nTest: Report independent synthetic and real-case metrics\n BOOK/LECTURE A09 Stan User’s Guide | Posterior and Prior Predictive Checks | https://mc-stan.org/docs/stan-users-guide/ppcs.html | verified section\n BOOK/LECTURE A15 FDA Computational Model Credibility Guidance | Context of use; model verification, validation and credibility assessment | https://www.fda.gov/regulatory-information/search-fda-guidance-documents/assessing-credibility-computational-modeling-and-simulation-medical-device-submissions | applicability limited to intended guidance scope\n PAPER P05 Breast MRI clinical trial image collections | https://www.cancerimagingarchive.net/collection/ispy2/\n REPOSITORY R10 Stan | https://github.com/stan-dev/stan \n  Inspect: Inspect example models, diagnostics and posterior predictive workflows \n  Reuse: Adopt mathematical diagnostics methodology; runtime integration optional \n  Avoid: Do not label statistical checks as clinical validation \n  Verify: Seed reproducibility and simulated vs observed distribution checks\n",
+      "error": ""
+    }
+  ],
+  "capability_node_ids": [
+    "AI.FUSE",
+    "AI.LLM",
+    "D.AI",
+    "D.DATA",
+    "D.IMG",
+    "DATA.SERIES",
+    "DATA.STUDY",
+    "EVAL.E2E",
+    "EVAL.SEG",
+    "INF.CI",
+    "INF.JOBS",
+    "INF.OBJECT",
+    "REF.IDC",
+    "REF.LIT",
+    "ROOT",
+    "SIM.OBS",
+    "SIM.VALID",
+    "TWIN.REAL",
+    "WF.AI",
+    "WF.REAL"
+  ],
+  "academic_behavior_ids": [
+    "DAT.01",
+    "DAT.02",
+    "DAT.03",
+    "DAT.04",
+    "IMG.01",
+    "IMG.02",
+    "IMG.03",
+    "IMG.04",
+    "IMG.05",
+    "IMG.06",
+    "IMG.07",
+    "IMG.08",
+    "IMG.09",
+    "IMG.10",
+    "IMG.11",
+    "IMG.12",
+    "IMG.13",
+    "TWIN.01",
+    "TWIN.02",
+    "TWIN.03",
+    "SIM.01",
+    "SIM.02",
+    "SIM.03",
+    "SIM.04",
+    "SIM.05",
+    "SIM.06",
+    "SIM.07",
+    "SIM.08",
+    "SIM.09",
+    "AI.01",
+    "AI.02",
+    "AI.03",
+    "AI.04",
+    "AI.05",
+    "AI.06",
+    "EVAL.01",
+    "EVAL.02",
+    "EVAL.03",
+    "UX.01",
+    "OPS.01"
+  ],
+  "edges": [
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.DATA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.IMG"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.TWIN"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.SIM"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.AI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.UX"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.EVAL"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.INFRA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_DOMAIN",
+      "to_id": "D.GOV"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SOURCE"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.DIAGNOSIS"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.VISIT"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.STUDY"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SERIES"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SEG"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.LESION"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.MEASURE"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.LABS"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.VITAL"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.SYMPTOM"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.TREAT"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.NOTE"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.OUTCOME"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.PROV"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.BRANCH"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.RUN"
+    },
+    {
+      "from_id": "D.DATA",
+      "relation": "OWNS",
+      "to_id": "DATA.ARTIFACT"
+    },
+    {
+      "from_id": "DATA.PATIENT",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.STUDY"
+    },
+    {
+      "from_id": "DATA.STUDY",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.SERIES"
+    },
+    {
+      "from_id": "DATA.STUDY",
+      "relation": "RELATES_TO",
+      "to_id": "DATA.SEG"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MODEL"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.REG"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.TRACK"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "D.IMG",
+      "relation": "IMPLEMENTS",
+      "to_id": "IMG.VIEW"
+    },
+    {
+      "from_id": "D.TWIN",
+      "relation": "IMPLEMENTS",
+      "to_id": "TWIN.REAL"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "D.SIM",
+      "relation": "IMPLEMENTS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FEAT"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.NLP"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.TEMP"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FORECAST"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.KNOW"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.RETR"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "D.AI",
+      "relation": "IMPLEMENTS",
+      "to_id": "AI.FALLBACK"
+    },
+    {
+      "from_id": "AI.NLP",
+      "relation": "PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.RETR",
+      "relation": "PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.LLM",
+      "relation": "PRECEDES",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.OBJECT"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.JOBS"
+    },
+    {
+      "from_id": "D.INFRA",
+      "relation": "IMPLEMENTS",
+      "to_id": "INF.CI"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.SEG"
+    },
+    {
+      "from_id": "D.EVAL",
+      "relation": "TESTS",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.WHOLE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.MULTI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.CARE"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.SURV"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.GENOME"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.HOSP"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.DRUG"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "EXCLUDES",
+      "to_id": "X.PHOTOMRI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.MAMA"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.NNUNET"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.SLICER"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.OHIF"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.MONAI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.IDC"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.DCMQI"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "REFERENCES",
+      "to_id": "REF.LIT"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.SOURCE"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "DATA.PATIENT"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.INGEST"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.PRE"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.MASK"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.VOL"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "IMG.MESH"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "UX.3D"
+    },
+    {
+      "from_id": "WF.REAL",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.PHANTOM"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.SIM"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "WF.SIM",
+      "relation": "HAS_STEP",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "SIM.LATENT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.OBS"
+    },
+    {
+      "from_id": "SIM.OBS",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "IMG.SYNMESH"
+    },
+    {
+      "from_id": "IMG.SYNMESH",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "SIM.VALID",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.BRANCH"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.NEW"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.AI"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.NLP"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FEAT"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.RETR"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "WF.AI",
+      "relation": "HAS_STEP",
+      "to_id": "UX.INSIGHT"
+    },
+    {
+      "from_id": "AI.FEAT",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.FUSE"
+    },
+    {
+      "from_id": "AI.FUSE",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.RETR"
+    },
+    {
+      "from_id": "AI.RETR",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "AI.LLM",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "AI.GUARD"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.REALVAL"
+    },
+    {
+      "from_id": "WF.REALVAL",
+      "relation": "HAS_STEP",
+      "to_id": "TWIN.REAL"
+    },
+    {
+      "from_id": "IMG.TRACK",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "TWIN.REAL"
+    },
+    {
+      "from_id": "TWIN.REAL",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.REAL"
+    },
+    {
+      "from_id": "ROOT",
+      "relation": "HAS_WORKFLOW",
+      "to_id": "WF.RELEASE"
+    },
+    {
+      "from_id": "WF.RELEASE",
+      "relation": "HAS_STEP",
+      "to_id": "EVAL.E2E"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "WORKFLOW_PRECEDES",
+      "to_id": "EVAL.AI"
+    },
+    {
+      "from_id": "GOV.PROV",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "GOV.RECIST",
+      "relation": "CONSTRAINS",
+      "to_id": "AI.LLM"
+    },
+    {
+      "from_id": "GOV.CTCAE",
+      "relation": "CONSTRAINS",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "GOV.PRIV",
+      "relation": "CONSTRAINS",
+      "to_id": "INF.OBJECT"
+    },
+    {
+      "from_id": "EVAL.SEG",
+      "relation": "VERIFIES",
+      "to_id": "IMG.MODEL"
+    },
+    {
+      "from_id": "EVAL.SIM",
+      "relation": "VERIFIES",
+      "to_id": "SIM.VALID"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.REAL"
+    },
+    {
+      "from_id": "EVAL.E2E",
+      "relation": "VERIFIES",
+      "to_id": "WF.SIM"
+    }
+  ],
+  "mapped_source_ids": [
+    "A01",
+    "A02",
+    "A03",
+    "A04",
+    "A05",
+    "A06",
+    "A07",
+    "A08",
+    "A09",
+    "A10",
+    "A11",
+    "A12",
+    "A13",
+    "A14",
+    "A15",
+    "A16",
+    "A17",
+    "A18",
+    "P01",
+    "P02",
+    "P03",
+    "P04",
+    "P05",
+    "R01",
+    "R02",
+    "R03",
+    "R04",
+    "R05",
+    "R06",
+    "R07",
+    "R10",
+    "R11"
+  ],
+  "source_sections_inspected": "COS-REC-06–09 acceptance and mandatory execution rules; SPEC-005 imaging; SPEC-008 ownership/contracts; SPEC-009 UI; SPEC-010 safety; SPEC-011 verification"
+}

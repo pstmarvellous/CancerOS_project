@@ -22,8 +22,8 @@ export default function Home() {
           <>
             <span className="button-primary" aria-disabled="true" style={{opacity:0.55}}>Explore Interactive Demo</span>
             <p className="field-hint" role="status" style={{flexBasis:'100%', margin:0}}>
-              The interactive demo is being prepared. Run <code>uv run python scripts/prepare_synthetic_demo.py</code> once,
-              then reload this page. Research cases remain available below.
+              The interactive demo is temporarily unavailable. Reload this page to try again,
+              or create or open a research case below.
             </p>
           </>
         )}

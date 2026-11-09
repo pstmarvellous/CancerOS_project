@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 
-const base = 'http://127.0.0.1:3001';
-const output = 'docs/engineering/testing/rec05-cases';
+const base = process.env.CANCEROS_BROWSER_BASE_URL ?? 'http://127.0.0.1:3001';
+const output = process.env.CANCEROS_BROWSER_EVIDENCE_DIR ? `${process.env.CANCEROS_BROWSER_EVIDENCE_DIR}/cases` : 'docs/engineering/testing/rec05-cases';
 const bundle = '.local/product-browser-fixture.json';
 
 function data() {
@@ -44,12 +44,22 @@ test('REC-05 research cases: create, profile, observe, correct, refresh, isolati
   const urlA = new URL(page.url());
   const patientA = urlA.searchParams.get('patient')!;
   await expect(page.getByRole('heading', { name: 'Breast Cancer Research Example A', level: 3 })).toBeVisible({ timeout: 30000 });
+  expect(await page.evaluate(() => [localStorage.length, sessionStorage.length])).toEqual([0, 0]);
   await page.screenshot({ path: `${output}/01-case-a-created.png` });
 
   // 2-3. Save the profile and observe it.
   await expect(page.getByText(codeA, { exact: true }).first()).toBeVisible({ timeout: 30000 });
   const profile = page.getByRole('region', { name: 'Research profile editor' });
   await expect(profile.getByText('Artificial register entry 042')).toBeVisible();
+  await profile.getByRole('button', { name: 'Edit profile' }).click();
+  const profileForm = page.getByRole('form', { name: 'Edit research profile' });
+  await profileForm.getByLabel(/Case title/).fill('Breast Cancer Research Example A — saved revision');
+  await profileForm.getByLabel('Documented medical history', { exact: true }).fill('Artificial profile revision for workflow verification.');
+  await profileForm.getByRole('button', { name: 'Save profile revision' }).click();
+  await expect(profile.getByText('Profile saved. Previous revisions are retained.')).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Breast Cancer Research Example A — saved revision', exact: true })).toBeVisible();
+  await expect(profile.getByText('Artificial profile revision for workflow verification.')).toBeVisible();
   await page.screenshot({ path: `${output}/02-profile.png` });
 
   // Save an artificial observation: Hemoglobin 12.3 g/dL.
@@ -76,6 +86,11 @@ test('REC-05 research cases: create, profile, observe, correct, refresh, isolati
   await form.getByRole('button', { name: 'Save observation', exact: true }).click();
   await expect(timeline.getByText('12.4 g/dL', { exact: true })).toBeVisible({ timeout: 30000 });
   await expect(originalRow.getByText(/Superseded/)).toBeVisible();
+  await page.getByRole('tab', { name: /^Charts:/ }).click();
+  const chartTable = page.getByRole('region', { name: 'Clinical record parity table' });
+  await expect(chartTable.getByText('12.4 g/dL', { exact: true })).toBeVisible();
+  await expect(chartTable.getByText('12.3 g/dL', { exact: true })).toBeVisible();
+  await page.getByRole('tab', { name: /Clinical Records/ }).click();
   await page.screenshot({ path: `${output}/04-correction.png` });
 
   // 5. Refresh retains the latest value and history.

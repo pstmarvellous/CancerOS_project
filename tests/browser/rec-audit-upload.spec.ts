@@ -1,0 +1,95 @@
+import { expect, test } from '@playwright/test';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+
+const base = process.env.CANCEROS_BROWSER_BASE_URL ?? 'http://127.0.0.1:3001';
+const output = 'docs/engineering/testing/rec06-09-audit/upload';
+
+test('audit actual browser byte upload, mask alignment, deterministic measurement and mesh', async ({ page, context }) => {
+  test.setTimeout(420000);
+  const bundle = JSON.parse(readFileSync('.local/product-browser-fixture.json', 'utf8')) as { admin_token: string; synthetic_only: boolean };
+  const seed = JSON.parse(readFileSync('.local/recovery-upload.json', 'utf8')) as {
+    synthetic_only: boolean; project_id: string; patient_id: string; study_id: string;
+    image_path: string; mask_path: string; image_manifest: unknown; mask_manifest: unknown;
+    image_sha256: string; mask_sha256: string; expected_region_volume_mm3: string; pre_browser_import_count: number;
+  };
+  expect(bundle.synthetic_only && seed.synthetic_only).toBe(true);
+  expect(seed.pre_browser_import_count).toBe(0);
+  mkdirSync(output, { recursive: true });
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  const stages: { status: number; sha256: string; storage_status: string }[] = [];
+  page.on('response', async response => {
+    if (response.url().includes('/api/case-imaging-workflow?') && new URL(response.url()).searchParams.get('resource') === 'file') {
+      const receipt = await response.json();
+      stages.push({ status: response.status(), sha256: receipt.sha256, storage_status: receipt.status });
+    }
+  });
+  const steps: { step: string; verdict: string; evidence: string }[] = [];
+  const record = (step: string, evidence: string) => steps.push({ step, verdict: 'PASS', evidence });
+  await context.clearCookies();
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(`${base}/cases`);
+  await page.getByLabel('Research access token').fill(bundle.admin_token);
+  await page.getByRole('button', { name: 'Sign in to research workspace' }).click();
+  await expect(page.getByRole('button', { name: 'New research case', exact: true })).toBeVisible({ timeout: 30000 });
+  await page.goto(`${base}/cases/detail?project=${seed.project_id}&patient=${seed.patient_id}&tab=imaging`);
+  await expect(page.getByRole('heading', { name: 'Add Imaging Study' })).toBeVisible();
+  await expect(page.getByText(/No imaging studies are associated with this case/)).toBeVisible();
+  record('empty-initial-case', 'Browser started with zero associated/staged imports; setup registered sources and generated local bytes only.');
+  const summary = page.getByText('Import authorized imaging or associate a source mask (administrator)', { exact: true });
+  await summary.click();
+  await page.getByLabel('NIfTI source file').setInputFiles(seed.image_path);
+  await page.getByLabel('Administrator source manifest').fill(JSON.stringify(seed.image_manifest));
+  const confirmed = page.waitForResponse(response => response.url().includes('resource=confirmation') && response.request().method() === 'POST');
+  await page.getByRole('button', { name: 'Review complete — submit study import' }).click();
+  expect((await confirmed).status()).toBe(200);
+  await expect.poll(() => stages.length).toBe(1);
+  expect(stages[0]).toEqual({ status: 201, sha256: seed.image_sha256, storage_status: 'privately_staged' });
+  await expect(page.getByLabel('Associated study')).toBeVisible();
+  await page.getByLabel('Associated study').selectOption(seed.study_id);
+  await page.getByLabel('Study import').selectOption({ index: 1 });
+  await expect(page.getByRole('button', { name: /^(Check|Re-check) image geometry$/ })).toBeVisible();
+  record('browser-file-import', 'File input sent original bytes to backend private staging; exact registered SHA matched; explicit preview and confirmation associated it with the selected case.');
+  await page.getByRole('button', { name: /^(Check|Re-check) image geometry$/ }).click();
+  await expect(page.getByText('2 × 3 × 4 mm', { exact: true })).toBeVisible({ timeout: 60000 });
+  await expect(page.getByText('This imaging study has no compatible verified region mask. A 3D tumor measurement is not yet available.', { exact: true })).toBeVisible();
+  record('verified-geometry-no-mask', 'Actual server geometry showed 2×3×4 mm spacing and withheld measurement without a mask.');
+  await page.screenshot({ path: `${output}/AUDIT-upload-01-no-mask.png` });
+  await page.reload();
+  await expect(page.getByLabel('Associated study')).toHaveValue(seed.study_id, { timeout: 30000 });
+  await expect(page.getByRole('button', { name: /^(Check|Re-check) image geometry$/ })).toBeVisible();
+  record('association-after-refresh', 'Associated study and import restored through actual owned backend discovery after page reload.');
+  await page.getByRole('button', { name: /^(Check|Re-check) image geometry$/ }).click();
+  await expect(page.getByText('2 × 3 × 4 mm', { exact: true })).toBeVisible({ timeout: 60000 });
+  await summary.click();
+  await page.getByLabel('Import purpose').selectOption('mask');
+  await page.getByLabel('NIfTI source file').setInputFiles(seed.mask_path);
+  await page.getByLabel('Administrator source manifest').fill(JSON.stringify(seed.mask_manifest));
+  const annotated = page.waitForResponse(response => response.url().includes('resource=annotation') && response.request().method() === 'POST');
+  await page.getByRole('button', { name: 'Review complete — submit source mask' }).click();
+  expect((await annotated).status()).toBe(201);
+  await expect.poll(() => stages.length).toBe(2);
+  expect(stages[1]).toEqual({ status: 201, sha256: seed.mask_sha256, storage_status: 'privately_staged' });
+  // Reloading discovery restores the import; geometry must be explicitly re-read.
+  await expect(page.getByRole('button', { name: /^(Check|Re-check) image geometry$/ })).toBeVisible({ timeout: 30000 });
+  await page.getByRole('button', { name: /^(Check|Re-check) image geometry$/ }).click();
+  await page.getByLabel('Authorized region mask').selectOption({ index: 1 });
+  await expect(page.getByText(/Mask technical QC passed/)).toBeVisible({ timeout: 60000 });
+  record('browser-mask-import-alignment-qc', 'Original mask bytes privately staged; explicit binding, exact-grid alignment, functional-region annotation and technical QC completed through UI calls.');
+  await page.getByRole('button', { name: 'Calculate measurement and reconstruct 3D' }).click();
+  await expect(page.getByText(`Region volume: ${seed.expected_region_volume_mm3} mm³. Origin: SYNTHETIC_GENERATED. Scientific review: pending.`, { exact: true })).toBeVisible({ timeout: 60000 });
+  const open = page.getByRole('link', { name: 'Open 3D Model', exact: true });
+  await expect(open).toBeVisible({ timeout: 180000 });
+  expect(await open.getAttribute('href')).toContain('mesh_qc=');
+  record('actual-measurement-mesh-workers', 'Deterministic 8-voxel source-mask region measured 192 mm³; mesh and mesh-QC jobs succeeded, with exact completed report link.');
+  await page.screenshot({ path: `${output}/AUDIT-upload-02-completed.png` });
+  await open.click();
+  await expect(page.locator('canvas[data-render-ready=true]')).toBeVisible({ timeout: 60000 });
+  await expect(page.getByLabel('Server measurement')).toContainText('192 mm³');
+  record('exact-mesh-browser-render', 'Exact completed private model rendered in WebGL with authoritative 192 mm³ server overlay.');
+  await page.locator('canvas[data-render-ready=true]').scrollIntoViewIfNeeded();
+  await expect(page.locator('canvas[data-render-ready=true]')).toBeInViewport();
+  await page.screenshot({ path: `${output}/AUDIT-upload-03-render.png`, fullPage: true });
+  expect(errors).toEqual([]);
+  writeFileSync(`${output}/audit-browser-upload.json`, JSON.stringify({ recorded_at: new Date().toISOString(), scope: 'synthetic engineering fixture only; authentic MRI gate remains blocked', setup_staged_bytes: false, steps, byte_staging_receipts: stages, page_errors: errors }, null, 2));
+});

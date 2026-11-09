@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 
 const base = process.env.CANCEROS_BROWSER_BASE_URL ?? 'http://127.0.0.1:3000';
-const output = 'docs/engineering/testing/ux-recovery';
+const output = process.env.CANCEROS_BROWSER_EVIDENCE_DIR ? `${process.env.CANCEROS_BROWSER_EVIDENCE_DIR}/demo` : 'docs/engineering/testing/ux-recovery';
 test.use({ actionTimeout: 15000 });
 
 test('first-time digital twin journey: actual WebGL, all scenarios, history and observations', async ({ page, context }) => {
@@ -16,10 +16,10 @@ test('first-time digital twin journey: actual WebGL, all scenarios, history and 
   const backendRequests: string[] = [];
   page.on('request', request => { if (request.url().includes(':8000')) backendRequests.push(request.url()); });
   await page.goto(base);
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Evolution in 3D');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Explore How a Tumor Could Change Over Time');
   await expect(page.getByRole('button', { name: 'Check API connection' })).toHaveCount(0);
   await page.screenshot({ path: `${output}/01-home.png`, fullPage: true });
-  await page.getByRole('link', { name: 'Launch Digital Twin Demo', exact: true }).click();
+  await page.getByRole('link', { name: 'Explore Interactive Demo', exact: true }).click();
   const canvas = page.locator('canvas[data-render-ready=true]');
   await expect(canvas).toBeVisible({ timeout: 60000 });
   await expect(page.getByTestId('demo-volume')).toHaveText('216 mm³');
@@ -29,21 +29,22 @@ test('first-time digital twin journey: actual WebGL, all scenarios, history and 
   expect(session?.httpOnly).toBe(true);
   expect(session?.sameSite).toBe('Strict');
   const initial = await canvas.getAttribute('data-camera-state');
+  await page.getByText('More camera controls', { exact: true }).click();
   for (const button of ['Rotate left', 'Pan right', 'Zoom in']) {
     const before = await canvas.getAttribute('data-camera-state');
-    await page.getByRole('button', { name: button, exact: true }).click();
+    await page.getByRole('button', { name: button, exact: true }).first().click();
     await expect(canvas).not.toHaveAttribute('data-camera-state', before!);
   }
-  await page.getByRole('button', { name: 'Reset view', exact: true }).click();
+  await page.getByRole('button', { name: 'Reset view', exact: true }).first().click();
   await expect(canvas).toHaveAttribute('data-camera-state', initial!);
-  await page.getByRole('button', { name: 'Interact with 3D', exact: true }).click();
+  await page.getByRole('group', { name: 'Interactive 3D viewport', exact: true }).focus();
   const box = await canvas.boundingBox();
   const beforeDrag = await canvas.getAttribute('data-camera-state');
   await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);
   await page.mouse.down(); await page.mouse.move(box!.x + box!.width / 2 + 65, box!.y + box!.height / 2 + 30, { steps: 6 }); await page.mouse.up();
   await expect(canvas).not.toHaveAttribute('data-camera-state', beforeDrag!);
   await page.keyboard.press('Escape');
-  await page.getByRole('button', { name: 'Reset view', exact: true }).click();
+  await page.getByRole('button', { name: 'Reset view', exact: true }).first().click();
   await page.screenshot({ path: `${output}/02-twin-baseline.png`, fullPage: true });
   const timelineButtons = page.locator('[aria-label="Scenario timeline"]');
   await timelineButtons.getByRole('button', { name: /Day 37/ }).click();

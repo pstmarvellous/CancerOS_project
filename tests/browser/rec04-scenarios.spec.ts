@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 
-const base = 'http://127.0.0.1:3000';
-const output = 'docs/engineering/testing/rec04-scenarios';
+const base = process.env.CANCEROS_BROWSER_BASE_URL ?? 'http://127.0.0.1:3000';
+const output = process.env.CANCEROS_BROWSER_EVIDENCE_DIR ? `${process.env.CANCEROS_BROWSER_EVIDENCE_DIR}/scenarios` : 'docs/engineering/testing/rec04-scenarios';
 
 const FAMILIES = [
   { id: 'SC-01', plain: 'Continuous shrinkage' },
@@ -30,6 +30,21 @@ test('REC-04 five families: plain names, timepoints, correspondence, observation
     await page.getByRole('link', { name: new RegExp(`${family.plain}.*Explore in 3D`, 's') }).first().click();
     await expect(page).toHaveURL(new RegExp(`scenario=${family.id}`));
     await expect(page.getByLabel('Hypothetical scenario')).toHaveValue(family.id);
+    const response = await page.request.get(`${base}/api/demo?scenario=${family.id}`);
+    expect(response.ok()).toBe(true);
+    const authoritative = await response.json() as { timeline: { items: { id: string; exact_value: string; time: { reference: { value: string } } }[] }; meshes: Record<string, { bounds_min_mm: number[]; bounds_max_mm: number[] }> };
+    const canvas = page.locator('canvas[data-render-ready=true]');
+    const points = authoritative.timeline.items.filter(point => point.id in authoritative.meshes);
+    expect(points).toHaveLength(4);
+    for (const point of points) {
+      const day = String(point.time.reference.value);
+      await page.getByLabel('Scenario timeline').getByRole('button', { name: day === '0' ? /Shared baseline/ : new RegExp(`^Day ${day}\\b`) }).click();
+      await expect(page.getByTestId('demo-volume')).toHaveText(`${point.exact_value} mm³`);
+      await expect(canvas).toHaveAttribute('data-selected-annotation', point.id);
+      const bounds = authoritative.meshes[point.id];
+      await expect.poll(async () => JSON.parse((await canvas.getAttribute('data-world-bounds')) ?? '{}')).toEqual({ min: bounds.bounds_min_mm, max: bounds.bounds_max_mm });
+      await expect(page.getByRole('button', { name: `Day ${day}: ${point.exact_value} mm³`, exact: true })).toHaveAttribute('aria-pressed', 'true');
+    }
 
     // 3-4. Change the timepoint; model, chart and measurements update together.
     const dayButtons = page.getByLabel('Scenario timeline').getByRole('button', { name: /Day \d+/ });
@@ -56,6 +71,17 @@ test('REC-04 five families: plain names, timepoints, correspondence, observation
   // Missing data: SC-02 has only weight on day 5 plus imaging; table states missingness honestly.
   await page.goto(`${base}/demo?view=clinical&scenario=SC-02`);
   await expect(page.getByText(/Missing|Not recorded|no authentic/i).first()).toBeVisible({ timeout: 60000 });
+  const sparse = await (await page.request.get(`${base}/api/demo?scenario=SC-02`)).json();
+  const selectedGeometry = sparse.timeline.items.find((point: { id: string; time: { reference: { value: string } } }) => point.id in sparse.meshes && point.time.reference.value !== '0');
+  expect(selectedGeometry).toBeDefined();
+  await page.goto(`${base}/demo?view=clinical&scenario=SC-02&state=${selectedGeometry.id}`);
+  const sparseTable = page.getByRole('table', { name: 'Scenario observations with their actual relative times' });
+  const ownObservations = sparse.timeline.items.filter((point: { modality: string }) => point.modality !== 'imaging');
+  await expect(sparseTable.getByRole('row')).toHaveCount(ownObservations.length + 1);
+  const weight = sparseTable.getByRole('row').filter({ hasText: 'Weight' });
+  await expect(weight.getByRole('cell').nth(0)).toHaveText('5');
+  await expect(weight.getByRole('cell').nth(1)).toContainText(ownObservations[0].exact_value);
+  await expect(weight.getByRole('cell').last()).toHaveText('Synthetic scenario');
 
   // Back navigation and refresh restore the selected state.
   await page.goto(`${base}/demo?view=twin&scenario=SC-04`);
@@ -81,7 +107,7 @@ test('REC-04 five families: plain names, timepoints, correspondence, observation
     recorded_at: new Date().toISOString(),
     scope: 'Fresh browser session; token-free synthetic bundle only',
     family_volumes: seen,
-    journey: ['five-families', 'timepoints', 'correspondence', 'observations', 'missing', 'back', 'refresh'],
+    journey: ['five-families', 'all-20-rendered-states-compared-to-api', 'mesh-bounds-and-chart-selection', 'observations', 'missing', 'back', 'refresh'],
     browser_errors: errors,
   }, null, 2));
 });

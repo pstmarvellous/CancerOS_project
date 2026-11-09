@@ -1,0 +1,55 @@
+{
+  "recorded_at": "2026-11-09T16:52:30.097Z",
+  "scope": "synthetic fixture only; authentic MRI gate blocked",
+  "steps": [
+    {
+      "journey": "C",
+      "step": "open-workflow",
+      "expected": "Imaging workflow opens in the selected case",
+      "actual": "Add Imaging Study visible",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "C",
+      "step": "associate-review",
+      "expected": "Study and import selected with provenance",
+      "actual": "Provenance step reached",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "C",
+      "step": "geometry",
+      "expected": "Geometry derived from verified metadata",
+      "actual": "valid grid reported",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "C",
+      "step": "no-mask-message",
+      "expected": "Absent mask reported honestly, none synthesized",
+      "actual": "required message shown",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "C",
+      "step": "refresh-retains",
+      "expected": "Case retains the study association after refresh",
+      "actual": "imaging_study=f3ae03e2-6b64-45bf-81a4-3e88d3313081",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "C",
+      "step": "mask-qc",
+      "expected": "Compatible mask selected; QC passes",
+      "actual": "QC pass message shown",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "C",
+      "step": "mesh-3d",
+      "expected": "3D mesh renders with server measurement overlay",
+      "actual": "Server measurement 24 mm³",
+      "verdict": "PASS"
+    }
+  ]
+}

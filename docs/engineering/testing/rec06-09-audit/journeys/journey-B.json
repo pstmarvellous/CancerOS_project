@@ -1,0 +1,70 @@
+{
+  "recorded_at": "2026-11-09T16:57:34.444Z",
+  "case_a": "edaf9a83-1596-46f1-84cf-12630af1e28e",
+  "case_b": "97a0b6ff-b671-48cd-808e-87fa26090b5d",
+  "steps": [
+    {
+      "journey": "B",
+      "step": "signin",
+      "expected": "Admin signs in",
+      "actual": "New research case visible",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "B",
+      "step": "create-case",
+      "expected": "Case created and opened",
+      "actual": "patient=edaf9a83",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "B",
+      "step": "enter-observation",
+      "expected": "Artificial observation saved and listed",
+      "actual": "9.1 g/dL visible",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "B",
+      "step": "save-reopen",
+      "expected": "Refresh retains the observation",
+      "actual": "9.1 g/dL after reload",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "B",
+      "step": "correct-value",
+      "expected": "Correction appends with retained revision",
+      "actual": "9.2 g/dL + Superseded",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "B",
+      "step": "chart",
+      "expected": "Corrected value appears in chart parity table",
+      "actual": "9.2 g/dL in chart",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "B",
+      "step": "navigate-back",
+      "expected": "Saved correction remains after leaving and returning",
+      "actual": "9.2 g/dL retained",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "B",
+      "step": "isolation",
+      "expected": "Case B sees none of Case A data",
+      "actual": "isolated=true",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "B",
+      "step": "signout",
+      "expected": "Sign-out revokes case access",
+      "actual": "Case API returns401 after sign-out",
+      "verdict": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,507 @@
+{
+  "review_id": "COS-REVIEW-003",
+  "review_date_local": "2026-11-06",
+  "scope": "Fresh original twelve-document inventory and complete extracted-text independent reading; excludes prior review conclusions.",
+  "method": "pypdf fresh source-byte page extraction; hashlib SHA-256; comparison against source-manifest.json is a comparison only, not reliance on previous findings.",
+  "document_count": 12,
+  "documents": [
+    {
+      "document_id": "COS-SPEC-006",
+      "path": "docs/AI & Multimodal Intelligence Specification.pdf",
+      "version": "1.0",
+      "status_as_printed": "Proposed engineering specification",
+      "page_count": 36,
+      "sha256": "4fb67eabdc42ed56fa5dc790068154b8e5b2900a09964c73bf74f728520a6f8d",
+      "identity_evidence": "Fresh text extraction of original PDF page 1",
+      "manifest_comparison": {
+        "document_id_matches": true,
+        "page_count_matches": true,
+        "sha256_matches": true,
+        "version_matches": true
+      },
+      "reading": {
+        "mode": "full_extracted_text_review",
+        "all_pages_freshly_extracted": true,
+        "all_extracted_text_read": true,
+        "sections_completed": "1-25",
+        "completion_method": "Sequential Get-Content text reads with bounded untruncated chunks; prior output truncation gaps explicitly reread.",
+        "completed_extracted_text_line_chunks": [
+          {
+            "from": 1,
+            "to": 205
+          },
+          {
+            "from": 206,
+            "to": 440
+          },
+          {
+            "from": 441,
+            "to": 957
+          }
+        ],
+        "visual_layout_review": false,
+        "note": "Full extracted source text read. Original PDF figures/wireframes were not visually rendered or inspected; source external references were not independently revalidated by this inventory."
+      }
+    },
+    {
+      "document_id": "COS-SPEC-010",
+      "path": "docs/CancerOS_AI_Safety_Privacy_Integrity.pdf",
+      "version": "1.0",
+      "status_as_printed": "Proposed mandatory controls for the research prototype",
+      "page_count": 5,
+      "sha256": "2c950116edfbc98928a42d2a15e572067c65862e20a419e45f9cd1504c88ea9d",
+      "identity_evidence": "Fresh text extraction of original PDF page 1",
+      "manifest_comparison": {
+        "document_id_matches": true,
+        "page_count_matches": true,
+        "sha256_matches": true,
+        "version_matches": true
+      },
+      "reading": {
+        "mode": "full_extracted_text_review",
+        "all_pages_freshly_extracted": true,
+        "all_extracted_text_read": true,
+        "sections_completed": "1-12",
+        "completion_method": "Sequential Get-Content text reads with bounded untruncated chunks; prior output truncation gaps explicitly reread.",
+        "completed_extracted_text_line_chunks": [
+          {
+            "from": 1,
+            "to": 200
+          },
+          {
+            "from": 191,
+            "to": 247
+          }
+        ],
+        "visual_layout_review": false,
+        "note": "Full extracted source text read. Original PDF figures/wireframes were not visually rendered or inspected; source external references were not independently revalidated by this inventory."
+      }
+    },
+    {
+      "document_id": "COS-SPEC-008",
+      "path": "docs/CancerOS_Database_API_Contracts.pdf",
+      "version": "1.0",
+      "status_as_printed": "Proposed implementation baseline",
+      "page_count": 17,
+      "sha256": "50c034a8d0803fa64e16b16ce2ad28575bc324b57e115f7d46067e9e98c5c3df",
+      "identity_evidence": "Fresh text extraction of original PDF page 1",
+      "manifest_comparison": {
+        "document_id_matches": true,
+        "page_count_matches": true,
+        "sha256_matches": true,
+        "version_matches": true
+      },
+      "reading": {
+        "mode": "full_extracted_text_review",
+        "all_pages_freshly_extracted": true,
+        "all_extracted_text_read": true,
+        "sections_completed": "1-20",
+        "completion_method": "Sequential Get-Content text reads with bounded untruncated chunks; prior output truncation gaps explicitly reread.",
+        "completed_extracted_text_line_chunks": [
+          {
+            "from": 1,
+            "to": 315
+          },
+          {
+            "from": 316,
+            "to": 495
+          },
+          {
+            "from": 491,
+            "to": 625
+          },
+          {
+            "from": 616,
+            "to": 629
+          },
+          {
+            "from": 626,
+            "to": 941
+          }
+        ],
+        "visual_layout_review": false,
+        "note": "Full extracted source text read. Original PDF figures/wireframes were not visually rendered or inspected; source external references were not independently revalidated by this inventory."
+      }
+    },
+    {
+      "document_id": "COS-SPEC-012",
+      "path": "docs/CancerOS_Implementation_Roadmap_Finalist_Demo.pdf",
+      "version": "1.0",
+      "status_as_printed": "Proposed execution backlog and presentation plan",
+      "page_count": 7,
+      "sha256": "ccbed7b9817ea46b7afe50c802588d5c9988f37849550fc9353f4e2e275846a2",
+      "identity_evidence": "Fresh text extraction of original PDF page 1",
+      "manifest_comparison": {
+        "document_id_matches": true,
+        "page_count_matches": true,
+        "sha256_matches": true,
+        "version_matches": true
+      },
+      "reading": {
+        "mode": "full_extracted_text_review",
+        "all_pages_freshly_extracted": true,
+        "all_extracted_text_read": true,
+        "sections_completed": "1-12",
+        "completion_method": "Sequential Get-Content text reads with bounded untruncated chunks; prior output truncation gaps explicitly reread.",
+        "completed_extracted_text_line_chunks": [
+          {
+            "from": 1,
+            "to": 431
+          }
+        ],
+        "visual_layout_review": false,
+        "note": "Full extracted source text read. Original PDF figures/wireframes were not visually rendered or inspected; source external references were not independently revalidated by this inventory."
+      }
+    },
+    {
+      "document_id": "COS-RA-001",
+      "path": "docs/CancerOS_Literature_Review_Implementation_Addendum.pdf",
+      "version": null,
+      "status_as_printed": "Research recommendations for review",
+      "page_count": 7,
+      "sha256": "b4b5a14b238452724585787339f7040f48f83d714ed375a45eca8ead7783e77b",
+      "identity_evidence": "Fresh text extraction of original PDF page 1",
+      "manifest_comparison": {
+        "document_id_matches": true,
+        "page_count_matches": true,
+        "sha256_matches": true,
+        "version_matches": true
+      },
+      "reading": {
+        "mode": "full_extracted_text_review",
+        "all_pages_freshly_extracted": true,
+        "all_extracted_text_read": true,
+        "sections_completed": "1-14",
+        "completion_method": "Sequential Get-Content text reads with bounded untruncated chunks; prior output truncation gaps explicitly reread.",
+        "completed_extracted_text_line_chunks": [
+          {
+            "from": 1,
+            "to": 75
+          },
+          {
+            "from": 76,
+            "to": 311
+          }
+        ],
+        "visual_layout_review": false,
+        "note": "Full extracted source text read. Original PDF figures/wireframes were not visually rendered or inspected; source external references were not independently revalidated by this inventory."
+      }
+    },
+    {
+      "document_id": "COS-SPEC-007",
+      "path": "docs/CancerOS_System_Architecture_Blueprint.pdf",
+      "version": "1.0",
+      "status_as_printed": "Proposed, implementation-ready architecture with explicit verification gates",
+      "page_count": 21,
+      "sha256": "df74c4d67609113717c833cc3d6fe941eed1f679a6c0af9ce77f5a45c506268f",
+      "identity_evidence": "Fresh text extraction of original PDF page 1",
+      "manifest_comparison": {
+        "document_id_matches": true,
+        "page_count_matches": true,
+        "sha256_matches": true,
+        "version_matches": true
+      },
+      "reading": {
+        "mode": "full_extracted_text_review",
+        "all_pages_freshly_extracted": true,
+        "all_extracted_text_read": true,
+        "sections_completed": "1-22",
+        "completion_method": "Sequential Get-Content text reads with bounded untruncated chunks; prior output truncation gaps explicitly reread.",
+        "completed_extracted_text_line_chunks": [
+          {
+            "from": 1,
+            "to": 245
+          },
+          {
+            "from": 246,
+            "to": 640
+          },
+          {
+            "from": 641,
+            "to": 1008
+          }
+        ],
+        "visual_layout_review": false,
+        "note": "Full extracted source text read. Original PDF figures/wireframes were not visually rendered or inspected; source external references were not independently revalidated by this inventory."
+      }
+    },
+    {
+      "document_id": "COS-SPEC-011",
+      "path": "docs/CancerOS_Testing_Scientific_Evaluation_Plan.pdf",
+      "version": "1.0",
+      "status_as_printed": "Proposed test protocol and release gates",
+      "page_count": 7,
+      "sha256": "a6ef4c45700b35b30991b30a13ddf9101db280ac1ce12d8e2bf4dc4398090d77",
+      "identity_evidence": "Fresh text extraction of original PDF page 1",
+      "manifest_comparison": {
+        "document_id_matches": true,
+        "page_count_matches": true,
+        "sha256_matches": true,
+        "version_matches": true
+      },
+      "reading": {
+        "mode": "full_extracted_text_review",
+        "all_pages_freshly_extracted": true,
+        "all_extracted_text_read": true,
+        "sections_completed": "1-14",
+        "completion_method": "Sequential Get-Content text reads with bounded untruncated chunks; prior output truncation gaps explicitly reread.",
+        "completed_extracted_text_line_chunks": [
+          {
+            "from": 1,
+            "to": 110
+          },
+          {
+            "from": 111,
+            "to": 337
+          }
+        ],
+        "visual_layout_review": false,
+        "note": "Full extracted source text read. Original PDF figures/wireframes were not visually rendered or inspected; source external references were not independently revalidated by this inventory."
+      }
+    },
+    {
+      "document_id": "COS-SPEC-009",
+      "path": "docs/CancerOS_UI_UX_Demonstration_Specification.pdf",
+      "version": "1.0",
+      "status_as_printed": "Proposed design and implementation baseline",
+      "page_count": 17,
+      "sha256": "c23b707995c028e55cb74b401ec6e63d2429476970362e45fb463d38cd818e9f",
+      "identity_evidence": "Fresh text extraction of original PDF page 1",
+      "manifest_comparison": {
+        "document_id_matches": true,
+        "page_count_matches": true,
+        "sha256_matches": true,
+        "version_matches": true
+      },
+      "reading": {
+        "mode": "full_extracted_text_review",
+        "all_pages_freshly_extracted": true,
+        "all_extracted_text_read": true,
+        "sections_completed": "1-20",
+        "completion_method": "Sequential Get-Content text reads with bounded untruncated chunks; prior output truncation gaps explicitly reread.",
+        "completed_extracted_text_line_chunks": [
+          {
+            "from": 1,
+            "to": 195
+          },
+          {
+            "from": 196,
+            "to": 385
+          },
+          {
+            "from": 361,
+            "to": 550
+          },
+          {
+            "from": 551,
+            "to": 702
+          }
+        ],
+        "visual_layout_review": false,
+        "note": "Full extracted source text read. Original PDF figures/wireframes were not visually rendered or inspected; source external references were not independently revalidated by this inventory."
+      }
+    },
+    {
+      "document_id": "COS-SPEC-003",
+      "path": "docs/image_dataset_specification.pdf",
+      "version": "1.0",
+      "status_as_printed": "Proposed implementation specification",
+      "page_count": 26,
+      "sha256": "470d24e41d5879159e617da57a6be8868edf2139bf06ffa7bd03a5d58e674738",
+      "identity_evidence": "Fresh text extraction of original PDF page 1",
+      "manifest_comparison": {
+        "document_id_matches": true,
+        "page_count_matches": true,
+        "sha256_matches": true,
+        "version_matches": true
+      },
+      "reading": {
+        "mode": "full_extracted_text_review",
+        "all_pages_freshly_extracted": true,
+        "all_extracted_text_read": true,
+        "sections_completed": "1-15",
+        "completion_method": "Sequential Get-Content text reads with bounded untruncated chunks; prior output truncation gaps explicitly reread.",
+        "completed_extracted_text_line_chunks": [
+          {
+            "from": 1,
+            "to": 681
+          }
+        ],
+        "visual_layout_review": false,
+        "note": "Full extracted source text read. Original PDF figures/wireframes were not visually rendered or inspected; source external references were not independently revalidated by this inventory."
+      }
+    },
+    {
+      "document_id": "COS-SPEC-005",
+      "path": "docs/Medical Imaging & Digital Twin Specification.pdf",
+      "version": "1.0",
+      "status_as_printed": "Proposed engineering specification",
+      "page_count": 28,
+      "sha256": "c73c67faa6f747bb2629730251c8ac87a5a7c4ad436c7450609b5bf397660502",
+      "identity_evidence": "Fresh text extraction of original PDF page 1",
+      "manifest_comparison": {
+        "document_id_matches": true,
+        "page_count_matches": true,
+        "sha256_matches": true,
+        "version_matches": true
+      },
+      "reading": {
+        "mode": "full_extracted_text_review",
+        "all_pages_freshly_extracted": true,
+        "all_extracted_text_read": true,
+        "sections_completed": "1-21",
+        "completion_method": "Sequential Get-Content text reads with bounded untruncated chunks; prior output truncation gaps explicitly reread.",
+        "completed_extracted_text_line_chunks": [
+          {
+            "from": 1,
+            "to": 732
+          }
+        ],
+        "visual_layout_review": false,
+        "note": "Full extracted source text read. Original PDF figures/wireframes were not visually rendered or inspected; source external references were not independently revalidated by this inventory."
+      }
+    },
+    {
+      "document_id": "COS-PRD-001",
+      "path": "docs/Project_requirements specification.pdf",
+      "version": "1.0",
+      "status_as_printed": "Proposed engineering baseline",
+      "page_count": 38,
+      "sha256": "6f0a1a8460f9cc6ec0aed21db4c4a49fd065ae668bc824847d8f8dbdccd3cbc6",
+      "identity_evidence": "Fresh text extraction of original PDF page 1",
+      "manifest_comparison": {
+        "document_id_matches": true,
+        "page_count_matches": true,
+        "sha256_matches": true,
+        "version_matches": true
+      },
+      "reading": {
+        "mode": "full_extracted_text_review",
+        "all_pages_freshly_extracted": true,
+        "all_extracted_text_read": true,
+        "sections_completed": "1-19",
+        "completion_method": "Sequential Get-Content text reads with bounded untruncated chunks; prior output truncation gaps explicitly reread.",
+        "completed_extracted_text_line_chunks": [
+          {
+            "from": 1,
+            "to": 320
+          },
+          {
+            "from": 321,
+            "to": 1026
+          }
+        ],
+        "visual_layout_review": false,
+        "note": "Full extracted source text read. Original PDF figures/wireframes were not visually rendered or inspected; source external references were not independently revalidated by this inventory."
+      }
+    },
+    {
+      "document_id": "COS-SPEC-004",
+      "path": "docs/Synthentic_logitudinal_data_specification.pdf",
+      "version": "1.0",
+      "status_as_printed": "Proposed implementation specification",
+      "page_count": 36,
+      "sha256": "03d5a4fc89e311ff2430e799833ccffa011929e32ebb07a95d82ebf78ef92762",
+      "identity_evidence": "Fresh text extraction of original PDF page 1",
+      "manifest_comparison": {
+        "document_id_matches": true,
+        "page_count_matches": true,
+        "sha256_matches": true,
+        "version_matches": true
+      },
+      "reading": {
+        "mode": "full_extracted_text_review",
+        "all_pages_freshly_extracted": true,
+        "all_extracted_text_read": true,
+        "sections_completed": "1-25",
+        "completion_method": "Sequential Get-Content text reads with bounded untruncated chunks; prior output truncation gaps explicitly reread.",
+        "completed_extracted_text_line_chunks": [
+          {
+            "from": 1,
+            "to": 460
+          },
+          {
+            "from": 461,
+            "to": 971
+          }
+        ],
+        "visual_layout_review": false,
+        "note": "Full extracted source text read. Original PDF figures/wireframes were not visually rendered or inspected; source external references were not independently revalidated by this inventory."
+      }
+    }
+  ],
+  "independence": {
+    "previous_product_reviews_read": false,
+    "consolidated_audit_pdf_read": false,
+    "audit_adoption_inferred": false,
+    "source_pdfs_modified": false,
+    "full_original_set_line_by_line_read": true,
+    "limitation": "All twelve original PDF texts were freshly extracted, identified and fully read. Diagram/wireframe visual content and external literature/provider assertions were not independently validated by this inventory. No audit adoption is inferred.",
+    "full_original_set_reading_basis": "All extracted textual content, sequentially in bounded chunks. This is not full visual PDF inspection or external-reference validation."
+  },
+  "authority_notes": [
+    {
+      "topic": "Source baseline approval",
+      "source": "Original PDF opening statuses; docs/engineering/authority-and-scope.md",
+      "finding": "Originals identify themselves as proposed baselines/specifications; RA-001 is research recommendations for review. Execution authorization does not establish formal baseline adoption or scientific validation. No new adoption claim made."
+    },
+    {
+      "topic": "SPEC-002 absence",
+      "source": "COS-PRD-001 section 18 p37; source inventory",
+      "finding": "PRD lists a planned COS-SPEC-002 among downstream documents, but no such original appears in the twelve supplied source set. No missing specification is invented."
+    },
+    {
+      "topic": "Derived synthetic provenance ambiguity",
+      "source": "COS-SPEC-004 section 15.3 p24; COS-SPEC-010 SAFE-02 p2",
+      "finding": "SAFE-02 explicitly resolves ambiguous derived-synthetic wording: deterministic outputs from synthetic masks remain SYNTHETIC_GENERATED. This is an original-source resolution, not an inferred audit adoption."
+    },
+    {
+      "topic": "API/browser ownership",
+      "source": "COS-SPEC-005 section 15 pp22-23; COS-SPEC-008 sections 1/12; COS-SPEC-009 sections 1/17 pp1,14-15",
+      "finding": "Earlier imaging endpoints are preliminary; SPEC-008 owns canonical REST contracts; SPEC-009 browser paths are separate. SPEC-009 discovery additions are proposals requiring contract review/client updates rather than silently existing endpoints."
+    },
+    {
+      "topic": "P0 branch comparison refinement",
+      "source": "COS-PRD-001 UJ-05 p13 and section 14 p32; COS-SPEC-009 section 2 p1",
+      "finding": "PRD includes alternative-branch journey but classifies interactive multi-branch comparison P1. SPEC-009 explicitly refines P0 to two states within one history with sequential scenario switching; simultaneous branches remain P1."
+    },
+    {
+      "topic": "Demo duration",
+      "source": "COS-SPEC-009 section 15.2 p13; COS-HACK-001 directive; COS-SPEC-012 section 8 pp5-6",
+      "finding": "Five-minute specification is adaptable rehearsal guidance. Hackathon directive states a maximum three-minute submission demo. Organizer rules/eligibility were not independently verified by this inventory."
+    },
+    {
+      "topic": "Named-provider requirement versus fallback baseline",
+      "source": "COS-SPEC-006 section 21 p32, section 22 p33, AC-AI-16 p34; COS-SPEC-007 section 17 p17; COS-SPEC-008 section 2 p2 and section 13.6 p12; COS-SPEC-012 B22 p3 and section 7 p5; COS-HACK-001 directive",
+      "finding": "SPEC-006 explicitly places Meta Model API interpretation in P0 and requires interpretation for an authentic longitudinal case plus a synthetic trajectory. SPEC-007/008/012 explicitly permit deterministic fallback and SPEC-008 says P0 does not require named LLM entitlement. The hackathon directive separately demands substantive Meta integration. A useful fallback does not alone prove completion of named-provider or competition requirements. Record the source tension and actual adopted scope/access evidence; do not infer adoption from implementation."
+    },
+    {
+      "topic": "Constrained-only P0 versus broader simulation proposal",
+      "source": "COS-SPEC-004 section 2 p3; COS-SPEC-008 section 8 p6; COS-SPEC-009 section 4.5 p6",
+      "finding": "Earlier simulation source contemplates explicitly unconstrained research hypotheticals excluded from clinically plausible comparisons. Contract/UI explicitly enable constrained mode only in P0. Missing qualifying source evidence must yield ineligible/insufficient_data, not default pathology or a hidden bypass."
+    },
+    {
+      "topic": "Research data entry is source-backed",
+      "source": "COS-SPEC-008 section 6.1 p4 and section 13.1 p11; COS-SPEC-009 section 4.6 p6",
+      "finding": "P0 observation-batch appends approved source-supported observations; synthetic records are worker simulation outputs. Editor cannot choose provenance, accepted status or revision; note input references verified private artifact. Product recovery should simplify source selection rather than removing source-evidence requirements or silently treating manual entries as authentic."
+    }
+  ],
+  "checks": {
+    "fresh_sha256_all_match_manifest": true,
+    "fresh_identity_all_match_manifest": true,
+    "fresh_page_counts_all_match_manifest": true,
+    "clinical_validation_performed": false,
+    "browser_or_product_tests_performed_by_inventory_subtask": false
+  },
+  "principal_visual_followup": {
+    "source": "COS-SPEC-009 PDF page 4",
+    "method": "Read-only pypdf/Pillow extraction of both original embedded figures, visually inspected via view_image",
+    "figures": [
+      "Desktop twin workspace",
+      "Narrow screen layout"
+    ],
+    "finding": "Original schematics specify one case/context/time owner, central viewer/timeline/charts and contextual findings/records/evidence; current research workflow fragments these surfaces.",
+    "limits": "No complete page-layout rendering or visual assessment of every other source diagram. PyMuPDF transient download was stopped; cached pypdf/Pillow extraction succeeded.",
+    "source_pdf_modified": false
+  }
+}

@@ -9,8 +9,8 @@ from pydantic import TypeAdapter
 
 from canceros.context_contracts import InterpretationContext
 from canceros.grounding_contracts import GroundingReport, ReasonCode
-from canceros.interpretation_contracts import InterpretationReport
 from canceros.interpretation_contracts import Code as FindingCode
+from canceros.interpretation_contracts import InterpretationReport
 from canceros.provider_gateway import PrivateResult, ProviderFailure
 
 GATE_VERSION: str = "grounding-gate/1"
@@ -19,7 +19,10 @@ PROHIBITED_PATTERNS: tuple[tuple[str, str], ...] = (
     (r"\bstag(?:e|ing)\b|\bTNM\b|\bgrade\b", "staging_or_grade"),
     (r"\bsurviv(?:al|e)\b|\bprognos", "survival_or_prognosis"),
     (r"\bresistan", "resistance"),
-    (r"\bRECIST\b|\bCTCAE\b|\bresponse\s+grade\b|\bcomplete\s+response\b|\bpartial\s+response\b", "formal_response_grade"),
+    (
+        r"\bRECIST\b|\bCTCAE\b|\bresponse\s+grade\b|\bcomplete\s+response\b|\bpartial\s+response\b",
+        "formal_response_grade",
+    ),
     (r"\brecommend|\bprescrib|\bdose\b|\bdosage\b|\btreatment\s+rank", "treatment_advice"),
     (r"\bcaus(?:e[sd]?|ality)\b.*\badverse\b|\badverse\b.*\bcaus", "adverse_event_causation"),
     (r"\bdiagnos(?:is|ed|tic)\b", "diagnosis"),
@@ -48,17 +51,20 @@ def validate_publication(
     reasons: list[ReasonCode] = []
     if report.context_hash != context.context_hash or report.snapshot_hash != context.snapshot_hash:
         reasons.append("CONTEXT_MISMATCH")
-    measurement_ids = {m.reference_id for m in context.measurements}
+    measurements = context.measurements + context.comparison_measurements
+    measurement_ids = {m.reference_id for m in measurements}
     passage_ids = {g.passage_id for g in context.passages}
-    measured_values = {
-        (str(m.reference_id), m.metric_code, m.value, m.unit) for m in context.measurements
-    }
+    measured_values = {(str(m.reference_id), m.metric_code, m.value, m.unit) for m in measurements}
     numeric_total = numeric_ok = supported = unsupported = prohibited = 0
 
     def insensitive(value):
         return (value or "").strip().lower()
+
     for finding in report.findings:
-        if set(finding.measurement_refs) - measurement_ids or set(finding.passage_refs) - passage_ids:
+        if (
+            set(finding.measurement_refs) - measurement_ids
+            or set(finding.passage_refs) - passage_ids
+        ):
             reasons.append("UNRESOLVED_REFERENCE")
             unsupported += 1
             continue
@@ -67,7 +73,7 @@ def validate_publication(
             match = next(
                 (
                     m
-                    for m in context.measurements
+                    for m in measurements
                     if m.reference_id in finding.measurement_refs
                     and insensitive(m.metric_code) == insensitive(finding.metric_code or "")
                     and insensitive(m.value) == insensitive(finding.metric_value or "")
@@ -83,7 +89,10 @@ def validate_publication(
                 supported += 1
         elif finding.kind == "general_background":
             text = finding.text.lower()
-            if any(marker in text for marker in ALLOWED_GENERAL_BACKGROUND) or not finding.passage_refs:
+            if (
+                any(marker in text for marker in ALLOWED_GENERAL_BACKGROUND)
+                or not finding.passage_refs
+            ):
                 supported += 1
             else:
                 reasons.append("UNSUPPORTED_NOVEL_PROSE")
@@ -144,9 +153,7 @@ class GroundingValidator:
 
     version: str = GATE_VERSION
 
-    def validate(
-        self, result: PrivateResult, context: InterpretationContext
-    ) -> GroundingReport:
+    def validate(self, result: PrivateResult, context: InterpretationContext) -> GroundingReport:
         candidate = result.candidate
         if candidate.input_snapshot_hash != context.snapshot_hash:
             raise ProviderFailure("FAILED_GROUNDING")
@@ -167,9 +174,7 @@ class GroundingValidator:
         )
 
     @staticmethod
-    def _metric(
-        context: InterpretationContext, finding, index: int
-    ) -> FindingCode | UUID | None:
+    def _metric(context: InterpretationContext, finding, index: int) -> FindingCode | UUID | None:
         for measurement in context.measurements:
             if measurement.reference_id in finding.measurement_refs:
                 candidate = (

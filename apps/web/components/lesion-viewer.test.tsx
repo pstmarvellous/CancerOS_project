@@ -17,7 +17,7 @@ function stubFetch() {
     if (url.includes('resource=lesions')) {
       return { ok: true, text: async () => JSON.stringify([{ id: LESION }]) };
     }
-    if (url.includes('resource=geometry')) {
+    if (url.includes('resource=geometry') || url.includes('resource=qc')) {
       return {
         ok: true,
         text: async () =>
@@ -81,7 +81,7 @@ describe('COS-075 lesion viewer', () => {
   it('asks for a case instead of guessing one', () => {
     query.search = '';
     render(<LesionViewer />);
-    expect(screen.getByText(/Open a case to inspect its lesion/)).toBeVisible();
+    expect(screen.getByText(/Open a case to inspect its source region/)).toBeVisible();
   });
 
   it('loads authorized geometry with server measurements', async () => {
@@ -91,6 +91,31 @@ describe('COS-075 lesion viewer', () => {
     await waitFor(() => expect(screen.getByText(/Authorized geometry ready/)).toBeVisible(), { timeout: 10000 });
     expect(screen.getByText(/source mask is authoritative/)).toBeVisible();
     expect(screen.getByText(/Observation time/)).toBeVisible();
+    vi.unstubAllGlobals();
+  });
+
+  it('opens the exact owned mesh QC report without inventing a lesion identity', async () => {
+    query.search = `?project=11111111-1111-1111-1111-111111111111&patient=22222222-2222-2222-2222-222222222222&mesh_qc=${REPORT}`;
+    const fetch = stubFetch(); vi.stubGlobal('fetch', fetch);
+    render(<LesionViewer />);
+    await waitFor(() => expect(screen.getByText(/Authorized geometry ready/)).toBeVisible());
+    expect(fetch.mock.calls.some(call => String(call[0]).includes(`resource=qc&report=${REPORT}`))).toBe(true);
+    expect(fetch.mock.calls.some(call => String(call[0]).includes('resource=lesions'))).toBe(false);
+    vi.unstubAllGlobals();
+  });
+
+  it('retries an explicit report without falling back to an unrelated lesion', async () => {
+    query.search = `?project=11111111-1111-1111-1111-111111111111&patient=22222222-2222-2222-2222-222222222222&mesh_qc=${REPORT}`;
+    let first = true;
+    const fetch = vi.fn(async (input: unknown) => {
+      if (String(input).includes('resource=qc') && first) { first = false; return { ok: false, status: 503, text: async () => '' }; }
+      return stubFetch()(input);
+    });
+    vi.stubGlobal('fetch', fetch); render(<LesionViewer />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Retry authorized load' }));
+    await waitFor(() => expect(screen.getByText(/Authorized geometry ready/)).toBeVisible());
+    expect(fetch.mock.calls.filter(call => String(call[0]).includes(`resource=qc&report=${REPORT}`))).toHaveLength(2);
+    expect(fetch.mock.calls.some(call => String(call[0]).includes('resource=lesions'))).toBe(false);
     vi.unstubAllGlobals();
   });
 

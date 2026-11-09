@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 
-const base = 'http://127.0.0.1:3000';
-const output = 'docs/engineering/testing/rec03-viewer';
+const base = process.env.CANCEROS_BROWSER_BASE_URL ?? 'http://127.0.0.1:3000';
+const output = process.env.CANCEROS_BROWSER_EVIDENCE_DIR ? `${process.env.CANCEROS_BROWSER_EVIDENCE_DIR}/viewer` : 'docs/engineering/testing/rec03-viewer';
 
 test('REC-03 immersive viewer: toolbar, states, correspondence, recovery, layouts', async ({ page }) => {
   test.setTimeout(420000);
@@ -48,9 +48,15 @@ test('REC-03 immersive viewer: toolbar, states, correspondence, recovery, layout
   // 3. Maximize the renderer and return.
   await toolbar.getByRole('button', { name: 'Maximize viewer', exact: true }).click();
   await expect(toolbar.getByRole('button', { name: 'Restore viewer size', exact: true })).toBeVisible();
+  await expect(page.getByLabel('Scenario timeline')).toBeVisible();
   await page.screenshot({ path: `${output}/02-viewer-maximized.png` });
   await toolbar.getByRole('button', { name: 'Restore viewer size', exact: true }).click();
   await expect(toolbar.getByRole('button', { name: 'Maximize viewer', exact: true })).toBeVisible();
+  await toolbar.getByRole('button', { name: 'Fullscreen viewer', exact: true }).click();
+  await expect.poll(() => page.evaluate(() => !!document.fullscreenElement)).toBe(true);
+  await expect(page.getByLabel('Scenario timeline')).toBeVisible();
+  await toolbar.getByRole('button', { name: 'Exit fullscreen', exact: true }).click();
+  await expect.poll(() => page.evaluate(() => !!document.fullscreenElement)).toBe(false);
 
   // 4. Select Day 37 follow-up: model and measurement change together.
   await page.getByRole('button', { name: /Day 37/ }).first().click();
@@ -68,6 +74,9 @@ test('REC-03 immersive viewer: toolbar, states, correspondence, recovery, layout
   // 6. Narrow screen keeps controls usable.
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(toolbar.getByRole('button', { name: 'Fit view', exact: true })).toBeVisible();
+  const narrowCamera = await canvas.getAttribute('data-camera-state');
+  await toolbar.getByRole('button', { name: 'Zoom in', exact: true }).click();
+  await expect(canvas).not.toHaveAttribute('data-camera-state', narrowCamera!);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: `${output}/04-narrow.png`, fullPage: true });
   await page.setViewportSize({ width: 1440, height: 1000 });

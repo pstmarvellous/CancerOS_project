@@ -14,15 +14,21 @@ from canceros.interpretation_contracts import (
 from canceros.provider_contracts import ExportMeasurement, ProviderInput, local_summary
 from canceros.provider_gateway import ClosedOutputValidator, PrivateResult
 
-TEMPLATE_VERSION: str = "interpretation-template/1"
+TEMPLATE_VERSION: str = "interpretation-template/2"
 
 
 def _finding_for_measurement(context: InterpretationContext, reference_id: UUID):
     member = next(m for m in context.measurements if m.reference_id == reference_id)
+    synthetic = member.origin == "SYNTHETIC_GENERATED"
+    text = (
+        f"At {member.member_time}, {'the modeled' if synthetic else 'the recorded'} "
+        f"{member.metric_code} measures {member.value} {member.unit}."
+    )
+    if synthetic:
+        text += " This is a hypothetical simulation for demonstration."
     return InterpretationFinding(
         kind="observed_measurement",
-        text=f"Retained {member.metric_code} value {member.value} {member.unit} "
-        f"(member time basis {member.member_time}).",
+        text=text,
         measurement_refs=(member.reference_id,),
         metric_code=member.metric_code,
         metric_value=member.value,
@@ -32,10 +38,37 @@ def _finding_for_measurement(context: InterpretationContext, reference_id: UUID)
 
 def render_template(context: InterpretationContext) -> InterpretationReport:
     findings: list[InterpretationFinding] = []
+    candidate_count = (
+        len(context.measurements)
+        + len(context.comparison_measurements)
+        + len(context.passages)
+        + len(context.missing_modalities)
+    )
     for member in context.measurements:
         findings.append(_finding_for_measurement(context, member.reference_id))
         if len(findings) >= 20:
             break
+    # Comparisons remain independently cited values. Do not invent arithmetic,
+    # lesion correspondence, treatment effects or a clinical response category.
+    for member in context.comparison_measurements:
+        if len(findings) >= 20:
+            break
+        findings.append(
+            InterpretationFinding(
+                kind="observed_measurement",
+                text=f"Selected comparison at {member.member_time}: "
+                f"{member.metric_code} measures {member.value} {member.unit}. "
+                + (
+                    "Hypothetical simulation for demonstration."
+                    if member.origin == "SYNTHETIC_GENERATED"
+                    else "Recorded source value."
+                ),
+                measurement_refs=(member.reference_id,),
+                metric_code=member.metric_code,
+                metric_value=member.value,
+                metric_unit=member.unit,
+            )
+        )
     for passage in context.passages:
         if len(findings) >= 20:
             break
@@ -47,7 +80,7 @@ def render_template(context: InterpretationContext) -> InterpretationReport:
                 passage_refs=(passage.passage_id,),
             )
         )
-    for reason in list(context.missing_modalities)[:5]:
+    for reason in context.missing_modalities:
         if len(findings) >= 20:
             break
         findings.append(
@@ -62,6 +95,13 @@ def render_template(context: InterpretationContext) -> InterpretationReport:
             )
         )
     measured = len(context.measurements)
+    truncated = max(0, candidate_count - len(findings))
+    limitations = list(InterpretationReport.model_fields["limitations"].default)
+    if truncated:
+        limitations.append(
+            f"Template display limit: {truncated} eligible findings were omitted; "
+            "inspect the complete context or narrow the scope. Comparisons and background may be omitted."
+        )
     return InterpretationReport(
         context_snapshot_id=context.snapshot_id,
         context_hash=context.context_hash,
@@ -72,9 +112,10 @@ def render_template(context: InterpretationContext) -> InterpretationReport:
         f"{len(context.passages)} unreviewed passages.",
         findings=tuple(findings),
         uncertainties=tuple(context.conflicts[:5]) or ("No recorded conflicts.",),
+        limitations=tuple(limitations),
         visibility="visible_template",
-        next_action="proceed_to_bounded_generation_review"
-        if context.next_action == "proceed_to_bounded_generation_review"
+        next_action="narrow_scope_or_inspect_complete_context"
+        if truncated
         else context.next_action,
     )
 
@@ -98,7 +139,9 @@ def export_input(context: InterpretationContext) -> ProviderInput:
             )
             for m in context.measurements
         ),
-        missingness=tuple(list(dict.fromkeys(_export_code(r) for r in context.missing_modalities))[:100]),
+        missingness=tuple(
+            list(dict.fromkeys(_export_code(r) for r in context.missing_modalities))[:100]
+        ),
         evidence_ids=tuple(g.passage_id for g in context.passages),
     )
 
@@ -108,7 +151,10 @@ def build_interpretation(
 ) -> InterpretationReport:
     if value.context_snapshot_id != context.snapshot_id:
         raise HTTPException(409)
-    if value.expected_context_hash is not None and value.expected_context_hash != context.context_hash:
+    if (
+        value.expected_context_hash is not None
+        and value.expected_context_hash != context.context_hash
+    ):
         raise HTTPException(409)
     if value.mode == "external_candidate":
         raise HTTPException(409)

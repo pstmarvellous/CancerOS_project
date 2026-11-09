@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { Mock } from 'vitest';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SimulationBuilder } from './simulation-builder';
+vi.mock('next/navigation', () => ({ useSearchParams: () => new URLSearchParams() }));
 
 const project = '00000000-0000-4000-8000-000000000001';
 const patient = '00000000-0000-4000-8000-000000000002';
@@ -22,6 +23,8 @@ function response(value: unknown, status = 200) {
 function stubFetch(overrides: Record<string, unknown> = {}) {
   return vi.fn(async (input: unknown) => {
     const url = String(input);
+    if (url.includes('/api/case-detail')) return response({ data_revision: 3 });
+    if (url.includes('resource=latest-config')) return response(null);
     if (url.includes('resource=branches')) return response({ items: [branchSummary] });
     if (url.includes('resource=branch&')) return response(branchReport);
     if (url.includes('resource=current')) return response({ publication: null, current_use_allowed: true, restrictions: [], next_action: 'Available' });
@@ -46,12 +49,16 @@ describe('simulation builder without manual UUID or JSON paste', () => {
     await waitFor(() => expect(fetch).toHaveBeenCalledWith(expect.stringContaining('resource=current'), expect.anything()));
     expect(screen.queryByLabelText('Project UUID')).toBeNull();
     expect(screen.queryByLabelText('Administrator access token')).toBeNull();
+    fireEvent.change(screen.getByLabelText(/Explicit target volume/), { target: { value: '90, 60, 30' } });
     fireEvent.click(screen.getByRole('button', { name: 'Save immutable draft version' }));
     await waitFor(() => expect(fetch).toHaveBeenCalledWith(expect.stringContaining('resource=config&branch='), expect.objectContaining({ method: 'POST' })));
     const body = configBody(fetch);
     expect(body.config.branch_id).toBe(branch);
     expect(body.config.baseline_hash).toBe(hash);
     expect(body.config.scenario.family).toBe('SC-01');
+    expect(body.config.scenario.definition_version).toBe('sc01-explicit/1');
+    expect(body.config.input_revision).toBe(3);
+    expect(body.config.tumor_profile.points.map((point: { target_mm3: string }) => point.target_mm3)).toEqual(['90', '60', '30']);
     expect(body.config.treatment).toEqual({ exposure: 'none' });
     expect(body.config.tumor_profile.unit).toBe('mm3');
     expect(screen.queryByLabelText('Simulation configuration JSON')).toBeNull();
@@ -66,12 +73,13 @@ describe('simulation builder without manual UUID or JSON paste', () => {
     await waitFor(() => expect(fetch).toHaveBeenCalledWith(expect.stringContaining('resource=current'), expect.anything()));
     fireEvent.click(screen.getByRole('button', { name: /SC-02/ }));
     fireEvent.change(screen.getByLabelText(/Follow-up days/), { target: { value: '7, 35, 91' } });
-    fireEvent.change(screen.getByLabelText(/Explicit target volume/), { target: { value: '90' } });
+    fireEvent.change(screen.getByLabelText(/Explicit target volume/), { target: { value: '90, 90, 90' } });
     expect(screen.getByText(/Treatment exposure:/)).toBeVisible();
     fireEvent.click(screen.getByRole('button', { name: 'Save immutable draft version' }));
     await waitFor(() => expect(fetch).toHaveBeenCalledWith(expect.stringContaining('resource=config&branch='), expect.objectContaining({ method: 'POST' })));
     const body = configBody(fetch);
     expect(body.config.scenario.family).toBe('SC-02');
+    expect(body.config.sc02_parameters).toEqual({ mode: 'near_stable', max_absolute_change_mm3: '0', max_relative_change: '0' });
     expect(body.config.treatment).toEqual({ exposure: 'none' });
     expect(body.config.schedule.slots.map((slot: { relative_day: string }) => slot.relative_day)).toEqual(['7', '35', '91']);
   });

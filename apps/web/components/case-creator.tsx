@@ -1,4 +1,5 @@
 'use client';
+import { rememberCase } from '../lib/case-selection';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { components } from '../../../packages/contracts/generated/api';
@@ -35,7 +36,7 @@ export function CaseCreator({project, sources, allowed}: {project: string; sourc
       const result = await researchJson<{patient_id: string}>(`/api/research-cases?project=${encodeURIComponent(project)}`, {
         method: 'POST', headers: {'content-type':'application/json','idempotency-key':key}, body: JSON.stringify(body),
       });
-      try { localStorage.setItem('canceros:last_case', JSON.stringify({project, patient: result.patient_id, at: Date.now()})); } catch {}
+      rememberCase(project, result.patient_id);
       router.push(`/cases/detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(result.patient_id)}`);
     } catch (cause) { setError(researchError(cause)); setBusy(false); }
   }

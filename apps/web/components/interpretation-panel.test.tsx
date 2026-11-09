@@ -24,4 +24,11 @@ describe('bounded interpretation panel', () => {
     expect(screen.getByText(/No interpretation has been generated/)).toBeVisible();
     expect(screen.getByText(/external candidates stay private/)).toBeVisible();
   });
+  it('never labels or exposes a private external candidate as a saved or verified live result', () => {
+    render(<InterpretationPanel report={{ ...report(), execution_mode: 'external_candidate_private', visibility: 'private_candidate', summary: 'PRIVATE CANDIDATE TEXT' }}/>);
+    expect(screen.getByRole('heading', { name: /Private external candidate · unpublished/ })).toBeVisible();
+    expect(screen.queryByText('PRIVATE CANDIDATE TEXT')).toBeNull();
+    expect(screen.queryByText(/Verified value:/)).toBeNull();
+    expect(screen.getByText(/saved record does not establish a verified live result/)).toBeVisible();
+  });
 });

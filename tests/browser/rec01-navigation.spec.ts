@@ -1,8 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 
-const base = 'http://127.0.0.1:3001';
-const output = 'docs/engineering/testing/rec01-navigation';
+const base = process.env.CANCEROS_BROWSER_BASE_URL ?? 'http://127.0.0.1:3001';
+const output = process.env.CANCEROS_BROWSER_EVIDENCE_DIR ? `${process.env.CANCEROS_BROWSER_EVIDENCE_DIR}/navigation` : 'docs/engineering/testing/rec01-navigation';
 const bundle = '.local/product-browser-fixture.json';
 const caseCode = `REC01-${Date.now()}`;
 
@@ -64,6 +64,7 @@ test('REC-01 unified navigation: one case across twin, scenarios and clinical da
   await page.goto(`${base}/twin`);
   await expect(page.getByText('Restored your last opened case')).toBeVisible({ timeout: 30000 });
   await expect(page.getByText('Open a case to inspect its lesion')).toBeHidden();
+  await expect(page.getByText('This case has no 3D model yet. Add an imaging study to continue.')).toBeVisible();
   expect(page.url()).toContain(`patient=${patientA}`);
   await page.screenshot({ path: `${output}/02-twin-restored.png` });
 
@@ -109,6 +110,18 @@ test('REC-01 unified navigation: one case across twin, scenarios and clinical da
   await expect(page).toHaveURL(new RegExp(`patient=${patientB}`), { timeout: 30000 });
   expect(page.url()).not.toContain(`patient=${patientA}`);
   await page.screenshot({ path: `${output}/05-case-b-isolation.png` });
+
+  // Query-only navigation uses the same history mechanism as state pickers.
+  // It must refetch B instead of leaving A mounted behind a changed URL.
+  await page.goto(`${base}/charts?project=${project}&patient=${patientA}`);
+  await expect(page.getByText(new RegExp(`Case: ${patientA.slice(0, 8)}`))).toBeVisible();
+  const rebound = page.waitForResponse(response => response.url().includes('/api/clinical-charts?') && response.url().includes(`patient=${patientB}`));
+  await page.evaluate(url => window.history.pushState(null, '', url), `/charts?project=${project}&patient=${patientB}`);
+  expect((await rebound).status()).toBe(200);
+  await expect(page.getByText(new RegExp(`Case: ${patientB.slice(0, 8)}`))).toBeVisible();
+  await expect(page.getByText(new RegExp(`Case: ${patientA.slice(0, 8)}`))).toBeHidden();
+  await page.goBack();
+  await expect(page.getByText(new RegExp(`Case: ${patientA.slice(0, 8)}`))).toBeVisible();
 
   // 8. Stale state selection fails gracefully without content.
   await page.goto(`${base}/insights?project=${project}&patient=${patientB}&state=00000000-0000-4000-8000-000000000099`);

@@ -5,6 +5,7 @@ from uuid import UUID
 
 from pydantic import Field
 
+from canceros.context_contracts import ContextBuildInput
 from canceros.contracts import Contract, Hash
 
 Code = Annotated[str, Field(strict=True, pattern=r"^[a-zA-Z0-9_.-]{1,64}$")]
@@ -25,6 +26,7 @@ class InterpretationInput(Contract):
     context_snapshot_id: UUID
     expected_context_hash: Hash | None = None
     mode: Literal["template", "external_candidate"] = "template"
+    context_input: ContextBuildInput | None = None
 
 
 class InterpretationReport(Contract):

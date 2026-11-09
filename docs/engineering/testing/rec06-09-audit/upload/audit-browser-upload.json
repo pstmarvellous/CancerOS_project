@@ -1,0 +1,55 @@
+{
+  "recorded_at": "2026-11-09T16:59:06.917Z",
+  "scope": "synthetic engineering fixture only; authentic MRI gate remains blocked",
+  "setup_staged_bytes": false,
+  "steps": [
+    {
+      "step": "empty-initial-case",
+      "verdict": "PASS",
+      "evidence": "Browser started with zero associated/staged imports; setup registered sources and generated local bytes only."
+    },
+    {
+      "step": "browser-file-import",
+      "verdict": "PASS",
+      "evidence": "File input sent original bytes to backend private staging; exact registered SHA matched; explicit preview and confirmation associated it with the selected case."
+    },
+    {
+      "step": "verified-geometry-no-mask",
+      "verdict": "PASS",
+      "evidence": "Actual server geometry showed 2×3×4 mm spacing and withheld measurement without a mask."
+    },
+    {
+      "step": "association-after-refresh",
+      "verdict": "PASS",
+      "evidence": "Associated study and import restored through actual owned backend discovery after page reload."
+    },
+    {
+      "step": "browser-mask-import-alignment-qc",
+      "verdict": "PASS",
+      "evidence": "Original mask bytes privately staged; explicit binding, exact-grid alignment, functional-region annotation and technical QC completed through UI calls."
+    },
+    {
+      "step": "actual-measurement-mesh-workers",
+      "verdict": "PASS",
+      "evidence": "Deterministic 8-voxel source-mask region measured 192 mm³; mesh and mesh-QC jobs succeeded, with exact completed report link."
+    },
+    {
+      "step": "exact-mesh-browser-render",
+      "verdict": "PASS",
+      "evidence": "Exact completed private model rendered in WebGL with authoritative 192 mm³ server overlay."
+    }
+  ],
+  "byte_staging_receipts": [
+    {
+      "status": 201,
+      "sha256": "d4714af6c3f04283536e31bc797ba00411b677528fe1f4814fb507b2ef33fb60",
+      "storage_status": "privately_staged"
+    },
+    {
+      "status": 201,
+      "sha256": "b7f73db29677e59709895ad73d76d6275d0d24c92db35828532966caff85ba37",
+      "storage_status": "privately_staged"
+    }
+  ],
+  "page_errors": []
+}

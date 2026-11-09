@@ -14,7 +14,9 @@ import argparse
 import hashlib
 import json
 import os
+import shutil
 import struct
+import subprocess
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -90,30 +92,27 @@ def surface_digest(surface):
     return digest.hexdigest()
 
 
-def bundle_status():
+def bundle_status(path=None):
     """Validate the present bundle without touching services or the database."""
+    node = shutil.which("node")
+    if not node:
+        return ("invalid", "Node runtime is required for the shared serving validator.")
     try:
-        raw = BUNDLE_PATH.read_text(encoding="utf-8")
-    except OSError:
-        return ("missing", "No prepared bundle at .local/synthetic-demo.json.")
-    try:
-        bundle = json.loads(raw)
-    except ValueError:
-        return ("invalid", "Bundle is not valid JSON; remove it and prepare again.")
-    for key in ("version", "syntheticOnly", "caseLabel", "preparedAt", "expiresAt", "scenarios"):
-        if key not in bundle:
-            return ("invalid", f"Bundle is missing {key}; remove it and prepare again.")
-    try:
-        expires = datetime.fromisoformat(bundle["expiresAt"])
-    except ValueError:
-        return ("invalid", "Bundle expiry is unreadable; remove it and prepare again.")
-    now = datetime.now(timezone.utc)
-    if expires <= now:
-        return ("expired", "Bundle expired; prepare again to refresh the 7-day window.")
-    if set(bundle.get("scenarios", {})) != set(FAMILIES):
-        return ("invalid", "Bundle scenario families are incomplete; prepare again.")
-    remaining = expires - now
-    return ("valid", f"Bundle valid for {remaining.days}d {remaining.seconds // 3600}h.")
+        result = subprocess.run(
+            [node, str(ROOT / "scripts/serve_synthetic_demo.mjs"),
+             "--validate-bundle", str(path or BUNDLE_PATH)],
+            cwd=ROOT, capture_output=True, text=True, timeout=60, check=False,
+        )
+        report = json.loads(result.stdout)
+        if report["state"] == "valid" and result.returncode == 0:
+            return ("valid", "Bundle passed the shared serving validator.")
+        if report["state"] == "missing":
+            return ("missing", "Prepared bundle is missing; prepare again.")
+        if report["state"] == "expired":
+            return ("expired", "Bundle expired; prepare again to refresh the 7-day window.")
+        return ("invalid", "Bundle failed serving validation; prepare again. Run npm ci if validation dependencies are absent.")
+    except (OSError, ValueError, KeyError, TypeError, subprocess.TimeoutExpired):
+        return ("invalid", "Shared validator unavailable; verify Node and run npm ci, then prepare again.")
 
 
 def check():
@@ -270,6 +269,10 @@ def prepare(*, force=False):
         target.parent.mkdir(exist_ok=True)
         temporary = target.with_suffix(".pending")
         temporary.write_text(json.dumps(bundle, separators=(",", ":")), encoding="utf-8")
+        state, _ = bundle_status(temporary)
+        if state != "valid":
+            temporary.unlink(missing_ok=True)
+            raise RuntimeError("Generated demo failed the shared serving validator; previous bundle preserved")
         temporary.replace(target)
         print(
             "Prepared five synthetic scenarios, each with a shared phantom baseline and three measured follow-ups."
@@ -284,7 +287,14 @@ if __name__ == "__main__":
     parser.add_argument("--check", action="store_true", help="validate the present bundle only")
     parser.add_argument("--force", action="store_true", help="rebuild even when the bundle is fresh")
     args = parser.parse_args()
-    if args.check:
-        check()
-    else:
-        prepare(force=args.force)
+    try:
+        if args.check:
+            check()
+        else:
+            prepare(force=args.force)
+    except Exception as error:
+        # Dependency errors can contain connection strings: never print their
+        # text or tracebacks in normal preparation output.
+        print(f"Demo preparation failed ({type(error).__name__}). Previous bundle preserved.", file=sys.stderr)
+        print("Verify npm ci and the foundation PostgreSQL/storage/queue services using infrastructure/README.md, then retry.", file=sys.stderr)
+        raise SystemExit(1) from None

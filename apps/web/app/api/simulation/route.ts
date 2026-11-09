@@ -32,6 +32,11 @@ export async function GET(request: Request) {
     if (!url) return missingSelection();
     return proxyCase(request, url, 'GET');
   }
+  if (resource === 'latest-config' && branch) {
+    const url = caseUrl(project, patient, `/branches/${encodeURIComponent(branch)}/simulation-configs/current`);
+    if (!url) return missingSelection();
+    return proxyCase(request, url, 'GET');
+  }
   if (resource === 'current' && branch) {
     const url = caseUrl(project, patient, `/branches/${encodeURIComponent(branch)}/current-simulation`);
     if (!url) return missingSelection();
@@ -74,6 +79,8 @@ export async function POST(request: Request) {
   };
 
   if (resource === 'config' && branch) return forward(`/branches/${encodeURIComponent(branch)}/simulation-configs`);
+  if (resource === 'origin') return forward('/timeline-origins');
+  if (resource === 'branch') return forward('/branches');
   if (resource === 'run' && branch) return forward(`/branches/${encodeURIComponent(branch)}/simulation-runs`);
   if (resource === 'eligibility') return forward('/eligibility-checks');
   if (resource === 'job') return forward('/imaging-jobs');

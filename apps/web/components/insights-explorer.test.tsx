@@ -31,6 +31,7 @@ function stubFetch() {
             missing_modalities: [],
             measurements: [{ reference_id: MEASURE, metric_code: 'hemoglobin', value: '9', unit: 'g_dL', member_time: 'Source-relative day 1', origin: 'REAL_OBSERVED', context: 'observed' }],
             assertions: [],
+            passages: [],
             missing: [],
             conflicts: [],
           }),
@@ -75,7 +76,7 @@ describe('COS-079 insights explorer', () => {
     const contextCall = fetch.mock.calls.find(call => String(call[0]).includes('action=context'));
     expect(contextCall).toBeDefined();
     if (!contextCall) throw new Error('context request missing');
-    expect(JSON.parse(String(contextCall[1]?.body))).toEqual({ patient_id: PATIENT, snapshot_id: STATE });
+    expect(JSON.parse(String(contextCall[1]?.body))).toMatchObject({ patient_id: PATIENT, snapshot_id: STATE, comparison_snapshot_id: null });
     fireEvent.click(screen.getByRole('button', { name: 'Generate rule-based summary' }));
     await waitFor(() => expect(screen.getByText('Rule-based summary.')).toBeVisible(), { timeout: 10000 });
     expect(screen.getByText(/Each finding below opens its exact case observation/)).toBeVisible();

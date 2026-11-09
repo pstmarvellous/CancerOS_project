@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 
-const base = 'http://127.0.0.1:3000';
-const output = 'docs/engineering/testing/rec02-demo';
+const base = process.env.CANCEROS_BROWSER_BASE_URL ?? 'http://127.0.0.1:3000';
+const output = process.env.CANCEROS_BROWSER_EVIDENCE_DIR ? `${process.env.CANCEROS_BROWSER_EVIDENCE_DIR}/demo` : 'docs/engineering/testing/rec02-demo';
 
 test('REC-02 first-time demo: homepage launch, 3D canvas, scenario, follow-up, refresh', async ({ page, context }) => {
   test.setTimeout(420000);

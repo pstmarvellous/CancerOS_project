@@ -8,7 +8,14 @@ import styles from './mesh-preview.module.css';
 
 type CameraAction = 'left' | 'right' | 'up' | 'down' | 'pan-left' | 'pan-right' | 'pan-up' | 'pan-down' | 'in' | 'out' | 'fit' | 'reset';
 export type RenderableMesh = {objects: Pick<MeshAsset['objects'][number], 'segmentation_id' | 'surface'>[]};
-export default function MeshRenderer({asset, selected, onFailure, label = 'Synthetic region · mm · RAS frame · Z up'}: {asset: RenderableMesh; selected: string; onFailure: () => void; label?: string}) {
+export type ViewerDisplayActions = {
+  maximized: boolean;
+  fullscreen: boolean;
+  fullscreenAvailable: boolean;
+  toggleMaximize: () => void;
+  toggleFullscreen: () => Promise<void>;
+};
+export default function MeshRenderer({asset, selected, onFailure, displayActions, label = 'Synthetic region · mm · RAS frame · Z up'}: {asset: RenderableMesh; selected: string; onFailure: () => void; displayActions?: ViewerDisplayActions; label?: string}) {
   const host = useRef<HTMLDivElement>(null);
   const frame = useRef<HTMLElement>(null);
   const actions = useRef<((action: CameraAction) => void) | null>(null);
@@ -16,6 +23,8 @@ export default function MeshRenderer({asset, selected, onFailure, label = 'Synth
   const pointerMode = useRef<((mode: 'orbit' | 'pan') => void) | null>(null);
   const [mode, setMode] = useState<'orbit' | 'pan'>('orbit');
   const [fullRenderer, setFullRenderer] = useState(false);
+  const [fullscreenError, setFullscreenError] = useState('');
+  const maximized = displayActions?.maximized ?? fullRenderer;
   const helpId = useId();
   const selection = useRef<((id: string) => void) | null>(null);
 
@@ -200,9 +209,11 @@ export default function MeshRenderer({asset, selected, onFailure, label = 'Synth
   }, [fullRenderer]);
   async function toggleRendererFullscreen() {
     try {
-      if (document.fullscreenElement) await document.exitFullscreen();
+      if (displayActions) await displayActions.toggleFullscreen();
+      else if (document.fullscreenElement) await document.exitFullscreen();
       else await frame.current?.requestFullscreen();
-    } catch { /* unavailable Fullscreen stays a quiet no-op; the maximize toggle remains */ }
+      setFullscreenError('');
+    } catch { setFullscreenError('Fullscreen is unavailable in this browser. Use Maximize viewer for more space.'); }
   }
   const steps: [CameraAction, string, string][] = [['left', 'Rotate left', '↶'], ['right', 'Rotate right', '↷'],
     ['pan-left', 'Pan left', '←'], ['pan-right', 'Pan right', '→'], ['in', 'Zoom in', '+'], ['out', 'Zoom out', '−'],
@@ -220,9 +231,10 @@ export default function MeshRenderer({asset, selected, onFailure, label = 'Synth
         <button type="button" title="Reset view" aria-label="Reset view" onClick={() => actions.current?.('reset')}>Reset</button>
       </span>
       <span role="group" aria-label="Display size">
-        <button type="button" title={fullRenderer ? 'Restore viewer size' : 'Maximize viewer'} aria-label={fullRenderer ? 'Restore viewer size' : 'Maximize viewer'} aria-pressed={fullRenderer}
-          onClick={() => setFullRenderer(open => !open)}>{fullRenderer ? '⤢' : '⛶'}</button>
-        <button type="button" title="Fullscreen viewer" aria-label="Fullscreen viewer" onClick={() => void toggleRendererFullscreen()}>Fullscreen</button>
+        <button type="button" title={maximized ? 'Restore viewer size' : 'Maximize viewer'} aria-label={maximized ? 'Restore viewer size' : 'Maximize viewer'} aria-pressed={maximized}
+          onClick={() => displayActions ? displayActions.toggleMaximize() : setFullRenderer(open => !open)}>{maximized ? '⤢' : '⛶'}</button>
+        {(!displayActions || displayActions.fullscreenAvailable) && <button type="button" title={displayActions?.fullscreen ? 'Exit fullscreen' : 'Fullscreen viewer'} aria-label={displayActions?.fullscreen ? 'Exit fullscreen' : 'Fullscreen viewer'} aria-pressed={displayActions?.fullscreen}
+          onClick={() => void toggleRendererFullscreen()}>{displayActions?.fullscreen ? 'Exit fullscreen' : 'Fullscreen'}</button>}
       </span>
       <details className={styles.extraControls}><summary>More camera controls</summary><div>
         {steps.map(([action, text, icon]) =>
@@ -231,6 +243,7 @@ export default function MeshRenderer({asset, selected, onFailure, label = 'Synth
           <button key={action} type="button" title={text} aria-label={text} onClick={() => actions.current?.(action)}>{text}</button>)}
       </div></details>
     </div>
+    {fullscreenError && <p role="status">{fullscreenError}</p>}
     <div className={styles.viewport} ref={host} tabIndex={0} role="group" aria-label="Interactive 3D viewport" aria-describedby={helpId}
       onPointerDown={event => { if (event.target instanceof HTMLCanvasElement) event.currentTarget.focus({ preventScroll: true }); }}
       onKeyDown={event => {

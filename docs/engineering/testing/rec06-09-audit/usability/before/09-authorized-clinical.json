@@ -1,0 +1,35 @@
+{
+  "scope": "Actual browser layout, synthetic data only",
+  "measurements": [
+    {
+      "width": 1440,
+      "height": 900,
+      "overflow": 0,
+      "controlCount": 51,
+      "overlaps": [],
+      "clipped": [],
+      "screenshot": "09-authorized-clinical-1440.png"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": 0,
+      "controlCount": 51,
+      "overlaps": [],
+      "clipped": [],
+      "screenshot": "09-authorized-clinical-390.png"
+    },
+    {
+      "width": 320,
+      "height": 740,
+      "overflow": 14,
+      "controlCount": 51,
+      "overlaps": [
+        "← Case library / Explore synthetic demo",
+        "Explore synthetic demo / Guided demo"
+      ],
+      "clipped": [],
+      "screenshot": "09-authorized-clinical-320.png"
+    }
+  ]
+}

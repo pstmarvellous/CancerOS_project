@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
   const headers = { 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff' };
   const prepared = demoBundle();
-  if (!prepared) return NextResponse.json({ title: 'Synthetic demo unavailable. If you run this computer, validate it with: uv run python scripts/prepare_synthetic_demo.py --check.' }, { status: 503, headers });
+  if (!prepared) return NextResponse.json({ title: 'The interactive demo is temporarily unavailable. Try again shortly, or create or open a research case.' }, { status: 503, headers });
   if (!hasDemoSession(request.cookies.get(DEMO_COOKIE)?.value, prepared.fingerprint)) {
     return NextResponse.json({ title: 'Your demo session ended. Launch the demo again.' }, { status: 401, headers });
   }

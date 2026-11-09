@@ -49,10 +49,10 @@ export function LesionViewer({ project: overrideProject, patient: overridePatien
 function LesionViewerFromQuery({ overrideProject, overridePatient }: { overrideProject?: string | null; overridePatient?: string | null }) {
   const params = useSearchParams();
   const initial = initialSelection(params);
-  return <LesionViewerBody initialProject={overrideProject ?? initial.project} initialPatient={overridePatient ?? initial.patient} initialLesion={initial.lesion} />;
+  return <LesionViewerBody key={[overrideProject ?? initial.project, overridePatient ?? initial.patient, initial.lesion, params.get('mesh_qc')].join('/')} initialProject={overrideProject ?? initial.project} initialPatient={overridePatient ?? initial.patient} initialLesion={initial.lesion} initialReport={params.get('mesh_qc')} />;
 }
 
-function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { initialProject: string | null; initialPatient: string | null; initialLesion: string | null }) {
+function LesionViewerBody({ initialProject, initialPatient, initialLesion, initialReport }: { initialProject: string | null; initialPatient: string | null; initialLesion: string | null; initialReport: string | null }) {
   const project = initialProject;
   const patient = initialPatient;
   const [lesions, setLesions] = useState<LesionListItem[] | null>(null);
@@ -63,7 +63,7 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
   const [status, setStatus] = useState<'needs-selection' | 'loading-lesions' | 'loading' | 'ready' | 'failed'>(
     'needs-selection',
   );
-  const [message, setMessage] = useState('Lesion, origin and imaging time stay visible while the viewport loads.');
+  const [message, setMessage] = useState('Source region, origin and imaging time stay visible while the viewport loads.');
   const [failed3D, setFailed3D] = useState(false);
   const [retry, setRetry] = useState(0);
   const [measuresOpen, setMeasuresOpen] = useState(true);
@@ -73,7 +73,11 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
   useEffect(() => () => pending.current?.abort(), []);
   useEffect(() => {
     if (project && patient) {
-      void loadLesions(project, patient, lesion ?? initialLesion);
+      if (initialReport && UUID.test(initialReport)) {
+        const controller = new AbortController();
+        pending.current = controller;
+        void loadGeometry(project, patient, '', controller, initialReport);
+      } else void loadLesions(project, patient, lesion ?? initialLesion);
     }
     // Initial URL binding runs once; later selection changes use the lesion picker.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -119,8 +123,10 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
       const items = lesionItems(body);
       setLesions(items);
       if (!items.length) {
-        setStatus('failed');
-        setMessage('No lesion identities are recorded for this authorized case. Measurements below stay unavailable; no placeholder tumor is shown.');
+        setStatus('ready');
+        setLoaded(null);
+        setBlockedMeasurement(null);
+        setMessage('This case has no 3D model yet. Add an imaging study to continue.');
         return;
       }
       const target = nextLesion && UUID.test(nextLesion) ? nextLesion : items[0].lesion_id;
@@ -135,7 +141,7 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
     }
   }
 
-  async function loadGeometry(nextProject: string, nextPatient: string, lesionId: string, controller: AbortController) {
+  async function loadGeometry(nextProject: string, nextPatient: string, lesionId: string, controller: AbortController, reportId?: string) {
     setStatus('loading');
     setLoaded(null);
     setBlockedMeasurement(null);
@@ -144,7 +150,7 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
     const started = performance.now();
     try {
       const report = await authorized<MeshQCReport>(
-        `/api/lesion-viewer?project=${encodeURIComponent(nextProject)}&patient=${encodeURIComponent(nextPatient)}&resource=geometry&lesion=${encodeURIComponent(lesionId)}`,
+        `/api/lesion-viewer?project=${encodeURIComponent(nextProject)}&patient=${encodeURIComponent(nextPatient)}${reportId ? `&resource=qc&report=${encodeURIComponent(reportId)}` : `&resource=geometry&lesion=${encodeURIComponent(lesionId)}`}`,
         controller.signal,
       );
       if (controller.signal.aborted) return;
@@ -207,7 +213,7 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
   if (!project || !patient) {
     return (
       <section className="card">
-        <h2>Open a case to inspect its lesion</h2>
+        <h2>Open a case to inspect its source region</h2>
         <p>
           The viewer binds to the active case selection. <Link href="/cases">Open an authorized case</Link>, then
           open its Imaging & 3D tab. The browser never guesses a project or patient, and no UUID entry is needed.
@@ -227,7 +233,7 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
       </p>
       {project && patient ? (
         <p>
-          Case: {patient.slice(0, 8)}… · Lesion: {lesion ? `${lesion.slice(0, 8)}…` : 'select below'} ·{' '}
+          Case: {patient.slice(0, 8)}… · {initialReport ? `Geometry report: ${initialReport.slice(0, 8)}…` : `Lesion: ${lesion ? `${lesion.slice(0, 8)}…` : 'select below'}`} ·{' '}
           <Link
             href={`/cases/detail?project=${encodeURIComponent(project)}&patient=${encodeURIComponent(patient)}&tab=overview`}
           >
@@ -251,7 +257,10 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
               onClick={() => {
                 if (project && patient) {
                   setStatus('loading-lesions');
-                  void loadLesions(project, patient, lesion);
+                  if (initialReport && UUID.test(initialReport)) {
+                    const controller = new AbortController(); pending.current?.abort(); pending.current = controller;
+                    void loadGeometry(project, patient, '', controller, initialReport);
+                  } else void loadLesions(project, patient, lesion);
                 }
               }}
             >
@@ -286,7 +295,7 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
         </div>
       ) : null}
       {loaded ? (
-        <section aria-label="Authorized lesion geometry" className={styles.twinGrid}>
+        <section aria-label="Authorized source-region geometry" className={styles.twinGrid}>
       <div className={styles.twinSide}>
           <div className={styles.controls} role="toolbar" aria-label="Viewer panels" style={{marginBottom:12}}>
             <button type="button" aria-pressed={viewerOpen} onClick={() => setViewerOpen(open => !open)}>{viewerOpen ? 'Collapse 3D viewer' : 'Show 3D viewer'}</button>
@@ -343,7 +352,7 @@ function LesionViewerBody({ initialProject, initialPatient, initialLesion }: { i
           ) : (
             <div className={styles.notice} role="alert">
               <strong>3D is unavailable on this device or the graphics context was lost.</strong>
-              <p>Use the measurement table below. No substitute tumor is displayed. This fallback is not interactive release evidence.</p>
+              <p>Use the measurement table below. No substitute region is displayed. This fallback is not interactive release evidence.</p>
               <button type="button" onClick={() => { setFailed3D(false); setRetry(value => value + 1); }}>
                 Retry 3D
               </button>

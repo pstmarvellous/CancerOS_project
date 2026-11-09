@@ -1,0 +1,698 @@
+{
+  "review": "COS-REVIEW-003",
+  "fixture_origin": "FABRICATED_ENGINEERING_INPUTS_ONLY",
+  "no_database_or_provider_connection": true,
+  "scope": "Contract validation and function-level authorization inspection; not full HTTP journeys.",
+  "interpretation_placeholder_note": "Ground/save use an empty report object because their outer key is forbidden regardless of report contents.",
+  "reproduce": ".venv/Scripts/python.exe docs/engineering/reviews/COS-REVIEW-003/evidence/contract-probes.py",
+  "contract_probes": [
+    {
+      "probe": "insights_context",
+      "source": "apps/web/components/insights-explorer.tsx:103",
+      "model": "ContextBuildInput",
+      "payload": {
+        "branch_id": "00000000-0000-4000-8000-000000000003"
+      },
+      "schema_accepted": false,
+      "errors": [
+        {
+          "location": [
+            "patient_id"
+          ],
+          "type": "missing",
+          "message": "Field required"
+        },
+        {
+          "location": [
+            "snapshot_id"
+          ],
+          "type": "missing",
+          "message": "Field required"
+        },
+        {
+          "location": [
+            "branch_id"
+          ],
+          "type": "extra_forbidden",
+          "message": "Extra inputs are not permitted"
+        }
+      ]
+    },
+    {
+      "probe": "insights_summary",
+      "source": "apps/web/components/insights-explorer.tsx:128",
+      "model": "InterpretationInput",
+      "payload": {
+        "mode": "rule_based"
+      },
+      "schema_accepted": false,
+      "errors": [
+        {
+          "location": [
+            "context_snapshot_id"
+          ],
+          "type": "missing",
+          "message": "Field required"
+        },
+        {
+          "location": [
+            "mode"
+          ],
+          "type": "literal_error",
+          "message": "Input should be 'template' or 'external_candidate'"
+        }
+      ]
+    },
+    {
+      "probe": "insights_grounding",
+      "source": "apps/web/components/insights-explorer.tsx:156",
+      "model": "GroundingCheckInput",
+      "payload": {
+        "interpretation": {}
+      },
+      "schema_accepted": false,
+      "errors": [
+        {
+          "location": [
+            "interpretation_snapshot_id"
+          ],
+          "type": "missing",
+          "message": "Field required"
+        },
+        {
+          "location": [
+            "interpretation"
+          ],
+          "type": "extra_forbidden",
+          "message": "Extra inputs are not permitted"
+        }
+      ]
+    },
+    {
+      "probe": "insights_save",
+      "source": "apps/web/components/insights-explorer.tsx:177",
+      "model": "InterpretationPersistInput",
+      "payload": {
+        "interpretation": {}
+      },
+      "schema_accepted": false,
+      "errors": [
+        {
+          "location": [
+            "interpretation_snapshot_id"
+          ],
+          "type": "missing",
+          "message": "Field required"
+        },
+        {
+          "location": [
+            "idempotency_key"
+          ],
+          "type": "missing",
+          "message": "Field required"
+        },
+        {
+          "location": [
+            "interpretation"
+          ],
+          "type": "extra_forbidden",
+          "message": "Extra inputs are not permitted"
+        }
+      ]
+    },
+    {
+      "probe": "builder_SC-01",
+      "source": "apps/web/components/simulation-builder.tsx:161",
+      "model": "SimulationConfig",
+      "payload": {
+        "baseline_state_id": null,
+        "baseline_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "branch_id": "00000000-0000-4000-8000-000000000003",
+        "input_revision": 1,
+        "scenario": {
+          "family": "SC-01",
+          "definition_version": "sc-01-explicit/1"
+        },
+        "treatment": {
+          "exposure": "none"
+        },
+        "schedule": {
+          "slots": [
+            {
+              "slot_id": "slot-1",
+              "modality": "imaging",
+              "relative_day": "10"
+            },
+            {
+              "slot_id": "slot-2",
+              "modality": "imaging",
+              "relative_day": "30"
+            },
+            {
+              "slot_id": "slot-3",
+              "modality": "imaging",
+              "relative_day": "60"
+            }
+          ]
+        },
+        "tumor_profile": {
+          "metric": "numerical_region_volume",
+          "unit": "mm3",
+          "points": [
+            {
+              "slot_id": "slot-1",
+              "target_mm3": "120.5"
+            },
+            {
+              "slot_id": "slot-2",
+              "target_mm3": "120.5"
+            },
+            {
+              "slot_id": "slot-3",
+              "target_mm3": "120.5"
+            }
+          ]
+        },
+        "clinical_profile": {
+          "configuration": "stable"
+        },
+        "noise": {
+          "mode": "none"
+        },
+        "missingness": {
+          "mode": "none"
+        },
+        "geometry_policy": "none",
+        "seed": 7
+      },
+      "schema_accepted": true,
+      "qualification": "Schema acceptance does not establish runtime execution."
+    },
+    {
+      "probe": "builder_SC-02",
+      "source": "apps/web/components/simulation-builder.tsx:161",
+      "model": "SimulationConfig",
+      "payload": {
+        "baseline_state_id": null,
+        "baseline_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "branch_id": "00000000-0000-4000-8000-000000000003",
+        "input_revision": 1,
+        "scenario": {
+          "family": "SC-02",
+          "definition_version": "sc-02-explicit/1"
+        },
+        "treatment": {
+          "exposure": "none"
+        },
+        "schedule": {
+          "slots": [
+            {
+              "slot_id": "slot-1",
+              "modality": "imaging",
+              "relative_day": "10"
+            },
+            {
+              "slot_id": "slot-2",
+              "modality": "imaging",
+              "relative_day": "30"
+            },
+            {
+              "slot_id": "slot-3",
+              "modality": "imaging",
+              "relative_day": "60"
+            }
+          ]
+        },
+        "tumor_profile": {
+          "metric": "numerical_region_volume",
+          "unit": "mm3",
+          "points": [
+            {
+              "slot_id": "slot-1",
+              "target_mm3": "120.5"
+            },
+            {
+              "slot_id": "slot-2",
+              "target_mm3": "120.5"
+            },
+            {
+              "slot_id": "slot-3",
+              "target_mm3": "120.5"
+            }
+          ]
+        },
+        "clinical_profile": {
+          "configuration": "stable"
+        },
+        "noise": {
+          "mode": "none"
+        },
+        "missingness": {
+          "mode": "none"
+        },
+        "geometry_policy": "none",
+        "seed": 7
+      },
+      "schema_accepted": false,
+      "errors": [
+        {
+          "location": [],
+          "type": "value_error",
+          "message": "Value error, SC-02 requires explicit mode parameters; other families forbid them"
+        }
+      ]
+    },
+    {
+      "probe": "builder_SC-03",
+      "source": "apps/web/components/simulation-builder.tsx:161",
+      "model": "SimulationConfig",
+      "payload": {
+        "baseline_state_id": null,
+        "baseline_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "branch_id": "00000000-0000-4000-8000-000000000003",
+        "input_revision": 1,
+        "scenario": {
+          "family": "SC-03",
+          "definition_version": "sc-03-explicit/1"
+        },
+        "treatment": {
+          "exposure": "none"
+        },
+        "schedule": {
+          "slots": [
+            {
+              "slot_id": "slot-1",
+              "modality": "imaging",
+              "relative_day": "10"
+            },
+            {
+              "slot_id": "slot-2",
+              "modality": "imaging",
+              "relative_day": "30"
+            },
+            {
+              "slot_id": "slot-3",
+              "modality": "imaging",
+              "relative_day": "60"
+            }
+          ]
+        },
+        "tumor_profile": {
+          "metric": "numerical_region_volume",
+          "unit": "mm3",
+          "points": [
+            {
+              "slot_id": "slot-1",
+              "target_mm3": "120.5"
+            },
+            {
+              "slot_id": "slot-2",
+              "target_mm3": "120.5"
+            },
+            {
+              "slot_id": "slot-3",
+              "target_mm3": "120.5"
+            }
+          ]
+        },
+        "clinical_profile": {
+          "configuration": "stable"
+        },
+        "noise": {
+          "mode": "none"
+        },
+        "missingness": {
+          "mode": "none"
+        },
+        "geometry_policy": "none",
+        "seed": 7
+      },
+      "schema_accepted": true,
+      "qualification": "Schema acceptance does not establish runtime execution."
+    },
+    {
+      "probe": "builder_SC-04",
+      "source": "apps/web/components/simulation-builder.tsx:161",
+      "model": "SimulationConfig",
+      "payload": {
+        "baseline_state_id": null,
+        "baseline_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "branch_id": "00000000-0000-4000-8000-000000000003",
+        "input_revision": 1,
+        "scenario": {
+          "family": "SC-04",
+          "definition_version": "sc-04-explicit/1"
+        },
+        "treatment": {
+          "exposure": "none"
+        },
+        "schedule": {
+          "slots": [
+            {
+              "slot_id": "slot-1",
+              "modality": "imaging",
+              "relative_day": "10"
+            },
+            {
+              "slot_id": "slot-2",
+              "modality": "imaging",
+              "relative_day": "30"
+            },
+            {
+              "slot_id": "slot-3",
+              "modality": "imaging",
+              "relative_day": "60"
+            }
+          ]
+        },
+        "tumor_profile": {
+          "metric": "numerical_region_volume",
+          "unit": "mm3",
+          "points": [
+            {
+              "slot_id": "slot-1",
+              "target_mm3": "120.5"
+            },
+            {
+              "slot_id": "slot-2",
+              "target_mm3": "120.5"
+            },
+            {
+              "slot_id": "slot-3",
+              "target_mm3": "120.5"
+            }
+          ]
+        },
+        "clinical_profile": {
+          "configuration": "stable"
+        },
+        "noise": {
+          "mode": "none"
+        },
+        "missingness": {
+          "mode": "none"
+        },
+        "geometry_policy": "none",
+        "seed": 7
+      },
+      "schema_accepted": false,
+      "errors": [
+        {
+          "location": [],
+          "type": "value_error",
+          "message": "Value error, SC-04 requires explicit change-point parameters; other families forbid them"
+        }
+      ]
+    },
+    {
+      "probe": "builder_SC-05",
+      "source": "apps/web/components/simulation-builder.tsx:161",
+      "model": "SimulationConfig",
+      "payload": {
+        "baseline_state_id": null,
+        "baseline_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "branch_id": "00000000-0000-4000-8000-000000000003",
+        "input_revision": 1,
+        "scenario": {
+          "family": "SC-05",
+          "definition_version": "sc-05-explicit/1"
+        },
+        "treatment": {
+          "exposure": "none"
+        },
+        "schedule": {
+          "slots": [
+            {
+              "slot_id": "slot-1",
+              "modality": "imaging",
+              "relative_day": "10"
+            },
+            {
+              "slot_id": "slot-2",
+              "modality": "imaging",
+              "relative_day": "30"
+            },
+            {
+              "slot_id": "slot-3",
+              "modality": "imaging",
+              "relative_day": "60"
+            }
+          ]
+        },
+        "tumor_profile": {
+          "metric": "numerical_region_volume",
+          "unit": "mm3",
+          "points": [
+            {
+              "slot_id": "slot-1",
+              "target_mm3": "120.5"
+            },
+            {
+              "slot_id": "slot-2",
+              "target_mm3": "120.5"
+            },
+            {
+              "slot_id": "slot-3",
+              "target_mm3": "120.5"
+            }
+          ]
+        },
+        "clinical_profile": {
+          "configuration": "stable"
+        },
+        "noise": {
+          "mode": "none"
+        },
+        "missingness": {
+          "mode": "none"
+        },
+        "geometry_policy": "none",
+        "seed": 7
+      },
+      "schema_accepted": false,
+      "errors": [
+        {
+          "location": [],
+          "type": "value_error",
+          "message": "Value error, SC-05 requires explicit clinical-condition parameters; other families forbid them"
+        }
+      ]
+    },
+    {
+      "probe": "builder_missing_target",
+      "source": "apps/web/components/simulation-builder.tsx:181",
+      "model": "SimulationConfig",
+      "payload": {
+        "baseline_state_id": null,
+        "baseline_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "branch_id": "00000000-0000-4000-8000-000000000003",
+        "input_revision": 1,
+        "scenario": {
+          "family": "SC-01",
+          "definition_version": "sc-01-explicit/1"
+        },
+        "treatment": {
+          "exposure": "none"
+        },
+        "schedule": {
+          "slots": [
+            {
+              "slot_id": "slot-1",
+              "modality": "imaging",
+              "relative_day": "10"
+            },
+            {
+              "slot_id": "slot-2",
+              "modality": "imaging",
+              "relative_day": "30"
+            },
+            {
+              "slot_id": "slot-3",
+              "modality": "imaging",
+              "relative_day": "60"
+            }
+          ]
+        },
+        "tumor_profile": {
+          "metric": "numerical_region_volume",
+          "unit": "mm3",
+          "points": [
+            {
+              "slot_id": "slot-1",
+              "target_mm3": null,
+              "missing_reason": "not measured"
+            },
+            {
+              "slot_id": "slot-2",
+              "target_mm3": null,
+              "missing_reason": "not measured"
+            },
+            {
+              "slot_id": "slot-3",
+              "target_mm3": null,
+              "missing_reason": "not measured"
+            }
+          ]
+        },
+        "clinical_profile": {
+          "configuration": "stable"
+        },
+        "noise": {
+          "mode": "none"
+        },
+        "missingness": {
+          "mode": "none"
+        },
+        "geometry_policy": "none",
+        "seed": 7
+      },
+      "schema_accepted": false,
+      "errors": [
+        {
+          "location": [
+            "tumor_profile",
+            "points",
+            0,
+            "target_mm3"
+          ],
+          "type": "string_type",
+          "message": "Input should be a valid string"
+        },
+        {
+          "location": [
+            "tumor_profile",
+            "points",
+            0,
+            "missing_reason"
+          ],
+          "type": "extra_forbidden",
+          "message": "Extra inputs are not permitted"
+        },
+        {
+          "location": [
+            "tumor_profile",
+            "points",
+            1,
+            "target_mm3"
+          ],
+          "type": "string_type",
+          "message": "Input should be a valid string"
+        },
+        {
+          "location": [
+            "tumor_profile",
+            "points",
+            1,
+            "missing_reason"
+          ],
+          "type": "extra_forbidden",
+          "message": "Extra inputs are not permitted"
+        },
+        {
+          "location": [
+            "tumor_profile",
+            "points",
+            2,
+            "target_mm3"
+          ],
+          "type": "string_type",
+          "message": "Input should be a valid string"
+        },
+        {
+          "location": [
+            "tumor_profile",
+            "points",
+            2,
+            "missing_reason"
+          ],
+          "type": "extra_forbidden",
+          "message": "Extra inputs are not permitted"
+        }
+      ]
+    },
+    {
+      "probe": "publication_proxy_body",
+      "source": "apps/web/app/api/simulation/route.ts:80",
+      "model": "PublishRunInput",
+      "payload": {
+        "completion_id": "00000000-0000-4000-8000-000000000004",
+        "expected_config_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "expected_patient_revision": 1,
+        "expected_association_head": 0,
+        "expected_current_run_id": null,
+        "engineering_attestation_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "schema_accepted": false,
+      "errors": [
+        {
+          "location": [
+            "completion_id"
+          ],
+          "type": "extra_forbidden",
+          "message": "Extra inputs are not permitted"
+        }
+      ]
+    }
+  ],
+  "registry_probes": [
+    {
+      "family": "SC-01",
+      "version": "sc-01-explicit/1",
+      "registered": false,
+      "message": "Scenario definition not registered"
+    },
+    {
+      "family": "SC-03",
+      "version": "sc-03-explicit/1",
+      "registered": false,
+      "message": "Scenario definition not registered"
+    }
+  ],
+  "saved_metadata_probe": {
+    "probe": "saved_result_patient_authorization",
+    "scope": "FUNCTION_LEVEL_STUB_ONLY_NOT_HTTP_EXPLOIT_OR_DATABASE_TEST",
+    "source": [
+      "src/canceros/saved_runs.py:138",
+      "src/canceros/saved_runs.py:21",
+      "src/canceros/saved_api.py:88"
+    ],
+    "setup": "Project viewer Identity; no patient grant is represented; all SQL rows fabricated.",
+    "result": "Saved-result metadata returned without patient-grant lookup.",
+    "executed_queries": [
+      {
+        "sql": "SELECT * FROM intelligence.saved_interpretations WHERE project_id=:p AND id=:id",
+        "parameters": {
+          "p": "00000000-0000-4000-8000-000000000101",
+          "id": "00000000-0000-4000-8000-000000000103"
+        }
+      }
+    ],
+    "patient_grant_query_executed": false,
+    "returned_metadata": {
+      "id": "00000000-0000-4000-8000-000000000103",
+      "project_id": "00000000-0000-4000-8000-000000000101",
+      "patient_id": "00000000-0000-4000-8000-000000000102",
+      "context_snapshot_id": "00000000-0000-4000-8000-000000000104",
+      "context_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "execution_mode": "rule_based_summary",
+      "visibility": "visible_template",
+      "model_identifier": "local-template/1",
+      "model_revision": "unresolved",
+      "prompt_version": "interpretation-template/1",
+      "validator_version": "grounding-gate/1",
+      "corpus_manifest": "fabricated-test-corpus",
+      "finding_count": 1,
+      "usage_tokens": null,
+      "failure_stage": null,
+      "status": "validated_ready",
+      "superseded_by_id": null,
+      "next_action": "inspect_saved_result_history"
+    },
+    "limitations": [
+      "The connection stub fabricates the result of SQL; this does not test a live database.",
+      "No JWT verification or HTTP request was performed.",
+      "Returned metadata does not include raw clinical prose.",
+      "A runtime HTTP reproduction would require a disposable authorized fixture and known saved-result ID."
+    ]
+  }
+}

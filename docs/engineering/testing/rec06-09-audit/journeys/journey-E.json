@@ -1,0 +1,26 @@
+{
+  "recorded_at": "2026-11-09T16:57:57.599Z",
+  "steps": [
+    {
+      "journey": "E",
+      "step": "local",
+      "expected": "Exact selected state produces grounded local explanation",
+      "actual": "Day30: volume8 mm³; hemoglobin11 g/dL; hypothetical deterministic template with observation references",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "E",
+      "step": "selection",
+      "expected": "State changes clear stale results",
+      "actual": "Old result cleared; Day60 shows1 mm³",
+      "verdict": "PASS"
+    },
+    {
+      "journey": "E",
+      "step": "provider",
+      "expected": "No unauthorized external inference; local mode labeled",
+      "actual": "Live remains unavailable; no browser Meta request; server integration negatives separately required",
+      "verdict": "PASS"
+    }
+  ]
+}

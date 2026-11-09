@@ -176,15 +176,18 @@ export function DemoWorkspace() {
         <section ref={viewer} tabIndex={-1} role={fullTwin ? 'dialog' : undefined} aria-modal={fullTwin ? true : undefined} className={styles.viewer} aria-label="Selected digital twin" data-maximized={fullTwin ? 'true' : undefined} data-native-fullscreen={nativeFullscreen ? 'true' : undefined}>
           <div className={styles.viewerHeading}><div><p className="eyebrow">SYNTHETIC TUMOR REGION · {family}</p><h2>{name(selected)} — {selected.exact_value ?? 'Unavailable'} mm³</h2></div><span>Relative day {day(selected)}</span></div>
           <div className={styles.viewerActions}>
-            <button type="button" aria-pressed={fullTwin} onClick={() => setFullTwin(full => !full)}>{fullTwin ? 'Restore layout' : 'Maximize viewer'}</button>
-            {fullscreenAvailable && <button type="button" aria-pressed={nativeFullscreen} onClick={() => void toggleFullscreen()}>{nativeFullscreen ? 'Exit fullscreen' : 'Fullscreen'}</button>}
+            {failed3D && fullTwin && <button type="button" onClick={() => setFullTwin(false)}>Restore viewer size</button>}
+            {failed3D && nativeFullscreen && <button type="button" onClick={() => void toggleFullscreen()}>Exit fullscreen</button>}
             {!fullTwin && !nativeFullscreen && <button type="button" aria-controls="demo-measurements" aria-expanded={rightOpen} onClick={() => setRightOpen(open => !open)}>{rightOpen ? 'Collapse measurements' : 'Show measurements'}</button>}
             {(fullTwin || nativeFullscreen) && <label>Scenario<select aria-label="Viewer hypothetical scenario" value={family} onChange={event => navigate({ scenario: event.target.value, state: null })}>{catalog.scenarios.map(s => <option key={s.id} value={s.id}>{familyPresentation(s.id).plainName}</option>)}</select></label>}
             <span className={styles.inlineMeasurement}>{selected.exact_value ?? 'Unavailable'} mm³ · {name(selected)}</span>
           </div>
           {fullscreenMessage && <p className={styles.subtle} role="status">{fullscreenMessage}</p>}
           <BaselineComparison points={points} selected={selected} />
-          {asset && !failed3D ? <Renderer key={`${family}:${renderAttempt}`} asset={asset} selected={selected.id} onFailure={onFailure} label="Synthetic tumor region · geometric phantom · mm"/> :
+          {asset && !failed3D ? <Renderer key={`${family}:${renderAttempt}`} asset={asset} selected={selected.id} onFailure={onFailure}
+            displayActions={{ maximized: fullTwin, fullscreen: nativeFullscreen, fullscreenAvailable,
+              toggleMaximize: () => setFullTwin(full => !full), toggleFullscreen }}
+            label="Synthetic tumor region · geometric phantom · mm"/> :
             <div className={styles.recovery} role="alert"><h3>The 3D view could not load</h3><p>Your selected measurements remain available. Retry with browser graphics acceleration enabled.</p><button onClick={() => { setFailed3D(false); setRenderAttempt(n => n + 1); }}>Retry 3D viewer</button></div>}
           <div className={styles.timeline} aria-label="Scenario timeline"><div><h3>Explore changes over time</h3><p>Select a measured state. Days are relative to the synthetic baseline.</p></div>
             <div className={styles.timeButtons}>{points.map(point => <button key={point.id} aria-pressed={point.id === selected.id} onClick={() => navigate({ state: point.id })}><span>{name(point)}</span><small>{pointValue(point)}</small></button>)}</div>

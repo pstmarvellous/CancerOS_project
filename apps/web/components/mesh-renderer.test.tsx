@@ -62,6 +62,30 @@ describe('3D camera interaction', () => {
     expect(fixtures.controls[0].mouseButtons.LEFT).toBe(THREE.MOUSE.ROTATE);
     expect(data).toEqual(before);
   });
+  it('delegates display size to the enclosing state viewer without maximizing only its canvas', async () => {
+    const toggleMaximize = vi.fn(), toggleFullscreen = vi.fn().mockResolvedValue(undefined);
+    const props = { asset: asset(), selected: 'first', onFailure: vi.fn(), displayActions: {
+      maximized: false, fullscreen: false, fullscreenAvailable: true, toggleMaximize, toggleFullscreen,
+    } };
+    const { rerender } = render(<MeshRenderer {...props}/>);
+    fireEvent.click(screen.getByRole('button', { name: 'Maximize viewer' }));
+    expect(toggleMaximize).toHaveBeenCalledOnce();
+    expect(screen.getByRole('region', { name: '3D region controls' })).not.toHaveAttribute('data-maximized');
+    fireEvent.click(screen.getByRole('button', { name: 'Fullscreen viewer' }));
+    expect(toggleFullscreen).toHaveBeenCalledOnce();
+    rerender(<MeshRenderer {...props} displayActions={{ ...props.displayActions, maximized: true, fullscreen: true }}/>);
+    expect(screen.getByRole('button', { name: 'Restore viewer size' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Exit fullscreen' })).toHaveAttribute('aria-pressed', 'true');
+  });
+  it('reports rejected fullscreen requests and preserves maximize as recovery', async () => {
+    render(<MeshRenderer asset={asset()} selected="first" onFailure={vi.fn()} displayActions={{
+      maximized: false, fullscreen: false, fullscreenAvailable: true, toggleMaximize: vi.fn(),
+      toggleFullscreen: vi.fn().mockRejectedValue(new Error('Unavailable')),
+    }}/>);
+    fireEvent.click(screen.getByRole('button', { name: 'Fullscreen viewer' }));
+    expect(await screen.findByRole('status')).toHaveTextContent('Fullscreen is unavailable');
+    expect(screen.getByRole('button', { name: 'Maximize viewer' })).toBeVisible();
+  });
   it('supports keyboard orbit, pan, zoom, reset and resuming after Escape', () => {
     render(<MeshRenderer asset={asset()} selected="first" onFailure={vi.fn()}/>);
     const viewport = screen.getByRole('group', { name: 'Interactive 3D viewport' });

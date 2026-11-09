@@ -18,11 +18,12 @@ CORPUS_MANIFEST: str = "postgres-curated-corpus/active-head"
 KEY_RE = re.compile(r"^[A-Za-z0-9._-]{1,128}$")
 
 
-def _row(c, p, identifier):
+def _row(c, p, u, identifier):
     row = (
         c.execute(
-            text("SELECT * FROM intelligence.saved_interpretations WHERE project_id=:p AND id=:id"),
-            {"p": p, "id": identifier},
+            text("SELECT * FROM intelligence.saved_interpretations "
+                 "WHERE project_id=:p AND patient_id=:u AND id=:id"),
+            {"p": p, "u": u, "id": identifier},
         )
         .mappings()
         .one_or_none()
@@ -143,9 +144,7 @@ def read_saved(c, i, p: UUID, u: UUID, identifier: UUID) -> PersistedInterpretat
 
     authorize_project(i, p, "viewer")
     authorize_patient(c, i, p, u)
-    row = _row(c, p, identifier)
-    if row["patient_id"] != u:
-        raise HTTPException(404)
+    row = _row(c, p, u, identifier)
     return _view(row)
 
 
@@ -153,8 +152,10 @@ def reuse_exact(
     c, i, p: UUID, context: InterpretationContext, query: SavedResultQuery
 ) -> PersistedInterpretation:
     from canceros.identity import authorize_project
+    from canceros.patient_linkage import authorize_patient
 
     authorize_project(i, p, "viewer")
+    authorize_patient(c, i, p, context.patient_id)
     if query.context_snapshot_id != context.snapshot_id:
         raise HTTPException(409)
     if query.expected_context_hash is not None and query.expected_context_hash != context.context_hash:

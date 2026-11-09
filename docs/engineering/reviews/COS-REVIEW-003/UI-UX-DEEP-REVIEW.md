@@ -1,309 +1,141 @@
-# COS-REVIEW-003 — UI/UX DEEP REVIEW (Primary Deliverable — 40% priority)
+# UI/UX and practical research workflow review
 
-**Review ID:** COS-REVIEW-003-B  
-**Date:** 2026-11-05  
-**Coverage:** All routes, components, global CSS, demo, case management, intake, viewer, simulation, charts, insights, nav
+This is the primary assessment. Findings are tied to tasks and original requirements, rather than aesthetic preference. Browser observations use fresh local sessions, artificial records and Chromium 156.0.8078.4. No participant, clinician, screen-reader or physical-touchscreen study was conducted. The screenshot/check register states the limits of each observation.
 
----
+## 1. First-time experience: understandable purpose, unreliable promises
 
-## 6.1 First-Time User Experience (Fresh Session Walkthrough)
+The homepage explains breast cancer research, geometry and hypothetical changes. Two visible starts are useful: a research-case library and a synthetic demonstration. A first-time visitor can discover both without editing a URL. The problem is the detail level and the promises attached to those starts.
 
-### Steps attempted (no preloaded IDs)
+The research card leads with “RS256 JWT”, role internals and cookie persistence. Feature copy describes RAS coordinates and translation before GPU upload. A competent researcher should be deciding which case to investigate, not learning authentication algorithms or renderer internals. Technical correctness does not make this effective onboarding. PRD FR-059 and SPEC-009 §12 require understandable research language.
 
-1. Open `/` (Home).
-   - `/` source: `apps/web/app/page.tsx` — shows headline "Explore Cancer Evolution in 3D", lead copy, two CTAs: "Create Research Case" → `/cases` and "Explore Synthetic Demonstration" → `/demo`. Good copy. Disclaimer synthetic present. Three feature cards.
-   - **Fail:** Clicking "Create Research Case" without auth shows page requiring `?project=` param or sign-in. No hint where token comes from. First user stuck.
+**U01 — demo advertised but unavailable under documented startup (P1).** Starting the README's native shell at port 3000 produces a homepage advertising “demo requires nothing”. Clicking Launch synthetic demo leads to “The synthetic demo is not ready. Please ask the presenter to prepare it”. The separately opt-in product preview at port 3001 works. These are distinct runtime profiles, not contradictory observations. `synthetic-demo.ts:54` requires a server flag and a valid prepared bundle. The user-facing availability message should come from actual capability discovery; deployment preparation should run before a prominent promise is displayed. The correct unavailable state can still offer the case library, without suggesting that Retry alone can prepare a bundle.
 
-2. Open `/cases` without auth.
-   - `research-cases.tsx` renders two choice cards (Create Research Case button scrolling to research-access, and Explore Synthetic). ResearchSessionPanel shows password field for token, help text "Provided by your research administrator. Browser stores only short-lived protected session cookie." Button "Sign in...".
-   - **Problem:** No link to how to obtain token, no demo token, no project creation as researcher. Field is type password with maxLength 16384, no placeholder. Error when API unavailable is generic. After successful auth (not possible without JWT from API), `applySession` auto selects first project. But without credentials, page ends after sign-in form — no case list.
-   - **Severity:** P0 blocker — onboarding fails.
+Evidence: [fresh homepage](evidence/01-fresh-home.png), [native-start failure](evidence/02-default-demo-unavailable.png). Requirement: SPEC-009 §§12/15.1, UX-17.
 
-3. Case library (`CaseLibrary`).
-   - Present at bottom inside `<details>` collapsed by default: "Previously imported case summaries" — hidden unless user expands. It requires `initialProject` prop; when no project, shows "No project selected — Add ?project=<id> to the URL". Leaks UUID model. The case cards show display_code + data_revision only — not title. Secondary link "Open case" points to `/cases/detail?project=&patient=` — good but deep-link dependent.
+**U02 — onboarding is written for implementers (P2).** Sign-in requests an administrator-provided token and its help sends users to scripts and identity test helpers (`research-session.tsx:119–156`). Authorized access is necessary; a prototype token handoff can remain, but call it a research access credential, give an actual administrator contact/setup path and keep bootstrap details in operator documentation. A no-project state should explain access assignment and provide a genuine supported next step. The current text claims an invitation workflow without an implemented in-app invitation surface being demonstrated.
 
-4. Case detail (`/cases/detail`) without params → status `needs-selection` — must be Component showing "Add ?project=...".
-   - `case-workspace.tsx`: `useSelection()` reads from searchParams. So every page needs query params. AppShell shows selection under `<details>` summary "Research case selected · advanced identifiers" with joined UUID fragments. For first-time user, this is opaque.
+The homepage should answer three questions in one short region: what this prototype explores, what evidence is available and how to start. Keep one primary action for the current mode, a secondary demonstration action and one durable research-only disclosure. Repeating “no UUID typing required” does not repair the later UUID requirement.
 
-**Result:** Fresh user cannot progress past /cases without externally obtaining JWT + project UUID. Demo is only usable path.
+## 2. Information architecture and case identity
 
-### What user needs to understand (requirements vs reality)
+**U03 — the prominent navigation leaves the case (P0).** Opening case A and selecting primary Digital Twin navigates to `/twin` without project/patient context. The destination tells the user to open a case. The secondary case navigation carries IDs, but the primary navigation does not (`app-shell.tsx:84–93,105`). Users receive two similarly named navigation systems with different semantics. This is a reproducible round trip into a dead end, not merely inconsistent naming.
 
-| Question | Answer visible? | Evidence |
-|---|---|---|
-| What is CancerOS? | Yes | Home page headline + lead |
-| What problem? | Partial | Feature cards but not clinical context |
-| What can it do? | Partial | Lists 3 steps but not research case |
-| Where to begin? | No | Two CTAs conflict; case path blocked |
-| How to create case? | No | Requires admin + source + token |
-| How to enter data? | No | Only after case+auth |
-| How to access imaging? | No | Imaging tab hidden behind case selection |
-| How to view twin? | No | /twin shows "No case loaded" generic |
-| How to generate scenarios? | No | Simulation requires UUID + token input fields |
-| How to access AI? | No | Insights requires state ID |
+Evidence: [lost case selection](evidence/14-primary-nav-loses-case.png). Requirement: SPEC-009 §3 p2, §11, UX-01. Use a compact global Cases/Guide/Evaluation shell and one case navigation model. Every case destination should consume the same authorized selection. An unavailable capability should explain why within the case, rather than lose the case.
 
-### Confusing interactions recorded
+**U04 — identity is technically visible but not recognizable (P1).** The library displays the saved title and `REVIEW003-A`. Inside its workspace the dominant case heading changes to `Research-` followed by a full generated identifier. The saved title appears only down in Profile. “Research case active — project and patient selected” gives no human-recognizable identity. This weakens confidence during switching and makes screenshot comparisons harder. `unified-workspace.tsx` uses patient-detail display code instead of the authored research label. Show the pseudonymous case label, source release, selected history and selected time persistently. Keep opaque IDs behind the existing technical disclosure.
 
-- Clicking Create Research Case button on /cases just scrolls to same-page sign-in — not navigation.
-- Research access token input has no autocomplete, no copy-paste affordance explained.
-- Project selector is `<select>` with 0–1 entries after auth; when single project, still shows dropdown.
-- Case search placeholder "Title, case identifier or pseudonym" but filtering only works on already-loaded 25-item page; cursor pagination "Load more" exists.
-- Two similar pages: `/timeline` and `/states` — both timelines but different implementations.
-- AppShell `<Link href="/cases/detail">` preserves selection via `preserveSelection()` but if no selection, it drops to bare path.
+**U05 — too many competing destinations (P1).** A case has global navigation, secondary case navigation, five inner tabs, contextless footer links and legacy timeline links. There are separate `/timeline` and `/states` concepts, while “Clinical Data” can mean charts rather than entry. “Overview” means homepage in one region and profile in another. “Sources” appears in the code's case-navigation definition but is explicitly removed (`app-shell.tsx:34,104`). The specified case shell is Overview/Twin/Scenarios/Sources with contextual findings, not a collection of component destinations (SPEC-009 §§3/4.3).
 
----
+Use the established case shell as the ownership boundary. Clinical records and charts can be clear workspace panels. Preserve deep links and Back behavior, but remove legacy routes from ordinary navigation once equivalent integrated tasks work. Keep exact records and evidence accessible beside the selected geometry/time.
 
-## 6.2 Information Architecture
+## 3. Case and patient research management
 
-### Current nav (AppShell)
+The current case workflow deserves a narrower, evidence-based assessment than “missing patient management”. In the artificial admin session, the library loaded an eligible artificial source. The creation form asked for research identifier, title, source pseudonym, source release and supporting locator. Creation navigated into a persistent case; another fresh signed-in browser reopened it. Profile revision saved. A second case had no inherited clinical observations, and reopening A restored its corrected value. These are useful delivered behaviors.
 
-Primary: Overview (`/`), Research Cases (`/cases`), Digital Twin (`/twin`), Clinical Data (`/charts`), Hypothetical Scenarios (`/simulation`), AI Research Insights (`/insights`), Evaluation (`/evaluation`).
+Evidence: [library](evidence/07-admin-case-library.png), [created profile](evidence/08-created-case.png). Requirements: PRD FR-001–007, UJ-02; SPEC-009 §§4.1–4.2. This proves the artificial local slice, not authentic rights, all concurrency cases or general isolation.
 
-Case nav (when patient selected): Overview (`/cases/detail`), 3D Digital Twin (`/twin`), History & states (`/states`), Clinical Data (`/charts`), AI Research Insights (`/insights`), Hypothetical Scenarios (`/simulation`), Sources (`/sources` — not confirmed file).
+**U06 — an empty profile cannot proceed into an imaging-backed research case (P0).** Creating a case does not attach a study or establish a baseline. The imaging tab correctly says no studies and no lesions, but offers no upload, manifest association, import-review link or runnable next action. The explanatory paragraph says a separate reviewed workflow is required; `/admin` is a static placeholder even under the signed-in admin session. A normal researcher cannot complete UJ-02. This is missing orchestration and implementation, as well as a legitimate data gate.
 
-Issue: Primary and case nav duplicate labels with different selection preservation. `/twin` maps to demo `?view=twin` when in `/demo` context — clever but confusing (demoViews mapping). Safety notice bar under header on every page except home.
+Evidence: [imaging dead end](evidence/12-imaging-no-import.png), [admin placeholder](evidence/22-admin-placeholder.png). Requirements: PRD UJ-02 pp10–11, FR-008–016; SPEC-009 §4.8 p6. Add a staged source/identity/file workflow with reviewable QC and separate baseline publication. Do not replace it with an unrestricted upload button or invent authentic eligibility.
 
-### Missing destinations
+Profile editing appropriately retains pseudonym/identifier and explicit missing values. Its main gaps are source-completeness communication and integration: pathology/receptor status is redirected into diagnosis observations, while no source summary, acquisition baseline or actual-history proof is available in the overview. An administrator can enter a shell of data without seeing what must be completed to build a valid twin. Display capability-specific completeness, with evidence links and an action appropriate to the current role; avoid a single health-like completeness score.
 
-- No unified workspace binding project/patient/lesion/branch/state in one scrollable journey.
-- No persona landing distinguishing "I have real data" vs "I want synthetic demo".
-- No imaging import guide or DCE context explanation.
-- No scenario-family explainer page; families only coded as `SC-01..05` with labels in simulation-workflow `FAMILY` dict.
+## 4. Clinical data entry: persistence works, interaction remains incomplete
 
-### Label problems
+The observation form supports laboratory, vital, symptom, treatment, diagnosis, visit and note categories. Lab concepts and units are constrained, collection precision is explicit, source term/locator are required, and missing/censored variants exist. In the browser, saving artificial hemoglobin 12.3 g/dL added a dated synthetic record. Correcting it to 12.4 g/dL updated the displayed active record and chart; the count increased to two retained observations. No invented imaging appeared.
 
-- "Hypothetical Scenarios" — correct scientific labeling but paired with "Configure a hypothetical research branch" — too technical; researcher expects "Scenarios".
-- "Evaluation / Technical Details" — two audiences combined.
-- "Research access" heading ambiguous — auth vs data access.
-- Badges: `observed` (●), `derived` (■), `simulated` (◆), `warning` (◇/△) — color only (teal, blue, purple, brown) not accessible alone; symbols help but low contrast.
+Only the laboratory path and profile history were exercised through saving. Other category options were inspected, not accepted as fully verified. Authentic private note import and examination attachment were blocked/not exercised.
 
-### Navigation depth
+**U07 — clinical refresh hangs at permissions (P0).** Overview mounts `ResearchProfile`, which supplies source origin and write permission. Opening Clinical Records directly or refreshing its URL does not mount that component; `sourceOrigin` remains null and “Loading observation permissions…” persists. Returning to Overview then Clinical Records recovers it (`unified-workspace.tsx:55–56,152,179–185`). This defeats save/resume and deep-link restoration, despite prominent prose saying refresh works.
 
-Level 1: primary nav tabs (7 items). Level 2: case nav (7 items) appears only after selection. But deep-linked pages (`/twin?project=&patient=&lesion=`) bypass case nav if lesion missing. User must edit URL.
+Evidence: [stuck refresh](evidence/11-clinical-refresh-stuck.png). Requirement: SPEC-009 §11 and UX-01/11. Load authorization/capabilities independently of whichever tab happened to mount. A denied action must be distinguishable from an unresolved request and from a failed request.
 
-### Case-centered workspace
+**U08 — editor role contradicts the action model (P0).** The access panel says editors add observations, but Profile's `editable` is admin-only and becomes the entire workspace's `canWrite`. The manual-observation backend also requires admin (`research-profile.tsx:25`; `research_api.py:154`; `research_workspace.py:411`). This is confirmed in code; an editor-role browser session was not run. Correct minimum action permissions coherently at API and UI, retaining patient grants and source checks. Do not merely enable a button that will receive 403. SPEC-009 §3 and SPEC-008 §16 assign source-backed observation submission to editors.
 
-Specified but not achieved. Header shows selection UUIDs under details. No breadcrumb trail. No back-to-case from twin that preserves project. Simulation page has breadcrumb "← Research workspace · History & states · Editor activity" but first is `/` not `/cases`.
+**U09 — the progressive form does not actually progress (P1).** All sections remain visible. Continue changes the step number; repeated headings and duplicate “Step N” labels increase page length without reducing decisions. The form explicitly explains its own implementation, rather than guiding data entry. There is no final complete-submission review. Long forms can be accessible without being simultaneously expanded; use a proper stepper with semantic headings, preserved values and focus movement, or a concise single form with clear sections. SPEC-009 §4.6 requires a four-step kind/source-time/value/review interaction.
 
-**Recommendation:** Single workspace under `/workspace/[project]/[patient]` or query-param-driven unified `/cases/detail` with tabs rendering in place, not separate full pages.
+Evidence: [clinical form after save](evidence/09-clinical-entry.png). `observation-intake.tsx:88–119` also omits relative-day input from this path. The correction action prefilled the original values and allowed replacement, but no correction-reason field or original-versus-replacement review was shown. No retraction action is surfaced by this case history. Source-backed revision semantics in the backend do not complete the required correction/retraction UX.
 
----
+**U10 — saved versus ready is explained but not completed (P1).** The history accurately says saving does not publish a scientific snapshot. However, the UI does not show the resulting dependent-update job or an eventual Open new snapshot action. The researcher must leave the completed save and understand another subsystem. The source event/outbox exists; explicit state publication remains separate. Preserve this distinction and implement its job/receipt handoff (SPEC-009 §§4.6/4.8, UX-05/11).
 
-## 6.3 Research Case & Patient Management (Detailed)
+Meaningful validation needs field-linked messages, unit/time explanations and safe retained inputs. Current generic 422 text only says to check fields. Draft save/resume, interrupted submission replay and all category-specific errors were not verified. Record those as remaining tests, not passes.
 
-### Creation flow (`case-creator.tsx`)
+## 5. Imaging and source context
 
-Fields: identifier (pattern `[A-Za-z0-9._\-]+`), title, pseudonym, source `<select>` from eligible list, reference (source locator). `allowed` only if `role==='admin'`. Idempotency-key via `crypto.randomUUID()` refreshed on form change.
+The imaging tab inherits case context and refuses a placeholder lesion when no authentic lesion exists. That is correct. But it simultaneously displays a red generic request failure and text claiming a source-mask measurement “below stays authoritative”, even when no measurement is present. Empty imaging is a normal availability state, not automatically a failed request.
 
-Good: pseudonymization enforcement, no names, pattern validation, source eligibility check, role gating.
+Present separate states: no study imported; study staged; geometry invalid; mask pending; measurement ready; baseline published; access restricted. Show acquisition time, modality/sequence and annotation meaning in recognizable labels. Current discovery uses ordinal study names and counts rather than sufficient examination metadata (`case-imaging.tsx:54`). Link the approved source summary and QC result, preserving protected mappings. A usable P0 path can rely on a verified imported mask; a full radiology workstation is not required.
 
-Bad UX: Source `<select>` shows `title · origin` but title is source version title (technical). No source creation UI visible; eligible list can be empty with message "An administrator must register a source" — but no CTA. Form uses generic `className="form-grid"` 2-column but no grouping, no inline validation, error via `ErrorSummary` only post-submit. Success redirects via router.push — good but no confirmation toast.
+The raw file-processing limits and fixture-only code are material capability constraints, covered in the architecture review. They cannot be solved by styling an empty state. SPEC-009 §4.7 requires inspectable source metadata, lineage and exact supporting records; the current missing Sources destination leaves those requirements fragmented.
 
-Badge: Origin `real_source` vs synthetic visible.
+## 6. Dedicated 3D experience
 
-### Library (`CaseLibrary`)
+The opt-in demo is the most coherent visual workspace. It has one selected family/state, a prominent measured-volume card, discrete temporal controls, explicit phantom labeling, camera alternatives, maximize and fullscreen controls. At a stable 1440×1000 CSS viewport, the canvas measured 860×620; maximized it measured 1382×600. Fullscreen entry was observed after its asynchronous transition. A narrower browser earlier produced a 543×360 canvas. Do not describe the entire current viewer as inherently tiny: its available space depends strongly on viewport and mode.
 
-Shows 25? Actually uses `/api/cases?project=` returning `PatientPage` with `items` (PatientSummary: patient_id, display_code, data_revision). No modality counts, no updated date here. Empty state says "No approved cases yet — An administrator can review imports..." with link to guided-demo. Failed state retry button.
+Evidence: [default demo](evidence/03-demo-twin.png), [follow-up](evidence/04-demo-followup.png), [maximized](evidence/19-maximized-viewer.png), [keyboard continuation](evidence/20-keyboard-followup.png). Requirement: SPEC-009 §§4.3/7.
 
-Search not in this component — search is in `ResearchCases` composite, which filters client-side `${title} ${case_identifier} ${pseudonym}` lowercased, showing "{filtered} of {loaded} loaded". Counts from visible records only — correct safety but confusing when more on server.
+Fit, rotate, pan and zoom buttons were exercised; arrow/shift-arrow/zoom/Escape keyboard actions executed. State selection changed displayed volume from 216 to 64 mm³ in SC-01 while preserving a discrete state URL. This is an interaction observation, not a calibrated camera or scale metrology test. Source inspection supports shared bounds and backend-owned measurements. Mouse drag precision, a physical touchscreen, lost-context recovery and screen-reader usability still require dedicated trials.
 
-Uses `.case-grid` grid `repeat(auto-fill, minmax(280px,1fr))` — okay. Case cards show Status, Updated, Imaging records, Clinical records — helpful.
+**U11 — useful viewer controls compete with explanation panels (P2).** There are global and local navigation rows, family selector, three layout actions, primary camera buttons, More controls, permanent gesture prose, repeated scientific explanations and separate measurement cards. On a smaller desktop the canvas sits well down the page. Collapse duplicated background prose into “About this geometry” and keep the selected label/time/origin/value near the viewport. Keep Fit as a predictable camera action; separate viewport size from camera reset. Preserve the existing maximize option.
 
-### Profile (`research-profile.tsx`)
+**U12 — touch interaction is enabled before consent to interact (P1).** The renderer starts `enabled=true` and applies `touchAction='none'` on mount (`mesh-renderer.tsx:42–46`), although an Interact with 3D button suggests interaction is opt-in. Escape is a keyboard exit; there is no visible touch Done interacting action. The initial capture policy was observed in the DOM, not verified on touch hardware. Implement the specified explicit interaction state so scrolling a research page does not unexpectedly manipulate the lesion (SPEC-009 §7.2).
 
-View: title, origin badge, dl with case identifier, pseudonym, status, sex, age, medical history, source, created/updated. Edit button only if admin. Form: readOnly identifier/pseudonym, title, status select, sex select, age number + date, reference, medical history textarea. Saves via `/api/research-profile?project=&patient=` POST with expected_revision; captures revision.
+**U13 — renderer provenance label is not data-driven (P1).** Its default visible/accessibility label says Synthetic region. The authentic-case LesionViewer does not override it (`mesh-renderer.tsx:11,35`; `lesion-viewer.tsx:329`). The demo label is correct; its future use with real geometry would mislabel origin. Pass label/time/frame from the authorized artifact, with a neutral fallback. Do not remove the synthetic badge from the actual phantom.
 
-Good provenance scaffolding.
+The geometry is visibly a rounded cube-like phantom, not tumor anatomy. The interface correctly says so. No patient breast placement or anatomical reconstruction was established. Recovery requires a defensible authorized MRI/mask and verified geometry; making this phantom look anatomically realistic would conceal the missing scientific evidence. Illustrative context is optional and must remain labeled. Source MRI/mask overlays and anatomical orientation were not tested here.
 
-UX issues: profile revision number shown only as hint, not prominent; age requires whole years + observation date but validation via regex; medical history textarea placeholder not hints.
+## 7. Scenarios and longitudinal comparison
 
-### Persistence & reopening
+The demo lets the user select five plain-language families and inspect four prepared states each. Stable loading confirmed: SC-01 216→64→8→1 mm³; SC-02 216 throughout; SC-03 216→343→512→729; SC-04 216→64→8→64; SC-05 216 throughout. The days differ across families, and the volume plot displays actual relative days. These are tiny voxelized phantom examples; equal or abrupt values should not be interpreted as realistic clinical trajectories. SC-05 shows fatigue observations changing independently of stable volume, with an unvalidated-scale disclosure.
 
-Works via backend revision tracking. Frontend reload mechanism via `attempt` counter state increment button "Reload saved profile" / "Refresh cases". Manual refresh required after save — not auto.
+Evidence: [family observations](evidence/demo-family-observations.json), [SC-05 clinical content](evidence/21-sc05-clinical.png). There is no editable baseline, seed/parameter review, new job or generated-result validation in this demo. Classify it as prepared playback.
 
-No delete/archive from UI? Status dropdown includes draft/active/archived but no delete.
+**U14 — ordinary scenario generation fails at entry (P0).** The case's secondary scenario link contains project/patient, yet `/simulation` passes empty props to the builder. The screen says “Open a case ... first”. Retry changes the error to “Select an authorized branch” without a branch list. `simulation/page.tsx:5`, `simulation-builder.tsx:77,126,266`. Evidence: [case-linked failure](evidence/13-case-scenario-context-failure.png). Even after repairing this route, configuration versions, missing family parameters and proxy methods disagree with backend contracts; the executable probes document them.
 
-Case switching: via URL only; navigating between cases loses earlier case because no recent cases list.
+Do not solve this by routing every Generate action to prepared demo output. The specified generation workflow needs approved baseline selection, eligibility and assumptions, family-specific supported parameters, durable processing, validation and separate publication (SPEC-009 §4.5, UX-12). Keep published runs available while a new run is pending. A missing reviewed baseline should be an explainable state with a path back to source/QC work.
 
----
+**U15 — timeline is not the owner of the whole workspace (P1).** In the research workspace, timeline, viewer, charts and insights are different component flows. The state picker does not update the selected-state URL; it cannot reliably transport selection to AI. The “Side-by-side persisted states” section contains textual summaries rather than two geometry panes and uses B's stored temporal changes, without an explicit A→B comparison request (`state-timeline-explorer.tsx:423–449`). This is code evidence; no populated research-state pair was available in the browser fixture. P0 can use sequential A/B display, but the result must actually bind the chosen pair. Spatial overlay remains prohibited without registration QC.
 
-## 6.4 Clinical Data Entry
+## 8. Clinical charts and research explanation
 
-Component: `observation-intake.tsx`
+**U16 — record-order plots are insufficient temporal research charts (P1).** The corrected artificial lab appeared, and exact table units/time/origin are helpful. The chart explicitly says horizontal positions show record order. It has no elapsed-time axis or useful temporal scale. In the integrated filter, only relative-day records are accepted and the source window is reduced to `day <= selectedDay`, with calendar records excluded and no retained time-domain anchor (`clinical-charts-explorer.tsx:217–220,343`; `unified-workspace.tsx:196`). The history table receives no equivalent filter despite surrounding text claiming charts and history honor it. Calendar-filter exclusion is a code finding, not an observed populated-state trial.
 
-**Fields:**
-- kind select: laboratory, vital, symptom, treatment, diagnosis, visit, note — mapped to concepts arrays.
-- concept select per kind (hemoglobin, wbc, anc, etc.; heart_rate, temperature; fatigue, pain; etc.; chemotherapy, endocrine, etc.; source_pathology; clinical_visit, imaging_exam; source_note)
-- original term * (exact doc label), source reference *, time precision (date/timestamp/unknown), time input (date or text with placeholder ISO 8601), and — if numeric kind — result form: exact/missing/censored with value+unit, missing_reason, comparator.
-- For symptom: presence, reporter, optional severity + instrument + version.
-- Treatment: event_type, exposure_status, regimen_text.
-- Diagnosis: histology, side, ER/PR/HER2 status, clinical_stage, pathologic_stage, staging_system.
-- Visit: label.
-- Note: text.
+Evidence: [saved chart](evidence/10-case-charts.png), [demo clinical table](evidence/05-demo-clinical.png). Requirement: SPEC-009 §§8–9. Plot actual elapsed time for a compatible domain, separate units, distinguish missing/censored/history, and link each point to its exact record. Until those semantics exist, the exact table is the reliable primary view. Do not imply synchronization from colocating panels.
 
-**Assessment:**
+**U17 — insight entry leaks internal state plumbing (P0).** The case-linked Insights page asks the user to open Timeline and paste a state UUID. This violates the ordinary journey requirement and the homepage promise. Evidence: [manual state input](evidence/15-insights-state-uuid.png). `insights-explorer.tsx:212–219`. The selected case/state should supply context automatically and show a readable snapshot label. A missing state should offer available authorized states or explain how to create one, not expose a blank UUID field.
 
-Strengths: explicit source, time domain, unit enforcement, missing/censored forms preserved, no invented values. Handles ISO timestamp with seconds+TZ regex. Idempotency key rotation on change.
+The backend has deterministic context/template/grounding services, but current context/generate/ground/save request bodies are incompatible. A repaired UI should present a useful question or comparison scope, grounded findings, missingness and click-through case/background evidence. Keep execution mode explicit. The demo already truthfully says its local text is not a live or saved Meta result; this is good disclosure, not completion of the research agent. Evidence: [demo insights](evidence/06-demo-insights.png). Live Meta execution was not attempted.
 
-Weaknesses:
-- Form is huge, single column `form-grid` with many conditional fields rendered inline; no progressive disclosure or sections beyond `<fieldset>Observation`.
-- Field order technical: kind, concept, original_term, source, time precision, time — should start with source + time.
-- No contextual help besides field-hint; unit list `units` dict hard-coded: hemoglobin g/dL,g/L etc. No validation message until submit.
-- Concepts list only English lower-case keys — researcher may not know "hemoglobin" vs "hgb".
-- Diagnosis fields (ER, PR, HER2) assume breast-specific but no explanation.
-- No visit linkage helper (which visit does observation belong to?) — visit_id not in form? Backend supports `visit_id` filter, intake may need dedup.
-- Save returns `{status, accepted_count, next_action}` but UI shows only count.
-- Correction mode exists: `correction` prop allows replace with original retained.
+## 9. Evaluation, guide and design trust
 
-**Clinical history table (`clinical-history-table.tsx`)** (not opened in detail) likely paged list.
+**U18 — evaluation claims are hardcoded and acceptance IDs drifted (P1).** The page honestly marks authentic cohorts/performance as unmeasured, but calls scenario setup and insights “Fixture-tested” without retrieving a versioned report. These workflows fail the current route/contract assessment. Its UX-01–18 labels do not match original SPEC-009 §18: for example original UX-02 is camera interaction, while the page calls it primary-action clarity; original UX-11 is observation/conflict handling, while the page calls it browser-storage privacy. This breaks traceability. `evaluation-report.tsx:7–20`, `ux-checklist.tsx`; compare source pp15–16. Evidence: [evaluation](evidence/16-evaluation.png).
 
----
+Serve actual report artifacts with commit/version, population, fixture scope, failures and date. Preserve original requirement IDs. A missing report should remain Not evaluated. Avoid claims that merely restate component names.
 
-## 6.5 3D Digital Twin Experience
+**U19 — guided tour describes a path rather than binding one (P1).** The guide calls itself pinned and complete, but its step links are bare `/twin`, `/states`, `/simulation` and `/insights`, with no selected case/state manifest. Browser inspection of step two confirmed `/twin`. A checkbox advances the guide without checking resource readiness. Restart resets guide index/checkbox; its copy additionally claims camera/selection reset not established by this component. Evidence: [guide](evidence/17-guided-tour.png). SPEC-009 §15/UX-17 requires preflighted published resources and truthful reset. Make the guide a thin controller over a real approved journey, preserving unavailable steps.
 
-**Components inspected:**
-- `lesion-viewer.tsx` (17.4KB): from query `project, patient, lesion`, loads lesion list (`/api/cases?project=` variant or lesions endpoint), fetches measurement report + mesh asset + QC report, handles blocked measurement, transfer bytes, retry, pending AbortController.
-- `mesh-renderer.tsx` (13.4KB): Three.js OrthographicCamera, RAS frame Z-up, shared center translation preserving physical origin, guard totalVertices>100k, triangles>200k, verifies unit mm, frame RAS, identity transform matrices, creates BufferGeometry, MeshStandardMaterial, OrbitControls with screenSpacePanning, minZoom 0.1 maxZoom 20, hemisphere + directional light, render loop respecting document.hidden.
+## 10. Visual system, responsive behavior and accessibility
 
-**Canvas size & prominence:** In `/twin` page, `LesionViewer` rendered standalone, global.css twin-layout originally `minmax(0,1fr) 340px` but current twin page does not use twin-layout class? Page is simple `<LesionViewer/>`. Viewer host element sized via parent? Module CSS not inspected but likely constrained. Demo workspace (`demo-workspace.module.css`) has `.workspace` grid, `.viewer` with heading/actions/timeline.
+The desktop palette, card borders, typography and teal/purple emphasis are broadly readable. The real weakness is hierarchy: engineering reassurance, duplicated headings and control groups obscure the task. The demo and research workspace also use noticeably different navigation/layout models. Adopt one spacing/type/button system and case header, while allowing the 3D region more space. Reserve warning styling for actual action failures; source missingness usually belongs in a neutral empty state with one next action.
 
-**Camera controls:**
-- In `lesion-viewer.tsx` real implementation: viewer-actions div with Fit, Reset, etc. Keyboard controls labeled in lead paragraph but actual buttons may be smaller. In `mesh-renderer`, `OrbitControls` enabled, damping false, touchAction none. Actions via ref `actions` allows external control.
+**U20 — mobile entry cards do not reflow (P1).** At 320 CSS pixels the homepage measured document width 329. More seriously, two side-by-side entry cards compress prose into near word-by-word columns and cause button/text overflow. The inline `1.2fr 1fr` grid at `page.tsx:12` has no mobile override. Evidence: [320-pixel homepage](evidence/18-mobile-home-320.png). The authenticated library measured 320/320, and demo at 390 measured 390/390, so this is not a blanket claim that every mobile screen fails. Evidence: [mobile library](evidence/24-mobile-case-library.png), [mobile demo](evidence/25-mobile-demo.png). Stack entry cards at narrow widths, then verify buttons, labels and provenance at 320 and browser zoom. SPEC-009 §§4.3/13, UX-15; [W3C reflow guidance](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html).
 
-**Measurement display:**
-- Demo version: `.viewerHeading` shows name + day, `.viewerActions span.inlineMeasurement` shows exact_value mm³. Lesion viewer variant likely shows measurement report beside canvas but code truncated earlier not viewable; need infer: loaded includes measurement report, probably displayed in side panel.
+Keyboard-accessible camera buttons, a labeled scenario selector, a skip link, table alternatives and text provenance labels are useful foundations. The inner tablist lacks tabpanel relationships and arrow/roving-focus behavior (`unified-workspace.tsx:144–145`). Generic alert blocks are not field-linked error summaries. These require accessibility correction and manual assistive-technology testing. No contrast ratios, 200% browser zoom result, touch-target audit or WCAG conformance is claimed.
 
-**Scenario transitions:** In demo, scenario selector `<select>` bound to timeline points (baseline, day X). Points filtered by `measurement_basis` baseline_reference + mask_realized. Browse via buttons aria-pressed.
+The complete research journey stopped before imaging import and could not continue through ordinary scenario/insight generation. The separate synthetic viewing journey succeeded within its disclosed scope. These outcomes must remain distinct in acceptance and product messaging.
 
-**Visual clarity:**
-- Scene background `#111827` viewport color, tumor color `#c4b5fd` (light purple) or `#e9a38a` from CSS variable — low medical realism but clear.
-- No anatomical breast context; geometric phantom only. Honest labeling ("Synthetic tumor region · geometric phantom · mm" aria-label).
-- Loading performance: dynamic import `ssr:false` good; loading placeholder paragraph.
+## 11. Task ownership and the concrete screen correction
 
-**Accessibility:** `aria-label` synthetic region, canvas role img, dataset attributes for render state, camera state. Keyboard trap for fullscreen implemented in demo workspace.
+The practical problem is the amount of context the user must reconstruct between successful local actions. A saved profile does not identify an approved baseline; a saved lab does not reveal which job will incorporate it; a timeline selection does not enter Insights; a prominent navigation action asks the user to select the case again. These are separate handoffs the interface should own. Adding explanatory paragraphs to each screen increases reading without resolving the handoff.
 
-**UX problems:**
-1. **Too small:** In case workflow `/twin`, canvas not maximized by default; controls scattered above; side panel 340px competes.
-2. **Discovery:** Lesion list loading requires project + patient context; initial state `needs-selection` not actionable.
-3. **No frame reference:** No scale bar, no axes helper indicating RAS orientation.
-4. **No measurement overlay inside canvas** — volume shown outside.
-5. **No lesion list visual selection** — user must know lesion UUID; picker may be dropdown but not prominent.
-6. **Fullscreen/maximize exists in demo but not in case twin** (need verify). Reviewer notes: clone logic exists only in demo-workspace.
+Both original embedded wireframes on SPEC-009 PDF p4 were also visually inspected. They put case/context/time above a central viewer, timeline and clinical data, with contextual findings/records/evidence; the narrow schematic stacks those same tasks. The current demo approximates part of that hierarchy. The authenticated product instead splits it among independent destinations. The schematic is a placement contract, not a reference patient image or a demand for decorative anatomical realism.
 
-**Quantitative check:** Guard rejects huge meshes but no progressive LOD.
+An appropriate correction, within SPEC-009 §§3–4 rather than a new product scope, is a persistent case header with a short research label and source release. Immediately below it, show Actual history or the selected hypothetical family/run, selected time, and which modalities are available. The core workspace should put the lesion and validated measurement first, its discrete time selector directly below, and compatible charts/exact records in the same main flow. A contextual inspector should open Findings, Records and Evidence for that selection. The existing backend remains authoritative for all facts and comparisons.
 
----
+An empty case should communicate the next incomplete dependency in task language: no examination imported; study awaiting spatial QC; mask awaiting meaning review; baseline ready for authorized publication. Show the appropriate existing admin/editor action or an honest contact/blocked explanation. Avoid directing the user to retry an absent study or to inspect a database for a snapshot ID. Administrative source mapping, file rights and processing versions can be discoverable details without becoming ordinary navigation prerequisites.
 
-## 6.6 Longitudinal Simulation UX
+Clinical entry should stay attached to that case and show a concise review of source, collection time, concept, quantity/unit and missingness before save. After a correction, show the replaced value and reason alongside the new revision. The exact table can retain the historical record while clearly identifying the current one. A successful save should leave the selected scientific snapshot stable, while a durable processing panel explains whether an update is pending, blocked or ready to open. This preserves scientific history and gives the researcher an understandable completion signal.
 
-**Current:** `/simulation` page renders `SimulationWorkflow` component which is handcrafted API client requiring manual project/patient/branch UUID inputs + token string input (plain text). Steps: Load branch → Save draft (JSON parsing) → Resume draft by configId → Inspect eligibility + schedule preview → Freeze run → poll job → inspection of completion → publication + attestation checkbox + review.
+Scenarios should begin with a selected eligible baseline, rather than an empty technical branch selector. Show family descriptions, supported assumptions and eligibility reasons before advanced seeds/versions. Existing published runs remain navigable when generation is blocked. Insights should start from the same snapshot and identify what it can summarize, with exact case evidence separate from general background. A local template is useful when honestly labeled; calling the whole destination AI Research Insights should not imply a live model has run.
 
-**State:** This is engineering-private workflow intentionally per intro: "Private engineering workflow" eyebrow, honest. But as product feature "Hypothetical Scenarios" it fails: researcher cannot configure scenario family via forms.
-
-**Missing:** Family SC-01..05 explicit assumptions per synthetic spec: growth rates, response categories, shape variations. Treatment assumptions disabled ("Specific treatment assumptions remain disabled pending qualified policy review") per code check `config.treatment?.category !== 'no_specific_assumption'`. Good safety but no UI for allowed assumptions.
-
-**Job progress:** Uses polling? Request logic uses idempotency key per request via Map; error messages for 401/403/404/409/412/422 helpful. 202 starts durable job.
-
-**Demo as substitute:** Demo workspace covers SC-01..05 with precomputed timeline — user can explore what-if but not generate new. Distinction correct: demo plays precomputed states, not functioning research generation workflow.
-
-**UX needs:**
-- Scenario family cards with description, assumptions, preview.
-- Forms for baseline selection (must be verified twin state), scheduling (days), geometry policy (none vs anatomical_mesh), measurement-only vs mesh.
-- Eligibility report rendering: capability, reasons, next_action.
-- Job progress bar, logs.
-
----
-
-## 6.7 AI Research Experience
-
-**Inspect flow (`insights-explorer.tsx`):**
-- Needs `project, patient, branch, state` params. Shows context loader via POST `/api/insights?action=context&state=` with optional branch_id. Context bound to exact snapshot hash + context_hash. Then generate summary: mode rule_based (deterministic) vs external_private (Meta/opt) with idempotency key.
-- Report type `InterpretationReport` with snapshot_hash, context_hash, execution_mode.
-- Grounding report separate (`GroundingReport`) — must be run before saving.
-- Saved interpretation ID tracked; drawer for evidence drill-down.
-
-**Gounding:** Correct — case evidence separate from background passages; unknown uncertainty never confidence gauge. Finding opens exact observation or approved passage.
-
-**Live Meta inference:** `provider_api.py` + `provider_gateway.py` exist; checkResearchWorkspace validates bearer RS256. But frontend does not expose Meta live status beyond "Private external candidate ready". No model identity badge, no cost warning, but safe.
-
-**UX:** Heavy technical metadata — snapshot hash slice 12 shown; exportable yes/no. Insight panel `interpretation-panel` probably lists findings.
-
-**Problem:** Without branch/state pre-selected, page shows generic need-selection empty state, user does not know how to get state ID (must from /states). No linked navigation.
-
----
-
-## 6.8 Visual Design and Interaction Quality
-
-**Typography:** Inter system sans; headings `clamp(30px,4vw,44px)` tight negative tracking; H2 21px; lead 18px muted; good hierarchy. Eyebrows 12px uppercase spaced, teal observed. But inconsistent heading sizes in cards (card h2 21px vs case-card h2 19px).
-
-**Color:** Canvas `#f6f8fb`, surface white, text `#172033`, muted #475569, border `#cbd5e1`, action #1d4ed8 hover #1e3a8a, observed #0f766e, derived #1d4ed8, simulated #6d28d9, viewport #111827, lesion #e9a38a. Palette coherent but warns `warning` #92400e brown low contrast on white? Check WCAG.
-
-**Buttons:** Styles fragmented — `button` global blue, .button-primary, .button-secondary, .button-ghost, .button-danger, plus `.button` class from global actions `a.button`. `.button-secondary` background #eef2ff border action — okay. `.button-ghost` transparent border. Min-height 44px accessible. However multiple primaries per page (demo: retry, maximize etc.), visual weight confusing.
-
-**Icons:** None — no icon system, only symbols ● ■ ◆ ◇ △ for badges + text labels. No SVG icon library.
-
-**Spacing/alignment:** Cards 28px padding desktop, 20px mobile; grids gap 24px; but case-grid gap 16px; twin layout gap 24px. Inconsistent.
-
-**Cards:** Standard `.card` white border 1px solid, radius 12px. `.case-card` variant? Contains dl case-fields each row border-top #e8edf3 — visually repetitive.
-
-**Forms:** `.form-grid` auto-fit minmax 220px; inputs border 1px #64748b (strong) radius 8px min-height 44px. Labels flex column bold 14px. field-hint 13px muted. Usable but dense.
-
-**Tables:** Not seen; history table likely plain.
-
-**Charts:** Clinical charts explorer uses small multiples, correct but no overall chart design.
-
-**Toolbars:** Viewer-actions flex wrap gap 8px; buttons min-height 40px font 13px inside. Not toolbar semantic.
-
-**Nav:** Header 84px min-height white bottom border; brand 24px bold; nav-list flex wrap gap 4px 16px; link padding 10px 4px bold 14px; active underline action offset 4px.
-
-**Responsive:** Media query max-width 680px header switches column, grid becomes 1fr main padding 32px 20px. No tablet breakpoint. Demo workspace modules not inspected but likely have responsive.
-
-**Accessibility:** skip-link, focus-visible outline 3px #92400e offset 4px, role alert/ status many places, aria-pressed on timeline buttons, aria-current page. Good foundation but not audited: color-only badges, no dark mode preference? prefers-reduced-motion support yes.
-
-**Empty states:** Present (No approved cases, No research cases, This state unavailable, The 3D view could not load with retry, Unable to complete). However many are generic "The authorized read failed..." not actionable.
-
-**Loading:** `Loading research workspace…` simple paragraph; no skeleton, but adequate.
-
----
-
-## 6.9 End-to-End Journey Testing (Browser-Equivalent Code Walk)
-
-Attempted:
-
-**Journey A: Open → Create research case → Enter observation → Imaging → Twin → Scenarios → Timeline → Insights**
-
-1. Open `/` → OK.
-2. Click "Create Research Case" → /cases → Requires sign-in. Provide invalid token → 401/403 error UI. Real JWT required from `API_BASE_URL http://127.0.0.1:8000` endpoint `/api/v1/workspace`. Backend not running in review env. **Blocked.**
-3. Alternative path `/demo` → Loads via `/api/demo-session` POST then `/api/demo` GET catalog. Needs API for catalog; without backend, fails to "demo could not load" with retry. If API available, catalog provides scenarios SC-01..05 + timeline. Demo workspace rail left navigation (Overview, 3D Twin, Scenarios, Clinical, Insights, Technical) + scenario select dropdown. Middle viewer 3D. Right measurements collapsible. Timeline at bottom with buttons for each day. Can navigate scenario + state via URL `?view=twin&scenario=SC-01&state=point-id`. Measured value shown. **Partial success** only with API.
-4. Twin without case → shows need-selection. Even with project/patient/lesion valid UUIDs, lesion list fetch from `/api/cases?project=` or lesions endpoint returns list; then measurement + mesh + QC fetched; viewer rendered. **Requires manual URL plumbing.**
-5. Charts `/charts?project=&patient=&state=` — ClinicalChartsExplorer loads observation page via `/api/case-observations` POST kind filter. Grouped per concept+unit+instrument. No charts visible without data.
-6. Simulation `/simulation` — manual UUID entry, token paste. Cannot configure without branch loaded. Branch load requires existing branch from backend. No branch creation UI in workspace.
-7. Insights `/insights?project=&patient=&branch=&state=` — needs state id from /states.
-
-**Reproducible blockers:**
-
-- Backend dependency: all research pages hit `/api/research-session` first; if API down, shows "Research access could not be checked."
-- Auth provisioning: no on-page guidance for token generation; developer must run script `scripts/bootstrap_tools.py` maybe? Or admin creates token externally.
-- UUID homework: user must copy project id from dropdown value? Project select hidden value is UUID, but visible text is name · role. After selection, other pages still want `?project=` param typed; researcher may lose selection when clicking primary nav unless preservation works (preserveSelection uses project/patient/branch/run/state/lesion but not always propagated because AppShell reads from useSearchParams each render, reads only current path params — if navigate via Link without query, params lost? Code tries to preserve: if selection.patient and demoViews, target = preserveSelection(...). But some Links not using preserveSelection, so selection can be lost.)
-
-**Screenshots:** Not captured in this environment (no browser automation). Provide file-level evidence per section above.
-
----
-
-## Summary Table: Screen-by-screen UX severity
-
-| Screen | Accessibility | Usability | Visual | Severity |
-|---|---|---|---|---|
-| Home `/` | Good | Partial | Good | Medium — sane but CTAs confusing |
-| Research Cases `/cases` | Good (role attributes) | Fail | Partial | P0 — onboarding blocker |
-| Case Detail `/cases/detail` | Good alerts | Partial | Partial | P1 — needs single workspace |
-| Twin `/twin` | Good aria | Partial | Fail prominence | P0 — viewer not prominent/no onboarding |
-| Charts `/charts` | Good | Partial | Partial | P1 |
-| States `/states` | Needs check | Partial | Partial | P1 — overlap with timeline |
-| Timeline `/timeline` | Needs check | Partial | Partial | P1 |
-| Simulation `/simulation` | Good messages | Fail | Partial | P0 — engineer-only |
-| Insights `/insights` | Good | Partial | Partial | P1 |
-| Demo `/demo` | Good (keyboard trap, fullscreen) | Pass (synthetic only) | Good | Best path |
-| Guided Demo `/guided-demo` | Good | Partial (text list) | Partial | P2 |
-
-Recommendations detailed in recovery plan.
+The design acceptance exercise should start from the homepage and use no developer guide. A first-time researcher should be able to locate the selected case, explain why a chart is empty, identify whether a value is observed or hypothetical, find its source and return to the same timepoint. These are original SPEC-009 §18 tasks. Passing their artificial version establishes a useful interaction slice; passing the authentic version still requires the separately authorized sources and scientific review.

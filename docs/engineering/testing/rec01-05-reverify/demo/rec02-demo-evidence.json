@@ -1,0 +1,13 @@
+{
+  "recorded_at": "2026-11-08T16:18:19.118Z",
+  "scope": "Fresh browser session, no token or UUID entry; token-free synthetic bundle only",
+  "journey": [
+    "homepage",
+    "demo-launch",
+    "canvas-rotate",
+    "scenario-select",
+    "followup-inspect",
+    "refresh"
+  ],
+  "browser_errors": []
+}

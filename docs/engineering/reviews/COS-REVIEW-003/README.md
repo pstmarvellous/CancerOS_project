@@ -1,51 +1,38 @@
-# COS-REVIEW-003 — Independent Product & UI/UX Review Package
+# COS-REVIEW-003 — independent review
 
-**Review ID:** COS-REVIEW-003  
-**Date:** 2026-11-05  
-**Reviewer:** Single-agent multidisciplinary (COS-000 persona)  
-**Authority:** Original specs (PRD, SPEC-003–012, audit COS-AUD-001 as reconciliation where adopted), knowledge maps, academic map
+Review date: 6 November 2026 (WAT). Repository baseline: `4ce26c0cfecb3eea915640d82f7af0e33e5cf08e` plus the working tree inspected during this review.
 
-## Deliverables (7 docs)
+**Verdict: do not accept the current build as the specified integrated CancerOS research prototype.** A usable artificial case/clinical-record slice and a coherent read-only phantom demonstration exist. Authentic imaging onboarding, ordinary scenario generation, grounded insight requests and cross-screen state continuity remain incomplete.
 
-- `EXECUTIVE-PRODUCT-REVIEW.md` — intended vs delivered, verdicts, top 10 gaps, critical UX, recovery high-level
-- `UI-UX-DEEP-REVIEW.md` — primary (40%) — first-time UX, IA, case management, intake, 3D viewer, simulation, AI, visual design, journey testing
-- `SPECIFICATION-COMPLIANCE-MATRIX.md` — status taxonomy mapping: FULLY_IMPLEMENTED, IMPLEMENTED_BUT_NOT_ACCESSIBLE, PARTIALLY, BACKEND_ONLY, etc with files, entry points, evidence, UX impact
-- `SEVEN-PHASE-PRODUCT-GAP-REVIEW.md` — what each phase delivered vs what became usable product
-- `ARCHITECTURE-AND-INTEGRATION-REVIEW.md` — backend/frontend integration, contracts, DB, imaging, simulation, AI, auth, workers, provenance, error, complexity classification + minimal changes
-- `USER-JOURNEY-FAILURE-MAP.md` — 9 journeys (first-time, token holder no case, clinical entry, imaging/3D, real scenario gen, demo success, charts/timeline, insights, guided demo) with repro, severity
-- `PRIORITIZED-PRODUCT-RECOVERY-PLAN.md` — P0/P1/P2 ordered fixes with files, dependency order, verification criteria
+Read the [executive assessment](EXECUTIVE-PRODUCT-REVIEW.md), then the primary [UI/UX review](UI-UX-DEEP-REVIEW.md) and [recovery plan](PRIORITIZED-PRODUCT-RECOVERY-PLAN.md).
 
-## Method
+| Deliverable | Purpose |
+| --- | --- |
+| [Executive product review](EXECUTIVE-PRODUCT-REVIEW.md) | Intended product, actual delivery and separate acceptance verdicts |
+| [UI/UX deep review](UI-UX-DEEP-REVIEW.md) | Largest assessment: first use, screens, interactions, visual hierarchy and accessibility |
+| [Specification compliance matrix](SPECIFICATION-COMPLIANCE-MATRIX.md) | Original requirements mapped to implementation, entry points and evidence |
+| [Seven-phase gap review](SEVEN-PHASE-PRODUCT-GAP-REVIEW.md) | What each phase contributed and whether it reached the user |
+| [Architecture and integration review](ARCHITECTURE-AND-INTEGRATION-REVIEW.md) | Contracts, science, authorization, root causes and smallest corrections |
+| [User journey failure map](USER-JOURNEY-FAILURE-MAP.md) | Reproduction steps, successful partial journeys and blocked continuations |
+| [Prioritized recovery plan](PRIORITIZED-PRODUCT-RECOVERY-PLAN.md) | Dependency-aware work and observable exit conditions |
 
-Pass1: restored persona (`agent-persona.md`), read authority-and-scope, impl guide, KMAP COS-KMAP-001 (121 nodes), task ledger (106 tasks, 78 implemented_unverified, 15 verified), routes (18 pages), components (~30), backend modules (~90), global css, demo-workspace, research cases, lesion viewer, mesh renderer, simulation workflow, onboarding.
+## Independence and evidence boundaries
 
-Pass2: inspected actual implementation: apps/web/app/page.tsx (home), cases, case-detail/workspace, twin, charts, simulation, insights, evaluation, activity, admin, demo, guided-demo; components case-creator, case-library, research-session, research-profile, observation-intake, clinical-charts-explorer, insights-explorer, lesion-viewer, mesh-renderer, simulation-workflow, demo-workspace, guided-demo; src/canceros modules imaging, persistence, patient, simulation, interpretation etc.
+The owner explicitly requested a fresh assessment ignoring previous reviews. Earlier product reviews, audit conclusions, browser reports and old screenshots were excluded as evidence. A checkpoint/startup document encountered during discovery contained historical claims; none were accepted as findings. Original requirements, design decisions, current code, prompt responsibilities and ledger status metadata were inspected. The consolidated predevelopment audit was not used to reach the verdict; adoption uncertainty is recorded rather than silently resolved from it.
 
-Pass3: UI/UX deep review with code-level reasoning (no live browser in this env but full code evidence). First-time session assumed fresh (no cookies/UUIDs).
+The principal agent conducted browser inspection and integrated three bounded AI-agent inspections: original specifications, frontend implementation, and backend/scientific/security implementation. These are AI specialist perspectives, not independent human clinicians, statisticians or participant research. No such consultation or clinical approval occurred.
 
-Pass4–5: compliance matrix and architecture integration.
+The application was freshly built. First-use browser sessions started at `/` without preloaded credentials, state IDs or internal routes. The authenticated continuation used the existing **artificial product fixture**, through the visible sign-in form, against an explicitly disposable local database. Manual diagnostic visits to `/admin` and `/activity` are labeled as such; they do not count as discoverable user journeys. No authentic records, source PDFs, map sources or application code were changed. No model request, publication, push, deployment or external patient-data transfer occurred.
 
-Pass6: root cause analysis via phase execution stubs (phase-4, phase-5) and task ledger.
+UI/UX is the primary deliverable. Its detailed screen assessment and reproduction map together account for more than 40% of the substantive assessment narrative; this is a report allocation, not a numerical product score.
 
-Pass7: recovery plan.
+## Evidence index
 
-## Key Conclusions
+- [Browser checks and explicit limitations](evidence/browser-checks.json).
+- [Prepared family values observed after loading](evidence/demo-family-observations.json).
+- [Fresh original PDF identities, hashes and reading coverage](evidence/source-inventory.json).
+- [Executable contract/security probes](evidence/contract-probes.py) and [sanitized results](evidence/contract-probes.json).
+- [Evidence and check register](evidence/CHECKS.md), including screenshot index and actual commands.
+- [Task-local original-map context](../../reference-reviews/COS-REVIEW-003-INDEPENDENT.md). Retrieved pointers are not proof of textbook reading or clinical validation.
 
-- **Overall:** Engineering substantial but product delivery fails first-time researcher journey; synthetic `/demo` is only coherent end-to-end (EVI) product path.
-- **Safety/Scientific integrity:** PASS — provenance five kinds, immutable history, missing stays missing, physical mm correctness, no invented values, DCE≠visits respected, publication gates present.
-- **Engineering quality:** PASS with complexity debt — 90 modules, idempotency, optimistic concurrency, secure transport checks, abort signal handling, role gating correct, but many run tables duplicate pattern, proxy inconsistency, session in-memory.
-- **UI/UX:** FAIL — UUID leak, manual URL param dependence, dense forms, insufficient viewer prominence, engineering-private simulation, fragmented navigation, weak design system.
-- **Most critical P0 blockers:** onboarding (token source unknown, no project creation guide), no unified case-centered workspace, manual UUID/token entry for twin and simulation, 3D viewer <40% viewport, no scenario builder (JSON handwrite), error states not actionable.
-
-## Restrictions Compliance
-
-- No source code modified during assessment — only docs under `docs/engineering/reviews/COS-REVIEW-003/` created.
-- No specifications rewritten.
-- No knowledge maps regenerated.
-- No new requirements invented to justify implementation.
-- Backed by file-level evidence (paths cited).
-
-## Next Step
-
-Review acceptance before implementation per prompt final instruction: "Do not begin further development until the review has established a coherent, evidence-based product recovery plan." Package now complete.
-
+Line references describe this checkout; they can move during later work. Requirement citations use original document IDs, PDF page numbers and sections. Exact source paths are in the inventory. Screenshots contain artificial review data only. All findings distinguish browser observation, code inspection, contract probe and untested risk.

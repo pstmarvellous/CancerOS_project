@@ -1,0 +1,10 @@
+{
+  "review": "COS-REVIEW-003",
+  "required_reports": 7,
+  "broken_local_links": [],
+  "valid_screenshot_files": 25,
+  "original_source_hashes_unchanged": 12,
+  "ui_and_journey_word_allocation_percent": 41.91,
+  "scope": "Documentation/evidence integrity only; not product acceptance",
+  "full_governance_check": "failed on historical ledger transitions; see governance-check.json"
+}
